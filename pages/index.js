@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useRef, useState} from "react";
 import Head from 'next/head';
-import { Heading, Text, Flex, Link, useColorModeValue, SimpleGrid } from "@chakra-ui/react";
+import { Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
 
@@ -14,6 +14,16 @@ import CodeBlock from '@/components/CodeBlock';
 import SubscribeCard from '@/components/SubscribeCard';
 
 const Home = () => {
+
+  const [makeyourown_link, setmakeyourown_link] = useState("");
+  const [makeyourown_uid, setmakeyourown_uid] = useState("");
+
+  async function updateUID(event){
+    setmakeyourown_uid(event.target.value);
+  }
+  async function updateLink(event){
+    setmakeyourown_link(event.target.value);
+  }
 
   return (
     <>
@@ -319,6 +329,62 @@ const Home = () => {
           </Link>
 
 
+        </Flex>
+
+        <Flex
+          direction="column"
+          align="center"
+          margin="0 auto"
+          w={{ base: "95%"}}
+          py={8}
+          mt={4}
+          mb={2}
+        >
+          <Heading
+            as="h1"
+            fontSize={{ base: "2rem", md: "2rem", lg: "3rem", xl: "6rem" }}
+            fontWeight="700"
+            color={useColorModeValue("black", "white")}
+            lineHeight="none"
+            letterSpacing="tight"
+            textAlign="center"
+            bgClip="text"
+            bgGradient="linear(to-r, green.400,purple.500)"
+            animation="hue 10s infinite linear"
+            py={12}
+          >
+            Make your Own.
+          </Heading>
+
+          <Flex width={{ base: "95vw", md:"80vw", lg:"60vw"}} direction="column">
+            <Flex direction={{ base: "column", md:"row"}} align="center" justifyContent="center">
+              <Input
+                  placeholder="Website Link"
+                  padding="30px"
+                  fontSize="20px"
+                  type="text"
+                  borderRadius="10px"
+                  mr="10px"
+                  w={{ base: "300px", md: "400px" }}
+                  onChange={updateLink}
+              />
+              <Input
+                  placeholder="Unique ID"
+                  padding="30px"
+                  fontSize="20px"
+                  type="text"
+                  borderRadius="10px"
+                  mr="10px"
+                  w={{ base: "300px", md: "400px" }}
+                  onChange={updateUID}
+              />
+            </Flex>
+            <br/>
+            <CodeBlock
+              language="html"
+              code={`<iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?url=${encodeURIComponent(makeyourown_link)}&threadId=${makeyourown_uid}" allowtransparency="true" loading="eager" />`}
+            />
+          </Flex>
         </Flex>
 
         <Flex
