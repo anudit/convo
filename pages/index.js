@@ -187,14 +187,7 @@ const Home = () => {
                   </CustomButton>
                 </Link>
               </Flex>
-              <br/><br/>
-
-              <Text py={2} fontWeight={400} color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                BACKED BY
-              </Text>
-              <Link aria-label="Devfolio" rel="noreferrer" target="_blank" href="https://devfolio.co/blog/first-bif-cohort/">
-                <DevfolioIcon width="200px" height="50px"/>
-              </Link>
+              <br/>
             </Flex>
 
           </Flex>

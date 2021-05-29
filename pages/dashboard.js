@@ -190,7 +190,7 @@ const Dashboard = (props) => {
                                     🧑‍💻 Developer
                                 </CustomTab>
                                 <CustomTab>
-                                    ⚙️ Account
+                                    📂 My Data
                                 </CustomTab>
                             </Flex>
                         </TabList>
@@ -217,7 +217,7 @@ const Dashboard = (props) => {
                         </TabPanel>
                         <TabPanel height="80vh">
                             <Heading as="h3" size="lg" mb={4}>
-                                ⚙️ My Account
+                                📂 My Data
                             </Heading>
                             <AccountSection />
                         </TabPanel>
