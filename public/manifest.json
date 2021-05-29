@@ -1,0 +1,40 @@
+{
+    "name": "The Convo Space",
+    "short_name": "Convo",
+    "description": "Convo is the Decentralized Conversation Layer of Internet, connecting conversations and communities across the Internet.",
+    "iconPath": "icons/icon.svg",
+    "providedBy": {"name": "Anudit Nagar", "url": "https://anudit.dev"},
+    "icons": [
+      {
+        "src": "./icons/icon-192x192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "./icons/icon-256x256.png",
+        "type": "image/png",
+        "sizes": "256x256"
+      },
+      {
+        "src": "./icons/icon-384x384.png",
+        "type": "image/png",
+        "sizes": "384x384"
+      },
+      {
+        "src": "./icons/icon-512x512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      },
+      {
+        "src": "./icons/icon-512x512-mask.png",
+        "type": "image/png",
+        "sizes": "512x512",
+        "purpose": "maskable"
+      }
+    ],
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF",
+    "start_url": ".",
+    "display": "standalone",
+    "orientation": "any"
+  }

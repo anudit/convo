@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/components/*": [
+                "components/*"
+            ],
+            "@/lib/*": [
+                "lib/*"
+            ],
+            "@/styles/*": [
+                "styles/*"
+            ],
+            "@/public/*": [
+                "public/*"
+            ],
+            "@/utils/*": [
+                "utils/*"
+            ],
+            "@/contexts/*": [
+                "contexts/*"
+            ],
+        }
+    },
+    "exclude": [
+        ".git",
+        ".npm",
+        "dist",
+        "dist*",
+        "node_modules",
+        "**/dist/*",
+        "**/node_modules/*",
+    ]
+}
