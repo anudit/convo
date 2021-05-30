@@ -228,7 +228,7 @@ const Threads = (props) => {
                                                     <Flex direction="column">
                                                         <Text style={{fontWeight:'900', cursor:"pointer"}} >
                                                             {
-                                                                isAddress(comment.author) === true ? "@" + truncateAddress(comment.author) : "@" +comment.author
+                                                                Boolean(comment?.authorENS) === true ? "@"+comment.authorENS : "@"+truncateAddress(comment.author)
                                                             }
                                                         </Text>
                                                         <Text pt={1}>

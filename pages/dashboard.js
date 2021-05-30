@@ -187,10 +187,10 @@ const Dashboard = (props) => {
                                     🆔 Identity
                                 </CustomTab>
                                 <CustomTab>
-                                    🧑‍💻 Developer
+                                    📂 My Data
                                 </CustomTab>
                                 <CustomTab>
-                                    📂 My Data
+                                    🧑‍💻 Developer
                                 </CustomTab>
                             </Flex>
                         </TabList>
@@ -209,17 +209,17 @@ const Dashboard = (props) => {
                             </Heading>
                             <IdentitySection mt={4}/>
                         </TabPanel>
+                        <TabPanel height="80vh" w={{base:"60vw", md:"60vw"}}>
+                            <Heading as="h3" size="lg" mb={4}>
+                                📂 My Data
+                            </Heading>
+                            <AccountSection />
+                        </TabPanel>
                         <TabPanel height="80vh">
                             <Heading as="h3" size="lg">
                                 🧑‍💻 Developer
                             </Heading>
                             <DeveloperSection />
-                        </TabPanel>
-                        <TabPanel height="80vh">
-                            <Heading as="h3" size="lg" mb={4}>
-                                📂 My Data
-                            </Heading>
-                            <AccountSection />
                         </TabPanel>
                     </TabPanels>
                     </Flex>
