@@ -120,6 +120,7 @@ const Threads = (props) => {
                     'token': authToken,
                     signerAddress,
                     comment,
+                    'url': thread.url,
                     'threadId': router.query.threadId,
                 });
 
