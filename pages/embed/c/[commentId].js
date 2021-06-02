@@ -13,7 +13,7 @@ import { getAvatar } from '@/utils/avatar';
 export async function getServerSideProps(context) {
 
   let commentData = await getComment(context.params.commentId);
-  let provider = new ethers.providers.InfuraProvider("rinkeby");
+  let provider = new ethers.providers.InfuraProvider("mainnet");
   let ensAdd = await provider.lookupAddress(commentData.author);
 
   if (Boolean(ensAdd)) {

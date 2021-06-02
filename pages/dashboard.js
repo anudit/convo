@@ -20,7 +20,7 @@ import AccountSection from '@/components/Dashboard/AccountSection';
 const Dashboard = (props) => {
 
     const web3Context = useContext(Web3Context);
-    const { connectWallet, signerAddress } = web3Context;
+    const { connectWallet, signerAddress, ensAddress } = web3Context;
     const [formattedComments, setFormattedComments] = useState([]);
     const { hasCopied, onCopy } = useClipboard(signerAddress);
     const columns = [
@@ -167,7 +167,7 @@ const Dashboard = (props) => {
                     <Flex direction="column" height="80vh" width="24vh" mr={2}>
                         <Avatar mx={2} size="xl" name="Avatar" src={signerAddress != ""? getAvatar(signerAddress, {dataUri: true}) : getAvatar("0", {dataUri: true})} alt="signerAddress"/>
                         <Heading mx={2} mt={2} as="h3" size="lg" color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                            {truncateAddress(signerAddress, 3)}
+                            {ensAddress == "" ? truncateAddress(signerAddress, 3): ensAddress}
                         </Heading>
                         <Button mx={2} size="xs" width="fit-content" onClick={onCopy} borderRadius={14}>
                             {hasCopied? (<CheckIcon />) : "Copy"}

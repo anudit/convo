@@ -105,7 +105,6 @@ const BrightIdCard = () => {
     signerAddress != "" ? [`https://app.brightid.org/node/v5/verifications/Convo/${signerAddress}`, "GET"] : null,
     fetcher
   );
-  console.log(data);
 
   async function startVerify(){
     onOpen();

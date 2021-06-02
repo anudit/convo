@@ -4,7 +4,6 @@ import Head from 'next/head';
 import useSWR from 'swr';
 import { useClipboard, Table,Tbody, Text, Tr, Td, Heading, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, useColorModeValue, Flex, Box, Spinner } from "@chakra-ui/react";
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
-import { isAddress } from 'ethers/lib/utils';
 import Linkify from 'react-linkify';
 
 import { ReplyIcon, ThreeDotMenuIcon, DisconnectIcon } from '@/public/icons';

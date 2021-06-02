@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",
     "export": "next export",
-    "tunnel": "ngrok http 3000"
+    "tunnel": "ngrok http 3000",
+    "sync": "node sync.js"
   },
   "dependencies": {
     "@babel/core": "^7.14.3",
@@ -47,5 +49,8 @@
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.3",
     "webpack": "^5.38.1"
+  },
+  "devDependencies": {
+    "next-sitemap": "^1.6.99"
   }
 }

@@ -34,19 +34,28 @@ export const Web3ContextProvider = ({children}) => {
   const [provider, setProvider] = useState(undefined);
   const [error, setError] = useState(null);
   const [signerAddress, setSignerAddress] = useState("");
+  const [ensAddress, setEnsAddress] = useState("");
 
-  useEffect(() => {
+  useEffect(async () => {
 
     const getAddress = async () => {
       const signer = provider.getSigner();
       const address = await signer.getAddress();
       setSignerAddress(address);
+      let tp = new ethers.providers.InfuraProvider("mainnet");
+      tp.lookupAddress(address).then((ensAdd)=>{
+        if(Boolean(ensAdd) == true){
+          setEnsAddress(ensAdd);
+        }
+      });
+
     }
     if (provider) {
       getAddress();
     }
     else {
       setSignerAddress("");
+      setEnsAddress("");
     };
 
   }, [provider]);
@@ -84,8 +93,14 @@ export const Web3ContextProvider = ({children}) => {
       modalProvider = await web3Modal.connect();
 
       if (modalProvider.on) {
-        modalProvider.on("accountsChanged", (accounts) => {
+        modalProvider.on("accountsChanged", async (accounts) => {
           setSignerAddress(accounts[0]);
+          let tp = new ethers.providers.InfuraProvider("mainnet");
+          tp.lookupAddress(address).then((ensAdd)=>{
+            if(Boolean(ensAdd) == true){
+              setEnsAddress(ensAdd);
+            }
+          });
         });
         modalProvider.on("chainChanged", (chainId) => {
           window.location.reload();
@@ -187,7 +202,7 @@ export const Web3ContextProvider = ({children}) => {
   }
 
   return (
-    <Web3Context.Provider value={{connectWallet, disconnectWallet, provider, error, signerAddress, getAuthToken}}>
+    <Web3Context.Provider value={{connectWallet, disconnectWallet, provider, error, signerAddress,ensAddress, getAuthToken}}>
         {children}
     </Web3Context.Provider>
   )

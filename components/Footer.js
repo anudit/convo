@@ -53,6 +53,11 @@ const Footer = () => {
                     }}>
                         Privacy Policy
                     </Link>
+                    <Link rel="noreferrer" target="_blank" as="a" href="http://status.theconvo.space" aria-label="Status" _hover={{
+                        color: useColorModeValue("black", "whiteAlpha.700"),
+                    }}>
+                        Status
+                    </Link>
                 </Stack>
                 <Stack textAlign="left" spacing={{base: 2, md: 4}} mb={{base: 4, md: 0}}>
                     <Text fontWeight={600} pb={{base: 1, md: 4}} color={useColorModeValue("gray.800","whiteAlpha.600")}>

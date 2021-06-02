@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Head from 'next/head';
-import { Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input } from "@chakra-ui/react";
+import { Tooltip, Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input, Switch, FormControl , FormLabel } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
 
@@ -17,12 +17,16 @@ const Home = () => {
 
   const [makeyourown_link, setmakeyourown_link] = useState("");
   const [makeyourown_uid, setmakeyourown_uid] = useState("");
+  const [makeyourown_themeIsDark, setmakeyourown_themeIsDark] = useState("");
 
   async function updateUID(event){
     setmakeyourown_uid(event.target.value);
   }
   async function updateLink(event){
     setmakeyourown_link(event.target.value);
+  }
+  async function makeyourown_themeToggle(event){
+    setmakeyourown_themeIsDark(event.target.checked);
   }
 
   return (
@@ -187,7 +191,14 @@ const Home = () => {
                   </CustomButton>
                 </Link>
               </Flex>
-              <br/>
+              <br/><br/>
+
+              <Text py={2} fontWeight={400} color={useColorModeValue("blackAlpha.800", "gray.400")}>
+                BACKED BY
+              </Text>
+              <Link aria-label="Devfolio" rel="noreferrer" target="_blank" href="https://devfolio.co/blog/first-bif-cohort/">
+                <DevfolioIcon width="200px" height="50px"/>
+              </Link>
             </Flex>
 
           </Flex>
@@ -352,16 +363,17 @@ const Home = () => {
           <Flex width={{ base: "95vw", md:"80vw", lg:"60vw"}} direction="column">
             <Flex direction={{ base: "column", md:"row"}} align="center" justifyContent="center">
               <Input
-                  placeholder="Website Link"
-                  padding="30px"
-                  fontSize="20px"
-                  type="text"
-                  borderRadius="10px"
-                  mr="10px"
-                  w={{ base: "300px", md: "400px" }}
-                  onChange={updateLink}
+                placeholder="Website Link"
+                padding="30px"
+                fontSize="20px"
+                type="text"
+                borderRadius="10px"
+                mr="10px"
+                w={{ base: "300px", md: "400px" }}
+                onChange={updateLink}
               />
-              <Input
+              <Tooltip label="A key that uniquely identifies this comment box from the other ones on across website." aria-label="Unique Id" bg="blue.200" hasArrow>
+                <Input
                   placeholder="Unique ID"
                   padding="30px"
                   fontSize="20px"
@@ -370,12 +382,19 @@ const Home = () => {
                   mr="10px"
                   w={{ base: "300px", md: "400px" }}
                   onChange={updateUID}
-              />
+                />
+              </Tooltip>
             </Flex>
+            <FormControl display="flex" justifyContent="center" mt={2}>
+              <FormLabel htmlFor="themeKey" mb="0">
+                Dark Themed?
+              </FormLabel>
+              <Switch id="themeKey" size="md" onChange={makeyourown_themeToggle}/>
+            </FormControl>
             <br/>
             <CodeBlock
               language="html"
-              code={`<iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?url=${encodeURIComponent(makeyourown_link)}&threadId=${makeyourown_uid}" allowtransparency="true" loading="eager" />`}
+              code={`<iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?url=${encodeURIComponent(makeyourown_link)}&threadId=${makeyourown_uid}&theme=${makeyourown_themeIsDark?"dark":"light"}" allowtransparency="true" loading="eager" />`}
             />
           </Flex>
         </Flex>

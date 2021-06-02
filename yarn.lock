@@ -1631,6 +1631,11 @@
     buffer "^5.4.3"
     seedrandom "^3.0.5"
 
+"@corex/deepmerge@^2.6.20":
+  version "2.6.20"
+  resolved "https://registry.yarnpkg.com/@corex/deepmerge/-/deepmerge-2.6.20.tgz#a72d1cb5a101fd11160815b96f499a588362ba5b"
+  integrity sha512-oZZxwDtV0bf8VPcSIhZPvdBFUkVIC8zRblUjrrVAsbGRiqUuZJfoXw2M6NDiIXWcUCfOqbkFND6Yf3b9ej9AjA==
+
 "@dicebear/avatars@^4.6.4":
   version "4.6.4"
   resolved "https://registry.yarnpkg.com/@dicebear/avatars/-/avatars-4.6.4.tgz#e7e85ebef01c05e24d54b29188131a48f9f9e815"
@@ -6647,6 +6652,13 @@ make-dir@^3.0.2, make-dir@^3.1.0:
   dependencies:
     semver "^6.0.0"
 
+matcher@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/matcher/-/matcher-4.0.0.tgz#a42a05a09aaed92e2d241eb91fddac689461ea51"
+  integrity sha512-S6x5wmcDmsDRRU/c2dkccDwQPXoFczc5+HpQ2lON8pnvHlnvHAHj5WlLVvw6n6vNyHuVugYrFohYxbS+pvFpKQ==
+  dependencies:
+    escape-string-regexp "^4.0.0"
+
 md5.js@^1.3.4:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/md5.js/-/md5.js-1.3.5.tgz#b5d07b8e3216e3e27cd728d72f70d1e6a342005f"
@@ -6875,6 +6887,15 @@ next-pwa@^5.2.21:
     terser-webpack-plugin "^5.1.1"
     workbox-webpack-plugin "^6.1.5"
     workbox-window "^6.1.5"
+
+next-sitemap@^1.6.99:
+  version "1.6.99"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-1.6.99.tgz#5009d4066fb6c7e908c15400732633241263c65b"
+  integrity sha512-2ZSIBOslKJO0bz0ShCVAU2UUzE/SBIBA1MT7e7uOlOMw9u+OD1Uc4XDzKLhNdjbCuic707xYMW5E0jsnOljhUA==
+  dependencies:
+    "@corex/deepmerge" "^2.6.20"
+    matcher "^4.0.0"
+    minimist "^1.2.5"
 
 next@^10.2.2:
   version "10.2.3"
