@@ -42,7 +42,7 @@ export const Web3ContextProvider = ({children}) => {
       const signer = provider.getSigner();
       const address = await signer.getAddress();
       setSignerAddress(address);
-      let tp = new ethers.providers.InfuraProvider("mainnet");
+      let tp = new ethers.providers.InfuraProvider("mainnet","1e7969225b2f4eefb3ae792aabf1cc17");
       tp.lookupAddress(address).then((ensAdd)=>{
         if(Boolean(ensAdd) == true){
           setEnsAddress(ensAdd);
@@ -95,7 +95,7 @@ export const Web3ContextProvider = ({children}) => {
       if (modalProvider.on) {
         modalProvider.on("accountsChanged", async (accounts) => {
           setSignerAddress(accounts[0]);
-          let tp = new ethers.providers.InfuraProvider("mainnet");
+          let tp = new ethers.providers.InfuraProvider("mainnet","1e7969225b2f4eefb3ae792aabf1cc17");
           tp.lookupAddress(address).then((ensAdd)=>{
             if(Boolean(ensAdd) == true){
               setEnsAddress(ensAdd);

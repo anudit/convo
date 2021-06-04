@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useColorMode, useColorModeValue, Box, Flex, Text, Button, Divider, Tooltip, useClipboard } from "@chakra-ui/react";
+import { Avatar, useColorMode, useColorModeValue, Box, Flex, Text, Button, Divider, Tooltip, useClipboard } from "@chakra-ui/react";
 import { LinkIcon } from "@chakra-ui/icons";
 import { ethers } from 'ethers';
 
@@ -13,11 +13,11 @@ import { getAvatar } from '@/utils/avatar';
 export async function getServerSideProps(context) {
 
   let commentData = await getComment(context.params.commentId);
-  let provider = new ethers.providers.InfuraProvider("mainnet");
+  let provider = new ethers.providers.InfuraProvider("mainnet","1e7969225b2f4eefb3ae792aabf1cc17");
   let ensAdd = await provider.lookupAddress(commentData.author);
 
   if (Boolean(ensAdd)) {
-    commentData['author'] = ensAdd;
+    commentData['authorENS'] = ensAdd;
   }
 
   return {
@@ -42,7 +42,7 @@ const Card = (props) => {
 
   if (props.comment){
 
-    let svg = getAvatar(props.comment.author);
+    // let svg = getAvatar(props.comment.author);
 
     const { hasCopied, onCopy } = useClipboard(process.env.NEXT_PUBLIC_API_SITE_URL + '/embed/c/' + props.comment._id);
 
@@ -69,8 +69,8 @@ const Card = (props) => {
             width="fit-content"
           >
             <Flex>
-              <Box mr={2} width={6} height={6} borderRadius="100px" dangerouslySetInnerHTML={{__html: svg}} />
-              {ethers.utils.isAddress(props.comment.author) ? truncateAddress(props.comment.author) : props.comment.author}
+              <Avatar mr={2} bg="#00000000" size="xs" name="Avatar" src={getAvatar(props.comment.author, {dataUri: true})} alt="author image"/>
+              { Boolean(props.comment?.authorENS) === true ? props.comment.authorENS : truncateAddress(props.comment.author) }
             </Flex>
           </Flex>
 
