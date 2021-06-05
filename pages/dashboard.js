@@ -39,8 +39,8 @@ const Dashboard = (props) => {
     ];
 
 
-    const { data: comments, error } = useSWR(
-        signerAddress != "" ? [`/api/comments?author=${signerAddress}&apikey=CONVO`, "GET"] : null,
+    const { data: comments, error, mutate } = useSWR(
+        signerAddress == "" ? null: [`/api/comments?author=${signerAddress}&apikey=CONVO`, "GET"],
         fetcher
     );
 
@@ -85,16 +85,17 @@ const Dashboard = (props) => {
     })
 
 
+    // Not logged in
     if (signerAddress === ""){
         return (<PageShell title="Dashboard | The Convo Space">
             <Flex
                 direction="column"
-                align={props?.align ? props.align : "center"}
+                align="center"
                 maxW="1600px"
                 w={{ base: "95%", md: "80%", lg: "90%"}}
                 m="0 auto"
             >
-                <Heading as="h3" size="lg">
+                <Heading as="h3" size="lg" align="center">
                     Let's start by connecting your wallet.
                 </Heading>
                 <br/>
@@ -104,6 +105,7 @@ const Dashboard = (props) => {
             </Flex>
         </PageShell>)
     }
+    // Comments are loading
     else if (!comments){
         return (
             <PageShell title="Dashboard | The Convo Space">
@@ -125,6 +127,7 @@ const Dashboard = (props) => {
             </PageShell>
         );
     }
+    // Doesn't have any comments to show.
     else if (comments && comments.length < 1 ){
         return (
             <PageShell title="Dashboard | The Convo Space">
@@ -158,14 +161,14 @@ const Dashboard = (props) => {
                 </Flex>
                 <Tabs isFitted variant="soft-rounded" colorScheme={useColorModeValue("blackAlpha","whiteAlpha")}>
                 <Flex
-                    direction="row"
+                    direction={{base:"column", md:"row"}}
                     alignItems="flex-start"
                     maxW="1600px"
                     w={{ base: "95%", md: "80%", lg: "80%"}}
                     m="0 auto"
                 >
-                    <Flex direction="column" height="80vh" width="24vh" mr={2}>
-                        <Avatar mx={2} size="xl" name="Avatar" src={signerAddress != ""? getAvatar(signerAddress, {dataUri: true}) : getAvatar("0", {dataUri: true})} alt="signerAddress"/>
+                    <Flex direction="column" width={{base:"100%", md:"24vh"}} mr={2} align={{base:"center", md:"left"}}>
+                        <Avatar mx={2} size="md" name="Avatar" src={signerAddress != ""? getAvatar(signerAddress, {dataUri: true}) : getAvatar("0", {dataUri: true})} alt="Avatar"/>
                         <Heading mx={2} mt={2} as="h3" size="lg" color={useColorModeValue("blackAlpha.800", "gray.400")}>
                             {ensAddress == "" ? truncateAddress(signerAddress, 3): ensAddress}
                         </Heading>
@@ -197,25 +200,25 @@ const Dashboard = (props) => {
                     </Flex>
 
                     <TabPanels>
-                        <TabPanel height="80vh">
+                        <TabPanel >
                             <Heading as="h3" size="lg">
                                 ⚡ My Comments
                             </Heading>
                             <CommentsTable columns={columns} comments={formattedComments}/>
                         </TabPanel>
-                        <TabPanel height="80vh">
+                        <TabPanel>
                             <Heading as="h3" size="lg">
                                 🆔 My Identities
                             </Heading>
                             <IdentitySection mt={4}/>
                         </TabPanel>
-                        <TabPanel height="80vh" w={{base:"60vw", md:"60vw"}}>
-                            <Heading as="h3" size="lg" mb={4}>
+                        <TabPanel>
+                            <Heading as="h3" size="lg">
                                 📂 My Data
                             </Heading>
                             <AccountSection />
                         </TabPanel>
-                        <TabPanel height="80vh">
+                        <TabPanel>
                             <Heading as="h3" size="lg">
                                 🧑‍💻 Developer
                             </Heading>
@@ -238,7 +241,7 @@ const Dashboard = (props) => {
                     w={{ base: "95%", md: "80%", lg: "90%"}}
                     m="0 auto"
                 >
-                    Whoops! Try Reloading the page.
+                    Whoops! Try Reloading the page. {error}
                 </Flex>
             </PageShell>
         );

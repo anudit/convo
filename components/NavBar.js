@@ -188,7 +188,7 @@ const NavLinks = () => {
                     (<Button fontWeight="100" onClick={connectWallet} colorScheme="twitter">Connect Wallet</Button>)
                     :
                     (
-                    <Menu placement="bottom">
+                    <Menu placement="bottom-start">
                         <MenuButton fontWeight="100" as={Button} rightIcon={<ChevronDownIcon />}  colorScheme="twitter">
                             Wallet
                         </MenuButton>

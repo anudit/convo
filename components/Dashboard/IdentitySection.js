@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Button, Text, chakra, Box, Flex, useColorModeValue, useClipboard, InputGroup, Input, InputRightElement } from "@chakra-ui/react";
+import { Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useClipboard, InputGroup, Input, InputRightElement, Image } from "@chakra-ui/react";
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
@@ -7,6 +7,7 @@ import QRCode from "react-qr-code";
 import { Web3Context } from '@/contexts/Web3Context'
 import { checkPoH } from "@/lib/identity"
 import { Verifiedcon } from '@/public/icons';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 const IdentitySection = () => {
 
@@ -14,35 +15,40 @@ const IdentitySection = () => {
     const { signerAddress } = web3Context;
 
     const [poh, setPoH] = useState(null);
-
     useEffect(async () => {
-      let pohResult = await checkPoH(signerAddress);
-      setPoH(pohResult);
+      checkPoH(signerAddress).then(setPoH);
     }, []);
 
 
     return (
-      <Flex mt={4} direction={{base:"column", md: "row"}}>
-        <IdentityCard
-          name="Proof of Humanity"
-          imglink="https://app.proofofhumanity.id/images/open-graph-image.png"
-          state={poh}
-        />
-        <BrightIdCard/>
-      </Flex>
+      <>
+        <Flex mt={4} direction={{base:"column", md: "row"}}>
+          <PoHCard state={poh} />
+          <BrightIdCard />
+        </Flex>
+        <Heading as="h4" size="md" my={4}>
+          🏅 POAPs
+        </Heading>
+        <Flex my={2} direction={{base:"column", md: "row"}}>
+
+          <br/>
+          <PoapSection/>
+
+        </Flex>
+      </>
     )
 
 }
 
 export default IdentitySection;
 
-const IdentityCard = ({name, imglink, state}) => {
+const PoHCard = ({state}) => {
     return (
         <Flex
           direction="column"
           justifyContent="center"
           alignItems="center"
-          w="sm"
+          w={{base:"xs", md:"sm"}}
           mx="auto"
           m={1}
         >
@@ -55,7 +61,7 @@ const IdentityCard = ({name, imglink, state}) => {
             bgSize="cover"
             bgPos="center"
             style={{
-              backgroundImage: `url(${imglink})`,
+              backgroundImage: `url(https://app.proofofhumanity.id/images/open-graph-image.png)`,
             }}
           ></Box>
 
@@ -74,7 +80,7 @@ const IdentityCard = ({name, imglink, state}) => {
               color={useColorModeValue("gray.800", "white")}
               letterSpacing={1}
             >
-              {name}
+              Proof of Humanity
             </chakra.h3>
 
             <Flex
@@ -120,7 +126,7 @@ const BrightIdCard = () => {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        w="sm"
+        w={{base:"xs", md:"sm"}}
         mx="auto"
         m={1}
       >
@@ -207,6 +213,103 @@ const BrightIdCard = () => {
           </Modal>
         </Box>
       </Flex>
+  );
+};
+
+const PoapSection = () => {
+
+  const web3Context = useContext(Web3Context);
+  const { signerAddress } = web3Context;
+
+  const [poaps, setPoaps] = useState(null);
+
+  useEffect(async () => {
+
+    fetcher(`https://api.opensea.io/api/v1/assets?asset_contract_address=0x22C1f6050E56d2876009903609a2cC3fEf83B415&owner=0xea5ce2f9a33d36534ee3409d81322feb3f91ed8a`, "GET", {})
+    .then((res)=>{
+      console.log(res);
+      setPoaps(res.assets)
+    });
+
+  }, []);
+
+  return (
+    <>
+      {
+        poaps && poaps.map((poap)=>{
+          return (
+            <Box
+              mx={2}
+              w="300px"
+              bg={useColorModeValue("white", "gray.800")}
+              shadow="lg"
+              rounded="lg"
+            >
+              <Box px={4} py={2}>
+                <chakra.h1
+                  color={useColorModeValue("gray.800", "white")}
+                  fontWeight="bold"
+                  fontSize="3xl"
+                  textTransform="uppercase"
+                >
+                  {poap.name}
+                </chakra.h1>
+                <chakra.p
+                  mt={1}
+                  fontSize="sm"
+                  color={useColorModeValue("gray.600", "gray.400")}
+                >
+                  {poap.description}
+                </chakra.p>
+              </Box>
+
+              <Image
+                h={48}
+                w="full"
+                fit="cover"
+                mt={2}
+                src={poap.image_url}
+                alt={poap.name}
+              />
+
+              <Flex
+                alignItems="center"
+                justifyContent="space-between"
+                px={4}
+                py={2}
+                bg="gray.900"
+                roundedBottom="lg"
+              >
+                <chakra.h1 color="white" fontWeight="bold" fontSize="lg">
+                  #${poap.token_id}
+                </chakra.h1>
+                <chakra.button
+                  px={2}
+                  py={1}
+                  bg="white"
+                  fontSize="xs"
+                  color="gray.900"
+                  fontWeight="bold"
+                  rounded="lg"
+                  textTransform="uppercase"
+                  _hover={{
+                    bg: "gray.200",
+                  }}
+                  _focus={{
+                    bg: "gray.400",
+                  }}
+                  as="a"
+                  href={poap.external_link}
+                  target="_blank"
+                >
+                  View <ExternalLinkIcon ml={2}/>
+                </chakra.button>
+              </Flex>
+            </Box>
+          );
+        })
+      }
+    </>
   );
 };
 

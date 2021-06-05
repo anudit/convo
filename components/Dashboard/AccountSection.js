@@ -177,7 +177,7 @@ const AccountSection = (props) => {
     }
 
     return (
-        <Flex direction="column">
+        <Flex direction="column" mt={4}>
             <Heading as="h4" size="md" mb={4}>
                 Administration
             </Heading>
