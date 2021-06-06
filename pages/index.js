@@ -41,8 +41,9 @@ const Home = () => {
         backgroundAttachment="fixed"
         backgroundRepeat="no-repeat"
         direction="column"
-        pt={3}
       >
+
+        <NavBar/>
 
         <Flex
           // backgroundImage="radial-gradient( 98.44% 95.14% at -0.8% 0%, #f563ff 0%, rgba(8, 255, 255, 0.5) 10.76%, rgba(15, 255, 231, 0.35) 30%, rgba(255, 120, 147, 0.1) 55%, rgba(0, 5, 15, 0) 86% ),linear-gradient(#000, #000)"
@@ -52,10 +53,9 @@ const Home = () => {
           m="0 auto"
           h="100vh"
           w={{ base: "95%"}}
+          mt="10vh"
           zIndex="1"
         >
-
-          <NavBar/>
 
           <Flex
             align="center"

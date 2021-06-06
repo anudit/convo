@@ -13,11 +13,16 @@ const NavBar = (props) => {
     <Flex
       as="nav"
       align="center"
-      justify="space-between"
+      justify={{base:"space-around",md:"space-evenly"}}
       wrap="wrap"
       w="100%"
-      p={8}
+      py={5}
       bg={["dark.500", "dark.500", "transparent", "transparent"]}
+      position="fixed"
+      background={useColorModeValue("#ececec30", "#15151930")}
+      backdropFilter="blur(10px)"
+      zIndex="100"
+      borderBottomWidth="1px"
     >
 
       <Link href="/" style={{textDecoration: 'inherit'}} fontWeight={400}>
@@ -38,7 +43,7 @@ const NavBar = (props) => {
           <Stack
             spacing={8}
             align="center"
-            justify={["center", "space-between", "flex-end", "flex-end"]}
+            justify={["center", "space-evenly", "flex-end", "flex-end"]}
             direction={["row", "row", "row", "row"]}
             pt={[4, 4, 0, 0]}
             color={useColorModeValue("gray.600", "gray.400")}

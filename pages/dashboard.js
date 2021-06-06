@@ -94,6 +94,7 @@ const Dashboard = (props) => {
                 maxW="1600px"
                 w={{ base: "95%", md: "80%", lg: "90%"}}
                 m="0 auto"
+                mt={2}
             >
                 <Heading as="h3" size="lg" align="center">
                     Let's start by connecting your wallet.
@@ -150,15 +151,17 @@ const Dashboard = (props) => {
                 <Head>
                     <title>Dashboard | The Convo Space</title>
                 </Head>
-                <Flex
+
+                {/* <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
                     maxW="1600px"
                     w={{ base: "95%", md: "80%", lg: "90%"}}
                     m="0 auto"
                 >
-                    <NavBar/>
-                </Flex>
+
+                </Flex> */}
+                <NavBar/>
                 <Tabs isFitted variant="soft-rounded" colorScheme={useColorModeValue("blackAlpha","whiteAlpha")}>
                 <Flex
                     direction={{base:"column", md:"row"}}
@@ -166,37 +169,47 @@ const Dashboard = (props) => {
                     maxW="1600px"
                     w={{ base: "95%", md: "80%", lg: "80%"}}
                     m="0 auto"
+                    mt="10vh"
                 >
-                    <Flex direction="column" width={{base:"100%", md:"24vh"}} mr={2} align={{base:"center", md:"left"}}>
-                        <Avatar mx={2} size="md" name="Avatar" src={signerAddress != ""? getAvatar(signerAddress, {dataUri: true}) : getAvatar("0", {dataUri: true})} alt="Avatar"/>
-                        <Heading mx={2} mt={2} as="h3" size="lg" color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                            {ensAddress == "" ? truncateAddress(signerAddress, 3): ensAddress}
-                        </Heading>
-                        <Button mx={2} size="xs" width="fit-content" onClick={onCopy} borderRadius={14}>
-                            {hasCopied? (<CheckIcon />) : "Copy"}
-                        </Button>
-                        <br/>
-                        <TabList>
-                            <Flex
-                                width="-webkit-fill-available"
-                                direction="column"
-                                alignItems="flex-start"
-                                color={useColorModeValue("black", "white")}
-                            >
-                                <CustomTab>
-                                    ⚡ Comments
-                                </CustomTab>
-                                <CustomTab>
-                                    🆔 Identity
-                                </CustomTab>
-                                <CustomTab>
-                                    📂 My Data
-                                </CustomTab>
-                                <CustomTab>
-                                    🧑‍💻 Developer
-                                </CustomTab>
-                            </Flex>
-                        </TabList>
+                    <Flex
+                        direction={{base:"row", md:"column"}}
+                        width={{base:"100%", md:"24vh"}}
+                        mr={2}
+                        align={{base:"center", md:"left"}}
+                        justifyContent={{base:"space-evenly", md:""}}
+                    >
+                        <chakra.div>
+                            <Avatar mx={2} size="md" name="Avatar" src={signerAddress != ""? getAvatar(signerAddress, {dataUri: true}) : getAvatar("0", {dataUri: true})} alt="Avatar"/>
+                            <Heading mx={2} mt={2} as="h3" size="lg" color={useColorModeValue("blackAlpha.800", "gray.400")}>
+                                {ensAddress == "" ? truncateAddress(signerAddress, 3): ensAddress}
+                            </Heading>
+                            <Button mx={2} size="xs" width="fit-content" onClick={onCopy} borderRadius={14}>
+                                {hasCopied? (<CheckIcon />) : "Copy"}
+                            </Button>
+                        </chakra.div>
+                        <chakra.div mt={{base:"", md:2}}>
+                            <TabList>
+                                <Flex
+                                    width="-webkit-fill-available"
+                                    direction="column"
+                                    alignItems="flex-start"
+                                    color={useColorModeValue("black", "white")}
+                                >
+                                    <CustomTab>
+                                        ⚡ Comments
+                                    </CustomTab>
+                                    <CustomTab>
+                                        🆔 Identity
+                                    </CustomTab>
+                                    <CustomTab>
+                                        📂 My Data
+                                    </CustomTab>
+                                    <CustomTab>
+                                        🧑‍💻 Developer
+                                    </CustomTab>
+                                </Flex>
+                            </TabList>
+                        </chakra.div>
                     </Flex>
 
                     <TabPanels>
@@ -307,7 +320,7 @@ const CommentsTable = ({ columns, comments}) => {
     }
 
     return (
-    <Table {...getTableProps()} mt={4}>
+    <Table {...getTableProps()} mt={4} wordBreak="break-all">
         <Thead>
             {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()}>

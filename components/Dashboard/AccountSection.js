@@ -181,11 +181,11 @@ const AccountSection = (props) => {
             <Heading as="h4" size="md" mb={4}>
                 Administration
             </Heading>
-            <Flex direction={{base:"column", md:"row"}}>
-                <Button size="md" onClick={downloadAllData}>
+            <Flex direction={{base:"column", md:"row"}} alignItems="flex-start">
+                <Button size="md" onClick={downloadAllData} m={1}>
                     <DownloadIcon w={4} h={4} mr={2}/> Download my Data
                 </Button>
-                <Button mx={2} size="md" colorScheme="red" onClick={nukeAllData}>
+                <Button size="md" colorScheme="red" onClick={nukeAllData} m={1}>
                     💣 Nuke my Data
                 </Button>
             </Flex>

@@ -24,12 +24,16 @@ export const NavBar = (props) => {
         <Flex
             as="nav"
             align="center"
-            justify="space-between"
+            justify={{base:"space-around",md:"space-evenly"}}
             wrap="wrap"
             w="100vw"
-            p={8}
+            p={5}
             display={['none', 'none', 'flex','flex']}
-            zIndex="1"
+            position="fixed"
+            background={useColorModeValue("#ececec30", "#15151930")}
+            backdropFilter="blur(10px)"
+            zIndex="100"
+            borderBottomWidth="1px"
         >
             <Link
                 href="/"
@@ -61,14 +65,19 @@ export const NavBar = (props) => {
 
         {/* Mobile */}
         <Flex
-          as="nav"
-          align="center"
-          justify="space-between"
-          wrap="wrap"
-          w="100vw"
-          p={6}
-          display={['flex','flex', 'none', 'none']}
-          zIndex="1"
+            as="nav"
+            align="center"
+            justify="space-between"
+            wrap="wrap"
+            w="100vw"
+            p={5}
+            display={['flex','flex', 'none', 'none']}
+            zIndex="1"
+            position="fixed"
+            background={useColorModeValue("#ececec30", "#15151930")}
+            backdropFilter="blur(10px)"
+            zIndex="10"
+            borderBottomWidth="1px"
         >
 
             <Link href="/" style={{textDecoration: 'inherit'}}>
