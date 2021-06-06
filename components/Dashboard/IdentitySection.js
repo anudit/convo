@@ -225,7 +225,7 @@ const PoapSection = () => {
 
   useEffect(async () => {
 
-    fetcher(`https://api.opensea.io/api/v1/assets?asset_contract_address=0x22C1f6050E56d2876009903609a2cC3fEf83B415&owner=0xea5ce2f9a33d36534ee3409d81322feb3f91ed8a`, "GET", {})
+    fetcher(`https://api.opensea.io/api/v1/assets?asset_contract_address=0x22C1f6050E56d2876009903609a2cC3fEf83B415&owner=${signerAddress}`, "GET", {})
     .then((res)=>{
       console.log(res);
       setPoaps(res.assets)
@@ -236,7 +236,7 @@ const PoapSection = () => {
   return (
     <>
       {
-        poaps && poaps.map((poap)=>{
+        poaps && poaps.length > 0 && poaps.map((poap)=>{
           return (
             <Box
               mx={2}
@@ -308,6 +308,11 @@ const PoapSection = () => {
             </Box>
           );
         })
+      }
+      {
+        poaps && poaps.length == 0 && (
+          "No POAPs"
+        )
       }
     </>
   );

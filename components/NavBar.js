@@ -160,7 +160,7 @@ const NavLinks = () => {
     const { toggleColorMode } = useColorMode();
 
     const web3Context = useContext(Web3Context)
-    const {connectWallet, disconnectWallet, signerAddress} = web3Context;
+    const {connectWallet, disconnectWallet, signerAddress, ensAddress} = web3Context;
 
     return (
         <>
@@ -190,7 +190,7 @@ const NavLinks = () => {
                     (
                     <Menu placement="bottom-start">
                         <MenuButton fontWeight="100" as={Button} rightIcon={<ChevronDownIcon />}  colorScheme="twitter">
-                            Wallet
+                            {ensAddress == "" ? "Wallet" : ensAddress}
                         </MenuButton>
                         <MenuList width="fit-content">
                             <MenuItem fontWeight="100" >
