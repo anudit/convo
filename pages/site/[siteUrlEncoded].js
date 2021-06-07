@@ -7,8 +7,6 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import Head from 'next/head';
 import useSWR from 'swr';
 
-
-import { CustomButton } from "@/components/CustomButtons";
 import { ThreadView } from '@/components/ThreadView';
 import NavBar from '@/components/NavBar';
 import { getThreads, getAllThreads } from "@/lib/thread-db";
@@ -66,6 +64,7 @@ const Hero = (props) => {
                 justifyContent="center"
                 alignItems="center"
                 direction="column"
+                mt="7vh"
             >
                 <Flex
                     position="absolute"
@@ -91,6 +90,7 @@ const Hero = (props) => {
                 backgroundImage="linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);"
                 w="100vw"
                 height={{sm: "150px", md: "200px"}}
+                mt="7vh"
             >
                 {props.children}
             </Flex>
@@ -173,6 +173,9 @@ const SiteInterface = (props) => {
         <Head>
             <title>The Convo Space</title>
         </Head>
+
+        <NavBar/>
+
         <Flex
             direction="column"
             align="center"
@@ -180,9 +183,8 @@ const SiteInterface = (props) => {
             w={{ base: "95%", md: "80%", lg: "90%"}}
             m="0 auto"
         >
-            <NavBar/>
 
-            <Hero>
+            <Hero mt="10vh">
                 {
                     link && (<>
                         <Heading

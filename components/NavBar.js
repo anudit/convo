@@ -70,7 +70,8 @@ export const NavBar = (props) => {
             justify="space-between"
             wrap="wrap"
             w="100vw"
-            p={5}
+            py={3}
+            px={5}
             display={['flex','flex', 'none', 'none']}
             zIndex="1"
             position="fixed"
@@ -122,10 +123,9 @@ export const NavBar = (props) => {
             align="center"
             justify="space-between"
             wrap="wrap"
-            w="90vw"
-            p={4}
+            w="100vw"
+            p={5}
             display={['flex','flex', 'none', 'none']}
-            mt={2}
         >
             <Link href="/" style={{textDecoration: 'inherit'}}>
                 <TheConvoSpaceIcon boxSize={6}/>
@@ -133,7 +133,7 @@ export const NavBar = (props) => {
 
             <IconButton
                 aria-label="Open Menu"
-                size="lg"
+                size="sm"
                 variant="ghost"
                 icon={ <CloseIcon /> }
                 onClick={() => toggleMenu('none')}
@@ -152,7 +152,7 @@ export const NavBar = (props) => {
             fontSize="40px"
         >
 
-            <NavLinks/>
+            <NavLinks />
 
         </Stack>
 
@@ -191,7 +191,7 @@ const NavLinks = () => {
             >
                 Docs
             </Link>
-            <ButtonGroup size="sm" isAttached >
+            <ButtonGroup size="sm" isAttached fontSize="lg">
                 {
                     signerAddress == "" ?
                     (<Button fontWeight="100" onClick={connectWallet} colorScheme="twitter">Connect Wallet</Button>)
