@@ -10,14 +10,6 @@ const PageShell = (props) => {
       <Head>
         <title>{props.title}</title>
       </Head>
-      {/* <Flex
-        direction="column"
-        align={props?.align ? props.align : "center"}
-        maxW="1600px"
-        w={{ base: "95%", md: "80%", lg: "90%"}}
-        m="0 auto"
-      >
-      </Flex> */}
       <NavBar/>
       <Flex
         direction="column"
