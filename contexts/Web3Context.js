@@ -13,7 +13,7 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      infuraId: '9f34d0bf5e1b4b36914fd5bc66c50b05',
+      infuraId: '1e7969225b2f4eefb3ae792aabf1cc17',
     },
   },
   fortmatic: {
@@ -162,7 +162,8 @@ export const Web3ContextProvider = ({children}) => {
   async function updateAuthToken(signerAddress, tempSigner) {
 
     // let signer = await provider.getSigner();
-    let data = `I allow this site to access my data on The Convo Space using the account ${signerAddress}`;
+    let timestamp = Date.now();
+    let data = `I allow this site to access my data on The Convo Space using the account ${signerAddress}. Timestamp:${timestamp}`;
     // if (!!tempSigner.provider.provider.safe === true) {
     //   console.log('call eth_sign for safe.', tempSigner.provider.provider);
 
@@ -187,7 +188,8 @@ export const Web3ContextProvider = ({children}) => {
 
     let res = await fetcher(`/api/auth?apikey=CONVO`, "POST", {
       signerAddress,
-      signature
+      signature,
+      timestamp
     });
 
     if (res.success === true ) {

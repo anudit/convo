@@ -12,9 +12,22 @@ export default async (req, res) => {
 
   try {
 
-    if (Object.keys(req.body).includes('signature') && Object.keys(req.body).includes('signerAddress') && isAddress(req.body?.signerAddress)){
+    if (
+      Object.keys(req.body).includes('signature') &&
+      Object.keys(req.body).includes('signerAddress') &&
+      Object.keys(req.body).includes('timestamp') &&
+      isAddress(req.body?.signerAddress)){
 
-      let data = `I allow this site to access my data on The Convo Space using the account ${req.body.signerAddress}`;
+      let currentTimestamp = Date.now();
+
+      if (currentTimestamp - req.body.timestamp > 24*60*60*1000){ // stale signature request
+        res.status(400).json({
+          'success':false,
+          'message': 'Request timestamp too old.'
+        });
+      }
+
+      let data = `I allow this site to access my data on The Convo Space using the account ${req.body.signerAddress}. Timestamp:${req.body.timestamp}`;
       let recoveredAddress = recoverAddress(arrayify(hashMessage(data)),req.body.signature);
 
       if(req.body.signerAddress === recoveredAddress){
@@ -41,7 +54,7 @@ export default async (req, res) => {
     else {
       res.status(400).json({
           'success':false,
-          'message': 'signerAddress or signature is missing/invalid.'
+          'message': 'signerAddress or signature or timestamp is missing/invalid.'
       });
     }
 

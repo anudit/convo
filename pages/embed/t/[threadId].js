@@ -282,7 +282,7 @@ const Threads = (props) => {
                         </Tbody>
                     </Table>
                     <Flex flexFlow="row" w="100%">
-                        <Menu placement="right">
+                        <Menu isLazy placement="right">
                             <MenuButton as={IconButton} icon={<SettingsIcon />} variant="outline" borderRadius="0" aria-label="View Settings" size="lg"/>
                             <MenuList>
                                 <MenuItem icon={useColorModeValue(<MoonIcon mx="4px" />, <SunIcon mx="4px" />)} onClick={toggleColorMode}>{useColorModeValue("Dark Mode", "Light Mode")}</MenuItem>
