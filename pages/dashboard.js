@@ -12,7 +12,7 @@ import PageShell from "@/components/PageShell";
 import { getAvatar } from '@/utils/avatar';
 import fetcher from '@/utils/fetcher';
 import { truncateAddress, prettyTime } from "@/utils/stringUtils"
-import { CodeIcon, Selectedcon } from '@/public/icons';
+import { CodeIcon, Selectedcon, EthereumIcon } from '@/public/icons';
 import DeveloperSection from '@/components/Dashboard/DeveloperSection';
 import IdentitySection from '@/components/Dashboard/IdentitySection';
 import AccountSection from '@/components/Dashboard/AccountSection';
@@ -97,11 +97,11 @@ const Dashboard = (props) => {
                 mt={2}
             >
                 <Heading as="h3" size="lg" align="center">
-                    Let's start by connecting your wallet.
+                    Let's start by connecting your Ethereum Wallet.
                 </Heading>
                 <br/>
                 <Button borderRadius="30px" onClick={connectWallet}>
-                    🏃‍♂️ Connect Wallet
+                    <EthereumIcon mr={1}/> Sign-In with Ethereum
                 </Button>
             </Flex>
         </PageShell>)

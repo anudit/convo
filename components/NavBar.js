@@ -3,9 +3,9 @@ import { Link, Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue
 import { CloseIcon,HamburgerIcon, MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Web3Context } from '@/contexts/Web3Context';
 
-import { TheConvoSpaceIcon, DisconnectIcon } from "@/public/icons";
+import { TheConvoSpaceIcon, DisconnectIcon, EthereumIcon } from "@/public/icons";
 import { getAvatar } from '@/utils/avatar';
-import { truncateAddress } from "@/utils/stringUtils"
+import { truncateAddress } from "@/utils/stringUtils";
 
 export const NavBar = (props) => {
   const [display, toggleMenu] = useState('none');
@@ -194,7 +194,7 @@ const NavLinks = () => {
             <ButtonGroup size="sm" isAttached fontSize="lg">
                 {
                     signerAddress == "" ?
-                    (<Button fontWeight="100" onClick={connectWallet} colorScheme="twitter">Connect Wallet</Button>)
+                    (<Button fontWeight="100" onClick={connectWallet} colorScheme="twitter"><EthereumIcon mr={1}/> Sign-In</Button>)
                     :
                     (
                     <Menu placement="bottom-start">

@@ -69,8 +69,6 @@ export const Web3ContextProvider = ({children}) => {
       providerOptions,
     })
 
-
-
     setWeb3Modal(w3m);
 
   }, []);

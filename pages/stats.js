@@ -46,21 +46,19 @@ const Stats = ({statistics}) => {
             }
             {
                 statistics && (
-                    <Flex w="100vw" justifyContent="center">
-                        <HStack spacing={4} >
-                            <Box p={5} borderRadius={5} shadow="md" borderWidth="1px" w="200px">
-                                <Heading fontSize="xl">Comments</Heading>
-                                <Text mt={2} fontSize="xx-large">{statistics.commentsCount}</Text>
-                            </Box>
-                            <Box p={5} borderRadius={5} shadow="md" borderWidth="1px" w="200px">
-                                <Heading fontSize="xl">Threads</Heading>
-                                <Text mt={2} fontSize="xx-large">{statistics.threadsCount}</Text>
-                            </Box>
-                            <Box p={5} borderRadius={5} shadow="md" borderWidth="1px" w="200px">
-                                <Heading fontSize="xl">Subscribers</Heading>
-                                <Text mt={2} fontSize="xx-large">{statistics.subscriberCount}</Text>
-                            </Box>
-                        </HStack>
+                    <Flex w="100vw" align="center" justifyContent="center" direction={{base:"column", md:"row"}}>
+                        <Box p={5} borderRadius={5} shadow="md" borderWidth="1px" w="200px">
+                            <Heading fontSize="xl">Comments</Heading>
+                            <Text mt={2} fontSize="xx-large">{statistics.commentsCount}</Text>
+                        </Box>
+                        <Box p={5} borderRadius={5} shadow="md" borderWidth="1px" w="200px">
+                            <Heading fontSize="xl">Threads</Heading>
+                            <Text mt={2} fontSize="xx-large">{statistics.threadsCount}</Text>
+                        </Box>
+                        <Box p={5} borderRadius={5} shadow="md" borderWidth="1px" w="200px">
+                            <Heading fontSize="xl">Subscribers</Heading>
+                            <Text mt={2} fontSize="xx-large">{statistics.subscriberCount}</Text>
+                        </Box>
                     </Flex>
                 )
             }
