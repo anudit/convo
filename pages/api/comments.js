@@ -1,6 +1,7 @@
 import { getComments_byThreadId, getComments_byThreadIdAndURL, getComments_byUrl, getComments_byAuthor } from "@/lib/thread-db";
 import validateAuth from "@/lib/validateAuth";
-import { createComment, deleteComment } from "@/lib/thread-db";
+import { createComment, deleteComment, getComments } from "@/lib/thread-db";
+import { Where } from "@textile/hub";
 
 export default async (req, res) => {
 
@@ -14,27 +15,50 @@ export default async (req, res) => {
   try {
 
     if (req.method === "GET") {
-      if (Boolean(req.query?.threadId) === false && Boolean(req.query?.url) === false && Boolean(req.query?.author) === false){
+
+      // No filter params return empty request
+      if (Boolean(req.query?.threadId) === false &&
+          Boolean(req.query?.url) === false &&
+          Boolean(req.query?.author) === false
+      ){
         res.status(200).json({
           'error':'Insufficient Params'
         });
       }
-      else if (Boolean(req.query?.threadId) === true && Boolean(req.query?.url) === false){
-        const comments = await getComments_byThreadId(req.query.threadId);
-        res.status(200).json(comments);
+
+      let query = undefined;
+
+      if (Boolean(req.query?.threadId) === true){
+        query = new Where('tid').eq(req.query.threadId);
       }
-      else if (Boolean(req.query?.threadId) === false && Boolean(req.query?.url) === true){
-        const comments = await getComments_byUrl(decodeURIComponent(req.query.url));
-        res.status(200).json(comments);
+
+      if (Boolean(req.query?.url) === true){
+        if (query === undefined) {
+          query = new Where('url').eq(url);
+        }
+        else {
+          query = query.and('url').eq(decodeURIComponent(req.query.url));
+        }
       }
-      else if (Boolean(req.query?.threadId) === true && Boolean(req.query?.url) === true){
-        const comments = await getComments_byThreadIdAndURL(req.query.threadId, decodeURIComponent(req.query.url));
-        res.status(200).json(comments);
+
+      if (Boolean(req.query?.author) === true){
+        if (query === undefined) {
+          query = new Where('author').eq(req.query.author);
+        }
+        else {
+          query = query.and('author').eq(req.query.author);
+        }
       }
-      else if (Boolean(req.query?.author) === true){
-        const comments = await getComments_byAuthor(req.query.author);
-        res.status(200).json(comments);
+
+      if (Boolean(req.query?.latestFirst) === true && req.query.latestFirst == 'true'){
+        if (query !== undefined) {
+          query = query.orderBy('_mod');
+        }
       }
+
+      const comments = await getComments(query, req.query?.page, req.query?.pageSize);
+      res.status(200).json(comments);
+
     }
     else if (req.method === "POST" ) {
 
