@@ -17,35 +17,35 @@ import { Web3Context } from '@/contexts/Web3Context'
 import fetcher from '@/utils/fetcher';
 import { TheConvoSpaceIcon } from '@/public/icons';
 
-export async function getStaticProps(context) {
-    const threadId = context.params.threadId;
-    const query = new Where('tid').eq(threadId).orderByDesc('_mod');
-    const comments = await getComments(query, 0, 5);
-    const threadData = await getThread(threadId);
+// export async function getStaticProps(context) {
+//     const threadId = context.params.threadId;
+//     const query = new Where('tid').eq(threadId).orderByDesc('_mod');
+//     const comments = await getComments(query, 0, 5);
+//     const threadData = await getThread(threadId);
 
-    console.log("comments.length", comments.length);
+//     console.log("comments.length", comments.length);
 
-    return {
-        props: {
-            initialComments: comments,
-            thread: threadData
-        },
-        revalidate: 1
-    }
-}
+//     return {
+//         props: {
+//             initialComments: comments,
+//             thread: threadData
+//         },
+//         revalidate: 1
+//     }
+// }
 
-export async function getStaticPaths() {
-    const threads = await getAllThreads();
-    const paths = threads.map((thread) => ({
-        params: {
-            threadId: thread._id.toString()
-        }
-    }))
-    return {
-        paths,
-        fallback: true
-    };
-}
+// export async function getStaticPaths() {
+//     const threads = await getAllThreads();
+//     const paths = threads.map((thread) => ({
+//         params: {
+//             threadId: thread._id.toString()
+//         }
+//     }))
+//     return {
+//         paths,
+//         fallback: true
+//     };
+// }
 
 
 const Threads = (props) => {
@@ -54,15 +54,16 @@ const Threads = (props) => {
     const { colorMode, toggleColorMode } = useColorMode();
 
     const [page, setPage] = useState(0);
-    const { data: comments, error, mutate  } = useSWR(
-        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&page=0&pageSize=5&latestFirst=true&apikey=CONVO`, "GET"],
-        fetcher,
-        {initialData: props.initialComments});
+    // const { data:initialComments, error, mutate  } = useSWR(
+    //     [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&page=0&pageSize=5&latestFirst=true&apikey=CONVO`, "GET"],
+    //     fetcher);
+
+    const [comments, setComments] = useState(false)
+
 
     const { data: thread, err } = useSWR(
         [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
-        fetcher,
-        {initialData: props.thread});
+        fetcher);
 
     const newCommentRef = useRef()
     const toast = useToast()
@@ -70,8 +71,6 @@ const Threads = (props) => {
 
     const web3Context = useContext(Web3Context)
     const {connectWallet, signerAddress, disconnectWallet, getAuthToken} = web3Context;
-
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const [embedCode, setEmbedCode] = useState("");
     const { hasCopied: hasCopiedEmbedCode, onCopy: onCopyEmbedCode } = useClipboard(embedCode);
@@ -93,6 +92,7 @@ const Threads = (props) => {
         document.body.classList.add('tp');
     });
 
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
     // useEffect(() => {
 
     //     if (localStorage?.getItem('WEB3_CONNECT_CACHED_PROVIDER')){
@@ -101,25 +101,41 @@ const Threads = (props) => {
     //     }
     //   }, [!isLoggedIn]);
 
-    useEffect(() => {
+    useEffect(async () => {
         if (router.query?.theme){
             if (colorMode != router.query.theme){
                 toggleColorMode();
             }
         }
+        if (Boolean(router.query.threadId) === true){
+            let initComments = await fetcher(`/api/comments?threadId=${router.query.threadId}&page=0&pageSize=5&latestFirst=true&apikey=CONVO`, "GET", {});
+            initComments = initComments.reverse();
+            setComments(initComments);
+        }
     }, [router.query]);
 
     const [hasMore, setHasMore] = useState(true);
 
+    useEffect(() => {
+        console.log("comments changed to ", comments, hasMore);
+    }, [comments]);
+
+
     async function fetchMoreData(){
         console.log('gettting more data for page', page+1);
         let oldComments = await fetcher(`/api/comments?threadId=${router.query.threadId}&page=${page+1}&pageSize=5&latestFirst=true&apikey=CONVO`, "GET", {});
-        mutate(oldComments.reverse().concat(comments), false);
         if (oldComments.length <= 0){
             setHasMore(false);
         }
-        console.log('more data', oldComments);
-        setPage(page+1)
+        else {
+            setComments((c) => {
+                let ocR = oldComments.reverse();
+                console.log('concating',ocR,c);
+                return ocR.concat(c);
+            }, false);
+            console.log('more data', oldComments);
+            setPage(page+1)
+        }
 
     }
 
@@ -147,7 +163,9 @@ const Threads = (props) => {
 
                 if (Object.keys(res).includes('_id') === true) {
                     res['text'] = decodeURI(res['text']);
-                    mutate(comments.concat(res), false);
+                    setComments((c)=>{
+                        return c.concat(res)
+                    });
                 }
                 else {
                     toast({
@@ -239,9 +257,15 @@ const Threads = (props) => {
                         next={fetchMoreData}
                         hasMore={hasMore}
                         loader={
-                            <div style={{textAlign:"center"}}>
-                                Reaching back in time.
-                            </div>
+                            <Flex style={{textAlign:"center"}} minH="50px" justifyContent="center" alignItems="center">
+                                <Spinner
+                                    thickness="4px"
+                                    speed="0.65s"
+                                    emptyColor="white"
+                                    color="black"
+                                    size="md"
+                                />
+                            </Flex>
                         }
                         style={{ display: 'flex', flexDirection: 'column-reverse' }}
                         height={300}
