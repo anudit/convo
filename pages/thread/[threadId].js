@@ -3,23 +3,24 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Table,Tbody, Text, Tr, Td, useClipboard, Heading, ButtonGroup, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorModeValue, Flex, Box, Tooltip, Spinner } from "@chakra-ui/react";
 import { CheckIcon, CopyIcon, DeleteIcon } from '@chakra-ui/icons';
-import { isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 import Linkify from 'react-linkify';
+import { Where } from "@textile/hub";
 
 import PageShell from '@/components/PageShell';
 import { ReplyIcon, ThreeDotMenuIcon, CodeIcon } from '@/public/icons';
 import { getAvatar } from '@/utils/avatar';
-import { getAllThreads, getComments_byThreadId, getThread } from "@/lib/thread-db";
+import { getAllThreads, getComments, getThread } from "@/lib/thread-db";
 import timeAgo from '@/utils/timeAgo';
 import { toB64, cleanAdd, truncateAddress } from '@/utils/stringUtils';
 import { Web3Context } from '@/contexts/Web3Context'
 
 export async function getStaticProps(context) {
     const threadId = context.params.threadId;
-    let comments = await getComments_byThreadId(threadId);
-    let threadData = await getThread(threadId);
+    const query = new Where('tid').eq(threadId);
+    const comments = await getComments(query);
+    const threadData = await getThread(threadId);
 
     return {
         props: {

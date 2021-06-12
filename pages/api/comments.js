@@ -1,4 +1,3 @@
-import { getComments_byThreadId, getComments_byThreadIdAndURL, getComments_byUrl, getComments_byAuthor } from "@/lib/thread-db";
 import validateAuth from "@/lib/validateAuth";
 import { createComment, deleteComment, getComments } from "@/lib/thread-db";
 import { Where } from "@textile/hub";
@@ -52,7 +51,7 @@ export default async (req, res) => {
 
       if (Boolean(req.query?.latestFirst) === true && req.query.latestFirst == 'true'){
         if (query !== undefined) {
-          query = query.orderBy('_mod');
+          query = query.orderByDesc('_mod');
         }
       }
 
