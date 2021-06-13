@@ -6926,10 +6926,10 @@ next-pwa@^5.2.21:
     workbox-webpack-plugin "^6.1.5"
     workbox-window "^6.1.5"
 
-next-sitemap@^1.6.108:
-  version "1.6.108"
-  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-1.6.108.tgz#547b0ebea495edda3a6b583f637ac64652a1552d"
-  integrity sha512-uzqpIAm/zgDpmhb8JwKXRFRr8n0lyKZ30AqwjNUazS9uZqkkHnH8frMsMqB/wO0Ypq3Z+q6kpzPa0FYr6hP0Zw==
+next-sitemap@^1.6.111:
+  version "1.6.111"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-1.6.111.tgz#9221fc7d7e7f2067d5c6678325cb743f57c27a91"
+  integrity sha512-cogtSEUBiJaqyBqujxBZlEvJcMfUXcR8+IRvm0yTNdbP9RLhYslppY3XZs+Pc2OE+AvgP3owmXYUvTCd93N85w==
   dependencies:
     "@corex/deepmerge" "^2.6.20"
     matcher "^4.0.0"
@@ -8955,10 +8955,10 @@ typedarray-to-buffer@3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typewriter-effect@^2.17.0:
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/typewriter-effect/-/typewriter-effect-2.17.0.tgz#da6e78b039f3ccdcbb3f440712869928fc90ec40"
-  integrity sha512-cm1By4n2PtClIlyvVtL22BOBxDJZl6dqNqbs5UShteWgX4ovBZG5q2iEIFKG+0JS17O0NXUdtiOSlbQrEnZleg==
+typewriter-effect@^2.18.0:
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/typewriter-effect/-/typewriter-effect-2.18.0.tgz#2d1bb90938b5b99d491baf9273418542e5c34854"
+  integrity sha512-ULNE79PQTQohBz/4As2ivAHNBG6kyyJu+j1jjVKu8G7+CbIqnePBXR53kTkuEaBk/z+Kz0BOeDmh8N+iNrJIqg==
   dependencies:
     prop-types "^15.6.2"
     raf "^3.4.0"

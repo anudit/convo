@@ -323,7 +323,7 @@ const Home = () => {
               code={`<iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/t/KIGZUnR4RzXDFheXoOwo" allowtransparency="true" loading="eager" />`}
             />
             <br/>
-            <iframe title="Comments Page Demo" src="/embed/t/KIGZUnR4RzXDFheXoOwo" width="100%" height="900px" allowtransparency="true" loading="lazy">
+            <iframe title="Comments Page Demo" src="/embed/t/KIGZUnR4RzXDFheXoOwo" width="100%" height="450px" allowtransparency="true" loading="lazy">
               Comments Page Demo
             </iframe>
           </Flex>

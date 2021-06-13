@@ -1,11 +1,11 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import useSWR from 'swr';
-import { useClipboard, Table,Tbody, Text, Tr, Td, Heading, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, useColorModeValue, Flex, Box, Spinner } from "@chakra-ui/react";
+import { useClipboard, Avatar, Table, Tbody, Text, Tr, Td, Heading, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, useColorModeValue, Flex, Box, Spinner } from "@chakra-ui/react";
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
 import Linkify from 'react-linkify';
 import { Where } from "@textile/hub";
+import { compareAsc } from 'date-fns';
 
 import { ReplyIcon, ThreeDotMenuIcon, DisconnectIcon } from '@/public/icons';
 import { getAllThreads, getComments, getThread } from "@/lib/thread-db";
@@ -18,8 +18,8 @@ import { TheConvoSpaceIcon } from '@/public/icons';
 
 export async function getStaticProps(context) {
     const threadId = context.params.threadId;
-    const query = new Where('tid').eq(threadId);
-    const comments = await getComments(query);
+    const query = new Where('tid').eq(threadId).orderByDesc('_mod');
+    const comments = await getComments(query, 0, 5);
     const threadData = await getThread(threadId);
 
     return {
@@ -44,29 +44,22 @@ export async function getStaticPaths() {
     };
 }
 
-
 const Threads = (props) => {
 
     const router = useRouter();
     const { colorMode, toggleColorMode } = useColorMode();
 
-    const { data: comments, error, mutate  } = useSWR(
-        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
-        fetcher,
-        {initialData: props.initialComments});
-    const { data: thread, err } = useSWR(
-        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
-        fetcher,
-        {initialData: props.thread});
+    const [page, setPage] = useState(0);
+    const [comments, setComments] = useState(false);
+    const [initScroll, setInitScroll] = useState(false)
 
-    const newCommentRef = useRef()
-    const toast = useToast()
+    const newCommentRef = useRef();
+
+    const toast = useToast();
     const [isSending, setSending] = useState(false);
 
-    const web3Context = useContext(Web3Context)
+    const web3Context = useContext(Web3Context);
     const {connectWallet, signerAddress, disconnectWallet, getAuthToken} = web3Context;
-
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const [embedCode, setEmbedCode] = useState("");
     const { hasCopied: hasCopiedEmbedCode, onCopy: onCopyEmbedCode } = useClipboard(embedCode);
@@ -77,32 +70,64 @@ const Threads = (props) => {
     }
 
     useEffect(() => {
-        if (thread && Object.keys(thread).includes('url') == false) {
+
+        if (Boolean(props?.thread)==true && Object.keys(props.thread).includes('url') == false) {
             console.log('Invalid Thread!');
             router.push('/explore');
         }
-    },[thread]);
 
-    useEffect(() => {
         document.getElementsByTagName('html')[0].classList.add('tp');
         document.body.classList.add('tp');
-    });
 
-    // useEffect(() => {
+        let initComments = props.initialComments?.reverse();
+        setComments(initComments);
+        setInitScroll(true);
 
-    //     if (localStorage?.getItem('WEB3_CONNECT_CACHED_PROVIDER')){
-    //         connectWallet();
-    //         setIsLoggedIn(true);
-    //     }
-    //   }, [!isLoggedIn]);
+    }, []);
 
     useEffect(() => {
-        if (router.query?.theme){
+        let commentsBox = document.getElementById('commentsBox');
+        if (Boolean(commentsBox) === true) {
+            const scroll = commentsBox.scrollHeight - commentsBox.clientHeight;
+            commentsBox.scrollTo(0, scroll);
+        }
+    }, [initScroll]);
+
+    useEffect(async () => {
+        if (Boolean(router.query?.theme) === true){
             if (colorMode != router.query.theme){
                 toggleColorMode();
             }
         }
     }, [router.query]);
+
+    const [hasMoreData, setHasMoreData] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
+
+    async function fetchMoreData(){
+        setLoadingMore(true);
+        try {
+            let fetchedComments = await fetcher(`/api/comments?threadId=${router.query.threadId}&page=${page+1}&pageSize=5&latestFirst=true&apikey=CONVO`, "GET", {});
+            if (fetchedComments.length === 0){
+                setHasMoreData(false);
+            }
+            else {
+                setComments((currentComments) => {
+                    let finalComments = fetchedComments.concat(currentComments);
+                    finalComments.sort((a, b) =>
+                        compareAsc(parseInt(a.createdOn), parseInt(b.createdOn))
+                    );
+                    return finalComments;
+                });
+                setPage(page+1)
+            }
+        }
+        catch (e){
+            setHasMoreData(false);
+            console.log(e);
+        }
+        setLoadingMore(false);
+    }
 
     async function createNewComment(){
         setSending(true);
@@ -121,13 +146,15 @@ const Threads = (props) => {
                     'token': authToken,
                     signerAddress,
                     comment,
-                    'url': thread.url,
+                    'url': props.thread.url,
                     'threadId': router.query.threadId,
                 });
 
                 if (Object.keys(res).includes('_id') === true) {
                     res['text'] = decodeURI(res['text']);
-                    mutate(comments.concat(res), false);
+                    setComments((c)=>{
+                        return c.concat(res)
+                    });
                 }
                 else {
                     toast({
@@ -164,7 +191,7 @@ const Threads = (props) => {
         });
 
         if (Object.keys(res).includes('success') === true) {
-            mutate(comments.filter(item => item._id !== commentId), false);
+            setComments(comments.filter(item => item._id !== commentId));
             toast({
                 title: "Gone!",
                 description: `The comment is deleted.`,
@@ -185,7 +212,16 @@ const Threads = (props) => {
 
     }
 
-    if (thread && comments){
+    // Auto Login
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // useEffect(() => {
+    //     if (localStorage?.getItem('WEB3_CONNECT_CACHED_PROVIDER')){
+    //         connectWallet();
+    //         setIsLoggedIn(true);
+    //     }
+    // }, [!isLoggedIn]);
+
+    if (props.thread && comments){
 
         return (
             <>
@@ -197,92 +233,108 @@ const Threads = (props) => {
                     mt="0"
                     backgroundColor="transparent"
                 >
-                    { router.query?.title && router.query?.title == true && (
-                        <Heading
-                            as="h3"
-                            fontWeight={700}
-                            color="primary.800"
-                            textAlign={"center"}
-                            transition="text-shadow 0.5s"
-                            _hover={{
-                                textShadow: "0 0 20px #fff",
-                            }}
-                            pb={4}
-                        >
-                            {decodeURI(thread?.title)}
-                        </Heading>
-                    )
+                    {
+                        router.query?.title && router.query?.title == true && (
+                            <Heading
+                                as="h3"
+                                fontWeight={700}
+                                color="primary.800"
+                                textAlign={"center"}
+                                transition="text-shadow 0.5s"
+                                _hover={{
+                                    textShadow: "0 0 20px #fff",
+                                }}
+                                pb={4}
+                            >
+                                {decodeURI(thread?.title)}
+                            </Heading>
+                        )
                     }
-                    <Table size="sm" variant="striped" w="100%">
-                        <Tbody>
+                    <Flex direction="column" height={300} overflowY="auto" id="commentsBox">
+                        <Flex style={{textAlign:"center"}} minH="50px" justifyContent="center" alignItems="center">
                             {
-                                comments && comments.map && comments.map((comment) => {
-                                    let svg = getAvatar(comment.author);
-                                    return (
-                                    <Tr key={comment?._id} id={comment?._id}>
-                                        <Td width="100vw"
-                                            py={3}
-                                            px={{ base: 2, md: 10}}
-                                        >
-                                            <Flex direction="row" justifyContent="space-between">
-                                                <Flex direction="row" >
-                                                    <Box mr={2} width={8} height={8} borderRadius="100px" dangerouslySetInnerHTML={{__html: svg}} />
-                                                    <Flex direction="column">
-                                                        <Text style={{fontWeight:'900', cursor:"pointer"}} >
-                                                            {
-                                                                Boolean(comment?.authorENS) === true ? "@"+comment.authorENS : "@"+truncateAddress(comment.author)
-                                                            }
+                                loadingMore === true ? (
+                                    <Spinner thickness="2px" speed="0.4s" emptyColor="white" color="black" size="sm" />
+                                ) : (
+                                    hasMoreData === true ? (
+                                        <Text cursor="pointer" onClick={fetchMoreData}>Load Previous</Text>
+                                    ):(
+                                        "All done."
+                                    )
+                                )
+                            }
+                        </Flex>
+                        <Table size="sm" variant="striped" w="100%">
+                            <Tbody >
+                                {
+                                    comments && comments.map && comments.map((comment) => {
+                                        return (
+                                        <Tr key={comment?._id} id={comment?._id}>
+                                            <Td width="100vw"
+                                                py={3}
+                                                px={{ base: 2, md: 10}}
+                                            >
+                                                <Flex direction="row" justifyContent="space-between">
+                                                    <Flex direction="row" >
+                                                        <Avatar mr={2} size="sm" background="#ffffff00" name="Avatar" src={getAvatar(comment.author, {dataUri: true})} alt="Avatar"/>
+                                                        <Flex direction="column">
+                                                            <Text style={{fontWeight:'900', cursor:"pointer"}} >
+                                                                {
+                                                                    Boolean(comment?.authorENS) === true ? "@"+comment.authorENS : "@"+truncateAddress(comment.author)
+                                                                }
+                                                            </Text>
+                                                            <Text pt={1}>
+                                                                <Linkify>
+                                                                    {cleanAdd(decodeURI(comment.text))}
+                                                                </Linkify>
+                                                            </Text>
+                                                        </Flex>
+                                                    </Flex>
+                                                    <Flex direction="row" align="center">
+                                                        <Text fontSize="small">
+                                                            {timeAgo(comment.createdOn)}
                                                         </Text>
-                                                        <Text pt={1}>
-                                                            <Linkify>
-                                                                {cleanAdd(decodeURI(comment.text))}
-                                                            </Linkify>
-                                                        </Text>
+                                                        <Menu closeOnBlur={true} placement="left">
+                                                            <MenuButton
+                                                                as={IconButton}
+                                                                border="none"
+                                                                aria-label="Options"
+                                                                icon={<ThreeDotMenuIcon />}
+                                                                size="xs"
+                                                                variant="ghost"
+                                                                ml={2}
+                                                            />
+                                                            <MenuList>
+                                                                <MenuItem icon={<ReplyIcon/>} onClick={()=>{newCommentRef.current.value = "@" + comment.author + " "+ newCommentRef.current.value }}>
+                                                                    Reply
+                                                                </MenuItem>
+                                                                <MenuItem icon={<CopyIcon/>} onClick={()=>{ copyEmbedCode(comment._id)}}>
+                                                                    Embed Link
+                                                                </MenuItem>
+                                                                { signerAddress && signerAddress.toLowerCase() == comment.author.toLowerCase() &&
+                                                                    (<MenuItem
+                                                                        backgroundColor="red.600"
+                                                                        color="white"
+                                                                        _hover={{
+                                                                            backgroundColor:"red.400"
+                                                                        }}
+                                                                        icon={<DeleteIcon color="white" />}
+                                                                        onClick={()=>{handleDeleteComment(comment._id)} }>
+                                                                        Delete
+                                                                    </MenuItem>)
+                                                                }
+                                                            </MenuList>
+                                                        </Menu>
                                                     </Flex>
                                                 </Flex>
-                                                <Flex direction="row" align="center">
-                                                    <Text fontSize="small">
-                                                        {timeAgo(comment.createdOn)}
-                                                    </Text>
-                                                    <Menu closeOnBlur={true} placement="left">
-                                                        <MenuButton
-                                                            as={IconButton}
-                                                            border="none"
-                                                            aria-label="Options"
-                                                            icon={<ThreeDotMenuIcon />}
-                                                            size="xs"
-                                                            variant="ghost"
-                                                            ml={2}
-                                                        />
-                                                        <MenuList>
-                                                            <MenuItem icon={<ReplyIcon/>} onClick={()=>{newCommentRef.current.value = "@" + comment.author + " "+ newCommentRef.current.value }}>
-                                                                Reply
-                                                            </MenuItem>
-                                                            <MenuItem icon={<CopyIcon/>} onClick={()=>{ copyEmbedCode(comment._id)}}>
-                                                                Embed Link
-                                                            </MenuItem>
-                                                            { signerAddress && signerAddress.toLowerCase() == comment.author.toLowerCase() &&
-                                                                (<MenuItem
-                                                                    backgroundColor="red.600"
-                                                                    color="white"
-                                                                    _hover={{
-                                                                        backgroundColor:"red.400"
-                                                                    }}
-                                                                    icon={<DeleteIcon color="white" />}
-                                                                    onClick={()=>{handleDeleteComment(comment._id)} }>
-                                                                    Delete
-                                                                </MenuItem>)
-                                                            }
-                                                        </MenuList>
-                                                    </Menu>
-                                                </Flex>
-                                            </Flex>
-                                        </Td>
-                                    </Tr>
-                                )})
-                            }
-                        </Tbody>
-                    </Table>
+                                            </Td>
+                                        </Tr>
+                                    )})
+                                }
+                            </Tbody>
+                        </Table>
+                    </Flex>
+
                     <Flex flexFlow="row" w="100%">
                         <Menu isLazy placement="right">
                             <MenuButton as={IconButton} icon={<SettingsIcon />} variant="outline" borderRadius="0" aria-label="View Settings" size="lg"/>

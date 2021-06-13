@@ -17,7 +17,7 @@ export const fetcher = async (url, method="GET", bodyData = {}) => {
     }
 
     let respData = await res.json();
-    return respData
+    return respData;
 };
 
 export default fetcher;

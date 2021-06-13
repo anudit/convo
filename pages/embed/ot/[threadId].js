@@ -6,7 +6,6 @@ import { useClipboard, Table,Tbody, Text, Tr, Td, Heading, Button, InputGroup, I
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
 import Linkify from 'react-linkify';
 import { Where } from "@textile/hub";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 import { ReplyIcon, ThreeDotMenuIcon, DisconnectIcon } from '@/public/icons';
 import { getAllThreads, getComments, getThread } from "@/lib/thread-db";
@@ -17,35 +16,33 @@ import { Web3Context } from '@/contexts/Web3Context'
 import fetcher from '@/utils/fetcher';
 import { TheConvoSpaceIcon } from '@/public/icons';
 
-// export async function getStaticProps(context) {
-//     const threadId = context.params.threadId;
-//     const query = new Where('tid').eq(threadId).orderByDesc('_mod');
-//     const comments = await getComments(query, 0, 5);
-//     const threadData = await getThread(threadId);
+export async function getStaticProps(context) {
+    const threadId = context.params.threadId;
+    const query = new Where('tid').eq(threadId);
+    const comments = await getComments(query);
+    const threadData = await getThread(threadId);
 
-//     console.log("comments.length", comments.length);
+    return {
+        props: {
+            initialComments: comments,
+            thread: threadData
+        },
+        revalidate: 1
+    }
+}
 
-//     return {
-//         props: {
-//             initialComments: comments,
-//             thread: threadData
-//         },
-//         revalidate: 1
-//     }
-// }
-
-// export async function getStaticPaths() {
-//     const threads = await getAllThreads();
-//     const paths = threads.map((thread) => ({
-//         params: {
-//             threadId: thread._id.toString()
-//         }
-//     }))
-//     return {
-//         paths,
-//         fallback: true
-//     };
-// }
+export async function getStaticPaths() {
+    const threads = await getAllThreads();
+    const paths = threads.map((thread) => ({
+        params: {
+            threadId: thread._id.toString()
+        }
+    }))
+    return {
+        paths,
+        fallback: true
+    };
+}
 
 
 const Threads = (props) => {
@@ -53,17 +50,14 @@ const Threads = (props) => {
     const router = useRouter();
     const { colorMode, toggleColorMode } = useColorMode();
 
-    const [page, setPage] = useState(0);
-    // const { data:initialComments, error, mutate  } = useSWR(
-    //     [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&page=0&pageSize=5&latestFirst=true&apikey=CONVO`, "GET"],
-    //     fetcher);
-
-    const [comments, setComments] = useState(false)
-
-
+    const { data: comments, error, mutate  } = useSWR(
+        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
+        fetcher,
+        {initialData: props.initialComments});
     const { data: thread, err } = useSWR(
         [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
-        fetcher);
+        fetcher,
+        {initialData: props.thread});
 
     const newCommentRef = useRef()
     const toast = useToast()
@@ -71,6 +65,8 @@ const Threads = (props) => {
 
     const web3Context = useContext(Web3Context)
     const {connectWallet, signerAddress, disconnectWallet, getAuthToken} = web3Context;
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const [embedCode, setEmbedCode] = useState("");
     const { hasCopied: hasCopiedEmbedCode, onCopy: onCopyEmbedCode } = useClipboard(embedCode);
@@ -92,7 +88,6 @@ const Threads = (props) => {
         document.body.classList.add('tp');
     });
 
-    // const [isLoggedIn, setIsLoggedIn] = useState(false);
     // useEffect(() => {
 
     //     if (localStorage?.getItem('WEB3_CONNECT_CACHED_PROVIDER')){
@@ -101,44 +96,13 @@ const Threads = (props) => {
     //     }
     //   }, [!isLoggedIn]);
 
-    useEffect(async () => {
+    useEffect(() => {
         if (router.query?.theme){
             if (colorMode != router.query.theme){
                 toggleColorMode();
             }
         }
-        if (Boolean(router.query.threadId) === true){
-            let initComments = await fetcher(`/api/comments?threadId=${router.query.threadId}&page=0&pageSize=5&latestFirst=true&apikey=CONVO`, "GET", {});
-            initComments = initComments.reverse();
-            setComments(initComments);
-        }
     }, [router.query]);
-
-    const [hasMore, setHasMore] = useState(true);
-
-    useEffect(() => {
-        console.log("comments changed to ", comments, hasMore);
-    }, [comments]);
-
-
-    async function fetchMoreData(){
-        console.log('gettting more data for page', page+1);
-        let oldComments = await fetcher(`/api/comments?threadId=${router.query.threadId}&page=${page+1}&pageSize=5&latestFirst=true&apikey=CONVO`, "GET", {});
-        if (oldComments.length <= 0){
-            setHasMore(false);
-        }
-        else {
-            setComments((c) => {
-                let ocR = oldComments.reverse();
-                console.log('concating',ocR,c);
-                return ocR.concat(c);
-            }, false);
-            console.log('more data', oldComments);
-            setPage(page+1)
-        }
-
-    }
-
 
     async function createNewComment(){
         setSending(true);
@@ -163,9 +127,7 @@ const Threads = (props) => {
 
                 if (Object.keys(res).includes('_id') === true) {
                     res['text'] = decodeURI(res['text']);
-                    setComments((c)=>{
-                        return c.concat(res)
-                    });
+                    mutate(comments.concat(res), false);
                 }
                 else {
                     toast({
@@ -235,8 +197,7 @@ const Threads = (props) => {
                     mt="0"
                     backgroundColor="transparent"
                 >
-                    {
-                    router.query?.title && router.query?.title == true && (
+                    { router.query?.title && router.query?.title == true && (
                         <Heading
                             as="h3"
                             fontWeight={700}
@@ -252,101 +213,76 @@ const Threads = (props) => {
                         </Heading>
                     )
                     }
-                    <InfiniteScroll
-                        dataLength={comments.length}
-                        next={fetchMoreData}
-                        hasMore={hasMore}
-                        loader={
-                            <Flex style={{textAlign:"center"}} minH="50px" justifyContent="center" alignItems="center">
-                                <Spinner
-                                    thickness="4px"
-                                    speed="0.65s"
-                                    emptyColor="white"
-                                    color="black"
-                                    size="md"
-                                />
-                            </Flex>
-                        }
-                        style={{ display: 'flex', flexDirection: 'column-reverse' }}
-                        height={300}
-                        endMessage={
-                            <div style={{ textAlign: "center" }}>
-                                Yay! You have seen it all
-                            </div>
-                        }
-                    >
-                        <Table size="sm" variant="striped" w="100%">
-                            <Tbody>
-                                {
-                                    comments && comments.map && comments.reverse().map((comment) => {
-                                        let svg = getAvatar(comment.author);
-                                        return (
-                                        <Tr key={comment?._id} id={comment?._id}>
-                                            <Td width="100vw"
-                                                py={3}
-                                                px={{ base: 2, md: 10}}
-                                            >
-                                                <Flex direction="row" justifyContent="space-between">
-                                                    <Flex direction="row" >
-                                                        <Box mr={2} width={8} height={8} borderRadius="100px" dangerouslySetInnerHTML={{__html: svg}} />
-                                                        <Flex direction="column">
-                                                            <Text style={{fontWeight:'900', cursor:"pointer"}} >
-                                                                {
-                                                                    Boolean(comment?.authorENS) === true ? "@"+comment.authorENS : "@"+truncateAddress(comment.author)
-                                                                }
-                                                            </Text>
-                                                            <Text pt={1}>
-                                                                <Linkify>
-                                                                    {cleanAdd(decodeURI(comment.text))}
-                                                                </Linkify>
-                                                            </Text>
-                                                        </Flex>
-                                                    </Flex>
-                                                    <Flex direction="row" align="center">
-                                                        <Text fontSize="small">
-                                                            {timeAgo(comment.createdOn)}
+                    <Table size="sm" variant="striped" w="100%">
+                        <Tbody>
+                            {
+                                comments && comments.map && comments.map((comment) => {
+                                    let svg = getAvatar(comment.author);
+                                    return (
+                                    <Tr key={comment?._id} id={comment?._id}>
+                                        <Td width="100vw"
+                                            py={3}
+                                            px={{ base: 2, md: 10}}
+                                        >
+                                            <Flex direction="row" justifyContent="space-between">
+                                                <Flex direction="row" >
+                                                    <Box mr={2} width={8} height={8} borderRadius="100px" dangerouslySetInnerHTML={{__html: svg}} />
+                                                    <Flex direction="column">
+                                                        <Text style={{fontWeight:'900', cursor:"pointer"}} >
+                                                            {
+                                                                Boolean(comment?.authorENS) === true ? "@"+comment.authorENS : "@"+truncateAddress(comment.author)
+                                                            }
                                                         </Text>
-                                                        <Menu closeOnBlur={true} placement="left">
-                                                            <MenuButton
-                                                                as={IconButton}
-                                                                border="none"
-                                                                aria-label="Options"
-                                                                icon={<ThreeDotMenuIcon />}
-                                                                size="xs"
-                                                                variant="ghost"
-                                                                ml={2}
-                                                            />
-                                                            <MenuList>
-                                                                <MenuItem icon={<ReplyIcon/>} onClick={()=>{newCommentRef.current.value = "@" + comment.author + " "+ newCommentRef.current.value }}>
-                                                                    Reply
-                                                                </MenuItem>
-                                                                <MenuItem icon={<CopyIcon/>} onClick={()=>{ copyEmbedCode(comment._id)}}>
-                                                                    Embed Link
-                                                                </MenuItem>
-                                                                { signerAddress && signerAddress.toLowerCase() == comment.author.toLowerCase() &&
-                                                                    (<MenuItem
-                                                                        backgroundColor="red.600"
-                                                                        color="white"
-                                                                        _hover={{
-                                                                            backgroundColor:"red.400"
-                                                                        }}
-                                                                        icon={<DeleteIcon color="white" />}
-                                                                        onClick={()=>{handleDeleteComment(comment._id)} }>
-                                                                        Delete
-                                                                    </MenuItem>)
-                                                                }
-                                                            </MenuList>
-                                                        </Menu>
+                                                        <Text pt={1}>
+                                                            <Linkify>
+                                                                {cleanAdd(decodeURI(comment.text))}
+                                                            </Linkify>
+                                                        </Text>
                                                     </Flex>
                                                 </Flex>
-                                            </Td>
-                                        </Tr>
-                                    )})
-                                }
-                            </Tbody>
-                        </Table>
-                    </InfiniteScroll>
-
+                                                <Flex direction="row" align="center">
+                                                    <Text fontSize="small">
+                                                        {timeAgo(comment.createdOn)}
+                                                    </Text>
+                                                    <Menu closeOnBlur={true} placement="left">
+                                                        <MenuButton
+                                                            as={IconButton}
+                                                            border="none"
+                                                            aria-label="Options"
+                                                            icon={<ThreeDotMenuIcon />}
+                                                            size="xs"
+                                                            variant="ghost"
+                                                            ml={2}
+                                                        />
+                                                        <MenuList>
+                                                            <MenuItem icon={<ReplyIcon/>} onClick={()=>{newCommentRef.current.value = "@" + comment.author + " "+ newCommentRef.current.value }}>
+                                                                Reply
+                                                            </MenuItem>
+                                                            <MenuItem icon={<CopyIcon/>} onClick={()=>{ copyEmbedCode(comment._id)}}>
+                                                                Embed Link
+                                                            </MenuItem>
+                                                            { signerAddress && signerAddress.toLowerCase() == comment.author.toLowerCase() &&
+                                                                (<MenuItem
+                                                                    backgroundColor="red.600"
+                                                                    color="white"
+                                                                    _hover={{
+                                                                        backgroundColor:"red.400"
+                                                                    }}
+                                                                    icon={<DeleteIcon color="white" />}
+                                                                    onClick={()=>{handleDeleteComment(comment._id)} }>
+                                                                    Delete
+                                                                </MenuItem>)
+                                                            }
+                                                        </MenuList>
+                                                    </Menu>
+                                                </Flex>
+                                            </Flex>
+                                        </Td>
+                                    </Tr>
+                                )})
+                            }
+                        </Tbody>
+                    </Table>
                     <Flex flexFlow="row" w="100%">
                         <Menu isLazy placement="right">
                             <MenuButton as={IconButton} icon={<SettingsIcon />} variant="outline" borderRadius="0" aria-label="View Settings" size="lg"/>
