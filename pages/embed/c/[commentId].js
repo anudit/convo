@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Avatar, useColorMode, useColorModeValue, Box, Flex, Text, Button, Divider, Tooltip, useClipboard } from "@chakra-ui/react";
+import { Avatar, useColorMode, useColorModeValue, Flex, Text, Button, Divider, Tooltip, useClipboard } from "@chakra-ui/react";
 import { LinkIcon } from "@chakra-ui/icons";
 import { ethers } from 'ethers';
 
@@ -16,7 +16,7 @@ export async function getServerSideProps(context) {
   let provider = new ethers.providers.InfuraProvider("mainnet","1e7969225b2f4eefb3ae792aabf1cc17");
   let ensAdd = await provider.lookupAddress(commentData.author);
 
-  if (Boolean(ensAdd)) {
+  if (Boolean(ensAdd) === true) {
     commentData['authorENS'] = ensAdd;
   }
 

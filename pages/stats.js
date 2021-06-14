@@ -1,9 +1,10 @@
-import { Text, Flex, Heading, Box, HStack } from "@chakra-ui/react";
+import React from "react";
+import { Text, Flex, Heading, Box } from "@chakra-ui/react";
 
 import PageShell from "@/components/PageShell";
 import { getCommentsCount, getThreadsCount, getSubscriberCount } from '@/lib/thread-db';
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
 
     const commentsCount = await getCommentsCount();
     const threadsCount = await getThreadsCount();

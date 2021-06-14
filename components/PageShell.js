@@ -1,4 +1,5 @@
-import { useColorModeValue, Flex } from "@chakra-ui/react";
+import React from "react";
+import { Flex } from "@chakra-ui/react";
 import Head from 'next/head';
 
 import NavBar from '@/components/NavBar';

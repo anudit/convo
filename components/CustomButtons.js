@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, useColorModeValue, Flex, Link   } from "@chakra-ui/react";
+import { Button, useColorModeValue } from "@chakra-ui/react";
 import { motion } from 'framer-motion';
 
 export const CustomButton = (props) => {

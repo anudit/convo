@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link, Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue, Text, ButtonGroup, Box, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { CloseIcon,HamburgerIcon, MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Web3Context } from '@/contexts/Web3Context';
@@ -7,7 +7,7 @@ import { TheConvoSpaceIcon, DisconnectIcon, EthereumIcon } from "@/public/icons"
 import { getAvatar } from '@/utils/avatar';
 import { truncateAddress } from "@/utils/stringUtils";
 
-export const NavBar = (props) => {
+export const NavBar = () => {
   const [display, toggleMenu] = useState('none');
 
   // useEffect(() => {
@@ -19,7 +19,7 @@ export const NavBar = (props) => {
 
   return (
     <>
-      <Flex w={{base:"100vw", base:"95vw"}} >
+      <Flex w={{base:"100vw", md:"95vw"}} >
         {/* Desktop */}
         <Flex
             as="nav"
@@ -73,7 +73,6 @@ export const NavBar = (props) => {
             py={3}
             px={5}
             display={['flex','flex', 'none', 'none']}
-            zIndex="1"
             position="fixed"
             background={useColorModeValue("#ececec30", "#15151930")}
             backdropFilter="blur(10px)"

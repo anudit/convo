@@ -1,7 +1,7 @@
-import { Button, Code, Flex, Text } from "@chakra-ui/react";
+import React, { Button, Code, Flex, Text } from "@chakra-ui/react";
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
-const DeveloperSection = (props) => {
+const DeveloperSection = () => {
     return (
         <Flex mt={4} direction="column">
             <Text as="h4" size="md">

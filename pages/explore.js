@@ -1,3 +1,4 @@
+import React from "react";
 import { Heading } from "@chakra-ui/react";
 import useSWR from 'swr';
 
@@ -7,7 +8,7 @@ import PageShell from "@/components/PageShell";
 import fetcher from '@/utils/fetcher';
 import { getAllThreads } from '@/lib/thread-db';
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
 
     const threads = await getAllThreads();
     return {

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React from "react";
 import { motion } from 'framer-motion';
 
 import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
@@ -8,8 +8,7 @@ import { truncateAddress } from '@/utils/stringUtils';
 
 export const ThreadCard = (props) => {
 
-    const [value, setValue] = useState(`https://theconvo.space/thread/${props.threadData._id}`)
-    const { hasCopied, onCopy } = useClipboard(value)
+    const { hasCopied, onCopy } = useClipboard(`https://theconvo.space/thread/${props.threadData._id}`);
 
     return (
         <motion.div
@@ -86,7 +85,7 @@ export const ThreadCard = (props) => {
   };
 
 
-export const ThreadCardSkeleton = (props) => {
+export const ThreadCardSkeleton = () => {
 
     return (
 

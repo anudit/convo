@@ -36,7 +36,7 @@ export default async (req, res) => {
                             'message': 'Invalid Auth Token'
                         });
                     }
-                };
+                }
             });
 
         }

@@ -47,7 +47,7 @@ export default async (req, res) => {
       else {
         res.status(400).json({
           'success':false,
-          'message': "Recovered address from signature doesn't match signerAddress"
+          'message': "Recovered address from signature doesn&apos;t match signerAddress"
         });
       }
     }

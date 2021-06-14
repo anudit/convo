@@ -2,8 +2,7 @@ import urlMetadata from 'url-metadata';
 
 function isValidURL(string){
   try {
-    let url;
-    url = new URL(string);
+    let url = new URL(string);
   } catch (_) {
     return false;
   }

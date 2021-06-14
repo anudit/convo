@@ -249,7 +249,7 @@ const Home = () => {
               internalLink=""
             >
               <Text mt={2} mb={5} fontWeight="400" fontSize={20} color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                The Convo Space is intended to be fully decentralized, utilizing Textile's ThreadDB built on IPFS and Libp2p for Storage ensuring that your data lives independent of the interface.
+                The Convo Space is intended to be fully decentralized, utilizing Textile&apos;s ThreadDB built on IPFS and Libp2p for Storage ensuring that your data lives independent of the interface.
               </Text>
             </Card>
 
@@ -280,7 +280,7 @@ const Home = () => {
               internalLink="integrate/embeddable-convo"
               >
               <Text mt={2} mb={5} fontWeight="400" fontSize={20} color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                Convo can be used as a singular layer to manage your conversations throughout the Internet and can be used to build upon and integrated into any application with Convo's API.
+                Convo can be used as a singular layer to manage your conversations throughout the Internet and can be used to build upon and integrated into any application with Convo&apos;s API.
               </Text>
             </Card>
 

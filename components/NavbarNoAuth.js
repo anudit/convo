@@ -4,7 +4,7 @@ import { CloseIcon,HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 import { TheConvoSpaceIcon } from "@/public/icons";
 
-const NavBar = (props) => {
+const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { toggleColorMode } = useColorMode();
   const toggle = () => setIsOpen(!isOpen);

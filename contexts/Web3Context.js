@@ -56,7 +56,7 @@ export const Web3ContextProvider = ({children}) => {
     else {
       setSignerAddress("");
       setEnsAddress("");
-    };
+    }
 
   }, [provider]);
 
@@ -94,13 +94,13 @@ export const Web3ContextProvider = ({children}) => {
         modalProvider.on("accountsChanged", async (accounts) => {
           setSignerAddress(accounts[0]);
           let tp = new ethers.providers.InfuraProvider("mainnet","1e7969225b2f4eefb3ae792aabf1cc17");
-          tp.lookupAddress(address).then((ensAdd)=>{
+          tp.lookupAddress(accounts[0]).then((ensAdd)=>{
             if(Boolean(ensAdd) == true){
               setEnsAddress(ensAdd);
             }
           });
         });
-        modalProvider.on("chainChanged", (chainId) => {
+        modalProvider.on("chainChanged", () => {
           window.location.reload();
         });
       }

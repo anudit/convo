@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useColorModeValue, Flex, Text, Heading, Input, Button, useToast } from "@chakra-ui/react";
 import { createSubscribe } from "@/lib/thread-db"
 
@@ -26,7 +26,9 @@ const SubscribeCard = () => {
                     'created': Date.now()
                 })
             }
-            catch {}
+            catch (e) {
+                console.log(e);
+            }
             setLoadingState(false);
             toast({
                 title: "All Done! 🎊",
@@ -89,7 +91,7 @@ const SubscribeCard = () => {
             </Flex>
 
             <Text color={useColorModeValue("blackAlpha.800", "gray.400")} my={2} align="center">
-                We won't send you spam. Unsubscribe at any time.
+                We won&apos;t send you spam. Unsubscribe at any time.
             </Text>
 
         </Flex>

@@ -1,8 +1,8 @@
-import { useRef, useContext } from "react";
+import React, { useRef, useContext } from "react";
 import { useRouter } from 'next/router';
 import fetcher from '@/utils/fetcher';
-import { useColorModeValue, Flex, Heading, Text, IconButton, Tooltip, useDisclosure, useToast} from "@chakra-ui/react";
-import { AddIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { Flex, Heading, IconButton, Tooltip, useDisclosure, useToast} from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input, Button} from "@chakra-ui/react";
 import Head from 'next/head';
 import useSWR from 'swr';
@@ -46,7 +46,7 @@ const Hero = (props) => {
 
     const router = useRouter()
     const link = fromB64(router.query.siteUrlEncoded);
-    const { data: metaData, error: metaDataError } = useSWR(
+    const { data: metaData } = useSWR(
         `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/urlmeta?link=${link}&apikey=CONVO`,
         fetcher,
     );
@@ -104,13 +104,13 @@ const SiteInterface = (props) => {
     const router = useRouter()
 
     const link = fromB64(router.query.siteUrlEncoded);
-    const { data: threads, error, mutate } = useSWR(
+    const { data: threads, mutate } = useSWR(
             `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?url=${link}&apikey=CONVO`,
             fetcher,
             {initialData: props.initialThreads}
         );
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onClose } = useDisclosure()
     const newThreadTitleRef = useRef()
     const toast = useToast()
 
@@ -234,7 +234,7 @@ const SiteInterface = (props) => {
                         <ModalCloseButton />
                         <ModalBody pb={6}>
                             <FormControl>
-                            <FormLabel>What's the thread about?</FormLabel>
+                            <FormLabel>What&apos;s the thread about?</FormLabel>
                             <Input placeholder="Thread Title" ref={newThreadTitleRef} max={200} isRequired={true}/>
                             </FormControl>
                         </ModalBody>

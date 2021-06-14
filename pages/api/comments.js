@@ -33,7 +33,7 @@ export default async (req, res) => {
 
       if (Boolean(req.query?.url) === true){
         if (query === undefined) {
-          query = new Where('url').eq(url);
+          query = new Where('url').eq(req.query.url);
         }
         else {
           query = query.and('url').eq(decodeURIComponent(req.query.url));

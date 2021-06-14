@@ -1,7 +1,7 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useRouter } from 'next/router';
-import { useDisclosure, useToast, IconButton, Link, InputGroup, Stack, InputLeftElement,InputRightElement ,  Input,Text, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Button} from "@chakra-ui/react";
-import { PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
+import { useDisclosure, useToast, Link, InputGroup, Stack, InputLeftElement,InputRightElement ,  Input,Text, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Button} from "@chakra-ui/react";
+import { SearchIcon } from "@chakra-ui/icons";
 
 import { Web3Context } from '@/contexts/Web3Context'
 import { createThread } from "@/lib/thread-db";
@@ -123,10 +123,9 @@ export const ThreadView = ({link, threads}) => {
         return (
             <Stack mt={2} spacing={5} w={{ base: "100%", md: "80%", lg: "60%"}}>
                 <InputGroup size="lg">
-                    <InputLeftElement
-                        pointerEvents="none"
-                        children={<SearchIcon color="gray.300"/>}
-                    />
+                    <InputLeftElement pointerEvents="none" >
+                        <SearchIcon color="gray.300"/>
+                    </InputLeftElement>
                     <Input
                         pr="4.5rem"
                         type="text"
@@ -163,7 +162,7 @@ export const ThreadView = ({link, threads}) => {
                         <ModalCloseButton />
                         <ModalBody pb={6}>
                             <FormControl>
-                                <FormLabel>What's the thread about?</FormLabel>
+                                <FormLabel>What&apos;s the thread about?</FormLabel>
                                 <Input placeholder="Thread Title" ref={newThreadTitleRef} max={300} isRequired={true} defaultValue={title}/>
                             </FormControl>
                             <br/>
@@ -183,10 +182,9 @@ export const ThreadView = ({link, threads}) => {
                 </Modal>
 
                 <InputGroup size="lg">
-                    <InputLeftElement
-                        pointerEvents="none"
-                        children={<SearchIcon color="gray.300"/>}
-                    />
+                    <InputLeftElement pointerEvents="none" >
+                        <SearchIcon color="gray.300"/>
+                    </InputLeftElement>
                     <Input
                         pr="4.5rem"
                         type="text"

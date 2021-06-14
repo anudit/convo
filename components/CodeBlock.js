@@ -29,7 +29,6 @@ const CodeBlock = (props) => {
         }}
         zIndex="1"
         position="fixed"
-        position="absolute"
         mt="20px"
         right={{ base: "5vw", md:"12vw", lg:"21vw"}}
         onClick={onCopy}

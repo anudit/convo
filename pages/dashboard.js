@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext, forwardRef } from 'react';
+import React, { useState, useEffect, useContext, forwardRef } from 'react';
 import Head from 'next/head';
-import { useStyles, useTab, Box, useToast, useClipboard, Avatar, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Flex, useColorModeValue, Heading, Button, IconButton, Tooltip } from "@chakra-ui/react";
+import { useStyles, useTab, Box, useToast, useClipboard, Avatar, Tabs, TabList, TabPanels, TabPanel, Spinner, Flex, useColorModeValue, Heading, Button, IconButton, Tooltip } from "@chakra-ui/react";
 import useSWR from 'swr';
-import { Text, Table, Thead, Tbody, Tr, Th, Td, chakra } from "@chakra-ui/react"
-import { CheckIcon, DeleteIcon, DownloadIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons"
+import { Table, Thead, Tbody, Tr, Th, Td, chakra } from "@chakra-ui/react"
+import { CheckIcon, DeleteIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons"
 import { useTable, useSortBy } from "react-table"
 
 import { Web3Context } from '@/contexts/Web3Context'
@@ -62,7 +62,7 @@ const Dashboard = (props) => {
 
     const StyledTab = chakra("button", { themeKey: "Tabs.Tab" })
 
-    const CustomTab = forwardRef((props, ref) => {
+    const CustomTab = forwardRef((props) => {
 
         const tabProps = useTab(props)
         const isSelected = !!tabProps["aria-selected"]
@@ -92,12 +92,12 @@ const Dashboard = (props) => {
                 direction="column"
                 align="center"
                 maxW="1600px"
-                w={{ base: "95%", md: "80%", lg: "90%"}}
+                w={{ base: "95%", md: "90%", lg: "90%"}}
                 m="0 auto"
                 mt={2}
             >
                 <Heading as="h3" size="lg" align="center">
-                    Let's start by connecting your Ethereum Wallet.
+                    Let&apos;s start by connecting your Ethereum Wallet.
                 </Heading>
                 <br/>
                 <Button borderRadius="30px" onClick={connectWallet}>
@@ -128,7 +128,7 @@ const Dashboard = (props) => {
             </PageShell>
         );
     }
-    // Doesn't have any comments to show.
+    // Doesn&apos;t have any comments to show.
     else if (comments && comments.length < 1 ){
         return (
             <PageShell title="Dashboard | The Convo Space">
@@ -217,7 +217,7 @@ const Dashboard = (props) => {
                             <Heading as="h3" size="lg">
                                 ⚡ My Comments
                             </Heading>
-                            <CommentsTable columns={columns} comments={formattedComments}/>
+                            <CommentsTable columns={columns} comments={formattedComments} mutate={mutate}/>
                         </TabPanel>
                         <TabPanel>
                             <Heading as="h3" size="lg">
@@ -264,7 +264,7 @@ const Dashboard = (props) => {
 
 export default Dashboard;
 
-const CommentsTable = ({ columns, comments}) => {
+const CommentsTable = ({ columns, comments, mutate}) => {
 
     const {
         getTableProps,
@@ -298,7 +298,7 @@ const CommentsTable = ({ columns, comments}) => {
         console.log("deleted", commentId);
 
         if (Object.keys(res).includes('success') === true) {
-            // mutate(comments.filter(item => item._id !== commentId), false);
+            mutate(comments.filter(item => item._id !== commentId), false);
             toast({
                 title: "Gone!",
                 description: `The comment is deleted.`,
@@ -323,11 +323,12 @@ const CommentsTable = ({ columns, comments}) => {
     <Table {...getTableProps()} mt={4} wordBreak="break-all">
         <Thead>
             {headerGroups.map((headerGroup) => (
-            <Tr {...headerGroup.getHeaderGroupProps()}>
+            <Tr {...headerGroup.getHeaderGroupProps()} key="header">
                 {headerGroup.headers.map((column) => (
                 <Th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     isNumeric={column.isNumeric}
+                    key="heading"
                 >
                     {column.render("Header")}
                     <chakra.span pl="4">
@@ -349,13 +350,13 @@ const CommentsTable = ({ columns, comments}) => {
         </Thead>
         <Tbody {...getTableBodyProps()}>
             {rows.map((row) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
-                <Tr {...row.getRowProps()}>
+                <Tr {...row.getRowProps()} key={row.original.id}>
                     {
                         row.cells.map((cell) => {
                             return(
-                                <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric}>
+                                <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric} key="">
                                 {cell.render("Cell")}
                                 </Td>
                             )

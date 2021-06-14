@@ -10,7 +10,8 @@
     "start": "next start",
     "export": "next export",
     "tunnel": "ngrok http 3000",
-    "sync": "node sync.js"
+    "sync": "node sync.js",
+    "lint": "eslint"
   },
   "dependencies": {
     "@babel/core": "^7.14.5",
@@ -29,6 +30,8 @@
     "critters": "^0.0.10",
     "date-fns": "^2.22.1",
     "dotenv": "^10.0.0",
+    "eslint": "^7.28.0",
+    "eslint-plugin-react": "^7.24.0",
     "ethers": "^5.3.1",
     "fortmatic": "^2.2.1",
     "framer-motion": "^4.1.17",
@@ -40,7 +43,6 @@
     "react": "^17.0.2",
     "react-device-detect": "^1.17.0",
     "react-dom": "^17.0.2",
-    "react-infinite-scroll-component": "^6.1.0",
     "react-linkify": "^1.0.0-alpha",
     "react-qr-code": "^1.1.1",
     "react-syntax-highlighter": "^15.4.3",
@@ -52,6 +54,7 @@
     "webpack": "^5.38.1"
   },
   "devDependencies": {
+    "eslint-plugin-react-hooks": "^4.2.0",
     "next-sitemap": "^1.6.111"
   }
 }

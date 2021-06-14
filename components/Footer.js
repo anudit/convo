@@ -1,3 +1,4 @@
+import React from 'react';
 import { useColorModeValue, Flex, Divider, Text, Link, Stack } from "@chakra-ui/react";
 
 const Footer = () => {

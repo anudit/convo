@@ -1,4 +1,4 @@
-import { useColorModeValue, Box, Flex, Text, Button, Divider } from "@chakra-ui/react";
+import React, { useColorModeValue, Box, Flex, Text, Divider } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 const Card = (props) => {

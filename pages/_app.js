@@ -1,4 +1,4 @@
-
+import React from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Global, css } from '@emotion/react';
 import Head from 'next/head'

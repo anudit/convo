@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect, useContext } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Table,Tbody, Text, Tr, Td, useClipboard, Heading, ButtonGroup, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorModeValue, Flex, Box, Tooltip, Spinner } from "@chakra-ui/react";
+import { Table,Tbody, Text, Tr, Td, useClipboard, Heading, ButtonGroup, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, Flex, Box, Tooltip, Spinner } from "@chakra-ui/react";
 import { CheckIcon, CopyIcon, DeleteIcon } from '@chakra-ui/icons';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
@@ -48,12 +48,12 @@ const Threads = (props) => {
 
     const router = useRouter()
 
-    const { data: comments, error, mutate  } = useSWR(
+    const { data: comments, mutate  } = useSWR(
         [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
         fetcher,
         {initialData: props.initialComments}
     );
-    const { data: thread, err } = useSWR(
+    const { data: thread } = useSWR(
         [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
         fetcher,
         {initialData: props.thread}
@@ -115,7 +115,7 @@ const Threads = (props) => {
             else {
                 toast({
                     title: "Whoops!",
-                    description: "Can't send an empty message.",
+                    description: "Can&apos;t send an empty message.",
                     status: "warning",
                     duration: 10000,
                     isClosable: true,
@@ -159,7 +159,7 @@ const Threads = (props) => {
     }
 
     const [embedCode, setEmbedCode] = useState("");
-    const { hasCopied: hasCopiedEmbedCode, onCopy: onCopyEmbedCode } = useClipboard(embedCode);
+    const { onCopy: onCopyEmbedCode } = useClipboard(embedCode);
 
     function copyEmbedCode(id){
         setEmbedCode(`${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/c/${id}`);

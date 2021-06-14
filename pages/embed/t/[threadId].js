@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect, useContext } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { useClipboard, Avatar, Table, Tbody, Text, Tr, Td, Heading, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, useColorModeValue, Flex, Box, Spinner } from "@chakra-ui/react";
+import { useClipboard, Avatar, Table, Tbody, Text, Tr, Td, Heading, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, useColorModeValue, Flex, Spinner } from "@chakra-ui/react";
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
 import Linkify from 'react-linkify';
 import { Where } from "@textile/hub";
@@ -62,7 +62,7 @@ const Threads = (props) => {
     const {connectWallet, signerAddress, disconnectWallet, getAuthToken} = web3Context;
 
     const [embedCode, setEmbedCode] = useState("");
-    const { hasCopied: hasCopiedEmbedCode, onCopy: onCopyEmbedCode } = useClipboard(embedCode);
+    const { onCopy: onCopyEmbedCode } = useClipboard(embedCode);
 
     function copyEmbedCode(id){
         setEmbedCode(`${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/c/${id}`);
@@ -169,7 +169,7 @@ const Threads = (props) => {
             else {
                 toast({
                     title: "Whoops!",
-                    description: "Can't send an empty message.",
+                    description: "Can&apos;t send an empty message.",
                     status: "warning",
                     duration: 10000,
                     isClosable: true,
@@ -246,7 +246,7 @@ const Threads = (props) => {
                                 }}
                                 pb={4}
                             >
-                                {decodeURI(thread?.title)}
+                                {decodeURI(props.thread?.title)}
                             </Heading>
                         )
                     }

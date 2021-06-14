@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
-import { Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useClipboard, InputGroup, Input, InputRightElement, Image } from "@chakra-ui/react";
+import React, { useState, useEffect, useContext } from 'react';
+import { Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useClipboard, InputGroup, Input, InputRightElement, Image } from "@chakra-ui/react";
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
@@ -11,29 +11,25 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 const IdentitySection = () => {
 
-    const web3Context = useContext(Web3Context)
-    const { signerAddress } = web3Context;
-
-    const [poh, setPoH] = useState(null);
-    useEffect(async () => {
-      checkPoH(signerAddress).then(setPoH);
-    }, []);
-
-
     return (
       <>
         <Flex mt={4} direction={{base:"column", md: "row"}}>
-          <PoHCard state={poh} />
-          <BrightIdCard />
+          <Wrap>
+            <WrapItem>
+              <PoHCard/>
+            </WrapItem>
+            <WrapItem>
+              <BrightIdCard />
+            </WrapItem>
+          </Wrap>
         </Flex>
         <Heading as="h4" size="md" my={4}>
           🏅 POAPs
         </Heading>
         <Flex my={2} direction={{base:"column", md: "row"}}>
-
-          <br/>
-          <PoapSection/>
-
+          <Wrap>
+            <PoapSection mt={2}/>
+          </Wrap>
         </Flex>
       </>
     )
@@ -42,7 +38,16 @@ const IdentitySection = () => {
 
 export default IdentitySection;
 
-const PoHCard = ({state}) => {
+const PoHCard = () => {
+
+  const web3Context = useContext(Web3Context);
+  const { signerAddress } = web3Context;
+
+  const [poh, setPoH] = useState(null);
+  useEffect(async () => {
+    checkPoH(signerAddress).then(setPoH);
+  }, []);
+
     return (
         <Flex
           direction="column"
@@ -91,7 +96,7 @@ const PoHCard = ({state}) => {
               bg={useColorModeValue("gray.200", "gray.700")}
             >
               {
-                state === null ? "Loading" : state === false ? "Unverified ❌" : (<><Text mr={1}>Verified</Text><Verifiedcon/></>)
+                poh === null ? "Loading" : poh === false ? "Unverified ❌" : (<><Text mr={1}>Verified</Text><Verifiedcon/></>)
               }
             </Flex>
           </Box>
@@ -101,13 +106,12 @@ const PoHCard = ({state}) => {
 
 const BrightIdCard = () => {
 
-  const web3Context = useContext(Web3Context);
+  const web3Context = useContext(Web3Context)
   const { signerAddress } = web3Context;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [value, setValue] = useState(`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`)
-  const { hasCopied, onCopy } = useClipboard(value)
+  const { hasCopied, onCopy } = useClipboard(`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`)
 
-  const { data, error } = useSWR(
+  const { data } = useSWR(
     signerAddress != "" ? [`https://app.brightid.org/node/v5/verifications/Convo/${signerAddress}`, "GET"] : null,
     fetcher
   );
@@ -220,24 +224,16 @@ const PoapSection = () => {
 
   const web3Context = useContext(Web3Context);
   const { signerAddress } = web3Context;
-
   const [poaps, setPoaps] = useState(null);
 
-  useEffect(async () => {
-
-    fetcher(`https://api.opensea.io/api/v1/assets?asset_contract_address=0x22C1f6050E56d2876009903609a2cC3fEf83B415&owner=${signerAddress}`, "GET", {})
-    .then((res)=>{
-      console.log(res);
-      setPoaps(res.assets)
-    });
-
+  useEffect(() => {
+    fetcher(`https://api.poap.xyz/actions/scan/${signerAddress}`, "GET", {}).then(setPoaps);
   }, []);
 
-  return (
-    <>
-      {
-        poaps && poaps.length > 0 && poaps.map((poap)=>{
-          return (
+  if (poaps && poaps.length > 0){
+    return ( poaps.map((poap)=>{
+        return (
+          <WrapItem key={poap.tokenId}>
             <Box
               mx={2}
               w="300px"
@@ -249,27 +245,23 @@ const PoapSection = () => {
                 <chakra.h1
                   color={useColorModeValue("gray.800", "white")}
                   fontWeight="bold"
-                  fontSize="3xl"
-                  textTransform="uppercase"
+                  fontSize="xl"
+                  w="270px"
+                  textOverflow="ellipsis"
+                  overflow="hidden"
+                  whiteSpace="nowrap"
                 >
-                  {poap.name}
+                  {poap.event.name}
                 </chakra.h1>
-                <chakra.p
-                  mt={1}
-                  fontSize="sm"
-                  color={useColorModeValue("gray.600", "gray.400")}
-                >
-                  {poap.description}
-                </chakra.p>
               </Box>
 
               <Image
                 h={48}
                 w="full"
-                fit="cover"
+                fit="contain"
                 mt={2}
-                src={poap.image_url}
-                alt={poap.name}
+                src={poap.event.image_url}
+                alt={poap.event.name}
               />
 
               <Flex
@@ -281,7 +273,7 @@ const PoapSection = () => {
                 roundedBottom="lg"
               >
                 <chakra.h1 color="white" fontWeight="bold" fontSize="lg">
-                  #${poap.token_id}
+                  #{poap.tokenId}
                 </chakra.h1>
                 <chakra.button
                   px={2}
@@ -299,22 +291,24 @@ const PoapSection = () => {
                     bg: "gray.400",
                   }}
                   as="a"
-                  href={poap.external_link}
+                  href={poap.event_url}
                   target="_blank"
+                  cursor="pointer"
                 >
-                  View <ExternalLinkIcon ml={2}/>
+                  View Event <ExternalLinkIcon ml={2}/>
                 </chakra.button>
               </Flex>
+
             </Box>
-          );
-        })
-      }
-      {
-        poaps && poaps.length == 0 && (
-          "No POAPs"
-        )
-      }
-    </>
-  );
+          </WrapItem>
+        );
+      })
+    )
+  }
+  else {
+    return (
+      <Text>No POAPs</Text>
+    )
+  }
 };
 

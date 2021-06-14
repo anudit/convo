@@ -1,5 +1,5 @@
-import { useEffect, useContext, useState, useRef } from 'react';
-import { HStack, chakra, Link, Box, useColorModeValue, Text, Flex, Button, Heading, useDisclosure, useToast,  Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, VStack } from "@chakra-ui/react";
+import React, { useEffect, useContext, useState, useRef } from 'react';
+import {  Link, useColorModeValue, Flex, Button, Heading, useDisclosure, useToast,  Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, VStack } from "@chakra-ui/react";
 import { DownloadIcon } from "@chakra-ui/icons"
 import { Web3Context } from '@/contexts/Web3Context'
 import { ethers } from "ethers"
@@ -156,7 +156,10 @@ const DFactory_ABI = [
     }
 ]
 
-const AccountSection = (props) => {
+const AccountSection = () => {
+
+    const web3Context = useContext(Web3Context);
+    const { signerAddress } = web3Context;
 
     async function downloadAllData(){
         let backup = JSON.stringify([{}]);
@@ -201,10 +204,10 @@ export default AccountSection;
 
 
 
-const DataTokenView = (props) => {
+const DataTokenView = () => {
 
     const web3Context = useContext(Web3Context);
-    const { provider, signerAddress, connectWallet } = web3Context;
+    const { provider, signerAddress } = web3Context;
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useState(false);
     const toast = useToast();
@@ -283,6 +286,7 @@ const DataTokenView = (props) => {
             {
                 tokens && tokens.map((token) => (
                     <Flex
+                        key={token.tokenAddress}
                         direction="row"
                         justifyContent="space-between"
                         px={6}

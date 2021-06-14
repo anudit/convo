@@ -1,8 +1,7 @@
+import React from "react";
 import { AnimatePresence } from 'framer-motion';
-import { SlideFade, Link , Text, useClipboard, Heading, IconButton, useColorModeValue, Flex, Box } from "@chakra-ui/react";
+import { SlideFade, Heading, useColorModeValue} from "@chakra-ui/react";
 import PageShell from '@/components/PageShell';
-import { CheckIcon, ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
-import { useState } from 'react';
 import Footer from '@/components/Footer';
 
 const handExitComplete = () => {
