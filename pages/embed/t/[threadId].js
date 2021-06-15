@@ -78,6 +78,7 @@ const Threads = (props) => {
 
         document.getElementsByTagName('html')[0].classList.add('tp');
         document.body.classList.add('tp');
+        document.body.classList.add('oh');
 
         let initComments = props.initialComments?.reverse();
         setComments(initComments);
@@ -232,6 +233,7 @@ const Threads = (props) => {
                     m="0 auto"
                     mt="0"
                     backgroundColor="transparent"
+                    overflow="hidden"
                 >
                     {
                         router.query?.title && router.query?.title == true && (

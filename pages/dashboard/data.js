@@ -1,11 +1,13 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
-import {  Link, useColorModeValue, Flex, Button, Heading, useDisclosure, useToast,  Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, VStack } from "@chakra-ui/react";
-import { DownloadIcon } from "@chakra-ui/icons"
-import { Web3Context } from '@/contexts/Web3Context'
-import { ethers } from "ethers"
+import { Link, useToast, ModalFooter, Heading, Button, Flex, useColorModeValue, VStack, Input, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from "@chakra-ui/react";
 import { NFTStorage, Blob } from "nft.storage";
+import { ethers } from "ethers"
+import { DownloadIcon } from '@chakra-ui/icons';
+
+import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
-import { OceanProtocolIcon, ExternalIcon } from '@/public/icons';
+import { Web3Context } from '@/contexts/Web3Context';
+import { OceanProtocolIcon, ExternalIcon  } from '@/public/icons';
 import { truncateAddress } from '@/utils/stringUtils';
 
 const DFactory_ABI = [
@@ -156,33 +158,34 @@ const DFactory_ABI = [
     }
 ]
 
-const AccountSection = () => {
+const IdentitySection = () => {
 
-    const web3Context = useContext(Web3Context);
-    const { signerAddress } = web3Context;
+  const web3Context = useContext(Web3Context);
+  const { signerAddress } = web3Context;
 
-    async function downloadAllData(){
-        let backup = JSON.stringify([{}]);
-        var blob1 = new Blob([backup], { type: "application/json;charset=utf-8" });
-        var url = window.URL || window.webkitURL;
-        let link = url.createObjectURL(blob1);
-        var a = document.createElement("a");
-        a.download = `Backup-${signerAddress}.json`;
-        a.href = link;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }
+  async function downloadAllData(){
+      let backup = JSON.stringify([{}]);
+      var blob1 = new Blob([backup], { type: "application/json;charset=utf-8" });
+      var url = window.URL || window.webkitURL;
+      let link = url.createObjectURL(blob1);
+      var a = document.createElement("a");
+      a.download = `Backup-${signerAddress}.json`;
+      a.href = link;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+  }
+
+  async function nukeAllData(){
+      console.log("TODO: nukeAllData");
+  }
 
 
-    async function nukeAllData(){
-        console.log("TODO: nukeAllData");
-    }
-
-    return (
-        <Flex direction="column" mt={4}>
+  return (
+    <DashboardShell title="Identity">
+        <Flex direction="column" w="90%">
             <Heading as="h4" size="md" mb={4}>
-                Administration
+              Administration
             </Heading>
             <Flex direction={{base:"column", md:"row"}} alignItems="flex-start">
                 <Button size="md" onClick={downloadAllData} m={1}>
@@ -193,16 +196,16 @@ const AccountSection = () => {
                 </Button>
             </Flex>
             <Heading as="h4" size="md" my={4}>
-                Data Tokens
+                Data Tokens (🚧 Rinkeby Testnet)
             </Heading>
             <DataTokenView/>
         </Flex>
-    )
+    </DashboardShell>
+  )
+
 }
 
-export default AccountSection;
-
-
+export default IdentitySection;
 
 const DataTokenView = () => {
 
@@ -218,7 +221,8 @@ const DataTokenView = () => {
 
     useEffect(async () => {
 
-        let DTFactory = new ethers.Contract("0x3fd7A00106038Fb5c802c6d63fa7147Fe429E83a", DFactory_ABI, provider);
+        let tp = new ethers.providers.InfuraProvider("rinkeby","1e7969225b2f4eefb3ae792aabf1cc17");
+        let DTFactory = new ethers.Contract("0x3fd7A00106038Fb5c802c6d63fa7147Fe429E83a", DFactory_ABI, tp);
         let filter = DTFactory.filters.TokenRegistered(null, null, null, null, signerAddress);
         let frag = DTFactory.interface.getEvent('TokenRegistered')
         let data = await DTFactory.queryFilter(filter, 0x0);
@@ -227,8 +231,9 @@ const DataTokenView = () => {
             let log = DTFactory.interface.decodeEventLog(frag, data[index].data, data[index].topics);
             processed.push(log);
         }
-        console.log(processed);
+        console.log("Tokens", processed);
         setTokens(processed);
+
     }, []);
 
     async function createToken(){
@@ -331,3 +336,4 @@ const DataTokenView = () => {
     )
 
 }
+

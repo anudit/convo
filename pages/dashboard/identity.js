@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useClipboard, InputGroup, Input, InputRightElement, Image } from "@chakra-ui/react";
+import { Link, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useClipboard, InputGroup, Input, InputRightElement, Image } from "@chakra-ui/react";
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
 import useSWR from 'swr';
-import fetcher from '@/utils/fetcher';
 import QRCode from "react-qr-code";
+
+import DashboardShell from '@/components/DashboardShell';
+import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context'
 import { checkPoH } from "@/lib/identity"
 import { Verifiedcon } from '@/public/icons';
@@ -12,26 +14,28 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 const IdentitySection = () => {
 
     return (
-      <>
-        <Flex mt={4} direction={{base:"column", md: "row"}}>
-          <Wrap>
-            <WrapItem>
-              <PoHCard/>
-            </WrapItem>
-            <WrapItem>
-              <BrightIdCard />
-            </WrapItem>
-          </Wrap>
-        </Flex>
-        <Heading as="h4" size="md" my={4}>
-          🏅 POAPs
-        </Heading>
-        <Flex my={2} direction={{base:"column", md: "row"}}>
-          <Wrap>
-            <PoapSection mt={2}/>
-          </Wrap>
-        </Flex>
-      </>
+      <DashboardShell title="Identity">
+          <Flex direction="column">
+            <Flex direction={{base:"column", md: "row"}}>
+            <Wrap>
+                <WrapItem>
+                <PoHCard/>
+                </WrapItem>
+                <WrapItem>
+                <BrightIdCard />
+                </WrapItem>
+            </Wrap>
+            </Flex>
+            <Heading as="h4" size="md" my={4}>
+            🏅 POAPs
+            </Heading>
+            <Flex my={2} direction={{base:"column", md: "row"}}>
+            <Wrap>
+                <PoapSection mt={2}/>
+            </Wrap>
+            </Flex>
+          </Flex>
+      </DashboardShell>
     )
 
 }
@@ -241,7 +245,7 @@ const PoapSection = () => {
               shadow="lg"
               rounded="lg"
             >
-              <Box px={4} py={2}>
+              <Box px={4} py={2} title={poap.event.name}>
                 <chakra.h1
                   color={useColorModeValue("gray.800", "white")}
                   fontWeight="bold"
@@ -275,7 +279,7 @@ const PoapSection = () => {
                 <chakra.h1 color="white" fontWeight="bold" fontSize="lg">
                   #{poap.tokenId}
                 </chakra.h1>
-                <chakra.button
+                <Link
                   px={2}
                   py={1}
                   bg="white"
@@ -296,7 +300,7 @@ const PoapSection = () => {
                   cursor="pointer"
                 >
                   View Event <ExternalLinkIcon ml={2}/>
-                </chakra.button>
+                </Link>
               </Flex>
 
             </Box>

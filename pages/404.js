@@ -44,8 +44,10 @@ export default function FourOhFour() {
             spacing={2}
             mt={2}
           >
-            <Button colorScheme="twitter" as="a" href="/">
-              Go back home
+            <Button colorScheme="twitter" onClick={()=>{
+              window.history.back();
+            }}>
+              Go back
             </Button>
           </Stack>
         </Box>

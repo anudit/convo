@@ -56,6 +56,13 @@ const GlobalStyle = ({ children }) => {
             background: none !important;
             background-color: transparent !important;
           }
+          .oh {
+            overflow: hidden !important;
+          }
+          .tp {
+            background: none !important;
+            background-color: transparent !important;
+          }
           .gradientShadow::before {
             content: "";
             position: absolute;

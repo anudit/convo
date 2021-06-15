@@ -7,7 +7,7 @@ import { TheConvoSpaceIcon, DisconnectIcon, EthereumIcon } from "@/public/icons"
 import { getAvatar } from '@/utils/avatar';
 import { truncateAddress } from "@/utils/stringUtils";
 
-export const NavBar = () => {
+export const NavBar = (props) => {
   const [display, toggleMenu] = useState('none');
 
   // useEffect(() => {
@@ -34,6 +34,7 @@ export const NavBar = () => {
             backdropFilter="blur(10px)"
             zIndex="100"
             borderBottomWidth="1px"
+            {...props}
         >
             <Link
                 href="/"
@@ -78,6 +79,8 @@ export const NavBar = () => {
             backdropFilter="blur(10px)"
             zIndex="10"
             borderBottomWidth="1px"
+            right="0"
+            {...props}
         >
 
             <Link href="/" style={{textDecoration: 'inherit'}}>

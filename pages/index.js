@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Head from 'next/head';
-import { Tooltip, Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input, Switch, FormControl , FormLabel } from "@chakra-ui/react";
+import { chakra, Tooltip, Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input, Switch, FormControl , FormLabel } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
 
@@ -323,7 +323,7 @@ const Home = () => {
               code={`<iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/t/KIGZUnR4RzXDFheXoOwo" allowtransparency="true" loading="eager" />`}
             />
             <br/>
-            <iframe title="Comments Page Demo" src="/embed/t/KIGZUnR4RzXDFheXoOwo" width="100%" height="450px" allowtransparency="true" loading="lazy">
+            <iframe title="Comments Page Demo" src="/embed/t/KIGZUnR4RzXDFheXoOwo" width="100%" height="450px" allowtransparency="true" loading="lazy" style={{overflow:"hidden"}}>
               Comments Page Demo
             </iframe>
           </Flex>

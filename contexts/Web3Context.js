@@ -77,14 +77,12 @@ export const Web3ContextProvider = ({children}) => {
     try {
 
       let modalProvider;
-
-
       // if (await web3Modal.canAutoConnect()) {
       //   modalProvider = await web3Modal.requestProvider();
-      // if (!!modalProvider.safe === true){
-      //   console.log('Safe Detected', modalProvider, modalProvider.safe)
-      // }
-      // await modalProvider.connect();
+      //   if (!!modalProvider.safe === true){
+      //     console.log('Safe Detected', modalProvider, modalProvider.safe)
+      //   }
+      //   await modalProvider.connect();
       // }
       // else {
       // }
@@ -112,8 +110,10 @@ export const Web3ContextProvider = ({children}) => {
 
       let tokenRes = await fetcher(
         '/api/validateAuth?apikey=CONVO', "POST", {
-        signerAddress:tempaddress, token: Cookies.get('CONVO_SESSION')
-      });
+          signerAddress:tempaddress,
+          token: Cookies.get('CONVO_SESSION')
+        }
+      );
 
       if (tokenRes['success'] != true){
         await updateAuthToken(tempaddress, tempsigner);
