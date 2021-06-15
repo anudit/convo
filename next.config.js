@@ -9,9 +9,6 @@ module.exports = (phase, { defaultConfig }) => {
         optimizeCss:true
       },
       reactStrictMode: true,
-      future: {
-        webpack5: true,
-      },
       webpack: (config, { isServer }) => {
         if (!isServer) {
           config.resolve.fallback.fs = false;
@@ -32,9 +29,6 @@ module.exports = (phase, { defaultConfig }) => {
       target: "experimental-serverless-trace",
       poweredByHeader: false,
       reactStrictMode: true,
-      future: {
-        webpack5: true,
-      },
       webpack: (config, { isServer }) => {
         if (!isServer) {
           config.resolve.fallback.fs = false;

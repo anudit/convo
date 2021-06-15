@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import Head from 'next/head';
-import { useColorMode, Text, Flex, useColorModeValue, Heading, Button, Tooltip } from "@chakra-ui/react";
+import { useColorMode, Text, Flex, Heading, Button, Tooltip } from "@chakra-ui/react";
 
 import { Web3Context } from '@/contexts/Web3Context';
 import { isAddress } from 'ethers/lib/utils';
@@ -33,7 +33,7 @@ const DashboardShell = ({title, children}) => {
 
     const web3Context = useContext(Web3Context);
     const { connectWallet, signerAddress, disconnectWallet } = web3Context;
-    const { toggleColorMode } = useColorMode();
+    const { colorMode, toggleColorMode } = useColorMode();
 
     // Not logged in
     if (signerAddress === ""){
@@ -72,18 +72,18 @@ const DashboardShell = ({title, children}) => {
                     justifyContent="space-between"
                     borderRight="1px"
                     borderRightStyle="solid"
-                    borderRightColor={useColorModeValue("blackAlpha.200", "whiteAlpha.300")}
+                    borderRightColor={colorMode === "light" ? "blackAlpha.200" : "whiteAlpha.300"}
                     alignItems="space-between"
-                    background={useColorModeValue("#ececec30", "#15151930")}
+                    background={colorMode === "light" ? "#ececec30" : "#15151930"}
                 >
                     <Flex direction="column">
-                        <Flex as="a" href="/dashboard" height="75px" w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:useColorModeValue("#eee", "blackAlpha.800")}}>
+                        <Flex as="a" href="/dashboard" height="75px" w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
                             <Text fontSize="2xl">
                                 <TheConvoSpaceIcon />
                             </Text>
                         </Flex>
                         <Link href="/dashboard/comments">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:useColorModeValue("#eee", "blackAlpha.800")}}>
+                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
                                 <Text fontSize="2xl">
                                     ⚡
                                 </Text>
@@ -93,7 +93,7 @@ const DashboardShell = ({title, children}) => {
                             </Flex>
                         </Link>
                         <Link href="/dashboard/identity">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:useColorModeValue("#eee", "blackAlpha.800")}}>
+                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
                                 <Text fontSize="2xl">
                                     🆔
                                 </Text>
@@ -103,7 +103,7 @@ const DashboardShell = ({title, children}) => {
                             </Flex>
                         </Link>
                         <Link href="/dashboard/data">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:useColorModeValue("#eee", "blackAlpha.800")}}>
+                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
                                 <Text fontSize="2xl">
                                     📂
                                 </Text>
@@ -113,7 +113,7 @@ const DashboardShell = ({title, children}) => {
                             </Flex>
                         </Link>
                         <Link href="/dashboard/developer">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:useColorModeValue("#eee", "blackAlpha.800")}}>
+                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
                                 <Text fontSize="2xl">
                                     🧑‍💻
                                 </Text>
@@ -124,16 +124,16 @@ const DashboardShell = ({title, children}) => {
                         </Link>
                     </Flex>
                     <Flex direction="column">
-                        <Flex onClick={toggleColorMode} h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:useColorModeValue("#eee", "blackAlpha.800")}}>
+                        <Flex onClick={toggleColorMode} h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
                             <Text fontSize="2xl">
-                                {useColorModeValue("🌒", "☀️")}
+                                {colorMode === "light" ? "🌒" : "☀️"}
                             </Text>
                             <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
-                                {useColorModeValue("Dark Mode", "Light Mode")}
+                                {colorMode === "light" ? "Dark Mode" : "Light Mode"}
                             </Text>
                         </Flex>
 
-                        <Flex as="a" href="https://docs.theconvo.space" target="_blank" h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:useColorModeValue("#eee", "blackAlpha.800")}}>
+                        <Flex as="a" href="https://docs.theconvo.space" target="_blank" h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
                             <Text fontSize="2xl">
                                 📘
                             </Text>
@@ -158,7 +158,7 @@ const DashboardShell = ({title, children}) => {
                         p={5}
                         display="flex"
                         position="fixed"
-                        background={useColorModeValue("#ececec30", "#15151930")}
+                        background={colorMode === "light" ? "#ececec30" : "#15151930"}
                         backdropFilter="blur(10px)"
                         zIndex="100"
                         borderBottomWidth="1px"

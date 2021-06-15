@@ -219,22 +219,25 @@ const DataTokenView = () => {
 
     const [tokens, setTokens] = useState(false);
 
-    useEffect(async () => {
+    useEffect(() => {
+        async function fetchData() {
 
-        let tp = new ethers.providers.InfuraProvider("rinkeby","1e7969225b2f4eefb3ae792aabf1cc17");
-        let DTFactory = new ethers.Contract("0x3fd7A00106038Fb5c802c6d63fa7147Fe429E83a", DFactory_ABI, tp);
-        let filter = DTFactory.filters.TokenRegistered(null, null, null, null, signerAddress);
-        let frag = DTFactory.interface.getEvent('TokenRegistered')
-        let data = await DTFactory.queryFilter(filter, 0x0);
-        let processed = [];
-        for (let index = 0; index < data.length; index++) {
-            let log = DTFactory.interface.decodeEventLog(frag, data[index].data, data[index].topics);
-            processed.push(log);
+            let tp = new ethers.providers.InfuraProvider("rinkeby","1e7969225b2f4eefb3ae792aabf1cc17");
+            let DTFactory = new ethers.Contract("0x3fd7A00106038Fb5c802c6d63fa7147Fe429E83a", DFactory_ABI, tp);
+            let filter = DTFactory.filters.TokenRegistered(null, null, null, null, signerAddress);
+            let frag = DTFactory.interface.getEvent('TokenRegistered')
+            let data = await DTFactory.queryFilter(filter, 0x0);
+            let processed = [];
+            for (let index = 0; index < data.length; index++) {
+                let log = DTFactory.interface.decodeEventLog(frag, data[index].data, data[index].topics);
+                processed.push(log);
+            }
+            console.log("Tokens", processed);
+            setTokens(processed);
         }
-        console.log("Tokens", processed);
-        setTokens(processed);
 
-    }, []);
+        fetchData();
+      }, [signerAddress]);
 
     async function createToken(){
 

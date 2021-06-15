@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Head from 'next/head';
-import { chakra, Tooltip, Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input, Switch, FormControl , FormLabel } from "@chakra-ui/react";
+import { Tooltip, Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input, Switch, FormControl , FormLabel } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
 

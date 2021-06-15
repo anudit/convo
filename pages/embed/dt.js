@@ -279,7 +279,7 @@ const Threads = (props) => {
                         <Menu placement="right">
                             <MenuButton as={IconButton} icon={<SettingsIcon />} variant="outline" borderRadius="0" aria-label="View Settings" size="lg"/>
                             <MenuList>
-                                <MenuItem icon={useColorModeValue(<MoonIcon mx="4px" />, <SunIcon mx="4px" />)} onClick={toggleColorMode}>{useColorModeValue("Dark Mode", "Light Mode")}</MenuItem>
+                                <MenuItem icon={useColorModeValue(<MoonIcon mx="4px" />, <SunIcon mx="4px" />)} onClick={toggleColorMode}>{colorMode === "light" ? "Dark Mode" : "Light Mode"}</MenuItem>
                                 {
                                     signerAddress ? (
                                         <MenuItem icon={<DisconnectIcon mx="4px" />} onClick={disconnectWallet}>Disconnect</MenuItem>

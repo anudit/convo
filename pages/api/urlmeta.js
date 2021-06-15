@@ -2,7 +2,7 @@ import urlMetadata from 'url-metadata';
 
 function isValidURL(string){
   try {
-    let url = new URL(string);
+    new URL(string);
   } catch (_) {
     return false;
   }
@@ -59,7 +59,7 @@ export default async (req, res) => {
     } catch (error) {
       res.statusCode = 500;
       res.end(JSON.stringify({ 'error':error.toString() }))
-      resolve();
+      reject();
     }
 
   });

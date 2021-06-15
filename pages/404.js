@@ -13,7 +13,7 @@ export default function FourOhFour() {
     >
       <Flex
         justify="center"
-        bg={useColorModeValue("white", "gray.800")}
+        bg={useColorModeValue("white","gray.800")}
         w="full"
       >
         <Box
