@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link, Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue, Text, Box } from "@chakra-ui/react";
+import Link from 'next/link';
+import { Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue, Text, Box } from "@chakra-ui/react";
 import { CloseIcon,HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 import { TheConvoSpaceIcon } from "@/public/icons";
@@ -60,7 +61,7 @@ const NavBar = () => {
             }}>
                 Dashboard
             </Link>
-            <Link rel="noreferrer" target="_blank" as="a" href="https://docs.theconvo.space" aria-label="Docs"
+            <Link rel="noreferrer" target="_blank" href="https://docs.theconvo.space" aria-label="Docs"
               style={{textDecoration: 'inherit'}}
               _hover={{
                 color: useColorModeValue("black", "white"),

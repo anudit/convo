@@ -22,33 +22,7 @@ export const ThreadView = ({link, threads}) => {
     const [title, setTitle] = useState("");
     const [modalUrl, setModalUrl] = useState("");
 
-    let url;
-    let exploreAll = false;
-
-    if (link == undefined || link == null) {
-        exploreAll = true;
-    }
-    else {
-        try {
-            const urlObj = new URL(link);
-            url = urlObj['origin'] + urlObj['pathname'];
-            if (url.charAt(url.length - 1) != "/"){
-                url += '/';
-            }
-        } catch (error) {
-            return (
-                <div>Invalid Link, Try&nbsp;
-                    <Link
-                        href={`/site/${toB64('https://google.com/')}`}
-                        textDecoration="inherit"
-                        fontWeight={800}
-                    >
-                        this one
-                    </Link>.
-                </div>
-            )
-        }
-    }
+    const [url, setUrl] = useState(null);
 
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -62,10 +36,24 @@ export const ThreadView = ({link, threads}) => {
         }
     }, [router.query]);
 
+    useEffect(() => {
+        console.log('Got', link);
+        try {
+            const urlObj = new URL(link);
+            let tempurl = urlObj['origin'] + urlObj['pathname'];
+            if (tempurl.charAt(tempurl.length - 1) != "/") {
+                tempurl += '/';
+            }
+            setUrl(tempurl);
+            console.log('made', tempurl);
+        } catch (error) {
+            console.log(error);
+        }
+    }, [link]);
 
     async function handleModal() {
         setTitle(searchText.current.value);
-        setModalUrl(link);
+        setModalUrl(url);
         onOpen();
     }
 
@@ -90,7 +78,7 @@ export const ThreadView = ({link, threads}) => {
                     'createdOn': Date.now().toString(),
                     'creator': signerAddress,
                     'title': title,
-                    'url': link,
+                    'url': url,
                 };
                 let threadId = await createThread(data);
                 let newData = {
@@ -119,7 +107,20 @@ export const ThreadView = ({link, threads}) => {
 
     }
 
-    if (!threads) {
+    if (Boolean(url) === false) {
+        return (
+            <div>Invalid Link, Try&nbsp;
+                <Link
+                    href={`/site/${toB64('https://google.com/')}`}
+                    textDecoration="inherit"
+                    fontWeight={800}
+                >
+                    this one
+                </Link>.
+            </div>
+        )
+    }
+    else if (Boolean(threads) === false) {
         return (
             <Stack mt={2} spacing={5} w={{ base: "100%", md: "80%", lg: "60%"}}>
                 <InputGroup size="lg">

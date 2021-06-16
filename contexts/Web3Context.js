@@ -89,14 +89,8 @@ export const Web3ContextProvider = ({children}) => {
       modalProvider = await web3Modal.connect();
 
       if (modalProvider.on) {
-        modalProvider.on("accountsChanged", async (accounts) => {
-          setSignerAddress(accounts[0]);
-          let tp = new ethers.providers.InfuraProvider("mainnet","1e7969225b2f4eefb3ae792aabf1cc17");
-          tp.lookupAddress(accounts[0]).then((ensAdd)=>{
-            if(Boolean(ensAdd) == true){
-              setEnsAddress(ensAdd);
-            }
-          });
+        modalProvider.on("accountsChanged", () => {
+          window.location.reload();
         });
         modalProvider.on("chainChanged", () => {
           window.location.reload();
@@ -132,10 +126,11 @@ export const Web3ContextProvider = ({children}) => {
     setProvider(undefined);
   }
 
-  async function getAuthToken() {
+  async function getAuthToken(manualAddress = undefined) {
 
+    let authAdd = Boolean(manualAddress) === true ? manualAddress : signerAddress;
     let tokenRes = await fetcher('/api/validateAuth?apikey=CONVO', "POST", {
-      signerAddress,
+      authAdd,
       token: Cookies.get('CONVO_SESSION')
     });
 
@@ -145,7 +140,7 @@ export const Web3ContextProvider = ({children}) => {
     else {
       try {
         let tempsigner = provider.getSigner();
-        let tokenUpdateRes = await updateAuthToken(signerAddress, tempsigner);
+        let tokenUpdateRes = await updateAuthToken(authAdd, tempsigner);
         if (tokenUpdateRes) {
           return tokenUpdateRes;
         }

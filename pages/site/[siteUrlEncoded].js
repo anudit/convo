@@ -1,8 +1,8 @@
-import React, { useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import { useRouter } from 'next/router';
 import fetcher from '@/utils/fetcher';
-import { Flex, Heading, IconButton, Tooltip, useDisclosure, useToast} from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Text, Flex, Heading, IconButton, Tooltip, useDisclosure, useToast} from "@chakra-ui/react";
+import { AddIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input, Button} from "@chakra-ui/react";
 import Head from 'next/head';
 import useSWR from 'swr';
@@ -13,6 +13,7 @@ import { getThreads, getAllThreads } from "@/lib/thread-db";
 import { toB64, fromB64 } from '@/utils/stringUtils';
 import { createThread } from "@/lib/thread-db";
 import { Web3Context } from '@/contexts/Web3Context'
+import { CustomButton } from '@/components/CustomButtons';
 
 export async function getStaticProps(context) {
 
@@ -101,16 +102,19 @@ const Hero = (props) => {
 
 const SiteInterface = (props) => {
 
-    const router = useRouter()
+    const router = useRouter();
 
-    const link = fromB64(router.query.siteUrlEncoded);
+    useEffect(() => {
+        console.log('rq val change',  Boolean(router.query?.siteUrlEncoded));
+    }, [router.query]);
+
     const { data: threads, mutate } = useSWR(
-            `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?url=${link}&apikey=CONVO`,
-            fetcher,
-            {initialData: props.initialThreads}
-        );
+        Boolean(router.query.siteUrlEncoded) === false? null : `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?url=${fromB64(router.query.siteUrlEncoded)}&apikey=CONVO`,
+        fetcher,
+        {initialData: props.initialThreads}
+    );
 
-    const { isOpen, onClose } = useDisclosure()
+    const { isOpen, onClose, onOpen } = useDisclosure()
     const newThreadTitleRef = useRef()
     const toast = useToast()
 
@@ -139,7 +143,7 @@ const SiteInterface = (props) => {
                     'createdOn': Date.now().toString(),
                     'creator': signerAddress,
                     'title': title,
-                    'url': link,
+                    'url': router.query?.siteUrlEncoded,
                 };
                 let threadId = await createThread(data);
                 let newData = {
@@ -186,7 +190,7 @@ const SiteInterface = (props) => {
 
             <Hero mt="10vh">
                 {
-                    link && (<>
+                    Boolean(router.query.siteUrlEncoded) === true && (<>
                         <Heading
                             as="h2"
                             fontSize={{ base: "1rem", md: "1.5rem", lg: "1.5rem", xl: "1.5rem" }}
@@ -195,12 +199,12 @@ const SiteInterface = (props) => {
                             textAlign={"center"}
                             zIndex="1"
                             >
-                            {link}
+                            {fromB64(router.query.siteUrlEncoded)}
                             <Tooltip label="Visit Site [New Tab]" placement="right">
                                 <IconButton
                                     mx={2}
                                     as="a"
-                                    href={link}
+                                    href={fromB64(router.query.siteUrlEncoded)}
                                     target="_blank"
                                     variant="ghost"
                                     aria-label="Open Website"
@@ -208,7 +212,7 @@ const SiteInterface = (props) => {
                                     />
                             </Tooltip>
                         </Heading>
-                        {/* <br/>
+                        <br/>
                         <CustomButton
                             py={6}
                             px={8}
@@ -219,7 +223,7 @@ const SiteInterface = (props) => {
                                 Create a New Thread
                             </Text>
                             <AddIcon size="md"/>
-                        </CustomButton> */}
+                        </CustomButton>
                     </>
                     )
                 }
@@ -249,7 +253,9 @@ const SiteInterface = (props) => {
                 </Modal>
             </Hero>
 
-            <ThreadView link={link} threads={threads}/>
+            {
+                Boolean(router.query?.siteUrlEncoded) === false ? ("Parsing Link") : (<ThreadView link={fromB64(router.query.siteUrlEncoded)} threads={threads}/>)
+            }
 
         </Flex>
         </>

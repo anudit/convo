@@ -32,7 +32,6 @@
     },
     "ignorePatterns": [
         "/pages/test/*.js",
-        "/pages/embed/oth/*.js",
-        "/components/ThreadView.js"
+        "/pages/embed/oth/*.js"
     ]
 }

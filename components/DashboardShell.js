@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useColorMode, Text, Flex, Heading, Button, Tooltip } from "@chakra-ui/react";
 
 import { Web3Context } from '@/contexts/Web3Context';
 import { isAddress } from 'ethers/lib/utils';
 import { EthereumIcon, TheConvoSpaceIcon, DisconnectIcon } from '@/public/icons';
-import Link from 'next/link';
 
 const PageShell = (props) => {
 
@@ -48,7 +48,7 @@ const DashboardShell = ({title, children}) => {
                 mt={2}
             >
                 <Heading as="h3" size="lg" align="center">
-                    Let&apos;s start by connecting your Ethereum Wallet.
+                    Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/gradient.gif')" backgroundSize="cover">Ethereum Wallet</Text>
                 </Heading>
                 <br/>
                 <Button borderRadius="30px" onClick={connectWallet}>
@@ -77,11 +77,13 @@ const DashboardShell = ({title, children}) => {
                     background={colorMode === "light" ? "#ececec30" : "#15151930"}
                 >
                     <Flex direction="column">
-                        <Flex as="a" href="/dashboard" height="75px" w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
-                            <Text fontSize="2xl">
-                                <TheConvoSpaceIcon />
-                            </Text>
-                        </Flex>
+                        <Link href="/dashboard">
+                            <Flex height="75px" w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
+                                <Text fontSize="2xl">
+                                    <TheConvoSpaceIcon />
+                                </Text>
+                            </Flex>
+                        </Link>
                         <Link href="/dashboard/comments">
                             <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
                                 <Text fontSize="2xl">
