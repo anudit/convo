@@ -36,7 +36,7 @@ export const Web3ContextProvider = ({children}) => {
   const [signerAddress, setSignerAddress] = useState("");
   const [ensAddress, setEnsAddress] = useState("");
 
-  useEffect(async () => {
+  useEffect(() => {
 
     const getAddress = async () => {
       const signer = provider.getSigner();

@@ -30,5 +30,5 @@
     "globals": {
         "process": true
     },
-    "ignorePatterns": ["/pages/test/*.js"]
+    "ignorePatterns": ["/pages/test/*.js", "/pages/embed/oth/*.js"]
 }

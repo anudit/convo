@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, Image } from "@chakra-ui/react";
+import Link from 'next/link';
+import { Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, Image } from "@chakra-ui/react";
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
 import useSWR from 'swr';
 import QRCode from "react-qr-code";
@@ -8,7 +9,7 @@ import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context'
 import { checkPoH } from "@/lib/identity"
-import { Verifiedcon } from '@/public/icons';
+import { Verifiedcon, PoapIcon } from '@/public/icons';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 const IdentitySection = () => {
@@ -27,7 +28,7 @@ const IdentitySection = () => {
             </Wrap>
             </Flex>
             <Heading as="h4" size="md" my={4}>
-            🏅 POAPs
+              <PoapIcon mr={2}/>  POAPs
             </Heading>
             <Flex my={2} direction={{base:"column", md: "row"}}>
             <Wrap>
@@ -105,7 +106,7 @@ const PoHCard = () => {
               bg={colorMode === "light" ? "gray.200" : "gray.700"}
             >
               {
-                poh === null ? "Loading" : poh === false ? "Unverified ❌" : (<><Text mr={1}>Verified</Text><Verifiedcon/></>)
+                poh === null ? "Loading" : poh === false ? (<><Button size="sm" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><Verifiedcon color="green.400"/></>)
               }
             </Flex>
           </Box>
@@ -183,7 +184,7 @@ const BrightIdCard = () => {
             bg={colorMode === "light" ? "gray.200" : "gray.700"}
           >
             {
-              data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><Button size="sm" onClick={startVerify}>Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><Verifiedcon/></>)
+              data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><Button size="sm" onClick={startVerify}>Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><Verifiedcon color="green.400"/></>)
             }
           </Flex>
 
@@ -301,12 +302,12 @@ const PoapSection = () => {
                   _focus={{
                     bg: "gray.400",
                   }}
-                  as="a"
-                  href={poap.event_url}
+                  href={poap.event.event_url}
                   target="_blank"
-                  cursor="pointer"
                 >
-                  View Event <ExternalLinkIcon ml={2}/>
+                  <Text>
+                    View Event <ExternalLinkIcon ml={2}/>
+                  </Text>
                 </Link>
               </Flex>
 

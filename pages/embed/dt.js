@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import useSWR from 'swr';
-import { useClipboard, Table,Tbody, Text, Tr, Td, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, useColorModeValue, Flex, Box, Spinner } from "@chakra-ui/react";
+import { useClipboard, Table,Tbody, Text, Tr, Td, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, Flex, Box, Spinner } from "@chakra-ui/react";
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
 import Linkify from 'react-linkify';
 
@@ -66,7 +66,7 @@ const Threads = (props) => {
                 toggleColorMode();
             }
         }
-    }, [router.query]);
+    }, [router.query, colorMode, toggleColorMode]);
 
     async function createNewComment(){
         setSending(true);
@@ -279,7 +279,7 @@ const Threads = (props) => {
                         <Menu placement="right">
                             <MenuButton as={IconButton} icon={<SettingsIcon />} variant="outline" borderRadius="0" aria-label="View Settings" size="lg"/>
                             <MenuList>
-                                <MenuItem icon={useColorModeValue(<MoonIcon mx="4px" />, <SunIcon mx="4px" />)} onClick={toggleColorMode}>{colorMode === "light" ? "Dark Mode" : "Light Mode"}</MenuItem>
+                                <MenuItem icon={colorMode === "light" ? (<MoonIcon mx="4px" />) : (<SunIcon mx="4px" />)} onClick={toggleColorMode}>{colorMode === "light" ? "Dark Mode" : "Light Mode"}</MenuItem>
                                 {
                                     signerAddress ? (
                                         <MenuItem icon={<DisconnectIcon mx="4px" />} onClick={disconnectWallet}>Disconnect</MenuItem>

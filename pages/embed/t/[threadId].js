@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { useClipboard, Avatar, Table, Tbody, Text, Tr, Td, Heading, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, useColorModeValue, Flex, Spinner } from "@chakra-ui/react";
+import { useClipboard, Avatar, Table, Tbody, Text, Tr, Td, Heading, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, Flex, Spinner } from "@chakra-ui/react";
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
 import Linkify from 'react-linkify';
 import { Where } from "@textile/hub";
@@ -84,7 +84,7 @@ const Threads = (props) => {
         setComments(initComments);
         setInitScroll(true);
 
-    }, []);
+    }, [props, router]);
 
     useEffect(() => {
         let commentsBox = document.getElementById('commentsBox');
@@ -94,13 +94,13 @@ const Threads = (props) => {
         }
     }, [initScroll]);
 
-    useEffect(async () => {
+    useEffect(() => {
         if (Boolean(router.query?.theme) === true){
             if (colorMode != router.query.theme){
                 toggleColorMode();
             }
         }
-    }, [router.query]);
+    }, [router.query, colorMode, toggleColorMode]);
 
     const [hasMoreData, setHasMoreData] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
@@ -341,7 +341,7 @@ const Threads = (props) => {
                         <Menu isLazy placement="right">
                             <MenuButton as={IconButton} icon={<SettingsIcon />} variant="outline" borderRadius="0" aria-label="View Settings" size="lg"/>
                             <MenuList>
-                                <MenuItem icon={useColorModeValue(<MoonIcon mx="4px" />, <SunIcon mx="4px" />)} onClick={toggleColorMode}>{colorMode === "light" ? "Dark Mode" : "Light Mode"}</MenuItem>
+                                <MenuItem icon={colorMode === 'light' ? (<MoonIcon mx="4px" />) :(<SunIcon mx="4px" />)} onClick={toggleColorMode}>{colorMode === "light" ? "Dark Mode" : "Light Mode"}</MenuItem>
                                 {
                                     signerAddress ? (
                                         <MenuItem icon={<DisconnectIcon mx="4px" />} onClick={disconnectWallet}>Disconnect</MenuItem>

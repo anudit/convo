@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Avatar, useColorMode, useColorModeValue, Flex, Text, Button, Divider, Tooltip, useClipboard } from "@chakra-ui/react";
+import { Avatar, useColorMode, Flex, Text, Button, Divider, Tooltip, useClipboard } from "@chakra-ui/react";
 import { LinkIcon } from "@chakra-ui/icons";
 import { ethers } from 'ethers';
 
@@ -30,31 +30,27 @@ export async function getServerSideProps(context) {
 const Card = (props) => {
 
   const router = useRouter();
-
   const { colorMode, toggleColorMode } = useColorMode();
+  const { hasCopied, onCopy } = useClipboard(process.env.NEXT_PUBLIC_API_SITE_URL + '/embed/c/' + props?.comment?._id);
 
   useEffect(() => {
     if ( Boolean(router.query?.theme) === true && colorMode != router.query.theme ){
       toggleColorMode();
     }
-  }, [router.query]);
+  }, [router.query, colorMode, toggleColorMode]);
 
 
   if (props.comment){
-
-    // let svg = getAvatar(props.comment.author);
-
-    const { hasCopied, onCopy } = useClipboard(process.env.NEXT_PUBLIC_API_SITE_URL + '/embed/c/' + props.comment._id);
 
     return (
       <Flex
         py={8}
         px={8}
-        color={useColorModeValue("black", "white")}
+        color={colorMode === "light" ? "black" : "white"}
         rounded="lg"
-        backgroundColor={useColorModeValue("white", "#191f2a")}
+        backgroundColor={colorMode === "light" ? "white" : "#191f2a"}
         borderWidth="1px"
-        borderColor={useColorModeValue("gray.200", "#273951")}
+        borderColor={colorMode === "light" ? "gray.200" : "#273951"}
         borderRadius="lg"
         w="100vw"
         direction="column"
@@ -65,7 +61,7 @@ const Card = (props) => {
             px={4}
             py={2}
             borderRadius={100}
-            backgroundColor={useColorModeValue("#81b0ff33", "#1c375c")}
+            backgroundColor={colorMode === "light" ? "#81b0ff33" : "#1c375c"}
             width="fit-content"
           >
             <Flex>
@@ -88,7 +84,7 @@ const Card = (props) => {
           fontSize="2xl"
           mt={{ base: 2, md: 0 }}
           fontWeight="700"
-          color={useColorModeValue("black", "white")}
+          color={colorMode === "light" ? "black" : "white"}
           pt={2}
           style={{lineBreak: "anywhere"}}
         >
@@ -98,7 +94,7 @@ const Card = (props) => {
         <Text
           as="span"
           fontWeight="200"
-          color={useColorModeValue("black", "gray.300")}
+          color={colorMode === "light" ? "black" : "gray.300"}
         >
           {prettyTime(props.comment.createdOn)}
         </Text>
@@ -127,11 +123,11 @@ const Card = (props) => {
       <Flex
         py={8}
         px={8}
-        color={useColorModeValue("black", "white")}
+        color={colorMode === "light" ? "black" : "white"}
         rounded="lg"
-        backgroundColor={useColorModeValue("white", "#191f2a")}
+        backgroundColor={colorMode === "light" ? "white" : "#191f2a"}
         borderWidth="1px"
-        borderColor={useColorModeValue("gray.200", "#273951")}
+        borderColor={colorMode === "light" ? "gray.200" : "#273951"}
         borderRadius="lg"
         w="100vw"
         direction="column"
@@ -142,7 +138,7 @@ const Card = (props) => {
             px={4}
             py={2}
             borderRadius={100}
-            backgroundColor={useColorModeValue("#81b0ff33", "#1c375c")}
+            backgroundColor={colorMode === "light" ? "#81b0ff33" : "#1c375c"}
             width="fit-content"
           >
             <Flex>

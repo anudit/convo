@@ -1,8 +1,7 @@
 {
   "name": "theconvospace",
-  "version": "0.1.0",
-  "private": true,
-  "license": "AGPL-3.0-only",
+  "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

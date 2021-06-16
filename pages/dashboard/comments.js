@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td, chakra, useToast, useClipboard, Spinner, Flex, useColorModeValue, IconButton, Tooltip } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, chakra, useToast, useClipboard, Spinner, Flex, useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
 import useSWR from 'swr';
 import { CheckIcon, DeleteIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons"
 import { useTable, useSortBy } from "react-table"
@@ -35,7 +35,6 @@ const CommentsSection = (props) => {
         signerAddress == "" ? null: [`/api/comments?author=${signerAddress}&apikey=CONVO`, "GET"],
         fetcher
     );
-    console.log(comments);
 
     useEffect(() => {
         let newComments = [];
@@ -123,6 +122,7 @@ const CommentsTable = ({ columns, comments, mutate}) => {
 
     const web3Context = useContext(Web3Context)
     const {signerAddress, getAuthToken} = web3Context;
+    const { colorMode } = useColorMode();
     const toast = useToast()
 
     const {
@@ -212,14 +212,14 @@ const CommentsTable = ({ columns, comments, mutate}) => {
                     {
                         row.cells.map((cell) => {
                             return(
-                                <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric}>
+                                <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric} key={Math.floor(Math.random() * 1000000000)}>
                                 {cell.render("Cell")}
                                 </Td>
                             )
                         })
                     }
                     <Td display="tabel-cell">
-                        <Tooltip label="Delete Comment" aria-label="Delete Comment" hasArrow bg={useColorModeValue("red.500", "red.200")}>
+                        <Tooltip label="Delete Comment" aria-label="Delete Comment" hasArrow bg={colorMode === "light" ? "red.500" : "red.200"}>
                             <IconButton
                                 variant="ghost"
                                 colorScheme="red"

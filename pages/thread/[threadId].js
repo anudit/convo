@@ -74,7 +74,7 @@ const Threads = (props) => {
         if (thread && Object.keys(thread).includes('url') == false) {
             router.push('/explore');
         }
-    },[thread]);
+    },[thread, router]);
 
     async function createNewComment(){
         setSending(true);

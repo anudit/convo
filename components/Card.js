@@ -8,10 +8,10 @@ const Card = (props) => {
       mx="10px"
       py={8}
       px={8}
-      color={useColorModeValue("black", "white")}
       shadow="lg"
       flexFlow="column"
       maxWidth="370px"
+      color={useColorModeValue("black", "white")}
       backgroundColor={useColorModeValue("white", "#121212")}
       borderWidth="1px"
       borderColor={useColorModeValue("blue.200", "#121212")}

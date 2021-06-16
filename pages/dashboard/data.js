@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
-import { Link, useToast, ModalFooter, Heading, Button, Flex, useColorModeValue, VStack, Input, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from "@chakra-ui/react";
+import { Link, useToast, ModalFooter, Heading, Button, Flex, useColorMode, VStack, Input, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from "@chakra-ui/react";
 import { NFTStorage, Blob } from "nft.storage";
 import { ethers } from "ethers"
 import { DownloadIcon } from '@chakra-ui/icons';
@@ -211,6 +211,7 @@ const DataTokenView = () => {
 
     const web3Context = useContext(Web3Context);
     const { provider, signerAddress } = web3Context;
+    const { colorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useState(false);
     const toast = useToast();
@@ -302,12 +303,12 @@ const DataTokenView = () => {
                         maxW="600px"
                         rounded="lg"
                         borderRadius="10px"
-                        borderColor={useColorModeValue("black.400", "gray.700")}
+                        borderColor={colorMode === "light" ? "black.400": "gray.700"}
                         borderWidth={1}
-                        bg={useColorModeValue("gray.100", "gray.700")}
+                        bg={colorMode === "light" ? "gray.100": "gray.700"}
                         transition="box-shadow 0.5s"
                         _hover={{
-                            boxShadow: useColorModeValue("0 0 50px #bbb", ""),
+                            boxShadow: colorMode === "light" ? "0 0 50px #bbb": "",
                         }}
                     >
 

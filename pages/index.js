@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { Tooltip, Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input, Switch, FormControl , FormLabel } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
-
 import { BuildIcon, BlockchainIcon, DevfolioIcon, VoteIcon, ExternalIcon } from '@/public/icons';
 
 import { CustomButton } from '@/components/CustomButtons';
@@ -94,6 +93,7 @@ const Home = () => {
               <Heading
                 fontSize={{ base: "2rem", sm: "2.5rem", md: "4rem", lg: "5rem", xl: "5rem" }}
                 as="h1" fontWeight="700" align="center"
+                color={useColorModeValue('blackAlpha.800','whiteAlpha.800')}
               >
                 The Decentralized
               </Heading>
@@ -110,6 +110,8 @@ const Home = () => {
                   align="center"
                   pb={2}
                   pr={{ base: 0, md: 5}}
+                  // backgroundImage="url('/gradient.gif')"
+                  backgroundSize="cover"
                 >
                   Conversation
                 </Heading>
@@ -124,16 +126,17 @@ const Home = () => {
                   bgGradient="linear-gradient(160deg, #39ffe9 0%, #0048e9 100%)"
                   align="center"
                   pb={2}
+                  // backgroundImage="url('/gradient.gif')"
+                  backgroundSize="cover"
                 >
                   Layer
                 </Heading>
               </Flex>
 
-
-
               <Heading
                 fontSize={{ base: "2rem", sm: "3rem", md: "4rem", lg: "5rem", xl: "5rem" }}
                 as="h1" fontWeight="700" align="center"
+                color={useColorModeValue('blackAlpha.800','whiteAlpha.800')}
               >
                 of Internet
               </Heading>
@@ -143,13 +146,15 @@ const Home = () => {
               <Heading
                 as="h1"
                 fontSize={{base:"x-large", md:"xx-large"}}
-                fontWeight="200"
+                fontWeight="100"
                 color={useColorModeValue("blackAlpha.800", "gray.400")}
                 lineHeight="none"
                 letterSpacing="tight"
                 textAlign="center"
               >
-                A Comments section customizable for
+                Convo is the substrate that connects conversations and communities
+                <br/>
+                 on
                 <Flex
                   display="inline-flex"
                   color="#2065ff"
@@ -171,7 +176,7 @@ const Home = () => {
                     }}
                   />
                 </Flex>
-                connecting <br/>conversations and communities across the Internet.
+                across the Internet.
               </Heading>
 
 
