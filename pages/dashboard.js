@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Tooltip, Text, Flex, useClipboard, Avatar, useColorModeValue, Heading } from "@chakra-ui/react";
+import { Tag, Tooltip, Text, Flex, useClipboard, Avatar, useColorModeValue, Heading } from "@chakra-ui/react";
 
 import { Web3Context } from '@/contexts/Web3Context'
 import { getAvatar } from '@/utils/avatar';
@@ -21,7 +21,11 @@ const Dashboard = () => {
                 <Heading  mt={2} as="h3" size="lg" color={useColorModeValue("blackAlpha.800", "gray.400")} align="center">
                     Hey
                         <Tooltip placement="top" hasArrow label={hasCopied? "Copied Address" : "Click to Copy Address"} aria-label="Copy Address">
-                            <Text onClick={onCopy} display="inline-flex" px={2} cursor="pointer">
+                            <Text onClick={onCopy} display="inline-flex" px={2} cursor="pointer"  _hover={{
+                                bgClip:"text",
+                                backgroundImage:"url('/gradient.gif')",
+                                backgroundSize:"cover"
+                            }}>
                                 {ensAddress == "" ? truncateAddress(signerAddress, 3): ensAddress},
                             </Text>
                         </Tooltip>
@@ -37,12 +41,14 @@ const Dashboard = () => {
                             emoji="⚡"
                             text="Manage your Decentralized Conversations across the Internet."
                             link="comments"
+                            tags={['Textile', 'ThreadDB']}
                         />
                         <SimpleCard
                             title="My Identities"
                             emoji="🆔"
                             text="Manage your Decentralized Identities and Trust Score."
                             link="identity"
+                            tags={['PoH', 'BrightID', 'POAP']}
                         />
 
                     </Flex>
@@ -53,12 +59,14 @@ const Dashboard = () => {
                             emoji="📁"
                             text="Manage and Monetize your Data."
                             link="data"
+                            tags={['Ocean Protocol']}
                         />
                         <SimpleCard
                             title="Developer"
                             emoji="🧑‍💻"
                             text="Buidl using The Convo Space."
                             link="developer"
+                            tags={['Convo API']}
                         />
 
                     </Flex>
@@ -73,7 +81,7 @@ const Dashboard = () => {
 export default Dashboard;
 
 
-const SimpleCard = ({title, text, emoji, link}) => {
+const SimpleCard = ({title, text, emoji, link, tags}) => {
 
     return (
         <Flex
@@ -92,17 +100,36 @@ const SimpleCard = ({title, text, emoji, link}) => {
                 boxShadow: "2xl"
             }}
             cursor="pointer"
+            justifyContent="space-between"
         >
-            <Link href={`/dashboard/${link}`}>
+            <Flex direction="column">
                 <Flex direction="row" justifyContent="space-between">
-                        <Heading>{title}</Heading>
+                    <Link href={`/dashboard/${link}`}>
+                        <Heading _hover={{
+                            bgClip:"text",
+                            backgroundImage:"url('/gradient.gif')",
+                            backgroundSize:"cover"
+                        }}>
+                            {title}
+                        </Heading>
+                    </Link>
                     <Text fontSize={28}>
                         {emoji}
                     </Text>
                 </Flex>
-            </Link>
 
-            <Text fontWeight={100} mt={2} color={useColorModeValue("blackAlpha.800", "whiteAlpha.800")}>{text}</Text>
+                <Text fontWeight={100} mt={2} color={useColorModeValue("blackAlpha.800", "whiteAlpha.800")}>{text}</Text>
+            </Flex>
+
+            { tags &&
+            (<Flex>
+                {tags.map((data) => (
+                    <Tag m={1} size="sm" key={data} variant="solid" colorScheme="twitter" opacity="0.8" borderRadius="full">
+                        {data}
+                    </Tag>
+                ))}
+            </Flex>)
+            }
 
         </Flex>
     )

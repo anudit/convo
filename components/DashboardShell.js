@@ -169,7 +169,7 @@ const DashboardShell = ({title, children}) => {
                         <Text>
                             {title}
                         </Text>
-                        <Tooltip hasArrow label="Disconnect Wallet" aria-label="Disconnect Wallet">
+                        <Tooltip hasArrow label="Disconnect Wallet" aria-label="Disconnect Wallet" placement="left">
                             <DisconnectIcon onClick={disconnectWallet} cursor="pointer"/>
                         </Tooltip>
                     </Flex>

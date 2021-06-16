@@ -6,6 +6,7 @@ export const getAvatar = (seed, config = {}) => {
 
     let svg = createAvatar(style, {
         seed,
+        mouth: ['laughing', 'smile'],
         ...config
         // ... and other options
     });
