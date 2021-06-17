@@ -79,7 +79,7 @@ export const NavBar = (props) => {
             backdropFilter="blur(10px)"
             zIndex="10"
             borderBottomWidth="1px"
-            right="0"
+            left="0"
             {...props}
         >
 
