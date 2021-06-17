@@ -8,7 +8,7 @@ import { createThread } from "@/lib/thread-db";
 import { ThreadCard, ThreadCardSkeleton } from '@/components/ThreadCard';
 import { toB64 } from '@/utils/stringUtils';
 
-export const ThreadView = ({link, threads}) => {
+export const ThreadView = ({link, threads, exploreAll}) => {
 
     const router = useRouter();
     const web3Context = useContext(Web3Context)
@@ -107,7 +107,7 @@ export const ThreadView = ({link, threads}) => {
 
     }
 
-    if (Boolean(url) === false) {
+    if (Boolean(url) === false && Boolean(exploreAll) === false) {
         return (
             <div>Invalid Link, Try&nbsp;
                 <Link

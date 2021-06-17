@@ -254,7 +254,7 @@ const SiteInterface = (props) => {
             </Hero>
 
             {
-                Boolean(router.query?.siteUrlEncoded) === false ? ("Parsing Link") : (<ThreadView link={fromB64(router.query.siteUrlEncoded)} threads={threads}/>)
+                Boolean(router.query?.siteUrlEncoded) === false ? ("Parsing Link") : (<ThreadView link={fromB64(router.query.siteUrlEncoded)} threads={threads} exploreAll={false}/>)
             }
 
         </Flex>

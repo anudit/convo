@@ -92,10 +92,10 @@ const SimpleCard = ({title, text, emoji, link, tags}) => {
             minH="200px"
             padding={8}
             color={useColorModeValue("black", "white")}
-            backgroundColor={useColorModeValue("#ececec30", "#15151930")}
+            backgroundColor={useColorModeValue("#ececec30", "#3c3c3c30")}
             borderColor={useColorModeValue("gray.200", "#121212")}
             borderWidth="1px"
-            borderRadius="5px"
+            borderRadius="10px"
             _hover={{
                 boxShadow: "2xl"
             }}

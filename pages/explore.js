@@ -53,7 +53,7 @@ const Threads = (props) => {
                     Explore All Threads
                 </Heading>
                 <br/>
-                <ThreadView link={undefined} threads={initialThreads}/>
+                <ThreadView link={undefined} threads={initialThreads} exploreAll={true}/>
             </PageShell>
         );
     }
