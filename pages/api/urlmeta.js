@@ -58,7 +58,7 @@ export default async (req, res) => {
 
     } catch (error) {
       res.statusCode = 500;
-      res.end(JSON.stringify({ 'error':error.toString() }))
+      res.end(JSON.stringify({ 'success': false, 'error':error.toString() }))
       reject();
     }
 

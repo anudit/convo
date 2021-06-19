@@ -6,8 +6,8 @@ export default async (req, res) => {
 
   if (Object.keys(req.query).includes('apikey') === false || req.query.apikey !== 'CONVO' ){
     res.status(401).json({
-      'success':false,
-      'error': 'Invalid API key, please refer to the integration docs to get one.'
+      'success': false,
+      'error': 'Invalid API key, please refer to the integration docs at https://docs.theconvo.space/ to see how to get and use a new API key.'
     });
   }
 
