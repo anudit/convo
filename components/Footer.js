@@ -2,20 +2,26 @@ import React from 'react';
 import Link from 'next/link';
 import { useColorModeValue, Flex, Divider, Text, Stack } from "@chakra-ui/react";
 
+import SubscribeCard from '@/components/SubscribeCard';
+import { TheConvoSpaceIcon } from '@/public/icons';
+
 const Footer = () => {
     return (
         <Flex
             pt={5} px={5}
             background={useColorModeValue("gray.200", "linear-gradient(180deg, #030304ed, #000)")}
             justifyContent="center"
-            flexFlow="column"
+            direction="column"
             align="center"
         >
+
+            <SubscribeCard/>
+
             <Flex
                 w={{ base: "95%", md: "60%"}}
                 align="center"
                 direction={{ base: "column", md: "row" }}
-                justifyContent="space-around"
+                justifyContent={{base: "center", md: "space-around"}}
                 alignItems="baseline"
                 textAlign="center"
                 py={10}
@@ -76,11 +82,20 @@ const Footer = () => {
                         Twitter
                     </Link>
                 </Stack>
+
             </Flex>
-            <Divider mt={4}/>
-            <Text textAlign="center" fontWeight={500} my={4}>
-                Made in 🇮🇳 with ❤️ by <Link rel="noreferrer" fontWeight={700} href="https://anudit.dev/">Anudit Nagar </Link>
-            </Text>
+
+            <Divider mt={4} w="80%"/>
+            <Flex direction={{base: "column", md:"row"}} justifyContent="space-between" w="80%" my={8} alignItems="center">
+
+                <TheConvoSpaceIcon boxSize={12}/>
+
+                <Text textAlign="center" fontWeight={500} my={4}>
+                    Made in 🇮🇳 with ❤️ by <Link rel="noreferrer" fontWeight={700} href="https://anudit.dev/">Anudit Nagar </Link>
+                </Text>
+            </Flex>
+
+
         </Flex>
     );
 };

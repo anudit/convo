@@ -156,6 +156,7 @@ const Threads = (props) => {
                     setComments((c)=>{
                         return c.concat(res)
                     });
+                    setInitScroll(!initScroll);
                 }
                 else {
                     toast({

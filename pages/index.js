@@ -10,7 +10,6 @@ import Footer from "@/components/Footer";
 import Card from '@/components/Card';
 import NavBar from '@/components/NavbarNoAuth';
 import CodeBlock from '@/components/CodeBlock';
-import SubscribeCard from '@/components/SubscribeCard';
 
 const Home = () => {
 
@@ -345,6 +344,8 @@ const Home = () => {
           align="center"
           margin="0 auto"
           w={{ base: "95%"}}
+          minH="80vh"
+          justifyContent="center"
           py={8}
           mt={4}
           mb={2}
@@ -404,7 +405,7 @@ const Home = () => {
           </Flex>
         </Flex>
 
-        <Flex
+        {/* <Flex
           direction="column"
           align="center"
           w={{ base: "70%"}}
@@ -412,7 +413,7 @@ const Home = () => {
           mb={6}
         >
           <SubscribeCard/>
-        </Flex>
+        </Flex> */}
 
       </Flex>
       <Footer/>
