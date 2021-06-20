@@ -23,7 +23,7 @@ const Dashboard = () => {
                         <Tooltip placement="top" hasArrow label={hasCopied? "Copied Address" : "Click to Copy Address"} aria-label="Copy Address">
                             <Text onClick={onCopy} display="inline-flex" px={2} cursor="pointer"  _hover={{
                                 bgClip:"text",
-                                backgroundImage:"url('/gradient.gif')",
+                                backgroundImage:"url('/images/gradient.webp')",
                                 backgroundSize:"cover"
                             }}>
                                 {ensAddress == "" ? truncateAddress(signerAddress, 3): ensAddress},
@@ -107,7 +107,7 @@ const SimpleCard = ({title, text, emoji, link, tags}) => {
                     <Link href={`/dashboard/${link}`}>
                         <Heading _hover={{
                             bgClip:"text",
-                            backgroundImage:"url('/gradient.gif')",
+                            backgroundImage:"url('/images/gradient.webp')",
                             backgroundSize:"cover"
                         }}>
                             {title}

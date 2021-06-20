@@ -48,7 +48,7 @@ const DashboardShell = ({title, children}) => {
                 mt={2}
             >
                 <Heading as="h3" size="lg" align="center">
-                    Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/gradient.gif')" backgroundSize="cover">Ethereum Wallet</Text>
+                    Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/images/gradient.webp')" backgroundSize="cover">Ethereum Wallet</Text>
                 </Heading>
                 <br/>
                 <Button borderRadius="30px" onClick={connectWallet}>

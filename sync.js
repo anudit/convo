@@ -6,7 +6,7 @@ const getClient = async () =>{
 
     const identity = PrivateKey.fromString(process.env.TEXTILE_PK);
     const client = await Client.withKeyInfo({
-        key: process.env.NEXT_PUBLIC_TEXTILE_HUB_KEY_DEV,
+        key: process.env.TEXTILE_HUB_KEY_DEV,
         debug: true
     })
     await client.getToken(identity);
@@ -16,8 +16,14 @@ const getClient = async () =>{
 const getData = async () =>{
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-    let snapshot = await threadClient.find(threadId, 'comments', {});
-    return snapshot;
+    let snapshot_comments = await threadClient.find(threadId, 'comments', {});
+    let snapshot_threads = await threadClient.find(threadId, 'threads', {});
+    let snapshot_subscribers = await threadClient.find(threadId, 'subscribers', {});
+    return {
+        snapshot_comments,
+        snapshot_threads,
+        snapshot_subscribers
+    };
 }
 
 const apiKey = process.env.NFTSTORAGE_KEY
@@ -29,7 +35,4 @@ getData().then((data)=>{
         console.log("✅ Backed up Data Over NFT.Storage")
         console.log(`📦 https://${cid}.ipfs.dweb.link`)
     });
-
 })
-
-

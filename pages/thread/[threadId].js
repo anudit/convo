@@ -19,13 +19,18 @@ import { Web3Context } from '@/contexts/Web3Context'
 export async function getStaticProps(context) {
     const threadId = context.params.threadId;
     const query = new Where('tid').eq(threadId);
-    const comments = await getComments(query);
-    const threadData = await getThread(threadId);
+
+    let promiseArray = [
+        getComments(query),
+        getThread(threadId)
+    ];
+
+    let results = await Promise.all(promiseArray);
 
     return {
         props: {
-            initialComments: comments,
-            thread: threadData
+            initialComments: results[0],
+            thread: results[1]
         },
         revalidate: 1
     }

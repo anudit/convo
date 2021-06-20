@@ -19,13 +19,18 @@ import { TheConvoSpaceIcon } from '@/public/icons';
 export async function getStaticProps(context) {
     const threadId = context.params.threadId;
     const query = new Where('tid').eq(threadId).orderByDesc('_mod');
-    const comments = await getComments(query, 0, 5);
-    const threadData = await getThread(threadId);
+
+    let promiseArray = [
+        getComments(query, 0, 5),
+        getThread(threadId)
+    ];
+
+    let results = await Promise.all(promiseArray);
 
     return {
         props: {
-            initialComments: comments,
-            thread: threadData
+            initialComments: results[0],
+            thread: results[1]
         },
         revalidate: 1
     }

@@ -109,7 +109,7 @@ const Home = () => {
                   align="center"
                   pb={2}
                   pr={{ base: 0, md: 5}}
-                  // backgroundImage="url('/gradient.gif')"
+                  // backgroundImage="url('/images/gradient.webp')"
                   backgroundSize="cover"
                 >
                   Conversation
@@ -125,7 +125,7 @@ const Home = () => {
                   bgGradient="linear-gradient(160deg, #39ffe9 0%, #0048e9 100%)"
                   align="center"
                   pb={2}
-                  // backgroundImage="url('/gradient.gif')"
+                  // backgroundImage="url('/images/gradient.webp')"
                   backgroundSize="cover"
                 >
                   Layer
