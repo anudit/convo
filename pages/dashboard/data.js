@@ -1,162 +1,30 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
-import { Link, useToast, ModalFooter, Heading, Button, Flex, useColorMode, VStack, Input, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from "@chakra-ui/react";
+import { Alert, AlertIcon, Text, Link, useToast, ModalFooter, Heading, Button, Flex, useColorMode, VStack, Input, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from "@chakra-ui/react";
 import { NFTStorage, Blob } from "nft.storage";
-import { ethers } from "ethers"
 import { DownloadIcon } from '@chakra-ui/icons';
+import Web3 from "web3";
 
 import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context';
 import { OceanProtocolIcon, ExternalIcon  } from '@/public/icons';
-import { truncateAddress } from '@/utils/stringUtils';
+import { isAddress } from 'ethers/lib/utils';
 
-const DFactory_ABI = [
-    {
-    "inputs": [
-    {
-    "name": "_template",
-    "type": "address"
-    },
-    {
-    "name": "_collector",
-    "type": "address"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-    },
-    {
-    "anonymous": false,
-    "inputs": [
-    {
-    "indexed": true,
-    "name": "newTokenAddress",
-    "type": "address"
-    },
-    {
-    "indexed": true,
-    "name": "templateAddress",
-    "type": "address"
-    },
-    {
-    "indexed": true,
-    "name": "tokenName",
-    "type": "string"
-    }
-    ],
-    "name": "TokenCreated",
-    "type": "event"
-    },
-    {
-    "anonymous": false,
-    "inputs": [
-    {
-    "indexed": true,
-    "name": "tokenAddress",
-    "type": "address"
-    },
-    {
-    "indexed": false,
-    "name": "tokenName",
-    "type": "string"
-    },
-    {
-    "indexed": false,
-    "name": "tokenSymbol",
-    "type": "string"
-    },
-    {
-    "indexed": false,
-    "name": "tokenCap",
-    "type": "uint256"
-    },
-    {
-    "indexed": true,
-    "name": "registeredBy",
-    "type": "address"
-    },
-    {
-    "indexed": true,
-    "name": "blob",
-    "type": "string"
-    }
-    ],
-    "name": "TokenRegistered",
-    "type": "event"
-    },
-    {
-    "anonymous": false,
-    "inputs": [
-    {
-    "indexed": false,
-    "name": "instance",
-    "type": "address"
-    }
-    ],
-    "name": "InstanceDeployed",
-    "type": "event"
-    },
-    {
-    "constant": false,
-    "inputs": [
-    {
-    "name": "blob",
-    "type": "string"
-    },
-    {
-    "name": "name",
-    "type": "string"
-    },
-    {
-    "name": "symbol",
-    "type": "string"
-    },
-    {
-    "name": "cap",
-    "type": "uint256"
-    }
-    ],
-    "name": "createToken",
-    "outputs": [
-    {
-    "name": "token",
-    "type": "address"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-    },
-    {
-    "constant": true,
-    "inputs": [],
-    "name": "getCurrentTokenCount",
-    "outputs": [
-    {
-    "name": "",
-    "type": "uint256"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "constant": true,
-    "inputs": [],
-    "name": "getTokenTemplate",
-    "outputs": [
-    {
-    "name": "",
-    "type": "address"
-    }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-    }
-]
+const { Ocean, DataTokens, ConfigHelper } = require("@oceanprotocol/lib");
+const { factoryABI } = require("@oceanprotocol/contracts/artifacts/DTFactory.json");
+const { datatokensABI } = require("@oceanprotocol/contracts/artifacts/DataTokenTemplate.json");
+const defaultConfig = new ConfigHelper().getConfig("rinkeby", "1e7969225b2f4eefb3ae792aabf1cc17");
+
+const contracts = {
+    "DTFactory": "0x3fd7A00106038Fb5c802c6d63fa7147Fe429E83a",
+    "BFactory": "0x53eDF9289B0898e1652Ce009AACf8D25fA9A42F8",
+    "FixedRateExchange": "0xeD1DfC5F3a589CfC4E8B91C1fbfC18FC6699Fbde",
+    "Metadata": "0xFD8a7b6297153397B7eb4356C47dbd381d58bFF4",
+    "Ocean": "0x8967BCF84170c91B0d24D4302C2376283b0B3a07",
+    "Dispenser": "0x623744Cd25Ed553d3b4722667697F926cf99658B",
+    "chainId": 4,
+    "startBlock": 7294090
+};
 
 const IdentitySection = () => {
 
@@ -183,7 +51,7 @@ const IdentitySection = () => {
 
   return (
     <DashboardShell title="Identity">
-        <Flex direction="column" w="90%">
+        <Flex direction="column" w="100%">
             <Heading as="h4" size="md" mb={4}>
               Administration
             </Heading>
@@ -210,64 +78,118 @@ export default IdentitySection;
 const DataTokenView = () => {
 
     const web3Context = useContext(Web3Context);
-    const { provider, signerAddress } = web3Context;
+    const { signerAddress, web3Modal, ensAddress } = web3Context;
     const { colorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useState(false);
     const toast = useToast();
-    const tokenNameRef = useRef();
     const tokenCapRef = useRef();
+
+    const [ ocean, setOcean ] = useState(undefined);
+    const [ datatoken, setDatatoken ] = useState(undefined);
 
     const [tokens, setTokens] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
 
-            let tp = new ethers.providers.InfuraProvider("rinkeby","1e7969225b2f4eefb3ae792aabf1cc17");
-            let DTFactory = new ethers.Contract("0x3fd7A00106038Fb5c802c6d63fa7147Fe429E83a", DFactory_ABI, tp);
-            let filter = DTFactory.filters.TokenRegistered(null, null, null, null, signerAddress);
-            let frag = DTFactory.interface.getEvent('TokenRegistered')
-            let data = await DTFactory.queryFilter(filter, 0x0);
-            let processed = [];
-            for (let index = 0; index < data.length; index++) {
-                let log = DTFactory.interface.decodeEventLog(frag, data[index].data, data[index].topics);
-                processed.push(log);
-            }
-            console.log("Tokens", processed);
-            setTokens(processed);
+            let tp = await web3Modal.connect();
+            const config = {
+                ...defaultConfig,
+                web3Provider: new Web3(tp),
+            };
+            const oceanInstance = await Ocean.getInstance(config);
+            setOcean(oceanInstance);
+
+            const datatokenInstance = new DataTokens(
+                contracts.DTFactory,
+                factoryABI,
+                datatokensABI,
+                new Web3(tp)
+            );
+            setDatatoken(datatokenInstance);
+
+            let assets = await oceanInstance.assets.ownerAssets(signerAddress);
+            setTokens(assets?.results);
         }
 
         fetchData();
-      }, [signerAddress]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
+
 
     async function createToken(){
 
         setLoading(true);
-
-        let name = tokenNameRef.current.value;
-        let cap = tokenCapRef.current.value;
-        let signer = provider.getSigner();
-
-        let DTFactory = new ethers.Contract("0x3fd7A00106038Fb5c802c6d63fa7147Fe429E83a", DFactory_ABI, signer);
 
         let data = await fetcher(`/api/comments?author=${signerAddress}&apikey=CONVO`, "GET");
         const content = new Blob([JSON.stringify(data)]);
         const client = new NFTStorage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnaXRodWJ8MTIwMTU1NTMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYxNjMwMjY3NzYyNCwibmFtZSI6ImRlZmF1bHQifQ.nf5d4LV9CZSGrAwus6Cb3q9amggU278rPEJSlNujLPY" })
         let cid = await client.storeBlob(content);
 
-        try {
-            let tx = await DTFactory.createToken(cid, name, name, ethers.utils.parseEther(cap));
-            console.log(tx);
-        } catch (error) {
+        const dataset = {
+            main: {
+              type: "dataset",
+              name: `Convo data of ${ensAddress != "" ? ensAddress : signerAddress}`,
+              dateCreated: new Date(Date.now()).toISOString().split(".")[0] + "Z",
+              author: `${ensAddress != "" ? ensAddress : signerAddress}`,
+              license: "MIT",
+              files: [
+                {
+                  url: `https://${cid}.ipfs.dweb.link`,
+                  contentType: "json",
+                },
+              ],
+            },
+        };
+
+        const tokenAddress = await datatoken.create('', signerAddress);
+        console.log("Token Address: ", tokenAddress);
+
+        if (isAddress(tokenAddress) === true){
+
+            let accounts = await ocean.accounts.list();
+
+            let dataService = await ocean.assets.createAccessServiceAttributes(
+                accounts[0],
+                tokenCapRef.current.value, // set the price in datatoken
+                new Date(Date.now()).toISOString().split(".")[0] + "Z", // publishedDate
+                0 // timeout
+            );
+
+            console.log(dataService);
+
+            // publish asset
+            const ddo = await ocean.assets.create(
+                dataset,
+                accounts[0],
+                [dataService],
+                tokenAddress
+            );
+
+            console.log('Data ID:', ddo);
+
+            // publish MetaData
+            const pubddo = await ocean.assets.publishDdo(ddo, accounts[0].id, true );
+
+            console.log('pubddo', pubddo);
+
             toast({
-                title: "Error!",
-                description: error.message,
-                status: "error",
-                duration: 5000,
+                title: "Token Created",
+                description: "Check out the Token on the Ocean Marketplace.",
+                status: "success",
+                duration: 9000,
                 isClosable: true,
-            })
+            });
+
+            let assets = await ocean.assets.ownerAssets(signerAddress);
+            setTokens(assets?.results);
+
         }
+
         setLoading(false);
+        onClose();
+
     }
 
     return(
@@ -278,9 +200,13 @@ const DataTokenView = () => {
                     <ModalHeader>Mint a DataToken</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Input placeholder="DataToken Name" ref={tokenNameRef}/>
-                        <br/><br/>
-                        <Input placeholder="DataToken Cap" type="number" ref={tokenCapRef}/>
+                        <Input placeholder="DataToken Price (OCEAN)" type="number" ref={tokenCapRef}/>
+                        <br/>
+                        <br/>
+                        <Alert status="info">
+                            <AlertIcon />
+                            This process will take 2 transactions.
+                        </Alert>
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={onClose} mx={2}>Close</Button>
@@ -295,7 +221,7 @@ const DataTokenView = () => {
             {
                 tokens && tokens.map((token) => (
                     <Flex
-                        key={token.tokenAddress}
+                        key={token.dataToken}
                         direction="row"
                         justifyContent="space-between"
                         px={6}
@@ -312,8 +238,7 @@ const DataTokenView = () => {
                         }}
                     >
 
-                    <Link
-                        href={`#`}
+                    <Text
                         textDecoration="none"
                         fontSize="xl"
                         fontWeight="700"
@@ -324,14 +249,17 @@ const DataTokenView = () => {
                         _hover={{
                             textDecoration: "inherit",
                         }}
-                        prefetch="true"
                         align="left"
                     >
-                        {token.tokenName} ({token.tokenSymbol})
+                        {token.dataTokenInfo.name} ({token.dataTokenInfo.symbol})
+                    </Text>
+
+                    <Link href={`https://market.oceanprotocol.com/asset/${token.id}`} target="_blank">
+                        <Button w="fit-content" colorScheme="twitter" leftIcon={<ExternalIcon />} size="sm">
+                            Marketplace
+                        </Button>
                     </Link>
-                    <Button colorScheme="facebook" leftIcon={<ExternalIcon />} size="sm" as="a" href={`https://rinkeby.etherscan.io/address/${token.tokenAddress}`} target="_blank">
-                        {truncateAddress(token.tokenAddress, 3)}
-                    </Button>
+
                 </Flex>
                 ))
             }

@@ -24,6 +24,8 @@
     "@emotion/styled": "^11.3.0",
     "@gnosis.pm/safe-apps-sdk": "^3.0.0",
     "@gnosis.pm/safe-apps-web3modal": "^0.5.0",
+    "@oceanprotocol/contracts": "^0.6.4",
+    "@oceanprotocol/lib": "^0.15.1",
     "@textile/hub": "^6.1.2",
     "@walletconnect/web3-provider": "^1.4.1",
     "critters": "^0.0.10",

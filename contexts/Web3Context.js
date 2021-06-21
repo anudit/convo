@@ -197,7 +197,7 @@ export const Web3ContextProvider = ({children}) => {
   }
 
   return (
-    <Web3Context.Provider value={{connectWallet, disconnectWallet, provider, error, signerAddress,ensAddress, getAuthToken}}>
+    <Web3Context.Provider value={{connectWallet, disconnectWallet, provider, error, signerAddress, ensAddress, getAuthToken, web3Modal}}>
         {children}
     </Web3Context.Provider>
   )
