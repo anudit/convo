@@ -20,10 +20,13 @@ const IdentitySection = () => {
             <Flex direction={{base:"column", md: "row"}}>
             <Wrap>
                 <WrapItem>
-                <PoHCard/>
+                  <PoHCard/>
                 </WrapItem>
                 <WrapItem>
-                <BrightIdCard />
+                  <BrightIdCard />
+                </WrapItem>
+                <WrapItem>
+                  <ENSCard />
                 </WrapItem>
             </Wrap>
             </Flex>
@@ -107,6 +110,68 @@ const PoHCard = () => {
             >
               {
                 poh === null ? "Loading" : poh === false ? (<><Button size="sm" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><Verifiedcon color="green.400"/></>)
+              }
+            </Flex>
+          </Box>
+        </Flex>
+    );
+};
+
+const ENSCard = () => {
+
+  const web3Context = useContext(Web3Context);
+  const { ensAddress } = web3Context;
+  const { colorMode } = useColorMode();
+
+    return (
+        <Flex
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          w={{base:"xs", md:"sm"}}
+          mx="auto"
+          m={1}
+        >
+          <Box
+            bg="gray.300"
+            h={48}
+            w="full"
+            rounded="lg"
+            shadow="md"
+            bgSize="cover"
+            bgPos="center"
+            style={{
+              backgroundImage: `url(https://fleek-team-bucket.storage.fleek.co/Blog%20Inline/ENS%20Domains.png)`,
+            }}
+          ></Box>
+
+          <Box
+            w={{ base: 56, md: 64 }}
+            bg={colorMode === "light" ? "white" : "gray.800"}
+            mt={-10}
+            shadow="lg"
+            rounded="lg"
+            overflow="hidden"
+          >
+            <chakra.h3
+              py={2}
+              textAlign="center"
+              fontWeight="bold"
+              color={colorMode === "light" ? "gray.800" : "white"}
+              letterSpacing={1}
+            >
+              ENS Domain
+            </chakra.h3>
+
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              py={2}
+              px={3}
+              bg={colorMode === "light" ? "gray.200" : "gray.700"}
+            >
+              {
+                ensAddress === "" ? (<><Button size="sm" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</Button></>) : (<><Text mr={1}>Connected</Text><Verifiedcon color="green.400"/></>)
               }
             </Flex>
           </Box>
@@ -304,10 +369,11 @@ const PoapSection = () => {
                   }}
                   href={poap.event.event_url}
                   target="_blank"
+                  cursor="pointer"
                 >
-                  <Text>
+                  <Button variant="ghost" size="sm">
                     View Event <ExternalLinkIcon ml={2}/>
-                  </Text>
+                  </Button>
                 </Link>
               </Flex>
 

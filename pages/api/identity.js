@@ -1,4 +1,5 @@
 import { checkPoH } from "@/lib/identity";
+import { ethers } from "ethers";
 import { isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
 
@@ -15,10 +16,13 @@ export default async (req, res) => {
 
         if (Object.keys(req.query).includes('address') === true && isAddress(req.query.address) === true ){
 
+            let tp = new ethers.providers.InfuraProvider("mainnet","1e7969225b2f4eefb3ae792aabf1cc17");
+
             let promiseArray = [
                 checkPoH(req.query.address),
                 fetcher(`https://app.brightid.org/node/v5/verifications/Convo/${req.query.address}`, "GET", {}),
                 fetcher(`https://api.poap.xyz/actions/scan/${req.query.address}`, "GET", {}),
+                tp.lookupAddress(req.query.address)
             ]
 
             let results = await Promise.all(promiseArray);
@@ -34,6 +38,9 @@ export default async (req, res) => {
             if(results[2] === true){ // poap
                 score += results.length;
             }
+            if(Boolean(results[3]) === true){ // ens
+                score += 10;
+            }
 
             if (Object.keys(req.query).includes('scoreOnly') === true){
                 res.status(200).json({
@@ -46,6 +53,7 @@ export default async (req, res) => {
                     'poh': results[0],
                     'brightId': results[1],
                     'poap': results[2],
+                    'ens': results[3],
                     'score': score,
                     'success': true
                 });
