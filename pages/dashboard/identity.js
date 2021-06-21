@@ -28,6 +28,9 @@ const IdentitySection = () => {
                 <WrapItem>
                   <ENSCard />
                 </WrapItem>
+                <WrapItem>
+                  <IdenaCard />
+                </WrapItem>
             </Wrap>
             </Flex>
             <Heading as="h4" size="md" my={4}>
@@ -66,7 +69,7 @@ const PoHCard = () => {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          w={{base:"xs", md:"sm"}}
+          w="xs"
           mx="auto"
           m={1}
         >
@@ -79,7 +82,7 @@ const PoHCard = () => {
             bgSize="cover"
             bgPos="center"
             style={{
-              backgroundImage: `url(https://app.proofofhumanity.id/images/open-graph-image.png)`,
+              backgroundImage: `url(/images/poh.webp)`,
             }}
           ></Box>
 
@@ -128,7 +131,7 @@ const ENSCard = () => {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          w={{base:"xs", md:"sm"}}
+          w="xs"
           mx="auto"
           m={1}
         >
@@ -141,7 +144,7 @@ const ENSCard = () => {
             bgSize="cover"
             bgPos="center"
             style={{
-              backgroundImage: `url(https://fleek-team-bucket.storage.fleek.co/Blog%20Inline/ENS%20Domains.png)`,
+              backgroundImage: `url(/images/ens.webp)`,
             }}
           ></Box>
 
@@ -179,6 +182,82 @@ const ENSCard = () => {
     );
 };
 
+const IdenaCard = () => {
+
+  const web3Context = useContext(Web3Context);
+  const { signerAddress } = web3Context;
+  const { colorMode } = useColorMode();
+
+  const [idena, setIdena] = useState(null);
+  useEffect(() => {
+    async function fetchData() {
+      let data = await fetcher(`https://api.idena.io/api/Address/${signerAddress}`, "GET", {});
+      if (Boolean(data?.result) === true) {
+        setIdena(true);
+      }
+      else {
+        setIdena(false);
+      }
+    }
+    fetchData();
+  }, [signerAddress]);
+
+    return (
+        <Flex
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          w="xs"
+          mx="auto"
+          m={1}
+        >
+          <Box
+            bg="gray.300"
+            h={48}
+            w="full"
+            rounded="lg"
+            shadow="md"
+            bgSize="cover"
+            bgPos="center"
+            style={{
+              backgroundImage: `url(/images/idena.webp)`,
+            }}
+          ></Box>
+
+          <Box
+            w={{ base: 56, md: 64 }}
+            bg={colorMode === "light" ? "white" : "gray.800"}
+            mt={-10}
+            shadow="lg"
+            rounded="lg"
+            overflow="hidden"
+          >
+            <chakra.h3
+              py={2}
+              textAlign="center"
+              fontWeight="bold"
+              color={colorMode === "light" ? "gray.800" : "white"}
+              letterSpacing={1}
+            >
+              Idena Proof-of-Person
+            </chakra.h3>
+
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              py={2}
+              px={3}
+              bg={colorMode === "light" ? "gray.200" : "gray.700"}
+            >
+              {
+                idena === null ? "Loading" : idena === false ? (<><Button size="sm" as="a" target="_blank" href="https://www.idena.io/">Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><Verifiedcon color="green.400"/></>)
+              }
+            </Flex>
+          </Box>
+        </Flex>
+    );
+};
+
 const BrightIdCard = () => {
 
   const web3Context = useContext(Web3Context)
@@ -206,7 +285,7 @@ const BrightIdCard = () => {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        w={{base:"xs", md:"sm"}}
+        w="xs"
         mx="auto"
         m={1}
       >
@@ -219,7 +298,7 @@ const BrightIdCard = () => {
           bgSize="cover"
           bgPos="center"
           style={{
-            backgroundImage: `url(https://uploads-ssl.webflow.com/5e54622b3f6e65be8baf0653/6056ae0e61cc33653d91f34b_Link%20Preview%20Cover.png)`,
+            backgroundImage: `url(/images/brightid.webp)`,
           }}
         ></Box>
 

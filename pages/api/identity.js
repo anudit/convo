@@ -22,7 +22,8 @@ export default async (req, res) => {
                 checkPoH(req.query.address),
                 fetcher(`https://app.brightid.org/node/v5/verifications/Convo/${req.query.address}`, "GET", {}),
                 fetcher(`https://api.poap.xyz/actions/scan/${req.query.address}`, "GET", {}),
-                tp.lookupAddress(req.query.address)
+                tp.lookupAddress(req.query.address),
+                fetcher(`https://api.idena.io/api/Address/${req.query.address}`, "GET", {}),
             ]
 
             let results = await Promise.all(promiseArray);
@@ -41,6 +42,9 @@ export default async (req, res) => {
             if(Boolean(results[3]) === true){ // ens
                 score += 10;
             }
+            if(Boolean(results[3]?.result) === true){ // idena
+                score += 10;
+            }
 
             if (Object.keys(req.query).includes('scoreOnly') === true){
                 res.status(200).json({
@@ -54,6 +58,7 @@ export default async (req, res) => {
                     'brightId': results[1],
                     'poap': results[2],
                     'ens': results[3],
+                    'idena': results[4],
                     'score': score,
                     'success': true
                 });
