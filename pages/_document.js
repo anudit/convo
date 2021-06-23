@@ -28,14 +28,12 @@ class MyDocument extends Document {
                     <meta name='twitter:url' content='https://theconvo.space' />
                     <meta name='twitter:title' content='The Convo Space' />
                     <meta name='twitter:description' content='The Decentralized Conversation Layer of Internet' />
-                    <meta name='twitter:image' content='https://theconvo.space/images/poster.png' />
                     <meta name='twitter:creator' content='@anuditnagar' />
                     <meta property='og:type' content='website' />
                     <meta property='og:title' content='The Convo Space' />
                     <meta property='og:description' content='The Decentralized Conversation Layer of Internet' />
                     <meta property='og:site_name' content='The Convo Space' />
                     <meta property='og:url' content='https://theconvo.space' />
-                    <meta property='og:image' content='https://theconvo.space/images/poster.png' />
                     <script type='application/ld+json' dangerouslySetInnerHTML={ { __html: `{"@context": "http://www.schema.org","@type": "Corporation","name": "The Convo Space","url": "https://theconvo.space","logo": "https://theconvo.space/images/logo.png","image": "https://theconvo.space/images/poster.png","description": "The Decentralized Conversation Layer of Internet."}`}} />
                     <script type='application/ld+json' dangerouslySetInnerHTML={ { __html: `{"@context": "https://schema.org","@type": "Organization","url": "https://theconvo.space","logo": "https://theconvo.space/images/logo.png"}`}} />
                     <script type='application/ld+json' dangerouslySetInnerHTML={ { __html: `{"@context": "https://schema.org","@type": "WebSite","url": "https://theconvo.space","potentialAction": {"@type": "SearchAction","target": "https://theconvo.space/explore?search={searchTerms}","query-input": "required name=searchTerms"}}`}} />

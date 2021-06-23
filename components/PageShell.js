@@ -10,6 +10,20 @@ const PageShell = (props) => {
     <>
       <Head>
         <title>{props.title}</title>
+        {
+          Boolean(props?.metaImageLink) === true ? (
+            <>
+              <meta name='twitter:image' content={props?.metaImageLink} />
+              <meta property='og:image' content={props?.metaImageLink} />
+            </>
+          ) :
+          (
+            <>
+              <meta name='twitter:image' content='https://theconvo.space/images/poster.png' />
+              <meta property='og:image' content='https://theconvo.space/images/poster.png' />
+            </>
+          )
+        }
       </Head>
       <NavBar/>
       <Flex

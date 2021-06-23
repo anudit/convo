@@ -12,7 +12,9 @@ const PageShell = (props) => {
   return (
     <>
       <Head>
-        <title>{props.title}</title>
+            <title>{props.title}</title>
+            <meta name='twitter:image' content='https://theconvo.space/images/poster.png' />
+            <meta property='og:image' content='https://theconvo.space/images/poster.png' />
       </Head>
 
       <Flex

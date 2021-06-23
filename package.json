@@ -18,8 +18,8 @@
     "@chakra-ui/icons": "^1.0.13",
     "@chakra-ui/react": "^1.6.4",
     "@chakra-ui/system": "^1.7.0",
-    "@dicebear/avatars": "^4.6.4",
-    "@dicebear/micah": "^4.6.4",
+    "@dicebear/avatars": "^4.6.8",
+    "@dicebear/micah": "^4.6.8",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
     "@gnosis.pm/safe-apps-sdk": "^4.0.0",
@@ -38,9 +38,9 @@
     "framer-motion": "^4.1.17",
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
-    "next": "^11.0.0",
+    "next": "^11.0.1",
     "next-pwa": "^5.2.21",
-    "nft.storage": "^2.1.1",
+    "nft.storage": "^3.0.0",
     "react": "^17.0.2",
     "react-device-detect": "^1.17.0",
     "react-dom": "^17.0.2",
@@ -52,11 +52,11 @@
     "typewriter-effect": "^2.18.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.3",
-    "webpack": "^5.39.1"
+    "webpack": "^5.40.0"
   },
   "devDependencies": {
-    "eslint-config-next": "^11.0.0",
+    "eslint-config-next": "^11.0.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "next-sitemap": "^1.6.116"
+    "next-sitemap": "^1.6.124"
   }
 }

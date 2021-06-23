@@ -13,8 +13,8 @@ import { ReplyIcon, ThreeDotMenuIcon, CodeIcon } from '@/public/icons';
 import { getAvatar } from '@/utils/avatar';
 import { getAllThreads, getComments, getThread } from "@/lib/thread-db";
 import timeAgo from '@/utils/timeAgo';
-import { toB64, cleanAdd, truncateAddress } from '@/utils/stringUtils';
-import { Web3Context } from '@/contexts/Web3Context'
+import { toB64, cleanAdd, truncateAddress, prettyTime } from '@/utils/stringUtils';
+import { Web3Context } from '@/contexts/Web3Context';
 
 export async function getStaticProps(context) {
     const threadId = context.params.threadId;
@@ -49,6 +49,11 @@ export async function getStaticPaths() {
     };
 }
 
+function makeThumbnailImage(title, creator, creation_time){
+    const imagelink = `https://image.theconvo.space/api/image?title=${title}&author=${truncateAddress(creator)}&creation_time=${encodeURIComponent(creation_time)}`;
+    return imagelink;
+}
+
 const Threads = (props) => {
 
     const router = useRouter()
@@ -63,6 +68,7 @@ const Threads = (props) => {
         fetcher,
         {initialData: props.thread}
     );
+    console.log(props.thread);
 
     const { hasCopied, onCopy } = useClipboard(`${process.env.NEXT_PUBLIC_API_SITE_URL}/thread/${router.query.threadId}`);
     const { hasCopied: hasCopiedIframe, onCopy: onCopyIframe } = useClipboard(`
@@ -173,8 +179,10 @@ const Threads = (props) => {
 
     if (thread && comments){
 
+        const metaImageLink = makeThumbnailImage(thread?.title, thread?.creator, prettyTime(thread?.createdOn) );
+
         return (
-            <PageShell title={`The Convo Space | ` + thread.url }>
+            <PageShell title={`The Convo Space | ` + thread.url } metaImageLink={metaImageLink}>
                 <Heading
                     as="h3"
                     fontWeight={700}
