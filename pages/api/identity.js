@@ -24,7 +24,7 @@ export default async (req, res) => {
                 fetcher(`https://api.poap.xyz/actions/scan/${req.query.address}`, "GET", {}),
                 tp.lookupAddress(req.query.address),
                 fetcher(`https://api.idena.io/api/Address/${req.query.address}`, "GET", {}),
-            ]
+            ];
 
             let results = await Promise.all(promiseArray);
 

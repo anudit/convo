@@ -211,7 +211,7 @@ const Threads = (props) => {
                 <Table size="sm" variant="striped" w={{ base: "100%", md: "80%", lg: "60%", xl: "60%" }}>
                     <Tbody>
                         {
-                            comments && comments.map((comment) => {
+                            comments.map((comment) => {
                                 let svg = getAvatar(comment.author);
                                 return (
                                 <Tr key={comment?._id} id={comment?._id}>

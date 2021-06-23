@@ -4,7 +4,7 @@ export default function timeAgo(time) {
         break;
       case "string":
         if(time.length <= "10"){
-          time = time+"000"
+          time = time+"000";
         }
         time = +new Date(parseInt(time));
         break;

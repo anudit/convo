@@ -56,7 +56,7 @@ const Threads = (props) => {
 
     const [page, setPage] = useState(0);
     const [comments, setComments] = useState(false);
-    const [initScroll, setInitScroll] = useState(false)
+    const [initScroll, setInitScroll] = useState(false);
 
     const newCommentRef = useRef();
 
@@ -275,7 +275,7 @@ const Threads = (props) => {
                         <Table size="sm" variant="striped" w="100%">
                             <Tbody >
                                 {
-                                    comments && comments.map && comments.map((comment) => {
+                                    comments.map && comments.map((comment) => {
                                         return (
                                         <Tr key={comment?._id} id={comment?._id}>
                                             <Td width="100vw"

@@ -75,7 +75,7 @@ export default async (req, res) => {
             'text': req.body.comment,
             'url': req.body.url,
             'tid': req.body.threadId,
-          }
+          };
           let newId = await createComment(commentData);
 
           res.status(200).json({
