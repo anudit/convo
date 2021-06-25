@@ -1,32 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { ethers } from "ethers";
 // import Web3Modal from "web3modal";
-import Fortmatic from "fortmatic";
+import Portis from "@portis/web3";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Cookies from "js-cookie";
 import fetcher from "@/utils/fetcher";
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 
 export const Web3Context = React.createContext(undefined);
-
-const providerOptions = {
-  walletconnect: {
-    package: WalletConnectProvider,
-    options: {
-      infuraId: '1e7969225b2f4eefb3ae792aabf1cc17',
-    },
-  },
-  fortmatic: {
-    display: {
-      name: "Fortmatic",
-      description: "Login with your Email"
-    },
-    package: Fortmatic,
-    options: {
-        key: "pk_live_3DE538B0E718F1CE"
-    }
-  }
-};
 
 export const Web3ContextProvider = ({children}) => {
 
@@ -62,6 +43,25 @@ export const Web3ContextProvider = ({children}) => {
 
   useEffect(() => {
 
+    const providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          infuraId: '1e7969225b2f4eefb3ae792aabf1cc17',
+        },
+      },
+      portis: {
+        display: {
+          name: "Portis",
+          description: "Connect with your Email and Password"
+        },
+        package: Portis,
+        options: {
+          id: "d3230cb7-51c6-414f-a47f-293364021451"
+        }
+      }
+    };
+
     let w3m = new Web3Modal({
       network: "mainnet",
       cacheProvider: true,
@@ -73,7 +73,7 @@ export const Web3ContextProvider = ({children}) => {
 
   }, []);
 
-  async function connectWallet() {
+  async function connectWallet(choice = "") {
     try {
 
       let modalProvider;
@@ -86,7 +86,13 @@ export const Web3ContextProvider = ({children}) => {
       // }
       // else {
       // }
-      modalProvider = await web3Modal.connect();
+
+      if (choice !== "") {
+        modalProvider = await web3Modal.connectTo(choice);
+      }
+      else {
+        modalProvider = await web3Modal.connect();
+      }
 
       if (modalProvider.on) {
         modalProvider.on("accountsChanged", () => {
@@ -110,7 +116,7 @@ export const Web3ContextProvider = ({children}) => {
       );
 
       if (tokenRes['success'] != true){
-        await updateAuthToken(tempaddress, tempsigner);
+        await updateAuthToken(tempaddress, ethersProvider);
       }
 
     } catch(e) {
@@ -139,8 +145,7 @@ export const Web3ContextProvider = ({children}) => {
     }
     else {
       try {
-        let tempsigner = provider.getSigner();
-        let tokenUpdateRes = await updateAuthToken(authAdd, tempsigner);
+        let tokenUpdateRes = await updateAuthToken(authAdd, provider);
         if (tokenUpdateRes) {
           return tokenUpdateRes;
         }
@@ -152,7 +157,7 @@ export const Web3ContextProvider = ({children}) => {
     }
   }
 
-  async function updateAuthToken(signerAddress, tempSigner) {
+  async function updateAuthToken(signerAddress, tempProvider) {
 
     // let signer = await provider.getSigner();
     let timestamp = Date.now();
@@ -177,7 +182,12 @@ export const Web3ContextProvider = ({children}) => {
     //   const safeTransaction = await  tempSigner.provider.provider.sdk.createTransaction(partialTx)
     //   console.log(safeTransaction);
     // }
-    let signature = await tempSigner.signMessage(data);
+    // let signature = await tempSigner.signMessage(data);
+
+    let signature = await tempProvider.send(
+      'personal_sign',
+      [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
+    );
 
     let res = await fetcher(`/api/auth?apikey=CONVO`, "POST", {
       signerAddress,

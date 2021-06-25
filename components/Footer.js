@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useColorModeValue, Flex, Divider, Text, Stack } from "@chakra-ui/react";
 
 import SubscribeCard from '@/components/SubscribeCard';
-import { TheConvoSpaceIcon } from '@/public/icons';
+import { DiscordIcon, GithubIcon, TheConvoSpaceIcon, TwitterIcon } from '@/public/icons';
 
 const Footer = () => {
     return (
@@ -71,15 +71,20 @@ const Footer = () => {
                     <Text fontWeight={600} pb={{base: 1, md: 4}} color={useColorModeValue("gray.800","whiteAlpha.600")}>
                         Socials
                     </Text>
-                    <Link rel="noreferrer" target="_blank" href="https://github.com/anudit/convo" aria-label="GitHub" _hover={{
+                    <Link rel="noreferrer" href="https://github.com/anudit/convo" target="_blank" aria-label="GitHub" _hover={{
                         color: useColorModeValue("black", "whiteAlpha.700"),
                     }}>
-                        GitHub
+                        <Text cursor="pointer"><GithubIcon mr={2}/>GitHub</Text>
                     </Link>
-                    <Link rel="noreferrer" target="_blank" href="https://twitter.com/anuditnagar" aria-label="Twitter" _hover={{
+                    <Link rel="noreferrer" href="https://twitter.com/anuditnagar" target="_blank" aria-label="Twitter" _hover={{
                         color: useColorModeValue("black", "whiteAlpha.700"),
                     }}>
-                        Twitter
+                        <Text cursor="pointer"><TwitterIcon mr={2}/>Twitter</Text>
+                    </Link>
+                    <Link rel="noreferrer" href="https://discord.gg/JFn93yJUbB" target="_blank" aria-label="Discord" _hover={{
+                        color: useColorModeValue("black", "whiteAlpha.700"),
+                    }}>
+                        <Text cursor="pointer"><DiscordIcon mr={2}/>Discord</Text>
                     </Link>
                 </Stack>
 

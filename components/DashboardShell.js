@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useColorMode, Text, Flex, Heading, Button, Tooltip } from "@chakra-ui/react";
+import { useColorMode, Text, Flex, Heading, Tooltip, chakra } from "@chakra-ui/react";
 
 import { Web3Context } from '@/contexts/Web3Context';
 import { isAddress } from 'ethers/lib/utils';
-import { EthereumIcon, TheConvoSpaceIcon, DisconnectIcon } from '@/public/icons';
+import { TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon } from '@/public/icons';
 
 const PageShell = (props) => {
 
@@ -44,18 +44,97 @@ const DashboardShell = ({title, children}) => {
             <Flex
                 direction="column"
                 align="center"
+                justifyContent="center"
                 maxW="1600px"
                 w={{ base: "95%", md: "90%", lg: "90%"}}
                 m="0 auto"
                 mt={2}
             >
-                <Heading as="h3" size="lg" align="center">
+                <Heading as="h3" size="xl" align="center">
                     Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/images/gradient.webp')" backgroundSize="cover">Ethereum Wallet</Text>
                 </Heading>
                 <br/>
-                <Button borderRadius="30px" onClick={connectWallet}>
-                    <EthereumIcon mr={1}/> Sign-In with Ethereum
-                </Button>
+                <Text py={2} cursor="pointer" color={colorMode === 'light' ? "#2d81ff": "#2d81ff"}>
+                    What is a wallet?
+                </Text>
+                <br/>
+                <Flex w="100%" direction={{base:"column", md:"row"}} alignItems="center" justifyContent="center">
+                    <Flex
+                        minHeight="170px"
+                        w={{base:"80vw", md:"30vw"}}
+                        maxW={{base:"80vw", md:"300px"}}
+                        mx={{base:0, md:2}}
+                        my={{base:2, md:0}}
+                        p={6}
+                        direction="column"
+                        borderWidth={2}
+                        borderColor={colorMode === 'light' ? "#eee": "whiteAlpha.400"}
+                        borderRadius={16}
+                        cursor="pointer"
+                        _hover={{
+                            borderColor: colorMode === 'light' ? "blackAlpha.800": "gray.500",
+                        }}
+                        onClick={()=>{connectWallet('injected')}}
+                    >
+                        <Flex px={4} py={2} marginTop="-40px" color={colorMode === 'light' ? "white": "black"} background={colorMode === 'light' ? "black": "white"} width="130px" marginLeft="120px" borderRadius="100px">
+                            Most Popular
+                        </Flex>
+                        <MetaMaskIcon py={2} boxSize={10}/>
+                        <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>MetaMask</Text>
+                        <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>One of the most Secure and Flexible Wallets.</Text>
+                    </Flex>
+                    <Flex
+                        minHeight="170px"
+                        w={{base:"80vw", md:"30vw"}}
+                        maxW={{base:"80vw", md:"300px"}}
+                        mx={{base:0, md:2}}
+                        my={{base:2, md:0}}
+                        p={6}
+                        direction="column"
+                        borderWidth={2}
+                        borderColor={colorMode === 'light' ? "#eee": "whiteAlpha.400"}
+                        borderRadius={16}
+                        cursor="pointer"
+                        _hover={{
+                            borderColor: colorMode === 'light' ? "blackAlpha.800": "gray.500",
+                        }}
+                        onClick={()=>{connectWallet('portis')}}
+                    >
+                        <PortisIcon py={2} boxSize={10}/>
+                        <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>Portis</Text>
+                        <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Connect with your Email and Password.</Text>
+                    </Flex>
+                    <Flex
+                        minHeight="170px"
+                        w={{base:"80vw", md:"30vw"}}
+                        maxW={{base:"80vw", md:"300px"}}
+                        mx={{base:0, md:2}}
+                        my={{base:2, md:0}}
+                        p={6}
+                        pt={4}
+                        direction="column"
+                        borderWidth={2}
+                        borderColor={colorMode === 'light' ? "#eee": "whiteAlpha.400"}
+                        borderRadius={16}
+                        cursor="pointer"
+                        _hover={{
+                            borderColor: colorMode === 'light' ? "blackAlpha.800": "gray.500",
+                        }}
+                        onClick={()=>{connectWallet('walletconnect')}}
+                    >
+                        <Text py={2}>
+                            <WalletConnectIcon boxSize={8} mr={2}/>
+                            <chakra.span fontSize="20px" mr={2}>🌈</chakra.span>
+                            <ArgentIcon boxSize={6} />
+                        </Text>
+                        <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>WalletConnect</Text>
+                        <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Connect with Rainbow, Argent and others</Text>
+                    </Flex>
+                </Flex>
+                <br/>
+                <Text  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>
+                We do not own your private keys and cannot access your funds without your confirmation.
+                </Text>
             </Flex>
         </PageShell>
         )

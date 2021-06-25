@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { isAddress, recoverAddress, arrayify, hashMessage } from 'ethers/lib/utils';
+import { isAddress, verifyMessage } from 'ethers/lib/utils';
 
 export default async (req, res) => {
 
@@ -28,7 +28,7 @@ export default async (req, res) => {
       }
 
       let data = `I allow this site to access my data on The Convo Space using the account ${req.body.signerAddress}. Timestamp:${req.body.timestamp}`;
-      let recoveredAddress = recoverAddress(arrayify(hashMessage(data)), req.body.signature);
+      let recoveredAddress = verifyMessage(data, req.body.signature);
 
       if(req.body.signerAddress === recoveredAddress){
 
@@ -47,7 +47,7 @@ export default async (req, res) => {
       else {
         res.status(400).json({
           'success':false,
-          'message': "Recovered address from signature doesn&apos;t match signerAddress"
+          'message': "Recovered address from signature doesn't match signerAddress"
         });
       }
     }
