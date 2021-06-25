@@ -68,7 +68,6 @@ const Threads = (props) => {
         fetcher,
         {initialData: props.thread}
     );
-    console.log(props.thread);
 
     const { hasCopied, onCopy } = useClipboard(`${process.env.NEXT_PUBLIC_API_SITE_URL}/thread/${router.query.threadId}`);
     const { hasCopied: hasCopiedIframe, onCopy: onCopyIframe } = useClipboard(`

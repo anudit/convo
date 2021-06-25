@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useColorMode, Text, Flex, Heading, Tooltip, chakra } from "@chakra-ui/react";
+import { useDisclosure, useColorMode, Text, Flex, Heading, Tooltip, chakra, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton  } from "@chakra-ui/react";
 
 import { Web3Context } from '@/contexts/Web3Context';
+import { TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon } from '@/public/icons';
+import { InfoIcon } from '@chakra-ui/icons';
 import { isAddress } from 'ethers/lib/utils';
-import { TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon } from '@/public/icons';
 
 const PageShell = (props) => {
 
@@ -36,11 +37,49 @@ const DashboardShell = ({title, children}) => {
     const web3Context = useContext(Web3Context);
     const { connectWallet, signerAddress, disconnectWallet } = web3Context;
     const { colorMode, toggleColorMode } = useColorMode();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     // Not logged in
     if (signerAddress === ""){
         return (
         <PageShell title={`${title} | The Convo Space`}>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>What is a wallet?</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms. They are either built into your browser, an extension added to your browser, a piece of hardware plugged into your computer, or even an app on your phone.
+                        <br/><br/>
+                            <Button
+                                as="a" href="https://metamask.io/" target="_blank"
+                                variant="ghost"
+                                borderRadius={16}
+                                w="100%"
+                                textAlign="center"
+                                py={2}
+                                px={4}
+                                cursor="pointer"
+                            >
+                                <MetaMaskIcon mr={2}/> Get MetaMask Wallet <ExternalIcon ml={2}/>
+                            </Button>
+                        <br/>
+                            <Button
+                                as="a" href="https://rainbow.me/" target="_blank"
+                                variant="ghost"
+                                borderRadius={16}
+                                w="100%"
+                                textAlign="center"
+                                py={2}
+                                px={4}
+                                cursor="pointer"
+                            >
+                                🌈 &nbsp;Get Rainbow Wallet <ExternalIcon ml={2}/>
+                            </Button>
+                        <br/><br/>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
             <Flex
                 direction="column"
                 align="center"
@@ -54,7 +93,8 @@ const DashboardShell = ({title, children}) => {
                     Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/images/gradient.webp')" backgroundSize="cover">Ethereum Wallet</Text>
                 </Heading>
                 <br/>
-                <Text py={2} cursor="pointer" color={colorMode === 'light' ? "#2d81ff": "#2d81ff"}>
+
+                <Text py={2} cursor="pointer" color={colorMode === 'light' ? "#2d81ff": "#2d81ff"} onClick={onOpen}>
                     What is a wallet?
                 </Text>
                 <br/>
@@ -132,9 +172,10 @@ const DashboardShell = ({title, children}) => {
                     </Flex>
                 </Flex>
                 <br/>
-                <Text  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>
-                We do not own your private keys and cannot access your funds without your confirmation.
+                <Text  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"} align="center">
+                <InfoIcon mr={1}/> We do not own your private keys and cannot access your funds without your confirmation.
                 </Text>
+                <br/>
             </Flex>
         </PageShell>
         )

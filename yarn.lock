@@ -1804,7 +1804,7 @@
   resolved "https://registry.yarnpkg.com/@ethereum-navigator/atlas/-/atlas-0.7.3.tgz#0efbd95870586acac88c30a410b2c50b27b439d3"
   integrity sha512-kCyV/8wOqSU/gn+H7uSaR/Xc+ZogXrW2QmF5MfZL2+NUS4+y0emlfBphTGwP5bOB0Cg2goJTcI7Y6+0LNcJYzg==
 
-"@ethereum-navigator/navigator@^0.5.2":
+"@ethereum-navigator/navigator@^0.5.3":
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@ethereum-navigator/navigator/-/navigator-0.5.3.tgz#3a665c95ec148bbc1747fb1d238178bf27acff48"
   integrity sha512-AOhS1EXPrVeWbLvW3fVbw5AZ2mPYXDKOqMojgVz602U/tEjRXAsw/Gwa+oSOssAyU37SNKBaIorEhBiEY+RYdA==
@@ -2704,7 +2704,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@oceanprotocol/contracts@^0.6.2", "@oceanprotocol/contracts@^0.6.4":
+"@oceanprotocol/contracts@^0.6.4":
   version "0.6.4"
   resolved "https://registry.yarnpkg.com/@oceanprotocol/contracts/-/contracts-0.6.4.tgz#add8ad9b95d03389e5a2013f4010430f0d2f296b"
   integrity sha512-W+wzN+XuA/W0y7P1bGnJ5Fi9hAjrH2oms7soi5wRoRYwPjErUdt+aDzx9ygvNvKA5nvHXAb9csOiUCD75Erl/A==
@@ -2714,15 +2714,14 @@
     truffle "^5.3.9"
     truffle-assertions "^0.9.2"
 
-"@oceanprotocol/lib@^0.15.1":
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/@oceanprotocol/lib/-/lib-0.15.1.tgz#81d1e671d1dd590ffa5f4498d522461ecaf5983d"
-  integrity sha512-GrHZgE5W9Ge7YeO2ShdY7j0MpgWic5/srmfKpVfoUILIfCm8ZdCvSb7d6y1hE0emrsa//+tliBmlaidL/krzkg==
+"@oceanprotocol/lib@^0.16.1":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@oceanprotocol/lib/-/lib-0.16.1.tgz#bc0de95c95854ce3a3554530216d63fb791d8338"
+  integrity sha512-zSVs1VaC8T+BBo9MeL88odU6wFNRHAptaLPHT6qGf2Nvc8MyhHdP15TdnHpeLJF4Ez0k6WKemnOQ1DNuaW8FlA==
   dependencies:
-    "@ethereum-navigator/navigator" "^0.5.2"
-    "@oceanprotocol/contracts" "^0.6.2"
-    "@types/crypto-js" "^4.0.1"
-    cross-fetch "^3.1.2"
+    "@ethereum-navigator/navigator" "^0.5.3"
+    "@oceanprotocol/contracts" "^0.6.4"
+    cross-fetch "^3.1.4"
     crypto-js "^4.0.0"
     decimal.js "^10.2.1"
     fs "0.0.1-security"
@@ -2730,7 +2729,7 @@
     node-abort-controller "^2.0.0"
     save-file "^2.3.1"
     uuid "^8.3.2"
-    web3 "^1.3.5"
+    web3 "^1.3.6"
     web3-eth-contract "^1.3.6"
 
 "@pedrouid/environment@^1.0.1":
@@ -3283,10 +3282,10 @@
     web3-eth-abi "1.3.6"
     web3-utils "1.3.6"
 
-"@truffle/db@^0.5.16":
-  version "0.5.16"
-  resolved "https://registry.yarnpkg.com/@truffle/db/-/db-0.5.16.tgz#9ebcea7f3ca781ba1f53b9449625352959ebf773"
-  integrity sha512-96aT4SMnphCMgabZtMCRf0Oi/W7v00kj3XJZ1SV3m2UsqmjW2ehocRekLX1TupeV/kpKwDMNqsQ1hof/hzKdjw==
+"@truffle/db@^0.5.17":
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/@truffle/db/-/db-0.5.17.tgz#d60abb4c57674ae55cd630dd7fc9912419ed5ed6"
+  integrity sha512-VF5mkY4VtJvrNQRqTYgiUPrvsaYvs4UeHQysSOuBsff8ck4uM7o7BESlA7KRicysp6hIikNeqTdzwIy1xWkOqg==
   dependencies:
     "@truffle/abi-utils" "^0.2.2"
     "@truffle/code-utils" "^1.2.28"
@@ -3321,10 +3320,10 @@
     highlight.js "^10.4.0"
     highlightjs-solidity "^1.1.1"
 
-"@truffle/debugger@^9.1.1":
-  version "9.1.1"
-  resolved "https://registry.yarnpkg.com/@truffle/debugger/-/debugger-9.1.1.tgz#7180e59d7df973c77d74c5cd8800f42b925f6aed"
-  integrity sha512-pTWxF4huDum5iOuDhima26HKcGD3H54E88LuCwidTiBhL2K2w1vFRd24LQ1+bwPmkuV1Gc18oD3xbaiWSOdUkQ==
+"@truffle/debugger@^9.1.2":
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/@truffle/debugger/-/debugger-9.1.2.tgz#44ac21a05fd4a7f46a871bbf7a821e31893d7ca5"
+  integrity sha512-/pwPi7C2Lpe5L75IW8d3m+iFPDVR8Ht3g6VKWrJUXPruSW9kK0B316F/AVre/qsTJF69LXLVrV2SKksrTyVCNg==
   dependencies:
     "@truffle/abi-utils" "^0.2.2"
     "@truffle/codec" "^0.11.1"
@@ -3604,11 +3603,6 @@
   version "2.8.10"
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.10.tgz#61cc8469849e5bcdd0c7044122265c39cec10cf4"
   integrity sha512-C7srjHiVG3Ey1nR6d511dtDkCEjxuN9W1HWAEjGq8kpcwmNM6JJkpC0xvabM7BXTG2wDq8Eu33iH9aQKa7IvLQ==
-
-"@types/crypto-js@^4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@types/crypto-js/-/crypto-js-4.0.1.tgz#3a4bd24518b0e6c5940da4e2659eeb2ef0806963"
-  integrity sha512-6+OPzqhKX/cx5xh+yO8Cqg3u3alrkhoxhE5ZOdSEv0DOzJ13lwJ6laqGU0Kv6+XDMFmlnGId04LtY22PsFLQUw==
 
 "@types/ed2curve@^0.2.2":
   version "0.2.2"
@@ -4407,9 +4401,9 @@ acorn@^7.4.0:
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
 acorn@^8.2.1:
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.4.0.tgz#af53266e698d7cffa416714b503066a82221be60"
-  integrity sha512-ULr0LDaEqQrMFGyQ3bhJkLsbtrQ8QibAseGZeaSUiT/6zb9IvIkomWHJIvgvwad+hinRAgsI51JcWk2yvwyL+w==
+  version "8.4.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.4.1.tgz#56c36251fc7cabc7096adc18f05afe814321a28c"
+  integrity sha512-asabaBSkEKosYKMITunzX177CXxQ4Q8BSSzMTKD+FefUhipQC70gfW5SiUDhYQ3vk8G+81HqQk7Fv9OXwwn9KA==
 
 aes-js@3.0.0:
   version "3.0.0"
@@ -6591,7 +6585,7 @@ cross-fetch@3.0.6:
   dependencies:
     node-fetch "2.6.1"
 
-cross-fetch@3.1.4, cross-fetch@^3.0.4, cross-fetch@^3.1.2:
+cross-fetch@3.1.4, cross-fetch@^3.0.4, cross-fetch@^3.1.4:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.4.tgz#9723f3a3a247bf8b89039f3a380a9244e8fa2f39"
   integrity sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==
@@ -6887,9 +6881,9 @@ decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.2.0:
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
 
 decimal.js@^10.2.1:
-  version "10.3.0"
-  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.3.0.tgz#96fd481189818e0d5810c18ac147824b9e4c0026"
-  integrity sha512-MrQRs2gyD//7NeHi9TtsfClkf+cFAewDz+PZHR8ILKglLmBMyVX3ymQ+oeznE3tjrS7beTN+6JXb2C3JDHm7ug==
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.3.1.tgz#d8c3a444a9c6774ba60ca6ad7261c3a94fd5e783"
+  integrity sha512-V0pfhfr8suzyPGOx3nmq4aHqabehUZn6Ch9kyFpV79TGDTWFmHqUqXdabR7QHqxzrYolF4+tVmJhUG4OURg5dQ==
 
 decode-uri-component@^0.2.0:
   version "0.2.0"
@@ -7360,9 +7354,9 @@ electron-fetch@^1.7.2:
     encoding "^0.1.13"
 
 electron-to-chromium@^1.3.723:
-  version "1.3.755"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.755.tgz#4b6101f13de910cf3f0a1789ddc57328133b9332"
-  integrity sha512-BJ1s/kuUuOeo1bF/EM2E4yqW9te0Hpof3wgwBx40AWJE18zsD1Tqo0kr7ijnOc+lRsrlrqKPauJAHqaxOItoUA==
+  version "1.3.758"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.758.tgz#0baeb8f0a89d1850cc65f92da5f669343e4f6241"
+  integrity sha512-StYtiDbgZdjcck3OLwsVVVif7QDuD5m5v2gF+XpETp5lHa7X0y3129YBlYaHRPyj1fep1oAaC6i//gAdp+rhbw==
 
 elliptic@6.5.3:
   version "6.5.3"
@@ -12455,12 +12449,12 @@ multicodec@^2.0.0, multicodec@^2.0.1:
     varint "^6.0.0"
 
 multicodec@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/multicodec/-/multicodec-3.0.1.tgz#94e043847ee11fcce92487609ac9010429a95e31"
-  integrity sha512-Y6j3wiPojvkF/z6KFIGt84KdJdP2oILEdzc/3YbD3qQ3EerhqtYlfsZTPPNVoCCxNZZdzIpCKrdYFSav17sIrQ==
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/multicodec/-/multicodec-3.1.0.tgz#bc96faee2118d1ff114a3ee9e870a030a3b65743"
+  integrity sha512-f6d4DhbQ9a8WiJ/wpbKgeJSeR0/juP/1wnjbKdZ0KAWDkC/z7Lb3xOegMUG+uTcfwSYf6j1eTvFf8HDgqPRGmQ==
   dependencies:
-    uint8arrays "^2.1.3"
-    varint "^5.0.2"
+    uint8arrays "^2.1.5"
+    varint "^6.0.0"
 
 multihashes@3.1.2, multihashes@^3.0.1:
   version "3.1.2"
@@ -15191,9 +15185,9 @@ rollup-plugin-terser@^7.0.0:
     terser "^5.0.0"
 
 rollup@^2.43.1:
-  version "2.52.2"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.52.2.tgz#a7e90d10ddae3e8472c2857bd9f44b09ef34a47a"
-  integrity sha512-4RlFC3k2BIHlUsJ9mGd8OO+9Lm2eDF5P7+6DNQOp5sx+7N/1tFM01kELfbxlMX3MxT6owvLB1ln4S3QvvQlbUA==
+  version "2.52.3"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.52.3.tgz#062fc3c85f67736d6758749310cfee64836c4e2a"
+  integrity sha512-QF3Sju8Kl2z0osI4unyOLyUudyhOMK6G0AeqJWgfiyigqLAlnNrfBcDWDx+f1cqn+JU2iIYVkDrgQ6/KtwEfrg==
   optionalDependencies:
     fsevents "~2.3.2"
 
@@ -15464,10 +15458,10 @@ serialize-javascript@4.0.0, serialize-javascript@^4.0.0:
   dependencies:
     randombytes "^2.1.0"
 
-serialize-javascript@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-5.0.1.tgz#7886ec848049a462467a97d3d918ebb2aaf934f4"
-  integrity sha512-SaaNal9imEO737H2c05Og0/8LUXG7EnsZyMa8MzkmuHoELfT6txuj0cMqRj6zfPKnmQ1yasR4PCJc8x+M4JSPA==
+serialize-javascript@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-6.0.0.tgz#efae5d88f45d7924141da8b5c3a7a7e663fefeb8"
+  integrity sha512-Qr3TosvguFt8ePWqsvRfrKyQXIiW+nGbYpy8XK24NQHE83caxWt+mIymTT19DGFbNWNLfEwsrkSmN64lVWB9ag==
   dependencies:
     randombytes "^2.1.0"
 
@@ -16451,14 +16445,14 @@ tempy@^0.6.0:
     unique-string "^2.0.0"
 
 terser-webpack-plugin@^5.1.1, terser-webpack-plugin@^5.1.3:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-5.1.3.tgz#30033e955ca28b55664f1e4b30a1347e61aa23af"
-  integrity sha512-cxGbMqr6+A2hrIB5ehFIF+F/iST5ZOxvOmy9zih9ySbP1C2oEWQSOUS+2SNBTjzx5xLKO4xnod9eywdfq1Nb9A==
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-5.1.4.tgz#c369cf8a47aa9922bd0d8a94fe3d3da11a7678a1"
+  integrity sha512-C2WkFwstHDhVEmsmlCxrXUtVklS+Ir1A7twrYzrDrQQOIMOaVAYykaoo/Aq1K0QRkMoY2hhvDQY1cm4jnIMFwA==
   dependencies:
     jest-worker "^27.0.2"
     p-limit "^3.1.0"
     schema-utils "^3.0.0"
-    serialize-javascript "^5.0.1"
+    serialize-javascript "^6.0.0"
     source-map "^0.6.1"
     terser "^5.7.0"
 
@@ -16749,16 +16743,16 @@ truffle-assertions@^0.9.2:
     lodash.isequal "^4.5.0"
 
 truffle@^5.3.9:
-  version "5.3.11"
-  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.3.11.tgz#ffe5299bd5501f8cd4e507df40f90606083a04ce"
-  integrity sha512-3Bl8Ub5DTmMMS30d9lKuWbL6Gmrf7zZLAVHViQroiPpKtX1Gat0UtGeTSF7FTAImUvZIGuZ47Xdl9I4sEWwfhw==
+  version "5.3.12"
+  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.3.12.tgz#124f089c5859fceba3dc3ceaeb5981b51877039d"
+  integrity sha512-JpqIWI40P2Z5mfOnpo8UKEkWKOila/rGaalxM++3uEvylzh+EXQeBgHwE7Kh4iKfqIGXH/cfXDxKXgilTBiMYg==
   dependencies:
-    "@truffle/debugger" "^9.1.1"
+    "@truffle/debugger" "^9.1.2"
     app-module-path "^2.2.0"
     mocha "8.1.2"
     original-require "^1.0.1"
   optionalDependencies:
-    "@truffle/db" "^0.5.16"
+    "@truffle/db" "^0.5.17"
     "@truffle/preserve-fs" "^0.2.3"
     "@truffle/preserve-to-buckets" "^0.2.3"
     "@truffle/preserve-to-filecoin" "^0.2.3"
@@ -16995,7 +16989,7 @@ uint8arrays@1.1.0, uint8arrays@^1.0.0, uint8arrays@^1.1.0:
     multibase "^3.0.0"
     web-encoding "^1.0.2"
 
-uint8arrays@^2.0.5, uint8arrays@^2.1.3, uint8arrays@^2.1.4:
+uint8arrays@^2.0.5, uint8arrays@^2.1.3, uint8arrays@^2.1.4, uint8arrays@^2.1.5:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/uint8arrays/-/uint8arrays-2.1.5.tgz#9e6e6377a9463d5eba4620a3f0450f7eb389a351"
   integrity sha512-CSR7AO+4AHUeSOnZ/NBNCElDeWfRh9bXtOck27083kc7SznmmHIhNEkEOCQOn0wvrIMjS3IH0TNLR16vuc46mA==
@@ -17747,7 +17741,7 @@ web3-utils@1.3.6, web3-utils@^1.0.0-beta.31:
     underscore "1.12.1"
     utf8 "3.0.0"
 
-web3@1.3.6, web3@^1.2.7, web3@^1.3.5:
+web3@1.3.6, web3@^1.2.7, web3@^1.3.6:
   version "1.3.6"
   resolved "https://registry.yarnpkg.com/web3/-/web3-1.3.6.tgz#599425461c3f9a8cbbefa70616438995f4a064cc"
   integrity sha512-jEpPhnL6GDteifdVh7ulzlPrtVQeA30V9vnki9liYlUvLV82ZM7BNOQJiuzlDePuE+jZETZSP/0G/JlUVt6pOA==
