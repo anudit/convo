@@ -16,7 +16,7 @@ export default async (req, res) => {
 
         if (Object.keys(req.query).includes('address') === true && isAddress(req.query.address) === true ){
 
-            let tp = new ethers.providers.InfuraProvider("mainnet","1e7969225b2f4eefb3ae792aabf1cc17");
+            let tp = new ethers.providers.AlchemyProvider("mainnet","qqQIm10pMOOsdmlV3p7NYIPt91bB0TL4");
 
             let promiseArray = [
                 checkPoH(req.query.address),

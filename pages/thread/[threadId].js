@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Table,Tbody, Text, Tr, Td, useClipboard, Heading, ButtonGroup, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, Flex, Box, Tooltip, Spinner } from "@chakra-ui/react";
+import { Table, Tbody, Text, Tr, Td, useClipboard, Heading, ButtonGroup, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, Flex, Tooltip, Spinner } from "@chakra-ui/react";
 import { CheckIcon, CopyIcon, DeleteIcon } from '@chakra-ui/icons';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
@@ -10,11 +10,11 @@ import { Where } from "@textile/hub";
 
 import PageShell from '@/components/PageShell';
 import { ReplyIcon, ThreeDotMenuIcon, CodeIcon } from '@/public/icons';
-import { getAvatar } from '@/utils/avatar';
 import { getAllThreads, getComments, getThread } from "@/lib/thread-db";
 import timeAgo from '@/utils/timeAgo';
 import { toB64, cleanAdd, truncateAddress, prettyTime } from '@/utils/stringUtils';
 import { Web3Context } from '@/contexts/Web3Context';
+import CustomAvatar from '@/components/CustomAvatar';
 
 export async function getStaticProps(context) {
     const threadId = context.params.threadId;
@@ -219,7 +219,6 @@ const Threads = (props) => {
                     <Tbody>
                         {
                             comments.map((comment) => {
-                                let svg = getAvatar(comment.author);
                                 return (
                                 <Tr key={comment?._id} id={comment?._id}>
                                     <Td width="100vw"
@@ -228,7 +227,7 @@ const Threads = (props) => {
                                     >
                                         <Flex direction="row" justifyContent="space-between">
                                             <Flex direction="row" >
-                                                <Box mr={2} width={8} height={8} borderRadius="100px" dangerouslySetInnerHTML={{__html: svg}} />
+                                                <CustomAvatar address={comment.author} mr={2} size="sm" />
                                                 <Flex direction="column">
                                                     <Link
                                                         target="_blank"

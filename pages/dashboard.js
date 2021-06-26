@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { Tag, Tooltip, Text, Flex, useClipboard, Avatar, useColorModeValue, Heading } from "@chakra-ui/react";
+import Link from 'next/link';
+import { Tag, Tooltip, Text, Flex, useClipboard, useColorModeValue, Heading } from "@chakra-ui/react";
 
-import { Web3Context } from '@/contexts/Web3Context'
-import { getAvatar } from '@/utils/avatar';
+import { Web3Context } from '@/contexts/Web3Context';
 import { truncateAddress } from "@/utils/stringUtils";
 import DashboardShell from '@/components/DashboardShell';
-import Link from 'next/link';
+import CustomAvatar from '@/components/CustomAvatar';
 
 const Dashboard = () => {
 
@@ -17,7 +17,7 @@ const Dashboard = () => {
     return (
         <DashboardShell title="Dashboard">
             <Flex direction="column" w="100%" align="center" justifyContent="start" alignItems="center" mt={2}>
-                <Avatar size="2xl" name="Avatar" src={signerAddress != ""? getAvatar(signerAddress, {dataUri: true}) : getAvatar("0", {dataUri: true})} alt="Avatar"/>
+                <CustomAvatar address={signerAddress} badgeSize="1em"  mr={2} size="2xl" />
                 <Heading  mt={2} as="h3" size="lg" color={useColorModeValue("blackAlpha.800", "gray.400")} align="center">
                     Hey
                         <Tooltip placement="top" hasArrow label={hasCopied? "Copied Address" : "Click to Copy Address"} aria-label="Copy Address">

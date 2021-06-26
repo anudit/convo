@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
-import { Link, Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue, Text, ButtonGroup, Box, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { Link, Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue, Text, ButtonGroup, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { CloseIcon,HamburgerIcon, MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Web3Context } from '@/contexts/Web3Context';
 
 import { TheConvoSpaceIcon, DisconnectIcon, EthereumIcon } from "@/public/icons";
-import { getAvatar } from '@/utils/avatar';
 import { truncateAddress } from "@/utils/stringUtils";
+import CustomAvatar from "./CustomAvatar";
 
 export const NavBar = (props) => {
   const [display, toggleMenu] = useState('none');
@@ -196,7 +196,7 @@ const NavLinks = () => {
             <ButtonGroup size="sm" isAttached fontSize="lg">
                 {
                     signerAddress == "" ?
-                    (<Button fontWeight="100" onClick={connectWallet} colorScheme="twitter"><EthereumIcon mr={1}/> Sign-In</Button>)
+                    (<Button fontWeight="100" onClick={()=>{connectWallet()}} colorScheme="twitter"><EthereumIcon mr={1}/> Sign-In</Button>)
                     :
                     (
                     <Menu placement="bottom-start">
@@ -205,7 +205,7 @@ const NavLinks = () => {
                         </MenuButton>
                         <MenuList width="fit-content">
                             <MenuItem fontWeight="100" >
-                                <Box mr={2} width={6} height={6} borderRadius="100px" dangerouslySetInnerHTML={{__html: getAvatar(signerAddress)}} />
+                                <CustomAvatar address={signerAddress}  mr={2} size="xs" />
                                 {truncateAddress(signerAddress)}
                             </MenuItem>
                             <MenuItem fontWeight="100" icon={<DisconnectIcon mx="4px" />} onClick={disconnectWallet}>Disconnect</MenuItem>

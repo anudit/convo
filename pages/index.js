@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Head from 'next/head';
-import { Tooltip, Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input, Switch, FormControl , FormLabel } from "@chakra-ui/react";
+import { Tooltip, Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input, Button } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
 import { BuildIcon, BlockchainIcon, DevfolioIcon, VoteIcon, ExternalIcon } from '@/public/icons';
@@ -15,7 +15,7 @@ const Home = () => {
 
   const [makeyourown_link, setmakeyourown_link] = useState("");
   const [makeyourown_uid, setmakeyourown_uid] = useState("");
-  const [makeyourown_themeIsDark, setmakeyourown_themeIsDark] = useState("");
+  const [makeyourown_themeIsDark, setmakeyourown_themeIsDark] = useState(true);
 
   async function updateUID(event){
     setmakeyourown_uid(event.target.value);
@@ -23,8 +23,8 @@ const Home = () => {
   async function updateLink(event){
     setmakeyourown_link(event.target.value);
   }
-  async function makeyourown_themeToggle(event){
-    setmakeyourown_themeIsDark(event.target.checked);
+  async function makeyourown_themeToggle(){
+    setmakeyourown_themeIsDark(!makeyourown_themeIsDark);
   }
 
   return (
@@ -392,13 +392,12 @@ const Home = () => {
                   onChange={updateUID}
                 />
               </Tooltip>
+              <Button onClick={makeyourown_themeToggle} variant>
+                {
+                  makeyourown_themeIsDark === true ? "☀️" : "🌒"
+                }
+              </Button>
             </Flex>
-            <FormControl display="flex" justifyContent="center" mt={2}>
-              <FormLabel htmlFor="themeKey" mb="0">
-                Dark Themed?
-              </FormLabel>
-              <Switch id="themeKey" size="md" onChange={makeyourown_themeToggle}/>
-            </FormControl>
             <br/>
             <CodeBlock
               language="html"
@@ -406,16 +405,6 @@ const Home = () => {
             />
           </Flex>
         </Flex>
-
-        {/* <Flex
-          direction="column"
-          align="center"
-          w={{ base: "70%"}}
-          margin="0 auto"
-          mb={6}
-        >
-          <SubscribeCard/>
-        </Flex> */}
 
       </Flex>
       <Footer/>

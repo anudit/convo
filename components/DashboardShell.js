@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useDisclosure, useColorMode, Text, Flex, Heading, Tooltip, chakra, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton  } from "@chakra-ui/react";
+import { useDisclosure, useColorMode, Text, Flex, Heading, Tooltip, chakra, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner  } from "@chakra-ui/react";
 
 import { Web3Context } from '@/contexts/Web3Context';
 import { TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon } from '@/public/icons';
@@ -35,7 +35,7 @@ const PageShell = (props) => {
 const DashboardShell = ({title, children}) => {
 
     const web3Context = useContext(Web3Context);
-    const { connectWallet, signerAddress, disconnectWallet } = web3Context;
+    const { connectWallet, signerAddress, disconnectWallet, isPortisLoading } = web3Context;
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -140,7 +140,11 @@ const DashboardShell = ({title, children}) => {
                         }}
                         onClick={()=>{connectWallet('portis')}}
                     >
-                        <PortisIcon py={2} boxSize={10}/>
+                        {isPortisLoading === true ? (
+                            <Spinner size="lg" py={2} my={1}/>
+                        ) : (
+                            <PortisIcon py={2} boxSize={10}/>
+                        )}
                         <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>Portis</Text>
                         <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Connect with your Email and Password.</Text>
                     </Flex>

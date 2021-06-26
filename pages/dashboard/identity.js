@@ -9,7 +9,7 @@ import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context'
 import { checkPoH } from "@/lib/identity"
-import { Verifiedcon, PoapIcon } from '@/public/icons';
+import { VerifiedIcon, PoapIcon } from '@/public/icons';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 const IdentitySection = () => {
@@ -112,7 +112,7 @@ const PoHCard = () => {
               bg={colorMode === "light" ? "gray.200" : "gray.700"}
             >
               {
-                poh === null ? "Loading" : poh === false ? (<><Button size="sm" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><Verifiedcon color="green.400"/></>)
+                poh === null ? "Loading" : poh === false ? (<><Button size="sm" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="green.400"/></>)
               }
             </Flex>
           </Box>
@@ -174,7 +174,7 @@ const ENSCard = () => {
               bg={colorMode === "light" ? "gray.200" : "gray.700"}
             >
               {
-                ensAddress === "" ? (<><Button size="sm" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</Button></>) : (<><Text mr={1}>Connected</Text><Verifiedcon color="green.400"/></>)
+                ensAddress === "" ? (<><Button size="sm" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</Button></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="green.400"/></>)
               }
             </Flex>
           </Box>
@@ -250,7 +250,7 @@ const IdenaCard = () => {
               bg={colorMode === "light" ? "gray.200" : "gray.700"}
             >
               {
-                idena === null ? "Loading" : idena === false ? (<><Button size="sm" as="a" target="_blank" href="https://www.idena.io/">Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><Verifiedcon color="green.400"/></>)
+                idena === null ? "Loading" : idena === false ? (<><Button size="sm" as="a" target="_blank" href="https://www.idena.io/">Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="green.400"/></>)
               }
             </Flex>
           </Box>
@@ -328,7 +328,7 @@ const BrightIdCard = () => {
             bg={colorMode === "light" ? "gray.200" : "gray.700"}
           >
             {
-              data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><Button size="sm" onClick={startVerify}>Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><Verifiedcon color="green.400"/></>)
+              data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><Button size="sm" onClick={startVerify}>Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="green.400"/></>)
             }
           </Flex>
 

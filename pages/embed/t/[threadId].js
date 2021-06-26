@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { useClipboard, Avatar, Table, Tbody, Text, Tr, Td, Heading, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, Flex, Spinner } from "@chakra-ui/react";
+import { useClipboard, Table, Tbody, Text, Tr, Td, Heading, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, Flex, Spinner } from "@chakra-ui/react";
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
 import Linkify from 'react-linkify';
 import { Where } from "@textile/hub";
@@ -9,12 +9,12 @@ import { compareAsc } from 'date-fns';
 
 import { ReplyIcon, ThreeDotMenuIcon, DisconnectIcon } from '@/public/icons';
 import { getAllThreads, getComments, getThread } from "@/lib/thread-db";
-import { getAvatar } from '@/utils/avatar';
 import timeAgo from '@/utils/timeAgo';
 import { cleanAdd, truncateAddress } from '@/utils/stringUtils';
 import { Web3Context } from '@/contexts/Web3Context'
 import fetcher from '@/utils/fetcher';
 import { TheConvoSpaceIcon } from '@/public/icons';
+import CustomAvatar from '@/components/CustomAvatar';
 
 export async function getStaticProps(context) {
     const threadId = context.params.threadId;
@@ -284,7 +284,7 @@ const Threads = (props) => {
                                             >
                                                 <Flex direction="row" justifyContent="space-between">
                                                     <Flex direction="row" >
-                                                        <Avatar mr={2} size="sm" background="#ffffff00" name="Avatar" src={getAvatar(comment.author, {dataUri: true})} alt="Avatar"/>
+                                                        <CustomAvatar address={comment?.author} mr={2} size="sm" />
                                                         <Flex direction="column">
                                                             <Text style={{fontWeight:'900', cursor:"pointer"}} >
                                                                 {

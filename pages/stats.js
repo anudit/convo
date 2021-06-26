@@ -6,16 +6,19 @@ import { getCommentsCount, getThreadsCount, getSubscriberCount } from '@/lib/thr
 
 export async function getStaticProps() {
 
-    const commentsCount = await getCommentsCount();
-    const threadsCount = await getThreadsCount();
-    const subscriberCount = await getSubscriberCount();
+    let promiseArray = [
+        getCommentsCount(),
+        getThreadsCount(),
+        getSubscriberCount()
+    ]
+    let results = await Promise.all(promiseArray);
 
     return {
         props: {
             statistics: {
-                commentsCount,
-                threadsCount,
-                subscriberCount
+                commentsCount: results[0],
+                threadsCount: results[1],
+                subscriberCount: results[2]
             }
         },
         revalidate: 1

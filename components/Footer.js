@@ -71,21 +71,27 @@ const Footer = () => {
                     <Text fontWeight={600} pb={{base: 1, md: 4}} color={useColorModeValue("gray.800","whiteAlpha.600")}>
                         Socials
                     </Text>
-                    <Link rel="noreferrer" href="https://github.com/anudit/convo" target="_blank" aria-label="GitHub" _hover={{
+                    <Text cursor="pointer" as="a" rel="noreferrer" href="https://github.com/anudit/convo" target="_blank" aria-label="GitHub" _hover={{
                         color: useColorModeValue("black", "whiteAlpha.700"),
                     }}>
-                        <Text cursor="pointer"><GithubIcon mr={2}/>GitHub</Text>
-                    </Link>
-                    <Link rel="noreferrer" href="https://twitter.com/anuditnagar" target="_blank" aria-label="Twitter" _hover={{
+                        <>
+                            <GithubIcon mr={2}/>GitHub
+                        </>
+                    </Text>
+                    <Text cursor="pointer" as="a" rel="noreferrer" href="https://twitter.com/anuditnagar" target="_blank" aria-label="Twitter" _hover={{
                         color: useColorModeValue("black", "whiteAlpha.700"),
                     }}>
-                        <Text cursor="pointer"><TwitterIcon mr={2}/>Twitter</Text>
-                    </Link>
-                    <Link rel="noreferrer" href="https://discord.gg/JFn93yJUbB" target="_blank" aria-label="Discord" _hover={{
+                        <>
+                            <TwitterIcon mr={2}/>Twitter
+                        </>
+                    </Text>
+                    <Text cursor="pointer" as="a" rel="noreferrer" href="https://discord.gg/JFn93yJUbB" target="_blank" aria-label="Discord" _hover={{
                         color: useColorModeValue("black", "whiteAlpha.700"),
                     }}>
-                        <Text cursor="pointer"><DiscordIcon mr={2}/>Discord</Text>
-                    </Link>
+                        <>
+                            <DiscordIcon mr={2}/>Discord
+                        </>
+                    </Text>
                 </Stack>
 
             </Flex>

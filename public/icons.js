@@ -221,7 +221,7 @@ export const ExternalIcon = createIcon({
     )
 });
 
-export const Verifiedcon = createIcon({
+export const VerifiedIcon = createIcon({
     displayName: 'VerifiedIcon',
     viewBox: '0 0 24 24',
     path: (

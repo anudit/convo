@@ -13,9 +13,9 @@ export const Web3ContextProvider = ({children}) => {
 
   const [web3Modal, setWeb3Modal] = useState(undefined);
   const [provider, setProvider] = useState(undefined);
-  const [error, setError] = useState(null);
   const [signerAddress, setSignerAddress] = useState("");
   const [ensAddress, setEnsAddress] = useState("");
+  const [isPortisLoading, setIsPortisLoading] = useState(false);
 
   useEffect(() => {
 
@@ -74,7 +74,13 @@ export const Web3ContextProvider = ({children}) => {
   }, []);
 
   async function connectWallet(choice = "") {
+    console.log("choice", choice);
+
     try {
+
+      if (choice === "portis") {
+        setIsPortisLoading(true);
+      }
 
       let modalProvider;
       // if (await web3Modal.canAutoConnect()) {
@@ -121,9 +127,10 @@ export const Web3ContextProvider = ({children}) => {
 
     } catch(e) {
       disconnectWallet();
-      setError('NO_WALLET_CONNECTED');
       console.log('NO_WALLET_CONNECTED', e);
     }
+
+    setIsPortisLoading(false);
   }
 
   function disconnectWallet() {
@@ -207,7 +214,16 @@ export const Web3ContextProvider = ({children}) => {
   }
 
   return (
-    <Web3Context.Provider value={{connectWallet, disconnectWallet, provider, error, signerAddress, ensAddress, getAuthToken, web3Modal}}>
+    <Web3Context.Provider value={{
+      connectWallet,
+      disconnectWallet,
+      provider,
+      signerAddress,
+      ensAddress,
+      getAuthToken,
+      web3Modal,
+      isPortisLoading
+    }}>
         {children}
     </Web3Context.Provider>
   )
