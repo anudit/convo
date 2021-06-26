@@ -22,7 +22,7 @@ export const Web3ContextProvider = ({children}) => {
     const getAddress = async () => {
       const signer = provider.getSigner();
       const address = await signer.getAddress();
-      setSignerAddress(address);
+      setSignerAddress(ethers.utils.getAddress(address));
       let tp = new ethers.providers.InfuraProvider("mainnet","1e7969225b2f4eefb3ae792aabf1cc17");
       tp.lookupAddress(address).then((ensAdd)=>{
         if(Boolean(ensAdd) == true){

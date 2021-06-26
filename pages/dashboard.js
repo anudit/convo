@@ -48,7 +48,7 @@ const Dashboard = () => {
                             emoji="🆔"
                             text="Manage your Decentralized Identities and Trust Score."
                             link="identity"
-                            tags={['PoH', 'BrightID', 'POAP']}
+                            tags={['PoH', 'BrightID', 'POAP', 'ENS', 'Idena', 'Ceramic', 'IDX']}
                         />
 
                     </Flex>

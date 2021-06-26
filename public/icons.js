@@ -295,7 +295,6 @@ export const PoapIcon = createIcon({
     )
 });
 
-
 export const WalletConnectIcon = createIcon({
     displayName: 'WalletConnectIcon',
     viewBox: '0 0 300 185',
@@ -306,7 +305,6 @@ export const WalletConnectIcon = createIcon({
     )
 });
 
-
 export const ArgentIcon = createIcon({
     displayName: 'ArgentIcon',
     viewBox: '0 0 40 36',
@@ -316,8 +314,6 @@ export const ArgentIcon = createIcon({
         </g>
     )
 });
-
-
 
 export const PortisIcon = createIcon({
     displayName: 'PortisIcon',
@@ -375,6 +371,16 @@ export const MetaMaskIcon = createIcon({
             <path fill="#393939" d="M131 113l-6 12 22-5z"/>
             <path fill="#E88F35" d="M200 1l-77 58 13-32z"/>
             <path fill="#8E5A30" d="M199 1l10 31-5 33 4 3-6 5 4 4-6 5 4 4-9 11-42-13-30-25 76-58z"/>
+        </g>
+    )
+});
+
+export const IdxIcon = createIcon({
+    displayName: 'IdxIcon',
+    viewBox: '0 0 567 270',
+    path: (
+        <g>
+            <path fill="currentColor" d="M62 270V0H0v270h62zm155 0c75 0 133-59 133-135S292 0 217 0H109v270h108zm0-59h-46V59h46c43 0 73 30 73 76s-30 76-73 76zM409 0l40 70 44-70h70l-80 127 3 5 81 138h-71l-46-78-45 78h-71l81-138L338 0h71zM62 60v58H0V60h62zm109 0v58h-62V60h62z"/>
         </g>
     )
 });

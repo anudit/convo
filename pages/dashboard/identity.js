@@ -5,12 +5,20 @@ import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBod
 import useSWR from 'swr';
 import QRCode from "react-qr-code";
 
+import Ceramic from '@ceramicnetwork/http-client';
+import { IDX } from '@ceramicstudio/idx';
+import { ThreeIdConnect,  EthereumAuthProvider } from '@3id/connect';
+import { DID } from 'dids';
+import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver';
+import KeyDidResolver from 'key-did-resolver';
+
 import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context'
 import { checkPoH } from "@/lib/identity"
-import { VerifiedIcon, PoapIcon } from '@/public/icons';
+import { VerifiedIcon, PoapIcon, IdxIcon } from '@/public/icons';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { truncateAddress } from '@/utils/stringUtils';
 
 const IdentitySection = () => {
 
@@ -18,28 +26,35 @@ const IdentitySection = () => {
       <DashboardShell title="Identity">
           <Flex direction="column">
             <Flex direction={{base:"column", md: "row"}}>
-            <Wrap>
-                <WrapItem>
-                  <PoHCard/>
-                </WrapItem>
-                <WrapItem>
-                  <BrightIdCard />
-                </WrapItem>
-                <WrapItem>
-                  <ENSCard />
-                </WrapItem>
-                <WrapItem>
-                  <IdenaCard />
-                </WrapItem>
-            </Wrap>
+              <Wrap>
+                  <WrapItem>
+                    <PoHCard/>
+                  </WrapItem>
+                  <WrapItem>
+                    <BrightIdCard />
+                  </WrapItem>
+                  <WrapItem>
+                    <ENSCard />
+                  </WrapItem>
+                  <WrapItem>
+                    <IdenaCard />
+                  </WrapItem>
+              </Wrap>
+            </Flex>
+            <Heading as="h4" size="md" my={4}>
+              <IdxIcon boxSize={7} mr={2}/>
+              <Text display="inline-flex" verticalAlign="middle">Cross Chain Identities</Text>
+            </Heading>
+            <Flex my={2} direction={{base:"column", md: "row"}}>
+              <IdxSection mt={2}/>
             </Flex>
             <Heading as="h4" size="md" my={4}>
               <PoapIcon mr={2}/>  POAPs
             </Heading>
             <Flex my={2} direction={{base:"column", md: "row"}}>
-            <Wrap>
-                <PoapSection mt={2}/>
-            </Wrap>
+              <Wrap>
+                  <PoapSection mt={2}/>
+              </Wrap>
             </Flex>
           </Flex>
       </DashboardShell>
@@ -118,6 +133,97 @@ const PoHCard = () => {
           </Box>
         </Flex>
     );
+};
+
+
+const IdxSection = () => {
+
+  const web3Context = useContext(Web3Context);
+  const { signerAddress, web3Modal } = web3Context;
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [identities, setIdentities] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  async function getIdentities(){
+
+    setIsLoading(true);
+
+    if (Boolean(identities) === false) {
+
+      const ceramic = new Ceramic('https://ceramic-clay.3boxlabs.com');
+      const keyDidResolver = KeyDidResolver.getResolver();
+      const threeIdResolver = ThreeIdResolver.getResolver(ceramic)
+      const resolverRegistry = {
+        ...threeIdResolver,
+        ...keyDidResolver,
+      };
+      let tp = await web3Modal.connect();
+      const threeIdConnect = new ThreeIdConnect();
+      const authProvider = new EthereumAuthProvider(tp, signerAddress);
+      await threeIdConnect.connect(authProvider);
+      const provider = threeIdConnect.getDidProvider();
+
+      const did = new DID({
+        provider: provider,
+        resolver: resolverRegistry,
+      });
+      await did.authenticate();
+      await ceramic.setDID(did);
+      const idx = new IDX({ ceramic});
+
+      let results = await idx.get('cryptoAccounts', `${signerAddress}@eip155:1`);
+      setIdentities(results);
+      console.log(results);
+
+    }
+
+    onOpen();
+    setIsLoading(false);
+  }
+
+  return (
+    <>
+      <Button
+        isLoading={isLoading}
+        onClick={getIdentities}
+        w="fit-content"
+      >
+        View Identites
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Your Linked Identities</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex direction="column">
+            {
+              identities && Object.keys(identities).map((id)=>{
+                let idData = id.split('@');
+                let cleanId = truncateAddress(idData[0]) + "@"  + idData[1];
+                return (
+                  <Button
+                      key={id}
+                      variant="ghost"
+                      borderRadius={16}
+                      w="100%"
+                      textAlign="center"
+                      py={2}
+                      px={4}
+                      cursor="pointer"
+                  >
+                    {cleanId}
+                  </Button>
+                )
+              })
+            }
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
+  );
 };
 
 const ENSCard = () => {
