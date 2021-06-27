@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import Link from 'next/link';
-import { Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, Image } from "@chakra-ui/react";
+import { useToast, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, Image, IconButton, Select } from "@chakra-ui/react";
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
 import useSWR from 'swr';
 import QRCode from "react-qr-code";
@@ -17,7 +17,7 @@ import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context'
 import { checkPoH } from "@/lib/identity"
 import { VerifiedIcon, PoapIcon, IdxIcon } from '@/public/icons';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { truncateAddress } from '@/utils/stringUtils';
 
 const IdentitySection = () => {
@@ -135,15 +135,48 @@ const PoHCard = () => {
     );
 };
 
-
 const IdxSection = () => {
 
   const web3Context = useContext(Web3Context);
-  const { signerAddress, web3Modal } = web3Context;
+  const { signerAddress, web3Modal, provider } = web3Context;
 
   const [isLoading, setIsLoading] = useState(false);
   const [identities, setIdentities] = useState(null);
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [idx, setIdx] = useState(null);
+  const [addresses, setAddresses] = useState(null);
+  const addIdentityRef = useRef();
+  const toast = useToast();
+
+  useEffect(() => {
+    provider.listAccounts().then(setAddresses);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function getIdx(){
+    const ceramic = new Ceramic('https://ceramic-clay.3boxlabs.com');
+    const keyDidResolver = KeyDidResolver.getResolver();
+    const threeIdResolver = ThreeIdResolver.getResolver(ceramic)
+    const resolverRegistry = {
+      ...threeIdResolver,
+      ...keyDidResolver,
+    };
+    let tp = await web3Modal.connect();
+    const threeIdConnect = new ThreeIdConnect();
+    const authProvider = new EthereumAuthProvider(tp, signerAddress);
+    await threeIdConnect.connect(authProvider);
+    const threeIdProvider = threeIdConnect.getDidProvider();
+
+    const did = new DID({
+      provider: threeIdProvider,
+      resolver: resolverRegistry,
+    });
+    await did.authenticate();
+    await ceramic.setDID(did);
+    let idxInstance = new IDX({ ceramic });
+    setIdx(idxInstance);
+    return idxInstance;
+  }
 
   async function getIdentities(){
 
@@ -151,26 +184,7 @@ const IdxSection = () => {
 
     if (Boolean(identities) === false) {
 
-      const ceramic = new Ceramic('https://ceramic-clay.3boxlabs.com');
-      const keyDidResolver = KeyDidResolver.getResolver();
-      const threeIdResolver = ThreeIdResolver.getResolver(ceramic)
-      const resolverRegistry = {
-        ...threeIdResolver,
-        ...keyDidResolver,
-      };
-      let tp = await web3Modal.connect();
-      const threeIdConnect = new ThreeIdConnect();
-      const authProvider = new EthereumAuthProvider(tp, signerAddress);
-      await threeIdConnect.connect(authProvider);
-      const provider = threeIdConnect.getDidProvider();
-
-      const did = new DID({
-        provider: provider,
-        resolver: resolverRegistry,
-      });
-      await did.authenticate();
-      await ceramic.setDID(did);
-      const idx = new IDX({ ceramic});
+      let idx = await getIdx();
 
       let results = await idx.get('cryptoAccounts', `${signerAddress}@eip155:1`);
       setIdentities(results);
@@ -180,6 +194,33 @@ const IdxSection = () => {
 
     onOpen();
     setIsLoading(false);
+  }
+
+  async function removeIdentity(id){
+    console.log("removing", id);
+
+    let newIdentities = identities;
+    delete newIdentities[id];
+    console.log("newids", newIdentities);
+    setIdentities(newIdentities);
+    let result = await idx.set('cryptoAccounts', newIdentities);
+    console.log(result);
+    onClose();
+  }
+
+  async function addIdentity(){
+
+    let adds = addresses.map((id)=>{
+      return id.split('@')[0]
+    })
+    if (adds.includes(addIdentityRef.current.value)){
+      toast({
+        title: "Account already Linked.",
+        status: "info",
+        duration: 5000,
+        isClosable: true,
+      })
+    }
   }
 
   return (
@@ -203,22 +244,46 @@ const IdxSection = () => {
                 let idData = id.split('@');
                 let cleanId = truncateAddress(idData[0]) + "@"  + idData[1];
                 return (
-                  <Button
+                  <Flex
                       key={id}
                       variant="ghost"
                       borderRadius={16}
                       w="100%"
-                      textAlign="center"
+                      align="center"
                       py={2}
                       px={4}
                       cursor="pointer"
+                      direction="row"
+                      justifyContent="space-between"
                   >
-                    {cleanId}
-                  </Button>
+                      <Text fontSize="lg">{cleanId}</Text>
+                      <IconButton
+                        variant="ghost"
+                        colorScheme="red"
+                        aria-label="Delete"
+                        fontSize="16px"
+                        icon={<DeleteIcon />}
+                        onClick={()=>{removeIdentity(id)}}
+                      />
+                  </Flex>
                 )
               })
             }
             </Flex>
+            {
+              addresses && addresses.length>0 && (
+                <Flex direction="row" mb={2}>
+                  <Select placeholder="Link Account" ref={addIdentityRef}>
+                    {
+                      addresses.map((add)=>{
+                        return (<option key={add} value={add}>{truncateAddress(add)}</option>)
+                      })
+                    }
+                  </Select>
+                  <IconButton icon={<AddIcon/>} onClick={addIdentity} />
+                </Flex>
+              )
+            }
           </ModalBody>
         </ModalContent>
       </Modal>
