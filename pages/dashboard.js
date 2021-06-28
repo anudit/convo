@@ -17,7 +17,7 @@ const Dashboard = () => {
     return (
         <DashboardShell title="Dashboard">
             <Flex direction="column" w="100%" align="center" justifyContent="start" alignItems="center" mt={2}>
-                <CustomAvatar address={signerAddress} badgeSize="1em"  mr={2} size="2xl" />
+                <CustomAvatar address={signerAddress} badgesize="1em"  mr={2} size="2xl" />
                 <Heading  mt={2} as="h3" size="lg" color={useColorModeValue("blackAlpha.800", "gray.400")} align="center">
                     Hey
                         <Tooltip placement="top" hasArrow label={hasCopied? "Copied Address" : "Click to Copy Address"} aria-label="Copy Address">
@@ -48,7 +48,7 @@ const Dashboard = () => {
                             emoji="🆔"
                             text="Manage your Decentralized Identities and Trust Score."
                             link="identity"
-                            tags={['PoH', 'BrightID', 'POAP', 'ENS', 'Idena', 'Ceramic', 'IDX']}
+                            tags={['PoH', 'BrightID', 'ENS', 'Idena', 'IDX']}
                         />
 
                     </Flex>

@@ -114,16 +114,23 @@ export const Web3ContextProvider = ({children}) => {
       let tempsigner = ethersProvider.getSigner();
       let tempaddress = await tempsigner.getAddress();
 
-      let tokenRes = await fetcher(
-        '/api/validateAuth?apikey=CONVO', "POST", {
-          signerAddress:tempaddress,
-          token: Cookies.get('CONVO_SESSION')
+      // there was a previous session try and validate that first.
+      if (Boolean(Cookies.get('CONVO_SESSION')) === true) {
+        let tokenRes = await fetcher(
+          '/api/validateAuth?apikey=CONVO', "POST", {
+            signerAddress: tempaddress,
+            token: Cookies.get('CONVO_SESSION')
+          }
+        );
+        // if previous session is invalid then request a new auth token.
+        if (tokenRes['success'] !== true) {
+          await updateAuthToken(tempaddress, ethersProvider);
         }
-      );
-
-      if (tokenRes['success'] != true){
+      }
+      else { // get a auth token
         await updateAuthToken(tempaddress, ethersProvider);
       }
+
 
     } catch(e) {
       disconnectWallet();

@@ -154,7 +154,22 @@ const IdxSection = () => {
   }, []);
 
   async function getIdx(){
-    const ceramic = new Ceramic('https://ceramic-clay.3boxlabs.com');
+
+    let networks = {
+      'mainnet': {
+        "ceramic": 'https://ceramic-private.3boxlabs.com',
+        "connect": 'https://app.3idconnect.org',
+        "management": 'https://app.3idconnect.org/management/index.html',
+      },
+      'clay': {
+        "ceramic": 'https://ceramic-clay.3boxlabs.com',
+        "connect": 'https://app-clay.3idconnect.org',
+        "management": 'https://app-clay.3idconnect.org/management/index.html',
+      }
+    }
+    let network = networks['clay'];
+
+    const ceramic = new Ceramic(network.ceramic);
     const keyDidResolver = KeyDidResolver.getResolver();
     const threeIdResolver = ThreeIdResolver.getResolver(ceramic)
     const resolverRegistry = {
@@ -162,7 +177,7 @@ const IdxSection = () => {
       ...keyDidResolver,
     };
     let tp = await web3Modal.connect();
-    const threeIdConnect = new ThreeIdConnect();
+    const threeIdConnect = new ThreeIdConnect(network.connect, network.management);
     const authProvider = new EthereumAuthProvider(tp, signerAddress);
     await threeIdConnect.connect(authProvider);
     const threeIdProvider = threeIdConnect.getDidProvider();

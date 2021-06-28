@@ -29,7 +29,7 @@ const CustomAvatar = (props) => {
         {
             Boolean(verified) === true && verified > 0 && (
                 <AvatarBadge border="none" title="Verified Human">
-                    <VerifiedIcon boxSize={Boolean(props?.badgeSize) === true? props.badgeSize : "1.3em"} color="#2551f1"/>
+                    <VerifiedIcon boxSize={Boolean(props?.badgesize) === true? props.badgesize : "1.3em"} color="#2551f1"/>
                 </AvatarBadge>
             )
         }
