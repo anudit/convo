@@ -4,6 +4,7 @@ import { Avatar, AvatarBadge  } from "@chakra-ui/react";
 import { getAvatar } from '@/utils/avatar';
 import fetcher from '@/utils/fetcher';
 import { VerifiedIcon } from '@/public/icons';
+import { WarningIcon } from '@chakra-ui/icons';
 
 const CustomAvatar = (props) => {
 
@@ -18,23 +19,38 @@ const CustomAvatar = (props) => {
         });
     }, [address]);
 
-  return (
-    <Avatar
-        background="#ffffff00"
-        src={getAvatar(address, {dataUri: true})}
-        name={address}
-        alt={address}
-        {...props}
-    >
-        {
-            Boolean(verified) === true && verified > 0 && (
-                <AvatarBadge border="none" title="Verified Human">
-                    <VerifiedIcon boxSize={Boolean(props?.badgesize) === true? props.badgesize : "1.3em"} color="#2551f1"/>
-                </AvatarBadge>
-            )
-        }
-    </Avatar>
-  );
+
+    if (Boolean(verified) === false || Boolean(verified) == 0) {
+        return (<Avatar
+            background="#ffffff00"
+            src={getAvatar(address, {dataUri: true})}
+            name={address}
+            alt={address}
+            {...props}
+        />);
+    }
+    else {
+        return (<Avatar
+            background="#ffffff00"
+            src={getAvatar(address, {dataUri: true})}
+            name={address}
+            alt={address}
+            {...props}
+        >
+            {
+                verified > 0 ? (
+                    <AvatarBadge border="none" title="Verified Human">
+                        <VerifiedIcon boxSize={Boolean(props?.badgesize) === true? props.badgesize : "1.3em"} color="#2551f1"/>
+                    </AvatarBadge>
+                ) : (
+                    <AvatarBadge border="none" title="Verified Human">
+                        <WarningIcon boxSize={Boolean(props?.badgesize) === true? props.badgesize : "1.3em"} color="#eb4034"/>
+                    </AvatarBadge>
+                )
+            }
+        </Avatar>)
+    }
+
 };
 
 export default CustomAvatar;

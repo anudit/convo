@@ -29,7 +29,7 @@
     "@gnosis.pm/safe-apps-sdk": "^4.0.0",
     "@gnosis.pm/safe-apps-web3modal": "^0.6.0",
     "@oceanprotocol/contracts": "^0.6.4",
-    "@oceanprotocol/lib": "^0.16.1",
+    "@oceanprotocol/lib": "^0.16.2",
     "@portis/web3": "^4.0.5",
     "@textile/hub": "^6.1.2",
     "@walletconnect/web3-provider": "^1.4.1",
@@ -58,7 +58,7 @@
     "typewriter-effect": "^2.18.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.3",
-    "webpack": "^5.41.0"
+    "webpack": "^5.41.1"
   },
   "devDependencies": {
     "eslint-config-next": "^11.0.1",

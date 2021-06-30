@@ -24,26 +24,31 @@ export default async (req, res) => {
                 fetcher(`https://api.poap.xyz/actions/scan/${req.query.address}`, "GET", {}),
                 tp.lookupAddress(req.query.address),
                 fetcher(`https://api.idena.io/api/Address/${req.query.address}`, "GET", {}),
+                fetcher(`https://api.cryptoscamdb.org/v1/check/${req.query.address}`, "GET", {}),
             ];
 
-            let results = await Promise.all(promiseArray);
+            let results = await Promise.allSettled(promiseArray);
 
             let score = 0;
 
-            if(results[0] === true){ // poh
+            if(results[0].value === true){ // poh
                 score += 8;
             }
-            if(Boolean(results[1].data?.unique) === true){ // brightid
+            if(Boolean(results[1].value.data?.unique) === true){ // brightid
                 score += 37;
             }
-            if(results[2] === true){ // poap
+            if(results[2].value === true){ // poap
                 score += results.length;
             }
-            if(Boolean(results[3]) === true){ // ens
+            if(Boolean(results[3].value) === true){ // ens
+                console.log(results[3].value);
                 score += 12;
             }
-            if(Boolean(results[3]?.result) === true){ // idena
+            if(Boolean(results[4].value?.result) === true){ // idena
                 score += 1;
+            }
+            if(Boolean(results[5].value?.success) === true){ // cryptoscamdb
+                score -= 20;
             }
 
             if (Object.keys(req.query).includes('scoreOnly') === true){

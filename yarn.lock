@@ -3231,10 +3231,10 @@
     truffle "^5.3.9"
     truffle-assertions "^0.9.2"
 
-"@oceanprotocol/lib@^0.16.1":
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/@oceanprotocol/lib/-/lib-0.16.1.tgz#bc0de95c95854ce3a3554530216d63fb791d8338"
-  integrity sha512-zSVs1VaC8T+BBo9MeL88odU6wFNRHAptaLPHT6qGf2Nvc8MyhHdP15TdnHpeLJF4Ez0k6WKemnOQ1DNuaW8FlA==
+"@oceanprotocol/lib@^0.16.2":
+  version "0.16.2"
+  resolved "https://registry.yarnpkg.com/@oceanprotocol/lib/-/lib-0.16.2.tgz#b4a8f4fb3753f1efe43b771a1e95f5f7bcd7dfe4"
+  integrity sha512-hESsrSjTf/6O4oLrJgBzzTn7EkANtpa+Sl+fp/VXBZ3YvJRbp4instlKJMCqWHi+CA4dYr/uLRmaXeY/PGyx5w==
   dependencies:
     "@ethereum-navigator/navigator" "^0.5.3"
     "@oceanprotocol/contracts" "^0.6.4"
@@ -18678,10 +18678,10 @@ webpack@^3.0.0:
     webpack-sources "^1.0.1"
     yargs "^8.0.2"
 
-webpack@^5.41.0:
-  version "5.41.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.41.0.tgz#217daa27bdd30287c1d7f9d9e0a2304fe33c5a51"
-  integrity sha512-pCVO7hVm8XiL6DpPtXrFLS8ktmH/tpvtbEex6hn4RweTFe6z6Cugh5FlQoEPZotb15HiirjM2Kv7THTA7sKLzQ==
+webpack@^5.41.1:
+  version "5.41.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.41.1.tgz#23fa1d82c95c222d3fc3163806b9a833fe52b253"
+  integrity sha512-AJZIIsqJ/MVTmegEq9Tlw5mk5EHdGiJbDdz9qP15vmUH+oxI1FdWcL0E9EO8K/zKaRPWqEs7G/OPxq1P61u5Ug==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.48"
