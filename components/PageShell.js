@@ -19,8 +19,8 @@ const PageShell = (props) => {
           ) :
           (
             <>
-              <meta name='twitter:image' content='https://theconvo.space/images/poster.png' />
-              <meta property='og:image' content='https://theconvo.space/images/poster.png' />
+              <meta name='twitter:image' content='https://theconvo.space/images/poster.webp' />
+              <meta property='og:image' content='https://theconvo.space/images/poster.webp' />
             </>
           )
         }
@@ -28,7 +28,7 @@ const PageShell = (props) => {
       <NavBar/>
       <Flex
         direction="column"
-        align="center"
+        align={Boolean(props?.align) === true ? props.align : "center"}
         maxW="1600px"
         w={{ base: "95%", md: "80%", lg: "90%"}}
         m="0 auto"

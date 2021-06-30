@@ -31,8 +31,8 @@ const Home = () => {
     <>
       <Head>
         <title>The Convo Space</title>
-        <meta name='twitter:image' content='https://theconvo.space/images/poster.png' />
-        <meta property='og:image' content='https://theconvo.space/images/poster.png' />
+        <meta name='twitter:image' content='https://theconvo.space/images/poster.webp' />
+        <meta property='og:image' content='https://theconvo.space/images/poster.webp' />
       </Head>
 
       <Flex w="100%"

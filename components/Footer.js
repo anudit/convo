@@ -85,7 +85,7 @@ const Footer = () => {
                             <TwitterIcon mr={2}/>Twitter
                         </>
                     </Text>
-                    <Text cursor="pointer" as="a" rel="noreferrer" href="https://discord.gg/JFn93yJUbB" target="_blank" aria-label="Discord" _hover={{
+                    <Text cursor="pointer" as="a" rel="noreferrer" href="https://discord.gg/MFtmrng9J7" target="_blank" aria-label="Discord" _hover={{
                         color: useColorModeValue("black", "whiteAlpha.700"),
                     }}>
                         <>

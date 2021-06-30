@@ -31,19 +31,19 @@ export default async (req, res) => {
             let score = 0;
 
             if(results[0] === true){ // poh
-                score += 10;
+                score += 8;
             }
             if(Boolean(results[1].data?.unique) === true){ // brightid
-                score += 10;
+                score += 37;
             }
             if(results[2] === true){ // poap
                 score += results.length;
             }
             if(Boolean(results[3]) === true){ // ens
-                score += 10;
+                score += 12;
             }
             if(Boolean(results[3]?.result) === true){ // idena
-                score += 10;
+                score += 1;
             }
 
             if (Object.keys(req.query).includes('scoreOnly') === true){

@@ -14,8 +14,8 @@ const PageShell = (props) => {
     <>
       <Head>
             <title>{props.title}</title>
-            <meta name='twitter:image' content='https://theconvo.space/images/poster.png' />
-            <meta property='og:image' content='https://theconvo.space/images/poster.png' />
+            <meta name='twitter:image' content='https://theconvo.space/images/poster.webp' />
+            <meta property='og:image' content='https://theconvo.space/images/poster.webp' />
       </Head>
 
       <Flex
@@ -204,14 +204,14 @@ const DashboardShell = ({title, children}) => {
                 >
                     <Flex direction="column">
                         <Link href="/dashboard">
-                            <Flex height="75px" w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
+                            <Flex height="75px" w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                                 <Text fontSize="2xl">
                                     <TheConvoSpaceIcon />
                                 </Text>
                             </Flex>
                         </Link>
                         <Link href="/dashboard/comments">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
+                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                                 <Text fontSize="2xl">
                                     ⚡
                                 </Text>
@@ -221,7 +221,7 @@ const DashboardShell = ({title, children}) => {
                             </Flex>
                         </Link>
                         <Link href="/dashboard/identity">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
+                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                                 <Text fontSize="2xl">
                                     🆔
                                 </Text>
@@ -231,7 +231,7 @@ const DashboardShell = ({title, children}) => {
                             </Flex>
                         </Link>
                         <Link href="/dashboard/data">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
+                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                                 <Text fontSize="2xl">
                                     📂
                                 </Text>
@@ -241,7 +241,7 @@ const DashboardShell = ({title, children}) => {
                             </Flex>
                         </Link>
                         <Link href="/dashboard/developer">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
+                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                                 <Text fontSize="2xl">
                                     🧑‍💻
                                 </Text>
@@ -252,7 +252,7 @@ const DashboardShell = ({title, children}) => {
                         </Link>
                     </Flex>
                     <Flex direction="column">
-                        <Flex onClick={toggleColorMode} h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
+                        <Flex onClick={toggleColorMode} h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                             <Text fontSize="2xl">
                                 {colorMode === "light" ? "🌒" : "☀️"}
                             </Text>
@@ -261,7 +261,7 @@ const DashboardShell = ({title, children}) => {
                             </Text>
                         </Flex>
 
-                        <Flex as="a" href="https://docs.theconvo.space" target="_blank" h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "blackAlpha.800"}}>
+                        <Flex as="a" href="https://docs.theconvo.space" target="_blank" h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                             <Text fontSize="2xl">
                                 📘
                             </Text>
