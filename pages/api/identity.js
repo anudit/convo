@@ -37,11 +37,10 @@ export default async (req, res) => {
             if(Boolean(results[1].value.data?.unique) === true){ // brightid
                 score += 37;
             }
-            if(results[2].value === true){ // poap
-                score += results.length;
+            if(Boolean(results[2].value) === true){ // poap
+                score += results[2].value.length;
             }
             if(Boolean(results[3].value) === true){ // ens
-                console.log(results[3].value);
                 score += 12;
             }
             if(Boolean(results[4].value?.result) === true){ // idena
@@ -59,13 +58,14 @@ export default async (req, res) => {
             }
             else {
                 res.status(200).json({
-                    'poh': results[0],
-                    'brightId': results[1],
-                    'poap': results[2],
-                    'ens': results[3],
-                    'idena': results[4],
+                    'success': true,
                     'score': score,
-                    'success': true
+                    'poh': results[0].value,
+                    'brightId': results[1].value,
+                    'poap': results[2].value,
+                    'ens': results[3].value,
+                    'idena': results[4].value,
+                    'cryptoScamDb': results[5].value
                 });
             }
         }
