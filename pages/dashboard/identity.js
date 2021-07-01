@@ -167,7 +167,17 @@ const IdxSection = () => {
         "management": 'https://app-clay.3idconnect.org/management/index.html',
       }
     }
-    let network = networks['clay'];
+
+    let env = process.env.NEXT_PUBLIC_VERCEL_ENV;
+    let network;
+    if (env === "production"){
+      console.log('using ceramic mainnet');
+      network = networks['mainnet'];
+    }
+    else {
+      console.log('using ceramic clay testnet');
+      network = networks['clay'];
+    }
 
     const ceramic = new Ceramic(network.ceramic);
     const keyDidResolver = KeyDidResolver.getResolver();
