@@ -157,7 +157,7 @@ const IdxSection = () => {
 
     let networks = {
       'mainnet': {
-        "ceramic": 'https://ceramic-private.3boxlabs.com',
+        "ceramic": 'https://c11-a-ceramic.3boxlabs.com/',
         "connect": 'https://app.3idconnect.org',
         "management": 'https://app.3idconnect.org/management/index.html',
       },
