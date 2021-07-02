@@ -39,11 +39,11 @@ const CustomAvatar = (props) => {
         >
             {
                 verified > 0 ? (
-                    <AvatarBadge border="none" title="Verified Human">
+                    <AvatarBadge border="none" title={"TrustScore:" + verified}>
                         <VerifiedIcon boxSize={Boolean(props?.badgesize) === true? props.badgesize : "1.3em"} color="#2551f1"/>
                     </AvatarBadge>
                 ) : (
-                    <AvatarBadge border="none" title="Verified Human">
+                    <AvatarBadge border="none" title={"TrustScore:" + verified}>
                         <WarningIcon boxSize={Boolean(props?.badgesize) === true? props.badgesize : "1.3em"} color="#eb4034"/>
                     </AvatarBadge>
                 )

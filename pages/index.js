@@ -260,22 +260,6 @@ const Home = () => {
             </Card>
 
             <Card
-              title="Community Governed"
-              icon={
-                <VoteIcon
-                  aria-label="community governed"
-                  boxSize={10}
-                />
-              }
-              internalLink="learn/conviction-voting"
-            >
-              <Text mt={2} mb={5} fontWeight="400" fontSize={20} color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                Moderation powered by Conviction Voting is a crucial part of the system to ensure the dialogue between participants is effective and governed by the people and not the platform.
-              </Text>
-            </Card>
-
-
-            <Card
               title="Extensible Framework"
               icon={
                 <BuildIcon
@@ -287,6 +271,21 @@ const Home = () => {
               >
               <Text mt={2} mb={5} fontWeight="400" fontSize={20} color={useColorModeValue("blackAlpha.800", "gray.400")}>
                 Convo can be used as a singular layer to manage your conversations throughout the Internet and can be used to build upon and integrated into any application with Convo&apos;s API.
+              </Text>
+            </Card>
+
+            <Card
+              title="Community Governed"
+              icon={
+                <VoteIcon
+                  aria-label="community governed"
+                  boxSize={10}
+                />
+              }
+              internalLink="learn/conviction-voting"
+            >
+              <Text mt={2} mb={5} fontWeight="400" fontSize={20} color={useColorModeValue("blackAlpha.800", "gray.400")}>
+                Moderation powered by Conviction Voting is a crucial part of the system to ensure the dialogue between participants is effective and governed by the people and not the platform.
               </Text>
             </Card>
 
