@@ -52,8 +52,8 @@ export default async (req, res) => {
 
             if (Object.keys(req.query).includes('scoreOnly') === true){
                 res.status(200).json({
-                    'score': score,
-                    'success': true
+                    'success': true,
+                    'score': score
                 });
             }
             else {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Head from 'next/head';
-import { Tooltip, Heading, Text, Flex, Link, useColorModeValue, SimpleGrid, Input, Button } from "@chakra-ui/react";
+import { Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, SimpleGrid, Input, Button } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
 import { BuildIcon, BlockchainIcon, DevfolioIcon, VoteIcon, ExternalIcon } from '@/public/icons';
@@ -16,6 +16,7 @@ const Home = () => {
   const [makeyourown_link, setmakeyourown_link] = useState("");
   const [makeyourown_uid, setmakeyourown_uid] = useState("");
   const [makeyourown_themeIsDark, setmakeyourown_themeIsDark] = useState(true);
+  const { colorMode } = useColorMode();
 
   async function updateUID(event){
     setmakeyourown_uid(event.target.value);
@@ -33,6 +34,9 @@ const Home = () => {
         <title>The Convo Space</title>
         <meta name='twitter:image' content='https://theconvo.space/images/poster.webp' />
         <meta property='og:image' content='https://theconvo.space/images/poster.webp' />
+        <meta property="og:image:type" content="image/webp" />
+        <meta property="og:image:width" content="1280" />
+        <meta property="og:image:height" content="720" />
       </Head>
 
       <Flex w="100%"
@@ -153,7 +157,7 @@ const Home = () => {
                 letterSpacing="tight"
                 textAlign="center"
               >
-                Convo is the substrate that connects conversations and communities
+                Convo is the substrate connecting conversations and communities
                 <br/>
                  on
                 <Flex
@@ -179,7 +183,6 @@ const Home = () => {
                 </Flex>
                 across the Internet.
               </Heading>
-
 
               <br/>
 
@@ -328,7 +331,7 @@ const Home = () => {
               code={`<iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/t/KIGZUnR4RzXDFheXoOwo" allowtransparency="true" loading="eager" />`}
             />
             <br/>
-            <iframe title="Comments Page Demo" src="/embed/t/KIGZUnR4RzXDFheXoOwo" width="100%" height="450px" allowtransparency="true" loading="lazy" style={{overflow:"hidden"}}>
+            <iframe title="Comments Page Demo" src={"/embed/t/KIGZUnR4RzXDFheXoOwo?theme=" + colorMode} width="100%" height="450px" allowtransparency="true" loading="lazy" style={{overflow:"hidden"}}>
               Comments Page Demo
             </iframe>
           </Flex>

@@ -20,8 +20,9 @@ export default async (req, res) => {
           Boolean(req.query?.url) === false &&
           Boolean(req.query?.author) === false
       ){
-        res.status(200).json({
-          'error':'Insufficient Params'
+        res.status(400).json({
+          'success': false,
+          'error':'Invalid/Incomplete params'
         });
       }
 

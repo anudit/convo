@@ -16,6 +16,9 @@ const PageShell = (props) => {
             <title>{props.title}</title>
             <meta name='twitter:image' content='https://theconvo.space/images/poster.webp' />
             <meta property='og:image' content='https://theconvo.space/images/poster.webp' />
+            <meta property="og:image:type" content="image/webp" />
+            <meta property="og:image:width" content="1280" />
+            <meta property="og:image:height" content="720" />
       </Head>
 
       <Flex

@@ -111,6 +111,7 @@ const Threads = (props) => {
                 if (Object.keys(res).includes('_id') === true) {
                     res['text'] = decodeURI(res['text']);
                     mutate(comments.concat(res), false);
+                    newCommentRef.current.value='';
                 }
                 else {
                     toast({

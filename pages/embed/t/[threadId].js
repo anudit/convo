@@ -161,6 +161,7 @@ const Threads = (props) => {
                     setComments((c)=>{
                         return c.concat(res)
                     });
+                    newCommentRef.current.value='';
                     setInitScroll(!initScroll);
                 }
                 else {
