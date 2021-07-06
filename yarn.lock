@@ -13432,10 +13432,10 @@ neo-async@^2.5.0, neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-next-pwa@^5.2.22:
-  version "5.2.22"
-  resolved "https://registry.yarnpkg.com/next-pwa/-/next-pwa-5.2.22.tgz#023d45fd6147b58a822ae62971315fc0ac34e350"
-  integrity sha512-vz421zY4Z1J6u2SLwsghiSs8LgiOxSPiR8LuhqDhFoYC9GK4G5tleVWyoBZzXA2gG27oNlItGK7fM5NLbRGR8g==
+next-pwa@^5.2.23:
+  version "5.2.23"
+  resolved "https://registry.yarnpkg.com/next-pwa/-/next-pwa-5.2.23.tgz#581a50bc9892c9d3ae7be5c9bbf590becf376f0e"
+  integrity sha512-nGYp0zliA0lJBoKETEZgW4kaiBckF8m9xpBw3VQ+EyVJ57Bn5HfFeNZUvFi2mvDiiwBuqf34baQIt8EhiN8k+A==
   dependencies:
     babel-loader "^8.2.2"
     clean-webpack-plugin "^3.0.0"
@@ -13444,10 +13444,10 @@ next-pwa@^5.2.22:
     workbox-webpack-plugin "^6.1.5"
     workbox-window "^6.1.5"
 
-next-sitemap@^1.6.124:
-  version "1.6.124"
-  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-1.6.124.tgz#d811fbeb7fbed9910865ee651e40fd8c1738ecc9"
-  integrity sha512-Q8hZZcC11zPUZyAPB4npClSrHzZwddzWSVMMqehRKXBblhT/cQPsKf7zxh2UwgVW18EfS6oRhca4lhGjFfyAEw==
+next-sitemap@^1.6.133:
+  version "1.6.133"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-1.6.133.tgz#6c9d67d2c5722e4f12a28b000c30e89574a866cf"
+  integrity sha512-AG4BIXoVO+Nl0nyIYCuz/Vh7Vtn0BO0Lc8ssr3YWiFQFXqHTdKVHUXNP3ZSekmT32BjcMgWtpyoiEAmpXty0ZA==
   dependencies:
     "@corex/deepmerge" "^2.6.20"
     matcher "^4.0.0"
@@ -18700,10 +18700,10 @@ webpack@^3.0.0:
     webpack-sources "^1.0.1"
     yargs "^8.0.2"
 
-webpack@^5.42.0:
-  version "5.42.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.42.0.tgz#39aadbce84ad2cebf86cc5f88a2c53db65cbddfb"
-  integrity sha512-Ln8HL0F831t1x/yPB/qZEUVmZM4w9BnHZ1EQD/sAUHv8m22hthoPniWTXEzFMh/Sf84mhrahut22TX5KxWGuyQ==
+webpack@^5.42.1:
+  version "5.42.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.42.1.tgz#3347d0d93e79fe70bf62e51981024c80b9c8c3df"
+  integrity sha512-msikozzXrG2Hdx+dElq0fyNvxPFsaM2dKLc/l+xkMmhO/1qwVJ9K9gY+fi/49MYWcpSP7alnK5Q78Evrd1LiqQ==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.48"

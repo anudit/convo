@@ -70,12 +70,16 @@ export default async (req, res) => {
           && Object.keys(req.body).includes('threadId') === true
         ){
 
+          let metadata = Boolean(req.body?.metadata) === true ? req.body.metadata : {};
           let commentData = {
             'createdOn': Date.now().toString(),
             'author': req.body.signerAddress,
             'text': req.body.comment,
             'url': req.body.url,
             'tid': req.body.threadId,
+            'metadata' : metadata,
+            'tag1' : "",
+            'tag2' : ""
           };
           let newId = await createComment(commentData);
 

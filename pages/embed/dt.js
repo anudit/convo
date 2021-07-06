@@ -92,6 +92,7 @@ const Threads = (props) => {
                     res['text'] = decodeURI(res['text']);
                     mutate(comments.concat(res), false);
                     newCommentRef.current.value='';
+                    document.getElementById(newCommentRef.current.id).focus();
                 }
                 else {
                     toast({
@@ -297,6 +298,7 @@ const Threads = (props) => {
                                 ref={newCommentRef}
                                 borderRadius="0"
                                 max={200}
+                                id="newCommentBox"
                             />
                             <InputRightElement width="4.5rem">
                                 <Button

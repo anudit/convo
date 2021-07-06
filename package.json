@@ -45,7 +45,7 @@
     "jsonwebtoken": "^8.5.1",
     "key-did-resolver": "^1.2.1",
     "next": "^11.0.1",
-    "next-pwa": "^5.2.22",
+    "next-pwa": "^5.2.23",
     "nft.storage": "2.1.1",
     "react": "^17.0.2",
     "react-device-detect": "^1.17.0",
@@ -58,11 +58,11 @@
     "typewriter-effect": "^2.18.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.3",
-    "webpack": "^5.42.0"
+    "webpack": "^5.42.1"
   },
   "devDependencies": {
     "eslint-config-next": "^11.0.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "next-sitemap": "^1.6.124"
+    "next-sitemap": "^1.6.133"
   }
 }

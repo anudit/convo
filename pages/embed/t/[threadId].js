@@ -135,8 +135,10 @@ const Threads = (props) => {
         setLoadingMore(false);
     }
 
+
     async function createNewComment(){
         setSending(true);
+
 
         if (signerAddress == ""){
             connectWallet();
@@ -162,6 +164,7 @@ const Threads = (props) => {
                         return c.concat(res)
                     });
                     newCommentRef.current.value='';
+                    document.getElementById(newCommentRef.current.id).focus();
                     setInitScroll(!initScroll);
                 }
                 else {
@@ -367,6 +370,7 @@ const Threads = (props) => {
                                 ref={newCommentRef}
                                 borderRadius="0"
                                 max={200}
+                                id="newCommentBox"
                             />
                             <InputRightElement width="4.5rem">
                                 <Button
