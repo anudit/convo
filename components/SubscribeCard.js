@@ -86,7 +86,7 @@ const SubscribeCard = () => {
                         backgroundColor: useColorModeValue("#000267", "rgba(99,102,241,0.15)")
                     }}
                 >
-                    Subscribe
+                    I&apos;m In!
                 </Button>
             </Flex>
 

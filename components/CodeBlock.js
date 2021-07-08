@@ -1,12 +1,13 @@
 import React from "react"
-import { Button, Box, useClipboard  } from "@chakra-ui/react"
+import { Button, Box, useClipboard, useColorMode  } from "@chakra-ui/react"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
-import { coldarkDark } from "react-syntax-highlighter/dist/cjs/styles/prism"
+import { coldarkDark, materialLight } from "react-syntax-highlighter/dist/cjs/styles/prism"
 import { CheckIcon, CopyIcon } from '@chakra-ui/icons';
 
 const CodeBlock = (props) => {
   const { language } = props;
   const { hasCopied, onCopy } = useClipboard(props?.code)
+  const { colorMode } = useColorMode();
 
   return (
     <Box>
@@ -41,7 +42,7 @@ const CodeBlock = (props) => {
       </Button>
       <SyntaxHighlighter
         language={language}
-        style={coldarkDark}
+        style={colorMode === 'dark' ? coldarkDark: materialLight}
         wrapLines={true}
         showLineNumbers={true}
         mt={5}

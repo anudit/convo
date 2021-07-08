@@ -39,7 +39,7 @@ const Dashboard = () => {
                         <SimpleCard
                             title="My Comments"
                             emoji="⚡"
-                            text="Manage your Decentralized Conversations across the Internet."
+                            text="Manage your Decentralized Conversations across the Web."
                             link="comments"
                             tags={['Textile', 'ThreadDB']}
                         />
@@ -48,7 +48,7 @@ const Dashboard = () => {
                             emoji="🆔"
                             text="Manage your Decentralized Identities and Trust Score."
                             link="identity"
-                            tags={['PoH', 'BrightID', 'ENS', 'Idena', 'IDX']}
+                            tags={['IDX', 'PoH', 'BrightID', 'ENS', 'Idena']}
                         />
 
                     </Flex>

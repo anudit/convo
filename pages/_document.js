@@ -14,7 +14,7 @@ class MyDocument extends Document {
                     <meta name='apple-mobile-web-app-capable' content='yes' />
                     <meta name='apple-mobile-web-app-status-bar-style' content='default' />
                     <meta name='apple-mobile-web-app-title' content='The Convo Space' />
-                    <meta name='description' content='The Decentralized Conversation Layer of Internet' />
+                    <meta name='description' content='The Decentralized Conversation Layer of Internet, enabling developers build composable components for conversations that continue anywhere on the web.' />
                     <meta name='format-detection' content='telephone=no' />
                     <meta name='mobile-web-app-capable' content='yes' />
                     <meta name='theme-color' content="#000" />
@@ -24,14 +24,14 @@ class MyDocument extends Document {
                     <link rel='manifest' href='/manifest.json' />
                     <link rel="search" href="/open-search.xml" title="Search Convo" type="application/opensearchdescription+xml"></link>
                     <link rel='mask-icon' href='/icons/icon.svg' color='#5bbad5' />
-                    <meta name='twitter:card' content='summary' />
+                    <meta name='twitter:card' content='summary_large_image' />
                     <meta name='twitter:url' content='https://theconvo.space' />
                     <meta name='twitter:title' content='The Convo Space' />
-                    <meta name='twitter:description' content='The Decentralized Conversation Layer of Internet' />
+                    <meta name='twitter:description' content='The Decentralized Conversation Layer of Internet, enabling developers build composable components for conversations that continue anywhere on the web.' />
                     <meta name='twitter:creator' content='@anuditnagar' />
                     <meta property='og:type' content='website' />
                     <meta property='og:title' content='The Convo Space' />
-                    <meta property='og:description' content='The Decentralized Conversation Layer of Internet' />
+                    <meta property='og:description' content='The Decentralized Conversation Layer of Internet, enabling developers build composable components for conversations that continue anywhere on the web.' />
                     <meta property='og:site_name' content='The Convo Space' />
                     <meta property='og:url' content='https://theconvo.space' />
                     <script type='application/ld+json' dangerouslySetInnerHTML={ { __html: `{"@context": "http://www.schema.org","@type": "Corporation","name": "The Convo Space","url": "https://theconvo.space","logo": "https://theconvo.space/images/logo.png","image": "https://theconvo.space/images/poster.webp","description": "The Decentralized Conversation Layer of Internet."}`}} />

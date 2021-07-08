@@ -205,6 +205,12 @@ const IdxSection = () => {
 
   async function getIdentities(){
 
+    // Read-only Gateway Code for future reference.
+    // const ceramic = new Ceramic('https://gateway.ceramic.network')
+    // const idx = new IDX({ ceramic });
+    // console.log('here',`${getAddress(signerAddress)}@eip155:1` );
+    // let results = await idx.get('cryptoAccounts', `${getAddress(signerAddress)}@eip155:1`);
+
     setIsLoading(true);
 
     if (Boolean(identities) === false) {

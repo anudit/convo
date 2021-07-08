@@ -21,7 +21,7 @@ const PP = () => {
                 </Heading>
 
                 <Text fontSize="md">
-                    At The Convo Space (&quot;Convo, Inc&quot;), accessible from https://theconvo.space, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by The Convo Space and how we use it.
+                    At The Convo Space (&quot;CUPOC, INC&quot;), accessible from https://theconvo.space, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by The Convo Space and how we use it.
                     <br/>
                     If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us at nagaranudit@gmail.com .
                     <br/>

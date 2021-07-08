@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Head from 'next/head';
-import { Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, SimpleGrid, Input, Button } from "@chakra-ui/react";
+import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, SimpleGrid, Input, Button, Box, UnorderedList, ListItem } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
-import { BuildIcon, BlockchainIcon, DevfolioIcon, VoteIcon, ExternalIcon } from '@/public/icons';
 
+import { BuildIcon, BlockchainIcon, DevfolioIcon, VoteIcon, ExternalIcon } from '@/public/icons';
 import { CustomButton } from '@/components/CustomButtons';
 import Footer from "@/components/Footer";
 import Card from '@/components/Card';
@@ -382,7 +382,7 @@ const Home = () => {
                 w={{ base: "300px", md: "400px" }}
                 onChange={updateLink}
               />
-              <Tooltip label="A key that uniquely identifies this comment box from the other ones on across website." aria-label="Unique Id" bg="blue.200" hasArrow>
+              <Tooltip label="A key that uniquely identifies this comment box, eg: Contract Address, PostId etc" aria-label="Unique Id" bg="blue.200" hasArrow>
                 <Input
                   placeholder="Unique ID"
                   padding="30px"
@@ -406,6 +406,139 @@ const Home = () => {
               code={`<iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?url=${encodeURIComponent(makeyourown_link)}&threadId=${makeyourown_uid}&theme=${makeyourown_themeIsDark?"dark":"light"}" allowtransparency="true" loading="eager" />`}
             />
           </Flex>
+        </Flex>
+
+
+        <Flex
+          direction="column"
+          align="center"
+          margin="0 auto"
+          w={{ base: "95%"}}
+          py={8}
+          mt={16}
+          mb={8}
+        >
+
+          <Heading
+            as="h1"
+            fontSize={{ base: "2rem", md: "2rem", lg: "3rem", xl: "6rem" }}
+            fontWeight="700"
+            color={useColorModeValue("black", "white")}
+            lineHeight="none"
+            letterSpacing="tight"
+            textAlign="center"
+            bgClip="text"
+            bgGradient="linear(to-r, green.400,purple.500)"
+            animation="hue 10s infinite linear"
+            py={12}
+          >
+            FAQs
+          </Heading>
+
+          <Accordion w={{base:"100%", md:"80%", lg:"60%"}} allowToggle >
+
+            <AccordionItem>
+              <AccordionButton>
+                <Box flex="1" textAlign="left">
+                  <Text fontSize="25px" fontWeight={800}>
+                    Why Convo ?
+                  </Text>
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4}>
+                <UnorderedList spacing={2}>
+                  <ListItem>
+                    Convo enables Developers build Composable Components, for Conversations that can continue anywhere on the web.
+                  </ListItem>
+                  <ListItem>
+                    Convo unbundles the conversation layer from the Interface allowing users to truly own their data irrespective of the interface.
+                  </ListItem>
+                  <ListItem>
+                    Developers can utilze Convo with a simple-to-use API that phases out the complexities of Web3 at Scale.
+                  </ListItem>
+                </UnorderedList>
+              </AccordionPanel>
+            </AccordionItem>
+
+            <AccordionItem>
+              <Text fontWeight={800}>
+                <AccordionButton>
+                  <Box flex="1" textAlign="left">
+                    <Text fontSize="25px" fontWeight={800}>
+                      What can I build with Convo ?
+                    </Text>
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </Text>
+              <AccordionPanel pb={4}>
+              <UnorderedList spacing={2}>
+                  <ListItem>
+                    Comments on Etherscan, alerting users of a compromised contract can be made accessible on MetaMask/Rainbow Wallet to alert users before sending a transaction.
+                  </ListItem>
+                  <ListItem>
+                    Conversations around a Proposal are usually fragmented across multiple sites like twitter, discord, governance dashboards etc. Convo allows you to comment on a site like http://snapshot.org and continue it across any other site.
+                  </ListItem>
+                  <ListItem>
+                    Conversations around an Artwork (NFT) can move along with it to whichever marketplace/interface it is showcased on like Opensea, Showtime etc.
+                  </ListItem>
+                  <ListItem>
+                      and many more...
+                  </ListItem>
+                </UnorderedList>
+              </AccordionPanel>
+            </AccordionItem>
+
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box flex="1" textAlign="left">
+                    <Text fontSize="25px" fontWeight={800}>
+                      How do I get started ?
+                    </Text>
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <UnorderedList spacing={2}>
+                  <ListItem>
+                    Checkout the docs here : <chakra.a _hover={{textDecoration:'underline'}} href="https://docs.theconvo.space/" rel="noreferrer" target="_blank">https://docs.theconvo.space/</chakra.a>
+                  </ListItem>
+                  <ListItem>
+                  Tryout the API playground here : <chakra.a _hover={{textDecoration:'underline'}} href="https://playground.theconvo.space/" rel="noreferrer" target="_blank">https://playground.theconvo.space/</chakra.a>
+                  </ListItem>
+                </UnorderedList>
+              </AccordionPanel>
+            </AccordionItem>
+
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box flex="1" textAlign="left">
+                    <Text fontSize="25px" fontWeight={800}>
+                      Where can I get my queries answered ?
+                    </Text>
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <UnorderedList spacing={2}>
+                  <ListItem>
+                    Twitter: <chakra.a _hover={{textDecoration:'underline'}} href="https://twitter.com/anudit" rel="noreferrer" target="_blank">https://twitter.com/anudit</chakra.a>
+                  </ListItem>
+                  <ListItem>
+                    Discord: <chakra.a _hover={{textDecoration:'underline'}} href="https://discord.com/invite/MFtmrng9J7" rel="noreferrer" target="_blank">https://discord.com/invite/MFtmrng9J7</chakra.a>
+                  </ListItem>
+                  <ListItem>
+                    GitHub: <chakra.a _hover={{textDecoration:'underline'}} href="https://github.com/anudit/convo" rel="noreferrer" target="_blank">https://github.com/anudit/convo</chakra.a>
+                  </ListItem>
+                </UnorderedList>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </Flex>
 
       </Flex>
