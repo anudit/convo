@@ -99,7 +99,12 @@ const Footer = () => {
             <Divider mt={4} w="80%"/>
             <Flex direction={{base: "column", md:"row"}} justifyContent="space-between" w="80%" my={8} alignItems="center">
 
-                <TheConvoSpaceIcon boxSize={12}/>
+                <Flex alignItems="center">
+                    <TheConvoSpaceIcon boxSize={12} mr={4}/>
+                    <Text textAlign="left" fontWeight={500} color={useColorModeValue("blackAlpha.800", "gray.400")}>
+                        Copyright © Cupoc, Inc. All rights reserved.
+                    </Text>
+                </Flex>
 
                 <Text textAlign="center" fontWeight={500} my={4}>
                     Made in 🇮🇳 with ❤️ by <Link rel="noreferrer" fontWeight={700} href="https://anudit.dev/">Anudit Nagar </Link>

@@ -19,9 +19,9 @@
     "@ceramicnetwork/3id-did-resolver": "^1.2.7",
     "@ceramicnetwork/http-client": "^1.0.7",
     "@ceramicstudio/idx": "^0.12.1",
-    "@chakra-ui/icons": "^1.0.13",
-    "@chakra-ui/react": "^1.6.4",
-    "@chakra-ui/system": "^1.7.0",
+    "@chakra-ui/icons": "^1.0.14",
+    "@chakra-ui/react": "^1.6.5",
+    "@chakra-ui/system": "^1.7.1",
     "@dicebear/avatars": "^4.6.9",
     "@dicebear/micah": "^4.6.9",
     "@emotion/react": "^11.4.0",
@@ -35,7 +35,7 @@
     "@walletconnect/web3-provider": "^1.4.1",
     "critters": "^0.0.10",
     "date-fns": "^2.22.1",
-    "dids": "^2.2.1",
+    "dids": "^2.3.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.30.0",
     "eslint-plugin-react": "^7.24.0",
@@ -58,7 +58,7 @@
     "typewriter-effect": "^2.18.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.3",
-    "webpack": "^5.43.0"
+    "webpack": "^5.44.0"
   },
   "devDependencies": {
     "eslint-config-next": "^11.0.1",

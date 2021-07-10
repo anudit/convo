@@ -4,7 +4,7 @@ import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, Acco
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
 
-import { BuildIcon, BlockchainIcon, DevfolioIcon, VoteIcon, ExternalIcon } from '@/public/icons';
+import { DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon } from '@/public/icons';
 import { CustomButton } from '@/components/CustomButtons';
 import Footer from "@/components/Footer";
 import Card from '@/components/Card';
@@ -157,9 +157,9 @@ const Home = () => {
                 letterSpacing="tight"
                 textAlign="center"
               >
-                Convo is the substrate connecting conversations and communities
+                Convo is the substrate that enables conversations and
                 <br/>
-                 on
+                 communities on
                 <Flex
                   display="inline-flex"
                   color="#2065ff"
@@ -181,7 +181,7 @@ const Home = () => {
                     }}
                   />
                 </Flex>
-                across the Internet.
+                flow across the Web.
               </Heading>
 
               <br/>
@@ -239,20 +239,32 @@ const Home = () => {
             Conversations, <wbr />Simplified.
           </Heading>
 
-          <SimpleGrid
-            columns={{ base: 1, md: 2, lg: 3, xl: 3 }}
-            spacingX={{ base: "10px", md: "5px", lg: "5px", xl: "80px" }}
-            spacingY="20px"
-            py={10}
+          <Flex
+            direction={{base: "column", md: "row"}}
             align="left"
           >
 
             <Card
-              title="Decentralized System"
+              title="Continuity through Composability"
               icon={
-                <BlockchainIcon
-                  aria-label="Decentralized"
-                  boxSize={10}
+                <ComposabilityIcon
+                  aria-label="Composability"
+                  boxSize={16}
+                />
+              }
+              internalLink="integrate/embeddable-convo"
+              >
+              <Text mt={2} mb={5} fontWeight="400" fontSize={20} color={useColorModeValue("blackAlpha.800", "gray.400")}>
+                Convo can be used as a singular layer to manage your conversations throughout the Internet, can be used to build upon and integrated into any application with Convo&apos;s API.
+              </Text>
+            </Card>
+
+            <Card
+              title="Simple-to-use API Built on Web3"
+              icon={
+                <JoinIcon
+                  aria-label="Web3"
+                  boxSize={16}
                 />
               }
               internalLink=""
@@ -262,37 +274,8 @@ const Home = () => {
               </Text>
             </Card>
 
-            <Card
-              title="Extensible Framework"
-              icon={
-                <BuildIcon
-                  aria-label="Extensible Framework"
-                  boxSize={10}
-                />
-              }
-              internalLink="integrate/embeddable-convo"
-              >
-              <Text mt={2} mb={5} fontWeight="400" fontSize={20} color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                Convo can be used as a singular layer to manage your conversations throughout the Internet and can be used to build upon and integrated into any application with Convo&apos;s API.
-              </Text>
-            </Card>
 
-            <Card
-              title="Community Governed"
-              icon={
-                <VoteIcon
-                  aria-label="community governed"
-                  boxSize={10}
-                />
-              }
-              internalLink="learn/conviction-voting"
-            >
-              <Text mt={2} mb={5} fontWeight="400" fontSize={20} color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                Moderation powered by Conviction Voting is a crucial part of the system to ensure the dialogue between participants is effective and governed by the people and not the platform.
-              </Text>
-            </Card>
-
-          </SimpleGrid>
+          </Flex>
 
         </Flex>
 

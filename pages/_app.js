@@ -63,6 +63,8 @@ const GlobalStyle = ({ children }) => {
             background: none !important;
             background-color: transparent !important;
           }
+          .grow { transition: all .2s ease-in-out; }
+          .grow:hover { transform: scale(1.01);}
           .gradientShadow::before {
             content: "";
             position: absolute;

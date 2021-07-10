@@ -13,19 +13,19 @@ const Card = (props) => {
       maxWidth="370px"
       color={useColorModeValue("black", "white")}
       backgroundColor={useColorModeValue("white", "#121212")}
-      borderWidth="1px"
-      borderColor={useColorModeValue("blue.200", "#121212")}
+      borderWidth="3px"
+      borderColor={useColorModeValue("gray.200", "#0557e914")}
+      borderRadius="10px"
       align="center"
+      className="grow"
       _hover={{
-        borderWidth:"1px",
-        borderColor:useColorModeValue("gray.200", "#3e3e3e")
+        borderColor: useColorModeValue("blue.200", "#07f2ff85"),
+        boxShadow: "0px 4px 20px rgba(0,151,251,0.25)"
       }}
     >
       <Box
         align="center"
-        p={4}
-        borderRadius="6px"
-        backgroundColor={useColorModeValue("#81b0ff33", "#1c375c")}
+        p={2}
         mr={4}
       >
         {props.icon}
