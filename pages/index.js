@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Head from 'next/head';
-import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, SimpleGrid, Input, Button, Box, UnorderedList, ListItem } from "@chakra-ui/react";
+import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Input, Button, Box, UnorderedList, ListItem } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
 
