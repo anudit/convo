@@ -8,6 +8,10 @@ import fetcher from '@/utils/fetcher';
 async function calculateScore(address) {
     let tp = new ethers.providers.AlchemyProvider("mainnet","qqQIm10pMOOsdmlV3p7NYIPt91bB0TL4");
 
+    let threadClient = await getClient();
+    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    const query = new Where('_id').eq(getAddress(address));
+
     let promiseArray = [
         checkPoH(address),
         fetcher(`https://app.brightid.org/node/v5/verifications/Convo/${address.toLowerCase()}`, "GET", {}),
@@ -16,7 +20,7 @@ async function calculateScore(address) {
         fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
-        fetcher(`https://raw.githubusercontent.com/Uniswap/sybil-list/master/verified.json`, "GET", {}),
+        threadClient.find(threadId, 'cachedSybil', query),
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -44,7 +48,7 @@ async function calculateScore(address) {
     if(Boolean(results[6].value) === true){ // unstoppable domains
         score += 1;
     }
-    if(Boolean(results[7].value[address]) === true){ // uniswap sybil
+    if(results[7].value.length > 0){ // uniswap sybil
         score += 10;
     }
 
@@ -58,7 +62,7 @@ async function calculateScore(address) {
         'idena': results[4].value,
         'cryptoScamDb': results[5].value,
         'unstoppableDomains': results[6].value,
-        'uniswapSybil': Boolean(results[7].value[address])
+        'uniswapSybil': Boolean(results[7].value[0])
     }
 }
 

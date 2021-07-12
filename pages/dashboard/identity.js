@@ -28,6 +28,9 @@ const IdentitySection = () => {
             <Flex direction={{base:"column", md: "row"}}>
               <Wrap>
                   <WrapItem>
+                    <SybilCard/>
+                  </WrapItem>
+                  <WrapItem>
                     <PoHCard/>
                   </WrapItem>
                   <WrapItem>
@@ -67,6 +70,77 @@ const IdentitySection = () => {
 
 export default IdentitySection;
 
+const SybilCard = () => {
+
+  const web3Context = useContext(Web3Context)
+  const { signerAddress } = web3Context;
+  const { colorMode } = useColorMode();
+  const [sybil, setSybil] = useState(null);
+
+  useEffect(() => {
+    fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO&raw=true`).then((data)=>{
+      setSybil(data['uniswapSybil']);
+    });
+  }, [signerAddress]);
+
+    return (
+        <Flex
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          w="xs"
+          mx="auto"
+          m={1}
+        >
+          <Box
+            bg="gray.300"
+            h={40}
+            w="full"
+            rounded="lg"
+            shadow="md"
+            bgSize="cover"
+            bgPos="center"
+            style={{
+              backgroundImage: `url(/images/sybil.webp)`,
+            }}
+          ></Box>
+
+          <Box
+            w={{ base: 56, md: 64 }}
+            bg={colorMode === "light" ? "white" : "gray.800"}
+            mt={-10}
+            shadow="lg"
+            rounded="lg"
+            overflow="hidden"
+          >
+            <chakra.h3
+              py={2}
+              textAlign="center"
+              fontWeight="bold"
+              color={colorMode === "light" ? "gray.800" : "white"}
+              letterSpacing={1}
+              backdropFilter="blur(300px) opacity(1)"
+            >
+              Uniswap Sybil
+            </chakra.h3>
+
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              py={2}
+              px={3}
+              bg={colorMode === "light" ? "gray.200" : "gray.700"}
+            >
+              {
+                sybil === null ? "Loading" : sybil === false ? (<><Button size="sm" as="a" target="_blank" href="https://sybil.org/">Verify on Sybil</Button></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="green.400"/></>)
+              }
+            </Flex>
+          </Box>
+        </Flex>
+    );
+};
+
+
 const PoHCard = () => {
 
   const web3Context = useContext(Web3Context);
@@ -89,7 +163,7 @@ const PoHCard = () => {
         >
           <Box
             bg="gray.300"
-            h={48}
+            h={40}
             w="full"
             rounded="lg"
             shadow="md"
@@ -339,7 +413,7 @@ const ENSCard = () => {
         >
           <Box
             bg="gray.300"
-            h={48}
+            h={40}
             w="full"
             rounded="lg"
             shadow="md"
@@ -407,7 +481,7 @@ const UdCard = () => {
         >
           <Box
             bg="gray.300"
-            h={48}
+            h={40}
             w="full"
             rounded="lg"
             shadow="md"
@@ -484,7 +558,7 @@ const IdenaCard = () => {
         >
           <Box
             bg="gray.300"
-            h={48}
+            h={40}
             w="full"
             rounded="lg"
             shadow="md"
@@ -563,7 +637,7 @@ const BrightIdCard = () => {
       >
         <Box
           bg="gray.300"
-          h={48}
+          h={40}
           w="full"
           rounded="lg"
           shadow="md"
