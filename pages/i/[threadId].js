@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Flex, Heading, Box } from "@chakra-ui/react";
+import { Text, Heading } from "@chakra-ui/react";
 
 import PageShell from "@/components/PageShell";
 
