@@ -108,31 +108,20 @@ const SybilCard = () => {
           <Box
             w={{ base: 56, md: 64 }}
             bg={colorMode === "light" ? "white" : "gray.800"}
-            mt={-10}
+            mt={-6}
             shadow="lg"
             rounded="lg"
             overflow="hidden"
           >
-            <chakra.h3
-              py={2}
-              textAlign="center"
-              fontWeight="bold"
-              color={colorMode === "light" ? "gray.800" : "white"}
-              letterSpacing={1}
-              backdropFilter="blur(300px) opacity(1)"
-            >
-              Uniswap Sybil
-            </chakra.h3>
-
             <Flex
               alignItems="center"
               justifyContent="center"
               py={2}
               px={3}
-              bg={colorMode === "light" ? "gray.200" : "gray.700"}
+              backdropFilter="blur(300px) opacity(1)"
             >
               {
-                sybil === null ? "Loading" : sybil === false ? (<><Button size="sm" as="a" target="_blank" href="https://sybil.org/">Verify on Sybil</Button></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="green.400"/></>)
+                sybil === null ? "Loading" : sybil === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
               }
             </Flex>
           </Box>
@@ -177,31 +166,21 @@ const PoHCard = () => {
           <Box
             w={{ base: 56, md: 64 }}
             bg={colorMode === "light" ? "white" : "gray.800"}
-            mt={-10}
+            mt={-6}
             shadow="lg"
             rounded="lg"
             overflow="hidden"
           >
-            <chakra.h3
-              py={2}
-              textAlign="center"
-              fontWeight="bold"
-              color={colorMode === "light" ? "gray.800" : "white"}
-              letterSpacing={1}
-              backdropFilter="blur(300px) opacity(1)"
-            >
-              Proof of Humanity
-            </chakra.h3>
 
             <Flex
               alignItems="center"
               justifyContent="center"
               py={2}
               px={3}
-              bg={colorMode === "light" ? "gray.200" : "gray.700"}
+              backdropFilter="blur(300px) opacity(1)"
             >
               {
-                poh === null ? "Loading" : poh === false ? (<><Button size="sm" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="green.400"/></>)
+                poh === null ? "Loading" : poh === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
               }
             </Flex>
           </Box>
@@ -427,31 +406,21 @@ const ENSCard = () => {
           <Box
             w={{ base: 56, md: 64 }}
             bg={colorMode === "light" ? "white" : "gray.800"}
-            mt={-10}
+            mt={-6}
             shadow="lg"
             rounded="lg"
             overflow="hidden"
           >
-            <chakra.h3
-              py={2}
-              textAlign="center"
-              fontWeight="bold"
-              color={colorMode === "light" ? "gray.800" : "white"}
-              letterSpacing={1}
-              backdropFilter="blur(300px) opacity(1)"
-            >
-              ENS Domain
-            </chakra.h3>
 
             <Flex
               alignItems="center"
               justifyContent="center"
               py={2}
               px={3}
-              bg={colorMode === "light" ? "gray.200" : "gray.700"}
+              backdropFilter="blur(300px) opacity(1)"
             >
               {
-                ensAddress === "" ? (<><Button size="sm" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</Button></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="green.400"/></>)
+                ensAddress === "" ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</chakra.p></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="blue.400"/></>)
               }
             </Flex>
           </Box>
@@ -495,31 +464,20 @@ const UdCard = () => {
           <Box
             w={{ base: 56, md: 64 }}
             bg={colorMode === "light" ? "white" : "gray.800"}
-            mt={-10}
+            mt={-6}
             shadow="lg"
             rounded="lg"
             overflow="hidden"
           >
-            <chakra.h3
-              py={2}
-              textAlign="center"
-              fontWeight="bold"
-              color={colorMode === "light" ? "gray.800" : "white"}
-              letterSpacing={1}
-              backdropFilter="blur(300px) opacity(1)"
-            >
-              Unstoppable Domains
-            </chakra.h3>
-
             <Flex
               alignItems="center"
               justifyContent="center"
               py={2}
               px={3}
-              bg={colorMode === "light" ? "gray.200" : "gray.700"}
+              backdropFilter="blur(300px) opacity(1)"
             >
               {
-                ud === null ? "Loading" : ud === false ? (<><Button size="sm" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</Button></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="green.400"/></>)
+                ud === null ? "Loading" : ud === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="blue.400"/></>)
               }
             </Flex>
           </Box>
@@ -572,31 +530,21 @@ const IdenaCard = () => {
           <Box
             w={{ base: 56, md: 64 }}
             bg={colorMode === "light" ? "white" : "gray.800"}
-            mt={-10}
+            mt={-6}
             shadow="lg"
             rounded="lg"
             overflow="hidden"
           >
-            <chakra.h3
-              py={2}
-              textAlign="center"
-              fontWeight="bold"
-              color={colorMode === "light" ? "gray.800" : "white"}
-              letterSpacing={1}
-              backdropFilter="blur(300px) opacity(1)"
-            >
-              Idena Proof-of-Person
-            </chakra.h3>
 
             <Flex
               alignItems="center"
               justifyContent="center"
               py={2}
               px={3}
-              bg={colorMode === "light" ? "gray.200" : "gray.700"}
+              backdropFilter="blur(300px) opacity(1)"
             >
               {
-                idena === null ? "Loading" : idena === false ? (<><Button size="sm" as="a" target="_blank" href="https://www.idena.io/">Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="green.400"/></>)
+                idena === null ? "Loading" : idena === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.idena.io/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
               }
             </Flex>
           </Box>
@@ -651,31 +599,20 @@ const BrightIdCard = () => {
         <Box
           w={{ base: 56, md: 64 }}
           bg={colorMode === "light" ? "white" : "gray.800"}
-          mt={-10}
+          mt={-6}
           shadow="lg"
           rounded="lg"
           overflow="hidden"
         >
-          <chakra.h3
-            py={2}
-            textAlign="center"
-            fontWeight="bold"
-            color={colorMode === "light" ? "gray.800" : "white"}
-            letterSpacing={1}
-            backdropFilter="blur(300px) opacity(1)"
-          >
-            Bright ID
-          </chakra.h3>
-
           <Flex
             alignItems="center"
             justifyContent="center"
             py={2}
             px={3}
-            bg={colorMode === "light" ? "gray.200" : "gray.700"}
+            backdropFilter="blur(300px) opacity(1)"
           >
             {
-              data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><Button size="sm" onClick={startVerify}>Click to Verify</Button></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="green.400"/></>)
+              data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><chakra.p size="sm" onClick={startVerify}>Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
             }
           </Flex>
 
