@@ -1,15 +1,15 @@
-name: "Convo Crons"
+name: "Cache Trust Scores"
 on:
   push:
     branches:
       - main
   schedule:
-    - cron: "0 0 * * *" # Every Day
+    - cron: "0 0,6,12,18 * * *" # Every 6 hours.
 
 jobs:
-  bucket_push:
+  convo_crons:
     runs-on: ubuntu-latest
-    name: Push Textile Bucket
+    name: Cache Trust Scores
     steps:
     - name: checkout
       uses: actions/checkout@v2.3.4
@@ -17,13 +17,6 @@ jobs:
       with:
         node-version: 16
     - uses: bahmutov/npm-install@v1
-    - name: Backup to Filecoin
-      env:
-        TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
-        TEXTILE_PK: ${{ secrets.TEXTILE_PK }}
-        TEXTILE_HUB_KEY_DEV: ${{ secrets.TEXTILE_HUB_KEY_DEV }}
-        NFTSTORAGE_KEY: ${{ secrets.NFTSTORAGE_KEY }}
-      run: node ./cron/backupFilecoin.js
     - name: Cache Trust Scores
       env:
         TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}

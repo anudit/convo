@@ -33,8 +33,7 @@ const client = new NFTStorage({ token: apiKey })
 console.log("🔃 Backing up data over NFT.Storage")
 getData().then((data)=>{
     const content = new Blob([JSON.stringify(data)]);
-    client.storeBlob(content).then((cid)=>{
+    client.storeBlob(content).then(()=>{
         console.log("✅ Backed up Data Over NFT.Storage")
-        console.log(`📦 https://${cid}.ipfs.dweb.link`)
     });
 })

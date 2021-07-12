@@ -99,4 +99,6 @@ const cacheTrustScores = async () => {
     console.log(res);
 }
 
-cacheTrustScores();
+cacheTrustScores().then(()=>{
+    console.log("✅ Cached all trust Scores");
+});
