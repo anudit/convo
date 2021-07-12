@@ -12,7 +12,7 @@ const CustomAvatar = (props) => {
     const [verified, setVerified] = useState(null);
 
     useEffect(() => {
-        fetcher(`/api/identity?address=${address}&apikey=CONVO&scoreOnly=true`, "GET", {}).then((res)=>{
+        fetcher(`/api/identity?address=${address}&apikey=CONVO`, "GET", {}).then((res)=>{
             if (Boolean(res?.success) === true) {
                 setVerified(res.score);
             }

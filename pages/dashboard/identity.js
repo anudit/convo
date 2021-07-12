@@ -15,7 +15,7 @@ import KeyDidResolver from 'key-did-resolver';
 import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context'
-import { checkPoH } from "@/lib/identity"
+import { checkPoH, checkUnstoppableDomains } from "@/lib/identity"
 import { VerifiedIcon, PoapIcon, IdxIcon } from '@/public/icons';
 import { AddIcon, DeleteIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { truncateAddress } from '@/utils/stringUtils';
@@ -35,6 +35,9 @@ const IdentitySection = () => {
                   </WrapItem>
                   <WrapItem>
                     <ENSCard />
+                  </WrapItem>
+                  <WrapItem>
+                    <UdCard />
                   </WrapItem>
                   <WrapItem>
                     <IdenaCard />
@@ -72,11 +75,7 @@ const PoHCard = () => {
 
   const [poh, setPoH] = useState(null);
   useEffect(() => {
-    async function fetchData() {
-      let data = await checkPoH(signerAddress);
-      setPoH(data);
-    }
-    fetchData();
+    checkPoH(signerAddress).then(setPoH);
   }, [signerAddress]);
 
     return (
@@ -115,6 +114,7 @@ const PoHCard = () => {
               fontWeight="bold"
               color={colorMode === "light" ? "gray.800" : "white"}
               letterSpacing={1}
+              backdropFilter="blur(300px) opacity(1)"
             >
               Proof of Humanity
             </chakra.h3>
@@ -364,6 +364,7 @@ const ENSCard = () => {
               fontWeight="bold"
               color={colorMode === "light" ? "gray.800" : "white"}
               letterSpacing={1}
+              backdropFilter="blur(300px) opacity(1)"
             >
               ENS Domain
             </chakra.h3>
@@ -377,6 +378,74 @@ const ENSCard = () => {
             >
               {
                 ensAddress === "" ? (<><Button size="sm" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</Button></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="green.400"/></>)
+              }
+            </Flex>
+          </Box>
+        </Flex>
+    );
+};
+
+const UdCard = () => {
+
+  const web3Context = useContext(Web3Context)
+  const { signerAddress } = web3Context;
+  const { colorMode } = useColorMode();
+  const [ud, setUd] = useState(null);
+
+  useEffect(() => {
+    checkUnstoppableDomains(signerAddress).then(setUd);
+  }, [signerAddress]);
+
+    return (
+        <Flex
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          w="xs"
+          mx="auto"
+          m={1}
+        >
+          <Box
+            bg="gray.300"
+            h={48}
+            w="full"
+            rounded="lg"
+            shadow="md"
+            bgSize="cover"
+            bgPos="center"
+            style={{
+              backgroundImage: `url(/images/unstoppable.webp)`,
+            }}
+          ></Box>
+
+          <Box
+            w={{ base: 56, md: 64 }}
+            bg={colorMode === "light" ? "white" : "gray.800"}
+            mt={-10}
+            shadow="lg"
+            rounded="lg"
+            overflow="hidden"
+          >
+            <chakra.h3
+              py={2}
+              textAlign="center"
+              fontWeight="bold"
+              color={colorMode === "light" ? "gray.800" : "white"}
+              letterSpacing={1}
+              backdropFilter="blur(300px) opacity(1)"
+            >
+              Unstoppable Domains
+            </chakra.h3>
+
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              py={2}
+              px={3}
+              bg={colorMode === "light" ? "gray.200" : "gray.700"}
+            >
+              {
+                ud === null ? "Loading" : ud === false ? (<><Button size="sm" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</Button></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="green.400"/></>)
               }
             </Flex>
           </Box>
@@ -440,6 +509,7 @@ const IdenaCard = () => {
               fontWeight="bold"
               color={colorMode === "light" ? "gray.800" : "white"}
               letterSpacing={1}
+              backdropFilter="blur(300px) opacity(1)"
             >
               Idena Proof-of-Person
             </chakra.h3>
@@ -518,6 +588,7 @@ const BrightIdCard = () => {
             fontWeight="bold"
             color={colorMode === "light" ? "gray.800" : "white"}
             letterSpacing={1}
+            backdropFilter="blur(300px) opacity(1)"
           >
             Bright ID
           </chakra.h3>
@@ -608,6 +679,7 @@ const PoapSection = () => {
                   textOverflow="ellipsis"
                   overflow="hidden"
                   whiteSpace="nowrap"
+                  backdropFilter="blur(300px) opacity(1)"
                 >
                   {poap.event.name}
                 </chakra.h1>

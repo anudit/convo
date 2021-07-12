@@ -113,7 +113,7 @@ const Threads = (props) => {
     async function fetchMoreData(){
         setLoadingMore(true);
         try {
-            let fetchedComments = await fetcher(`/api/comments?threadId=${router.query.threadId}&page=${page+1}&pageSize=5&latestFirst=true&apikey=CONVO`, "GET", {});
+            let fetchedComments = await fetcher(`/api/comments?threadId=${router.query.threadId}&page=${page+1}&pageSize=10&latestFirst=true&apikey=CONVO`, "GET", {});
             if (fetchedComments.length === 0){
                 setHasMoreData(false);
             }

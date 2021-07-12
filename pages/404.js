@@ -30,7 +30,7 @@ export default function FourOhFour() {
             color={useColorModeValue("gray.900", "gray.100")}
             mb={6}
           >
-            <chakra.span display="block">Well isn&apos;t this embarrassing? We can&apos;t seem to find what you&apos;re looking for.</chakra.span>
+            <chakra.span display="block">We can&apos;t seem to find what you&apos;re looking for.</chakra.span>
             <chakra.span
               display="block"
               color={useColorModeValue("brand.600", "gray.500")}
