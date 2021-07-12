@@ -19,16 +19,16 @@ jobs:
     - uses: bahmutov/npm-install@v1
     - name: Backup to Filecoin
       env:
-          TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
-          TEXTILE_PK: ${{ secrets.TEXTILE_PK }}
-          TEXTILE_HUB_KEY_DEV: ${{ secrets.TEXTILE_HUB_KEY_DEV }}
-          NFTSTORAGE_KEY: ${{ secrets.NFTSTORAGE_KEY }}
-        run: node ./cron/backupFilecoin.js
+        TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
+        TEXTILE_PK: ${{ secrets.TEXTILE_PK }}
+        TEXTILE_HUB_KEY_DEV: ${{ secrets.TEXTILE_HUB_KEY_DEV }}
+        NFTSTORAGE_KEY: ${{ secrets.NFTSTORAGE_KEY }}
+      run: node ./cron/backupFilecoin.js
     - name: Cache Trust Scores
       env:
-          TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
-          TEXTILE_PK: ${{ secrets.TEXTILE_PK }}
-          TEXTILE_HUB_KEY_DEV: ${{ secrets.TEXTILE_HUB_KEY_DEV }}
-          NFTSTORAGE_KEY: ${{ secrets.NFTSTORAGE_KEY }}
-        run: node ./cron/cacheTrustScore.js
+        TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
+        TEXTILE_PK: ${{ secrets.TEXTILE_PK }}
+        TEXTILE_HUB_KEY_DEV: ${{ secrets.TEXTILE_HUB_KEY_DEV }}
+        NFTSTORAGE_KEY: ${{ secrets.NFTSTORAGE_KEY }}
+      run: node ./cron/cacheTrustScore.js
 
