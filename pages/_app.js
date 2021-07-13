@@ -76,6 +76,9 @@ const GlobalStyle = ({ children }) => {
             height: 35px;
             margin: -15px;
           }
+          .br-10 {
+            border-radius:10px;
+          }
           .glow:hover::before {
             content: "";
             position: absolute;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Link from 'next/link';
-import { useToast, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, Image, IconButton, Select } from "@chakra-ui/react";
+import Image from 'next/image';
+import { useToast, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, IconButton, Select, Spinner } from "@chakra-ui/react";
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
 import useSWR from 'swr';
 import QRCode from "react-qr-code";
@@ -16,7 +17,7 @@ import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context'
 import { checkPoH, checkUnstoppableDomains } from "@/lib/identity"
-import { VerifiedIcon, PoapIcon, IdxIcon } from '@/public/icons';
+import { VerifiedIcon, PoapIcon } from '@/public/icons';
 import { AddIcon, DeleteIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { truncateAddress } from '@/utils/stringUtils';
 
@@ -29,6 +30,9 @@ const IdentitySection = () => {
               <Wrap>
                   <WrapItem>
                     <SybilCard/>
+                  </WrapItem>
+                  <WrapItem>
+                    <IdxCard />
                   </WrapItem>
                   <WrapItem>
                     <PoHCard/>
@@ -45,14 +49,8 @@ const IdentitySection = () => {
                   <WrapItem>
                     <IdenaCard />
                   </WrapItem>
+
               </Wrap>
-            </Flex>
-            <Heading as="h4" size="md" my={4}>
-              <IdxIcon boxSize={7} mr={2}/>
-              <Text display="inline-flex" verticalAlign="middle">Cross Chain Identities</Text>
-            </Heading>
-            <Flex my={2} direction={{base:"column", md: "row"}}>
-              <IdxSection mt={2}/>
             </Flex>
             <Heading as="h4" size="md" my={4}>
               <PoapIcon mr={2}/>  POAPs
@@ -74,7 +72,6 @@ const SybilCard = () => {
 
   const web3Context = useContext(Web3Context)
   const { signerAddress } = web3Context;
-  const { colorMode } = useColorMode();
   const [sybil, setSybil] = useState(null);
 
   useEffect(() => {
@@ -84,57 +81,18 @@ const SybilCard = () => {
   }, [signerAddress]);
 
     return (
-        <Flex
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          w="xs"
-          mx="auto"
-          m={1}
-        >
-          <Box
-            bg="gray.300"
-            h={40}
-            w="full"
-            rounded="lg"
-            shadow="md"
-            bgSize="cover"
-            bgPos="center"
-            style={{
-              backgroundImage: `url(/images/sybil.webp)`,
-            }}
-          ></Box>
-
-          <Box
-            w={{ base: 56, md: 64 }}
-            bg={colorMode === "light" ? "white" : "gray.800"}
-            mt={-6}
-            shadow="lg"
-            rounded="lg"
-            overflow="hidden"
-          >
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              py={2}
-              px={3}
-              backdropFilter="blur(300px) opacity(1)"
-            >
-              {
-                sybil === null ? "Loading" : sybil === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
-              }
-            </Flex>
-          </Box>
-        </Flex>
+      <IdentityCard image_url="/images/sybil.webp">
+        {
+          sybil === null ? "Loading" : sybil === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
     );
 };
-
 
 const PoHCard = () => {
 
   const web3Context = useContext(Web3Context);
   const { signerAddress } = web3Context;
-  const { colorMode } = useColorMode();
 
   const [poh, setPoH] = useState(null);
   useEffect(() => {
@@ -142,53 +100,146 @@ const PoHCard = () => {
   }, [signerAddress]);
 
     return (
-        <Flex
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          w="xs"
-          mx="auto"
-          m={1}
-        >
-          <Box
-            bg="gray.300"
-            h={40}
-            w="full"
-            rounded="lg"
-            shadow="md"
-            bgSize="cover"
-            bgPos="center"
-            style={{
-              backgroundImage: `url(/images/poh.webp)`,
-            }}
-          ></Box>
-
-          <Box
-            w={{ base: 56, md: 64 }}
-            bg={colorMode === "light" ? "white" : "gray.800"}
-            mt={-6}
-            shadow="lg"
-            rounded="lg"
-            overflow="hidden"
-          >
-
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              py={2}
-              px={3}
-              backdropFilter="blur(300px) opacity(1)"
-            >
-              {
-                poh === null ? "Loading" : poh === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
-              }
-            </Flex>
-          </Box>
-        </Flex>
+      <IdentityCard image_url="/images/poh.webp">
+        {
+          poh === null ? "Loading" : poh === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
     );
 };
 
-const IdxSection = () => {
+const ENSCard = () => {
+
+  const web3Context = useContext(Web3Context);
+  const { ensAddress } = web3Context;
+
+    return (
+      <IdentityCard image_url="/images/ens.webp">
+        {
+          ensAddress === "" ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</chakra.p></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
+    );
+};
+
+const UdCard = () => {
+
+  const web3Context = useContext(Web3Context)
+  const { signerAddress } = web3Context;
+  const [ud, setUd] = useState(null);
+
+  useEffect(() => {
+    checkUnstoppableDomains(signerAddress).then(setUd);
+  }, [signerAddress]);
+
+    return (
+      <IdentityCard image_url="/images/unstoppable.webp">
+        {
+          ud === null ? "Loading" : ud === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
+    );
+};
+
+const IdenaCard = () => {
+
+  const web3Context = useContext(Web3Context);
+  const { signerAddress } = web3Context;
+
+  const [idena, setIdena] = useState(null);
+  useEffect(() => {
+    async function fetchData() {
+      let data = await fetcher(`https://api.idena.io/api/Address/${signerAddress}`, "GET", {});
+      if (Boolean(data?.result) === true) {
+        setIdena(true);
+      }
+      else {
+        setIdena(false);
+      }
+    }
+    fetchData();
+  }, [signerAddress]);
+
+    return (
+      <IdentityCard image_url="/images/idena.webp">
+        {
+          idena === null ? "Loading" : idena === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.idena.io/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
+    );
+};
+
+const BrightIdCard = () => {
+
+  const web3Context = useContext(Web3Context)
+  const { signerAddress } = web3Context;
+  const { colorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { hasCopied, onCopy } = useClipboard(`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`)
+
+  const { data } = useSWR(
+    signerAddress != "" ? [`https://app.brightid.org/node/v5/verifications/Convo/${signerAddress}`, "GET"] : null,
+    fetcher
+  );
+
+  async function startVerify(){
+    onOpen();
+  }
+
+  async function openInApp(){
+    window.open(`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`, '_blank');
+  }
+
+  return (
+    <IdentityCard image_url="/images/brightid.webp">
+        <>
+          {
+            data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><chakra.p size="sm" onClick={startVerify}>Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+          }
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Scan QR</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody align="center">
+                <chakra.h3
+                  py={2}
+                  textAlign="center"
+                  fontWeight="bold"
+                  color={colorMode === "light" ? "gray.800" : "white"}
+                  letterSpacing={1}
+                >
+                  Scan the QR Code in your Bright ID App.
+                </chakra.h3>
+                <QRCode value={`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`} bgColor="transparent" fgColor={useColorModeValue("black","white")}/>
+                <br/>
+                <Button size="md" onClick={openInApp}>
+                  Open in App
+                </Button>
+                <br/><br/>
+                <InputGroup size="md">
+                  <Input
+                    pr="4.5rem"
+                    type="text"
+                    readOnly
+                    value={`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={onCopy} >
+                      {hasCopied? "Copied" : "Copy"}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                <br/>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        </>
+    </IdentityCard>
+    );
+};
+
+const IdxCard = () => {
 
   const web3Context = useContext(Web3Context);
   const { signerAddress, web3Modal, provider } = web3Context;
@@ -308,14 +359,15 @@ const IdxSection = () => {
   }
 
   return (
-    <>
-      <Button
-        isLoading={isLoading}
-        onClick={getIdentities}
-        w="fit-content"
-      >
-        View Identites
-      </Button>
+    <IdentityCard image_url="/images/idx.webp">
+      {
+        isLoading === true ? (
+          <Spinner size="md" />
+        ) : (
+          <Text mr={1} onClick={getIdentities} cursor="pointer">View Cross-Chain Identites</Text>
+        )
+      }
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -371,291 +423,8 @@ const IdxSection = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-    </>
-  );
-};
 
-const ENSCard = () => {
-
-  const web3Context = useContext(Web3Context);
-  const { ensAddress } = web3Context;
-  const { colorMode } = useColorMode();
-
-    return (
-        <Flex
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          w="xs"
-          mx="auto"
-          m={1}
-        >
-          <Box
-            bg="gray.300"
-            h={40}
-            w="full"
-            rounded="lg"
-            shadow="md"
-            bgSize="cover"
-            bgPos="center"
-            style={{
-              backgroundImage: `url(/images/ens.webp)`,
-            }}
-          ></Box>
-
-          <Box
-            w={{ base: 56, md: 64 }}
-            bg={colorMode === "light" ? "white" : "gray.800"}
-            mt={-6}
-            shadow="lg"
-            rounded="lg"
-            overflow="hidden"
-          >
-
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              py={2}
-              px={3}
-              backdropFilter="blur(300px) opacity(1)"
-            >
-              {
-                ensAddress === "" ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</chakra.p></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="blue.400"/></>)
-              }
-            </Flex>
-          </Box>
-        </Flex>
-    );
-};
-
-const UdCard = () => {
-
-  const web3Context = useContext(Web3Context)
-  const { signerAddress } = web3Context;
-  const { colorMode } = useColorMode();
-  const [ud, setUd] = useState(null);
-
-  useEffect(() => {
-    checkUnstoppableDomains(signerAddress).then(setUd);
-  }, [signerAddress]);
-
-    return (
-        <Flex
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          w="xs"
-          mx="auto"
-          m={1}
-        >
-          <Box
-            bg="gray.300"
-            h={40}
-            w="full"
-            rounded="lg"
-            shadow="md"
-            bgSize="cover"
-            bgPos="center"
-            style={{
-              backgroundImage: `url(/images/unstoppable.webp)`,
-            }}
-          ></Box>
-
-          <Box
-            w={{ base: 56, md: 64 }}
-            bg={colorMode === "light" ? "white" : "gray.800"}
-            mt={-6}
-            shadow="lg"
-            rounded="lg"
-            overflow="hidden"
-          >
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              py={2}
-              px={3}
-              backdropFilter="blur(300px) opacity(1)"
-            >
-              {
-                ud === null ? "Loading" : ud === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="blue.400"/></>)
-              }
-            </Flex>
-          </Box>
-        </Flex>
-    );
-};
-
-const IdenaCard = () => {
-
-  const web3Context = useContext(Web3Context);
-  const { signerAddress } = web3Context;
-  const { colorMode } = useColorMode();
-
-  const [idena, setIdena] = useState(null);
-  useEffect(() => {
-    async function fetchData() {
-      let data = await fetcher(`https://api.idena.io/api/Address/${signerAddress}`, "GET", {});
-      if (Boolean(data?.result) === true) {
-        setIdena(true);
-      }
-      else {
-        setIdena(false);
-      }
-    }
-    fetchData();
-  }, [signerAddress]);
-
-    return (
-        <Flex
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          w="xs"
-          mx="auto"
-          m={1}
-        >
-          <Box
-            bg="gray.300"
-            h={40}
-            w="full"
-            rounded="lg"
-            shadow="md"
-            bgSize="cover"
-            bgPos="center"
-            style={{
-              backgroundImage: `url(/images/idena.webp)`,
-            }}
-          ></Box>
-
-          <Box
-            w={{ base: 56, md: 64 }}
-            bg={colorMode === "light" ? "white" : "gray.800"}
-            mt={-6}
-            shadow="lg"
-            rounded="lg"
-            overflow="hidden"
-          >
-
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              py={2}
-              px={3}
-              backdropFilter="blur(300px) opacity(1)"
-            >
-              {
-                idena === null ? "Loading" : idena === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.idena.io/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
-              }
-            </Flex>
-          </Box>
-        </Flex>
-    );
-};
-
-const BrightIdCard = () => {
-
-  const web3Context = useContext(Web3Context)
-  const { signerAddress } = web3Context;
-  const { colorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { hasCopied, onCopy } = useClipboard(`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`)
-
-  const { data } = useSWR(
-    signerAddress != "" ? [`https://app.brightid.org/node/v5/verifications/Convo/${signerAddress}`, "GET"] : null,
-    fetcher
-  );
-
-  async function startVerify(){
-    onOpen();
-  }
-
-  async function openInApp(){
-    window.open(`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`, '_blank');
-  }
-
-
-  return (
-      <Flex
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        w="xs"
-        mx="auto"
-        m={1}
-      >
-        <Box
-          bg="gray.300"
-          h={40}
-          w="full"
-          rounded="lg"
-          shadow="md"
-          bgSize="cover"
-          bgPos="center"
-          style={{
-            backgroundImage: `url(/images/brightid.webp)`,
-          }}
-        ></Box>
-
-        <Box
-          w={{ base: 56, md: 64 }}
-          bg={colorMode === "light" ? "white" : "gray.800"}
-          mt={-6}
-          shadow="lg"
-          rounded="lg"
-          overflow="hidden"
-        >
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            py={2}
-            px={3}
-            backdropFilter="blur(300px) opacity(1)"
-          >
-            {
-              data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><chakra.p size="sm" onClick={startVerify}>Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
-            }
-          </Flex>
-
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Scan QR</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody align="center">
-                <chakra.h3
-                  py={2}
-                  textAlign="center"
-                  fontWeight="bold"
-                  color={colorMode === "light" ? "gray.800" : "white"}
-                  letterSpacing={1}
-                >
-                  Scan the QR Code in your Bright ID App.
-                </chakra.h3>
-                <QRCode value={`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`} bgColor="transparent" fgColor={useColorModeValue("black","white")}/>
-                <br/>
-                <Button size="md" onClick={openInApp}>
-                  Open in App
-                </Button>
-                <br/><br/>
-                <InputGroup size="md">
-                  <Input
-                    pr="4.5rem"
-                    type="text"
-                    readOnly
-                    value={`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`}
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={onCopy} >
-                      {hasCopied? "Copied" : "Copy"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-                <br/>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-        </Box>
-      </Flex>
+    </IdentityCard>
   );
 };
 
@@ -754,3 +523,38 @@ const PoapSection = () => {
   }
 };
 
+const IdentityCard = (props) => {
+
+  const { colorMode } = useColorMode();
+  return (
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        w="xs"
+        mx="auto"
+        m={1}
+      >
+        <Image src={props.image_url} alt="" width="288px" height="162px" className="br-10" />
+
+        <Box
+          w={{ base: 56, md: 64 }}
+          bg={colorMode === "light" ? "white" : "gray.800"}
+          mt={-6}
+          shadow="lg"
+          rounded="lg"
+          overflow="hidden"
+        >
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            py={2}
+            px={3}
+            backdropFilter="blur(300px) opacity(1)"
+          >
+            {props.children}
+          </Flex>
+        </Box>
+      </Flex>
+  );
+}
