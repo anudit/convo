@@ -4,7 +4,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0 0,6,12,18 * * *" # Every 6 hours.
+    - cron: "0 0,12 * * *" # Every 12 hours.
 
 jobs:
   convo_crons:
@@ -17,6 +17,12 @@ jobs:
       with:
         node-version: 16
     - uses: bahmutov/npm-install@v1
+    - uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
     - name: Cache Trust Scores
       env:
         TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}

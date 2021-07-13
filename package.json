@@ -29,13 +29,13 @@
     "@gnosis.pm/safe-apps-sdk": "^4.0.0",
     "@gnosis.pm/safe-apps-web3modal": "^0.6.0",
     "@oceanprotocol/contracts": "^0.6.5",
-    "@oceanprotocol/lib": "^0.16.4",
+    "@oceanprotocol/lib": "^0.16.5",
     "@portis/web3": "^4.0.5",
     "@textile/hub": "^6.2.0",
     "@walletconnect/web3-provider": "^1.4.1",
     "critters": "^0.0.10",
     "date-fns": "^2.22.1",
-    "dids": "^2.3.0",
+    "dids": "^2.4.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.30.0",
     "eslint-plugin-react": "^7.24.0",
@@ -64,6 +64,6 @@
   "devDependencies": {
     "eslint-config-next": "^11.0.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "next-sitemap": "^1.6.133"
+    "next-sitemap": "^1.6.140"
   }
 }

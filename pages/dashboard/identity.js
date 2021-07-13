@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { useToast, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, IconButton, Select, Spinner } from "@chakra-ui/react";
-import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
+import { useToast, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, IconButton, Select, Spinner, Image as ChakraImage } from "@chakra-ui/react";
+import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalFooter, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
 import useSWR from 'swr';
 import QRCode from "react-qr-code";
 
@@ -364,7 +363,7 @@ const IdxCard = () => {
         isLoading === true ? (
           <Spinner size="md" />
         ) : (
-          <Text mr={1} onClick={getIdentities} cursor="pointer">View Cross-Chain Identites</Text>
+          <Text mr={1} onClick={getIdentities} cursor="pointer">Manage Cross-Chain Identites</Text>
         )
       }
 
@@ -431,89 +430,66 @@ const IdxCard = () => {
 const PoapSection = () => {
 
   const web3Context = useContext(Web3Context);
-  const { colorMode } = useColorMode();
   const { signerAddress } = web3Context;
   const [poaps, setPoaps] = useState(null);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [poapDetails, setPoapDetails] = useState(null);
 
   useEffect(() => {
     fetcher(`https://api.poap.xyz/actions/scan/${signerAddress}`, "GET", {}).then(setPoaps);
   }, [signerAddress]);
 
-  if (poaps && poaps.length > 0){
-    return ( poaps.map((poap)=>{
-        return (
-          <WrapItem key={poap.tokenId}>
-            <Box
-              mx={2}
-              w="300px"
-              bg={colorMode === "light" ? "white" : "gray.800"}
-              shadow="lg"
-              rounded="lg"
-            >
-              <Box px={4} py={2} title={poap.event.name}>
-                <chakra.h1
-                  color={colorMode === "light" ? "gray.800" : "white"}
-                  fontWeight="bold"
-                  fontSize="xl"
-                  w="270px"
-                  textOverflow="ellipsis"
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                  backdropFilter="blur(300px) opacity(1)"
-                >
-                  {poap.event.name}
-                </chakra.h1>
-              </Box>
+  function showDetails(id) {
+    setPoapDetails({
+      'eventName':poaps[id].event.name,
+      'description':poaps[id].event.description,
+      'tokenId':poaps[id].tokenId,
+      'eventLink':poaps[id].event.event_url,
+    });
+    onOpen();
+  }
 
-              <Image
+  if (poaps && poaps.length > 0){
+    return (
+      <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{poapDetails?.eventName}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+          {poapDetails?.description}
+          </ModalBody>
+          <ModalFooter>
+            <Button as="a" href={poapDetails?.eventLink} target="_blank" variant="ghost" size="sm">
+              View Event <ExternalLinkIcon ml={2}/>
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      {
+        poaps.map((poap, index)=>{
+          return (
+            <WrapItem key={poap.tokenId}>
+              <ChakraImage
                 h={48}
-                w="full"
+                w={48}
                 fit="contain"
                 mt={2}
                 src={poap.event.image_url}
                 alt={poap.event.name}
+                onClick={()=>{showDetails(index)}}
+                cursor="pointer"
+                _hover={{
+                  transform:"scale(1.01)"
+                }}
               />
-
-              <Flex
-                alignItems="center"
-                justifyContent="space-between"
-                px={4}
-                py={2}
-                bg="gray.900"
-                roundedBottom="lg"
-              >
-                <chakra.h1 color="white" fontWeight="bold" fontSize="lg">
-                  #{poap.tokenId}
-                </chakra.h1>
-                <Link
-                  px={2}
-                  py={1}
-                  bg="white"
-                  fontSize="xs"
-                  color="gray.900"
-                  fontWeight="bold"
-                  rounded="lg"
-                  textTransform="uppercase"
-                  _hover={{
-                    bg: "gray.200",
-                  }}
-                  _focus={{
-                    bg: "gray.400",
-                  }}
-                  href={poap.event.event_url}
-                  target="_blank"
-                  cursor="pointer"
-                >
-                  <Button variant="ghost" size="sm">
-                    View Event <ExternalLinkIcon ml={2}/>
-                  </Button>
-                </Link>
-              </Flex>
-
-            </Box>
-          </WrapItem>
-        );
-      })
+            </WrapItem>
+          );
+        })
+      }
+    </>
     )
   }
   else {

@@ -1,4 +1,4 @@
-name: "Backup Filecoin"
+name: "Backup to Filecoin"
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ on:
 jobs:
   convo_crons:
     runs-on: ubuntu-latest
-    name: Backup Filecoin
+    name: Backup to Filecoin
     steps:
     - name: checkout
       uses: actions/checkout@v2.3.4
@@ -17,6 +17,12 @@ jobs:
       with:
         node-version: 16
     - uses: bahmutov/npm-install@v1
+    - uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
     - name: Backup to Filecoin
       env:
         TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
