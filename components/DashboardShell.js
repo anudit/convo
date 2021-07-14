@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useDisclosure, useColorMode, Text, Flex, Heading, Tooltip, chakra, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner  } from "@chakra-ui/react";
+import { useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Tooltip, chakra, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner  } from "@chakra-ui/react";
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon } from '@/public/icons';
-import { InfoIcon } from '@chakra-ui/icons';
+import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon, DocsIcon } from '@/public/icons';
+import { InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { isAddress } from 'ethers/lib/utils';
 
 const PageShell = (props) => {
@@ -255,22 +255,36 @@ const DashboardShell = ({title, children}) => {
                         </Link>
                     </Flex>
                     <Flex direction="column">
-                        <Flex onClick={toggleColorMode} h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
-                            <Text fontSize="2xl">
-                                {colorMode === "light" ? "🌒" : "☀️"}
-                            </Text>
-                            <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
-                                {colorMode === "light" ? "Dark Mode" : "Light Mode"}
-                            </Text>
+                        <Flex onClick={toggleColorMode} h={{base: "50px", md:"50px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
+                            <IconButton
+                                colorScheme={colorMode === 'light' ? "blackAlpha": "gray" }
+                                aria-label="Docs"
+                                size="lg"
+                                icon={colorMode === "light" ? (<MoonIcon/>) : (<SunIcon/>)}
+                                variant="ghost"
+                                borderRadius="100px"
+                            />
                         </Flex>
 
-                        <Flex as="a" href="https://docs.theconvo.space" target="_blank" h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
-                            <Text fontSize="2xl">
-                                📘
-                            </Text>
-                            <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
-                                Docs
-                            </Text>
+                        <Flex as="a" href="https://docs.theconvo.space" target="_blank" h={{base: "50px", md:"50px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
+                            <IconButton
+                                colorScheme={colorMode === 'light' ? "blackAlpha": "gray"}
+                                aria-label="Docs"
+                                size="lg"
+                                icon={<DocsIcon/>}
+                                variant="ghost"
+                                borderRadius="100px"
+                            />
+                        </Flex>
+                        <Flex as="a" href="https://gihtub.com/anudit/convo" target="_blank" h={{base: "50px", md:"50px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
+                            <IconButton
+                                colorScheme={colorMode === 'light' ? "blackAlpha": "gray" }
+                                aria-label="Github"
+                                size="lg"
+                                icon={<GithubIcon/>}
+                                variant="ghost"
+                                borderRadius="100px"
+                            />
                         </Flex>
                     </Flex>
 

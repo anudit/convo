@@ -21,7 +21,7 @@ export async function getStaticProps(context) {
     const query = new Where('tid').eq(threadId).orderByDesc('_mod');
 
     let promiseArray = [
-        getComments(query, 0, 5),
+        getComments(query, 0, 10),
         getThread(threadId)
     ];
 
