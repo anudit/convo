@@ -29,7 +29,7 @@ const IdentitySection = () => {
 
   useEffect(() => {
     if (isAddress(signerAddress)){
-      fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
+      fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
         console.log(data);
         setTrustScore(data?.score?.toString());
       });
@@ -121,7 +121,7 @@ const SybilCard = () => {
   const [sybil, setSybil] = useState(null);
 
   useEffect(() => {
-    fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
+    fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
       setSybil(data['uniswapSybil']);
     });
   }, [signerAddress]);
@@ -142,7 +142,7 @@ const DeepdaoCard = () => {
   const [data, setScore] = useState(null);
 
   useEffect(() => {
-    fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
+    fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
       setScore(data['deepdao']);
     });
   }, [signerAddress]);
