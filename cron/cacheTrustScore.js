@@ -49,7 +49,7 @@ const getChunkedAddresses = async () =>{
 
 const getTrustScore = async (address) => {
     try {
-        let resp = await fetch(`http://localhost:3000/api/identity?address=${address}&apikey=CONVO&noCache=true`);
+        let resp = await fetch(`https://theconvo.space/api/identity?address=${address}&apikey=CONVO&noCache=true`);
         let respData = await resp.json();
         if (Boolean(respData.success) === true) {
             return respData;
