@@ -2,7 +2,7 @@ require('dotenv').config({ path: '.env.local' })
 const fetch = require('node-fetch');
 const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const { getAddress } = require('ethers/lib/utils');
-const CHUNK_SIZE = 3;
+const CHUNK_SIZE = 1;
 
 let erroredAddresses = [];
 
