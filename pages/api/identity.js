@@ -98,7 +98,6 @@ export default async (req, res) => {
 
             if (req.query?.noCache == 'true') {
                 let scoreData = await calculateScore(req.query.address);
-                res.setHeader('Cache-Control', 'public, max-age=86400');
                 res.status(200).json(scoreData);
             }
             else {
@@ -109,7 +108,7 @@ export default async (req, res) => {
 
                 // cache-hit
                 if (cachedTrustScore.length > 0) {
-                    res.setHeader('Cache-Control', 'public, max-age=86400');
+                    res.setHeader('Cache-Control', 'public, max-age=7200');
                     res.status(200).json({
                         ...cachedTrustScore[0]
                     });
@@ -118,7 +117,7 @@ export default async (req, res) => {
                 else {
                     let scoreData = await calculateScore(req.query.address);
                     setCache(req.query.address, scoreData);
-                    res.setHeader('Cache-Control', 'public, max-age=86400');
+                    res.setHeader('Cache-Control', 'public, max-age=7200');
                     res.status(200).json(scoreData);
                 }
 

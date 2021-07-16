@@ -64,7 +64,7 @@ const Home = () => {
 
           <Flex
             align="center"
-            justify={{ base: "center", md: "space-around", xl: "space-between" }}
+            justify={{ base: "center", md: "space-around", xl: "space-evenly" }}
             direction={{ base: "column-reverse", sm: "column-reverse", md: "column" }}
             wrap="no-wrap"
             px={{base: 0, md:6}}

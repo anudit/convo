@@ -6,6 +6,10 @@ const CHUNK_SIZE = 1;
 
 let erroredAddresses = [];
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const getClient = async () =>{
 
     const identity = PrivateKey.fromString(process.env.TEXTILE_PK);
@@ -74,6 +78,7 @@ const getTrustScores = async () => {
             promiseArray.push(getTrustScore(chunkedAddresses[index][i]));
         }
         let scores = await Promise.allSettled(promiseArray);
+        await sleep(1000);
         console.log(`🟢 Cached Chunk#${index}`);
         for (let i = 0; i< chunkedAddresses[index].length; i++) {
             trustScoreDb[chunkedAddresses[index][i]] = scores[i].value;
@@ -86,7 +91,8 @@ const getTrustScores = async () => {
         promiseArray.push(getTrustScore(erroredAddresses[index]));
     }
     let scores = await Promise.allSettled(promiseArray);
-    for (let i = 0; i< erroredAddresses.length; i++) {
+    await sleep(1000);
+    for (let i = 0; i < erroredAddresses.length; i++) {
         try {
             trustScoreDb[erroredAddresses[i]] = scores[i].value;
         } catch (error) {
@@ -118,6 +124,37 @@ const cacheTrustScores = async () => {
 // getChunkedAddresses().then((data)=>{
 //     // console.log(data);
 // });
+
+
+const cacheTrustScoresManual = async (addresses = []) => {
+
+    let trustScoreDb = {};
+    for (let index = 0; index < addresses.length; index++) {
+        let data = await getTrustScore(addresses[index]);
+        trustScoreDb[addresses[index]] = data;
+        console.log(`🟢 Cached ${index}`);
+        await sleep(1000);
+    }
+
+    let adds = Object.keys(trustScoreDb);
+    let docs = [];
+    for (let index = 0; index < adds.length; index++) {
+        docs.push({
+            '_id': getAddress(adds[index]),
+            ...trustScoreDb[adds[index]],
+        })
+    }
+
+    const threadClient = await getClient();
+    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    await threadClient.save(threadId, 'cachedTrustScores', docs);
+}
+
+
+// cacheTrustScoresManual(["0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8d07D225a769b7Af3A923481E1FdF49180e6A265"]).then(()=>{
+//     console.log("✅ Cached all trust Scores");
+// });
+
 
 cacheTrustScores().then(()=>{
     console.log("✅ Cached all trust Scores");
