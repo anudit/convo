@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Head from 'next/head';
-import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Input, Button, Box, UnorderedList, ListItem } from "@chakra-ui/react";
+import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Input, Button, Box, UnorderedList, ListItem, Wrap, WrapItem } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
 
-import { DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon } from '@/public/icons';
+import { DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon } from '@/public/icons';
 import { CustomButton } from '@/components/CustomButtons';
 import Footer from "@/components/Footer";
 import Card from '@/components/Card';
@@ -55,16 +55,17 @@ const Home = () => {
           direction="column"
           align="center"
           m="0 auto"
-          h="100vh"
+          h={{base:"130vh", md:"100vh"}}
           w={{ base: "95%"}}
           mt="10vh"
           zIndex="1"
+          justifyContent="space-evenly"
         >
 
           <Flex
             align="center"
             justify={{ base: "center", md: "space-around", xl: "space-between" }}
-            direction={{ base: "column-reverse", sm: "column-reverse", md: "row" }}
+            direction={{ base: "column-reverse", sm: "column-reverse", md: "column" }}
             wrap="no-wrap"
             px={{base: 0, md:6}}
             mb={16}
@@ -203,15 +204,40 @@ const Home = () => {
               <br/><br/>
 
               <Text py={2} fontWeight={400} color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                BACKED BY
+                BACKED BY VISIONARIES
               </Text>
-              <Link aria-label="Devfolio" rel="noreferrer" target="_blank" href="https://devfolio.co/blog/first-bif-cohort/">
-                <DevfolioIcon width="200px" height="50px"/>
-              </Link>
+              <Flex direction="row" mt={2} w="100%" justifyContent="center" align="center">
+                <Wrap spacing="30px" justifyContent="center">
+                  <WrapItem>
+                    <Link aria-label="Consensys" rel="noreferrer" target="_blank" href="#">
+                      <ConsensysIcon width="200px" height="50px"/>
+                    </Link>
+                  </WrapItem>
+                  <WrapItem>
+                    <Link aria-label="ProtocolLabs" rel="noreferrer" target="_blank" href="#">
+                      <ProtocolLabsIcon width="200px" height="50px"/>
+                    </Link>
+                  </WrapItem>
+                  <WrapItem>
+                    <Link aria-label="Devfolio" rel="noreferrer" target="_blank" href="https://devfolio.co/blog/first-bif-cohort/">
+                      <DevfolioIcon width="200px" height="50px"/>
+                    </Link>
+                  </WrapItem>
+                </Wrap>
+              </Flex>
             </Flex>
+            {/* <Flex
+                direction="column"
+                w="100%"
+                align="center"
+              >
+              <Text py={2} fontWeight={400} color={useColorModeValue("blackAlpha.800", "gray.400")}>
+                INTEGRATES WITH
+              </Text>
 
+
+            </Flex> */}
           </Flex>
-
         </Flex>
 
         <Flex

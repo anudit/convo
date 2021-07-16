@@ -40,6 +40,9 @@ const IdentitySection = () => {
                     <BrightIdCard />
                   </WrapItem>
                   <WrapItem>
+                    <DeepdaoCard />
+                  </WrapItem>
+                  <WrapItem>
                     <ENSCard />
                   </WrapItem>
                   <WrapItem>
@@ -83,6 +86,27 @@ const SybilCard = () => {
       <IdentityCard image_url="/images/sybil.webp">
         {
           sybil === null ? "Loading" : sybil === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
+    );
+};
+
+const DeepdaoCard = () => {
+
+  const web3Context = useContext(Web3Context)
+  const { signerAddress } = web3Context;
+  const [data, setScore] = useState(null);
+
+  useEffect(() => {
+    fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
+      setScore(data['deepdao']);
+    });
+  }, [signerAddress]);
+
+    return (
+      <IdentityCard image_url="/images/deepdao.webp">
+        {
+          data === null ? "Loading" : Boolean(data) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://deepdao.io/">Explore on Deepdao</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );

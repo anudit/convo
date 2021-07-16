@@ -50,29 +50,30 @@ const getChunkedAddresses = async () =>{
 
 const getTrustScore = async (address) => {
     try {
-        let resp = await fetch(`http://theconvo.space/api/identity?address=${address}&apikey=CONVO`);
+        let resp = await fetch(`http://localhost:3000/api/identity?address=${address}&apikey=CONVO&noCache=true`);
         let respData = await resp.json();
         if (Boolean(respData.success) === true) {
-            return respData.score;
+            return respData;
         }
         else {
-            return 0;
+            return {};
         }
     } catch (error) {
         console.log(error);
-        return 0
+        return {}
     }
 }
 
 const getTrustScores = async () => {
     let trustScoreDb = {};
     let chunkedAddresses = await getChunkedAddresses();
-    for (let index = 0; index < 1; index++) {
+    for (let index = 0; index < chunkedAddresses.length; index++) {
         let promiseArray = [];
         for (let i = 0; i< chunkedAddresses[index].length; i++) {
             promiseArray.push(getTrustScore(chunkedAddresses[index][i]));
         }
         let scores = await Promise.allSettled(promiseArray);
+        console.log(trustScoreDb);
 
         for (let i = 0; i< chunkedAddresses[index].length; i++) {
             trustScoreDb[chunkedAddresses[index][i]] = scores[i].value;
@@ -89,7 +90,7 @@ const cacheTrustScores = async () => {
     for (let index = 0; index < adds.length; index++) {
         docs.push({
             '_id': getAddress(adds[index]),
-            'score': trustScoreDb[adds[index]],
+            ...trustScoreDb[adds[index]],
         })
     }
 

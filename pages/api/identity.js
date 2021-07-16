@@ -21,11 +21,24 @@ async function calculateScore(address) {
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
         threadClient.find(threadId, 'cachedSybil', query),
+        fetcher(`https://backend.deepdao.io/user/${address.toLowerCase()}`, "GET", {}),
     ];
 
     let results = await Promise.allSettled(promiseArray);
 
     let score = 0;
+    let retData = {
+        'success': true,
+        'poh': results[0].value,
+        'brightId': Boolean(results[1].value.data?.unique),
+        'poap': results[2].value.length,
+        'ens': Boolean(results[3].value),
+        'idena': Boolean(results[4].value?.result),
+        'cryptoScamDb': Boolean(results[5].value?.success),
+        'unstoppableDomains': Boolean(results[6].value),
+        'uniswapSybil': results[7].value.length,
+        'deepdao': parseInt(results[8].value.totalDaos)
+    };
 
     if(results[0].value === true){ // poh
         score += 8;
@@ -51,28 +64,22 @@ async function calculateScore(address) {
     if(results[7].value.length > 0){ // uniswap sybil
         score += 10;
     }
-
-    return {
-        'success': true,
-        'score': score,
-        'poh': results[0].value,
-        'brightId': results[1].value,
-        'poap': results[2].value,
-        'ens': results[3].value,
-        'idena': results[4].value,
-        'cryptoScamDb': results[5].value,
-        'unstoppableDomains': results[6].value,
-        'uniswapSybil': Boolean(results[7].value[0])
+    if(parseInt(results[8].value.totalDaos)> 0){ // deepdao
+        score += parseInt(results[8].value.totalDaos);
     }
+
+    retData['score'] = score;
+
+    return retData;
 }
 
-async function setCache(address, score) {
+async function setCache(address, scoreData) {
 
     let threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
     await threadClient.save(threadId, 'cachedTrustScores', [{
         '_id': getAddress(address),
-        'score': score,
+        ...scoreData
     }]);
 }
 
@@ -89,7 +96,7 @@ export default async (req, res) => {
 
         if (Object.keys(req.query).includes('address') === true && isAddress(req.query.address) === true ){
 
-            if (req.query?.raw == 'true') {
+            if (req.query?.noCache == 'true') {
                 let scoreData = await calculateScore(req.query.address);
                 res.setHeader('Cache-Control', 'public, max-age=86400');
                 res.status(200).json(scoreData);
@@ -104,14 +111,13 @@ export default async (req, res) => {
                 if (cachedTrustScore.length > 0) {
                     res.setHeader('Cache-Control', 'public, max-age=86400');
                     res.status(200).json({
-                        'success': true,
-                        'score': cachedTrustScore[0].score,
+                        ...cachedTrustScore[0]
                     });
                 }
                 // cache-miss
                 else {
                     let scoreData = await calculateScore(req.query.address);
-                    setCache(req.query.address, scoreData.score);
+                    setCache(req.query.address, scoreData);
                     res.setHeader('Cache-Control', 'public, max-age=86400');
                     res.status(200).json(scoreData);
                 }
