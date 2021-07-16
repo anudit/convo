@@ -18,13 +18,21 @@ async function calculateScore(address) {
         fetcher(`https://api.poap.xyz/actions/scan/${address}`, "GET", {}),
         tp.lookupAddress(address),
         fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
+    ];
+
+    let results1 = await Promise.allSettled(promiseArray);
+
+    let promiseArray2 = [
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
         threadClient.find(threadId, 'cachedSybil', query),
         fetcher(`https://backend.deepdao.io/user/${address.toLowerCase()}`, "GET", {}),
+        fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}),
     ];
 
-    let results = await Promise.allSettled(promiseArray);
+    let results2 = await Promise.allSettled(promiseArray2);
+
+    let results = results1.concat(results2);
 
     let score = 0;
     let retData = {
@@ -37,7 +45,8 @@ async function calculateScore(address) {
         'cryptoScamDb': Boolean(results[5].value?.success),
         'unstoppableDomains': Boolean(results[6].value),
         'uniswapSybil': results[7].value.length,
-        'deepdao': parseInt(results[8].value?.totalDaos)
+        'deepdao': results[8].value?.totalDaos,
+        'rabbitHole': parseInt(results[9].value?.taskData?.level)
     };
 
     if(results[0].value === true){ // poh
@@ -67,10 +76,11 @@ async function calculateScore(address) {
     if(parseInt(results[8].value?.totalDaos)> 0){ // deepdao
         score += parseInt(results[8].value?.totalDaos);
     }
+    if(parseInt(results[9].value?.taskData?.level)> 0){ // rabbithole
+        score += parseInt(results[9].value?.taskData?.level);
+    }
 
-    retData['score'] = score;
-
-    return retData;
+    return {score, ...retData};
 }
 
 async function setCache(address, scoreData) {

@@ -22,9 +22,47 @@ import { truncateAddress } from '@/utils/stringUtils';
 
 const IdentitySection = () => {
 
+  const web3Context = useContext(Web3Context)
+  const { signerAddress } = web3Context;
+  const [trustScore, setTrustScore] = useState("...");
+
+  useEffect(() => {
+    fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO&raw=true`).then((data)=>{
+      setTrustScore(data?.score.toString());
+    });
+  }, [signerAddress]);
+
     return (
       <DashboardShell title="Identity">
           <Flex direction="column">
+            <Flex direction="column" w="80%" align="center">
+              <Flex
+                direction="column"
+                w={{base:"100%"}}
+                maxW="500px"
+                m={4}
+                padding={8}
+                color={useColorModeValue("black", "white")}
+                backgroundColor={useColorModeValue("#ececec30", "#3c3c3c30")}
+                borderColor={useColorModeValue("gray.200", "#121212")}
+                borderWidth="1px"
+                borderRadius="10px"
+                _hover={{
+                    boxShadow: "2xl"
+                }}
+                cursor="pointer"
+                justifyContent="center"
+                textAlign="center"
+              >
+                <Heading
+                  bgClip="text"
+                  backgroundImage="url('/images/gradient.webp')"
+                  backgroundSize="cover"
+                >
+                  Your Trust Score is {trustScore}
+                </Heading>
+              </Flex>
+            </Flex>
             <Flex direction={{base:"column", md: "row"}}>
               <Wrap>
                   <WrapItem>
@@ -41,6 +79,9 @@ const IdentitySection = () => {
                   </WrapItem>
                   <WrapItem>
                     <DeepdaoCard />
+                  </WrapItem>
+                  <WrapItem>
+                    <RabbitholeCard />
                   </WrapItem>
                   <WrapItem>
                     <ENSCard />
@@ -78,14 +119,15 @@ const SybilCard = () => {
 
   useEffect(() => {
     fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO&raw=true`).then((data)=>{
-      setSybil(data['uniswapSybil']);
+      console.log('uniswapSybil', data['uniswapSybil']);
+    setSybil(data['uniswapSybil']);
     });
   }, [signerAddress]);
 
     return (
       <IdentityCard image_url="/images/sybil.webp">
         {
-          sybil === null ? "Loading" : sybil === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+          sybil === null ? "Loading" : Boolean(sybil) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -186,7 +228,28 @@ const IdenaCard = () => {
     return (
       <IdentityCard image_url="/images/idena.webp">
         {
-          idena === null ? "Loading" : idena === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.idena.io/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+          idena === null ? "Loading" : idena === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.idena.io/">Verify on Idena</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
+    );
+};
+
+const RabbitholeCard = () => {
+
+  const web3Context = useContext(Web3Context);
+  const { signerAddress } = web3Context;
+
+  const [rabbithole, setRabbithole] = useState(null);
+  useEffect(() => {
+    fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${signerAddress}`, "GET", {}).then((data)=>{
+      setRabbithole(data?.taskData?.score);
+    });
+  }, [signerAddress]);
+
+    return (
+      <IdentityCard image_url="/images/rabbithole.webp">
+        {
+          rabbithole === null ? "Loading" : Boolean(rabbithole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Explorer on RabbitHole</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -217,10 +280,10 @@ const BrightIdCard = () => {
     <IdentityCard image_url="/images/brightid.webp">
         <>
           {
-            data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><chakra.p size="sm" onClick={startVerify}>Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+            data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><chakra.p size="sm" onClick={startVerify} cursor="pointer">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
           }
           <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
+            <ModalOverlay backdropFilter="blur(10px)"/>
             <ModalContent>
               <ModalHeader>Scan QR</ModalHeader>
               <ModalCloseButton />
@@ -392,7 +455,7 @@ const IdxCard = () => {
       }
 
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+        <ModalOverlay backdropFilter="blur(10px)"/>
         <ModalContent>
           <ModalHeader>Your Linked Identities</ModalHeader>
           <ModalCloseButton />
@@ -478,7 +541,7 @@ const PoapSection = () => {
     return (
       <>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+        <ModalOverlay backdropFilter="blur(10px)"/>
         <ModalContent>
           <ModalHeader>{poapDetails?.eventName}</ModalHeader>
           <ModalCloseButton />

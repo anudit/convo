@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Head from 'next/head';
-import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Input, Button, Box, UnorderedList, ListItem, Wrap, WrapItem } from "@chakra-ui/react";
+import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Input, Button, Box, UnorderedList, ListItem } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Typewriter from 'typewriter-effect';
 
@@ -55,7 +55,7 @@ const Home = () => {
           direction="column"
           align="center"
           m="0 auto"
-          h={{base:"130vh", md:"100vh"}}
+          h={{base:"130vh", md:"90vh"}}
           w={{ base: "95%"}}
           mt="10vh"
           zIndex="1"
@@ -206,24 +206,16 @@ const Home = () => {
               <Text py={2} fontWeight={400} color={useColorModeValue("blackAlpha.800", "gray.400")}>
                 BACKED BY VISIONARIES
               </Text>
-              <Flex direction="row" mt={2} w="100%" justifyContent="center" align="center">
-                <Wrap spacing="30px" justifyContent="center">
-                  <WrapItem>
-                    <Link aria-label="Consensys" rel="noreferrer" target="_blank" href="#">
-                      <ConsensysIcon width="200px" height="50px"/>
-                    </Link>
-                  </WrapItem>
-                  <WrapItem>
-                    <Link aria-label="ProtocolLabs" rel="noreferrer" target="_blank" href="#">
-                      <ProtocolLabsIcon width="200px" height="50px"/>
-                    </Link>
-                  </WrapItem>
-                  <WrapItem>
-                    <Link aria-label="Devfolio" rel="noreferrer" target="_blank" href="https://devfolio.co/blog/first-bif-cohort/">
-                      <DevfolioIcon width="200px" height="50px"/>
-                    </Link>
-                  </WrapItem>
-                </Wrap>
+              <Flex direction={{base:"column",md:"row"}} mt={2} w="100%" justifyContent="center" align="center">
+                <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="Consensys" rel="noreferrer" target="_blank" href="https://mesh.xyz/tachyon/">
+                  <ConsensysIcon width="200px" height="50px"/>
+                </Link>
+                <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="ProtocolLabs" rel="noreferrer" target="_blank" href="https://protocol.ai/">
+                  <ProtocolLabsIcon width="200px" height="50px"/>
+                </Link>
+                <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="Devfolio" rel="noreferrer" target="_blank" href="https://devfolio.co/blog/first-bif-cohort/">
+                  <DevfolioIcon width="200px" height="50px"/>
+                </Link>
               </Flex>
             </Flex>
             {/* <Flex
