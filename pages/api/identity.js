@@ -45,7 +45,7 @@ async function calculateScore(address) {
         'cryptoScamDb': Boolean(results[5].value?.success),
         'unstoppableDomains': Boolean(results[6].value),
         'uniswapSybil': results[7].value.length,
-        'deepdao': results[8].value?.totalDaos,
+        'deepdao': parseInt(results[8].value?.totalDaos),
         'rabbitHole': parseInt(results[9].value?.taskData?.level)
     };
 

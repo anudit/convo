@@ -55,7 +55,7 @@ const Home = () => {
           direction="column"
           align="center"
           m="0 auto"
-          h={{base:"130vh", md:"90vh"}}
+          h={{base:"110vh", md:"90vh"}}
           w={{ base: "95%"}}
           mt="10vh"
           zIndex="1"

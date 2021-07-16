@@ -53,7 +53,7 @@ const getChunkedAddresses = async () =>{
 
 const getTrustScore = async (address) => {
     try {
-        let resp = await fetch(`https://theconvo.space/api/identity?address=${address}&apikey=CONVO&noCache=true`);
+        let resp = await fetch(`http://localhost:3000/api/identity?address=${address}&apikey=CONVO&noCache=true`);
         let respData = await resp.json();
         if (Boolean(respData.success) === true) {
             return respData;
@@ -151,11 +151,11 @@ const cacheTrustScoresManual = async (addresses = []) => {
 }
 
 
-// cacheTrustScoresManual(["0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8d07D225a769b7Af3A923481E1FdF49180e6A265"]).then(()=>{
-//     console.log("✅ Cached all trust Scores");
-// });
-
-
-cacheTrustScores().then(()=>{
+cacheTrustScoresManual(["0x14Cf4b8A28d597FEe6dd3B80d17Aa73B95645898", "0x1F62583538CDB2CB3656Ed43A46693F92DDa6302", "0x2189F1D9fc5EEf0D69abA0BAd981e125A98ABaeC", "0x3621719CedC02Bf6aAC8853e022Cf4Fdb6cbDfd1", "0x4559D6B52b6A736684345B42d5E3ee8405991466", "0x5B4dF17CA5A3339D722028a585582693742E5B5a", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x7d445F4cd9Ec9C7b75D3B1A1561B11A28854C69d", "0x983110309620D911731Ac0932219af06091b6744", "0xA7a5A2745f10D5C23d75a6fd228A408cEDe1CAE5", "0xB49522C7612DB26DFa8FE195e73780b72763a608", "0xD2FA59811af055e0e94D570EA7F9800c0E5C0428", "0xD90c844c0252797C2e3f87AA63a8389A16A63767", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b"]).then(()=>{
     console.log("✅ Cached all trust Scores");
 });
+
+
+// cacheTrustScores().then(()=>{
+//     console.log("✅ Cached all trust Scores");
+// });

@@ -19,6 +19,7 @@ import { checkPoH, checkUnstoppableDomains } from "@/lib/identity"
 import { VerifiedIcon, PoapIcon } from '@/public/icons';
 import { AddIcon, DeleteIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { truncateAddress } from '@/utils/stringUtils';
+import { isAddress } from 'ethers/lib/utils';
 
 const IdentitySection = () => {
 
@@ -27,9 +28,12 @@ const IdentitySection = () => {
   const [trustScore, setTrustScore] = useState("...");
 
   useEffect(() => {
-    fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO&raw=true`).then((data)=>{
-      setTrustScore(data?.score.toString());
-    });
+    if (isAddress(signerAddress)){
+      fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
+        console.log(data);
+        setTrustScore(data?.score?.toString());
+      });
+    }
   }, [signerAddress]);
 
     return (
@@ -92,7 +96,6 @@ const IdentitySection = () => {
                   <WrapItem>
                     <IdenaCard />
                   </WrapItem>
-
               </Wrap>
             </Flex>
             <Heading as="h4" size="md" my={4}>
@@ -118,9 +121,8 @@ const SybilCard = () => {
   const [sybil, setSybil] = useState(null);
 
   useEffect(() => {
-    fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO&raw=true`).then((data)=>{
-      console.log('uniswapSybil', data['uniswapSybil']);
-    setSybil(data['uniswapSybil']);
+    fetcher(`https://theconvo.space/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
+      setSybil(data['uniswapSybil']);
     });
   }, [signerAddress]);
 
