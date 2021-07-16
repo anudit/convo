@@ -1,8 +1,10 @@
 require('dotenv').config({ path: '.env.local' })
 const fetch = require('node-fetch');
 const { Client, PrivateKey, ThreadID } = require('@textile/hub');
-const { isAddress, getAddress } = require('ethers/lib/utils');
+const { getAddress } = require('ethers/lib/utils');
 const CHUNK_SIZE = 3;
+
+let erroredAddresses = [];
 
 const getClient = async () =>{
 
@@ -33,25 +35,21 @@ const getChunkedAddresses = async () =>{
     let snapshot_comments = await threadClient.find(threadId, 'comments', {});
     let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
 
-    let addressSet = new Set();
+    let arr = snapshot_comments.map((e)=>{
+        return e.author;
+    })
 
-    for (var i=0; i<snapshot_comments.length ; i++){
-        if (isAddress(snapshot_comments[i].author) === true){
-            addressSet.add(snapshot_comments[i].author)
-        }
-    }
-    for (var i2=0; i<snapshot_cached.length ; i2++){
-        if (isAddress(snapshot_cached[i2]._id) === true){
-            addressSet.add(snapshot_cached[i]._id)
-        }
-    }
+    let arr2 = snapshot_cached.map((e)=>{
+        return e._id;
+    })
+    arr = arr.concat(arr2)
 
-    return chunkArray(Array.from(addressSet), CHUNK_SIZE);
+    return chunkArray(Array.from(new Set(arr)), CHUNK_SIZE);
 }
 
 const getTrustScore = async (address) => {
     try {
-        let resp = await fetch(`https://theconvo.space/api/identity?address=${address}&apikey=CONVO&noCache=true`);
+        let resp = await fetch(`http://localhost:3000/api/identity?address=${address}&apikey=CONVO&noCache=true`);
         let respData = await resp.json();
         if (Boolean(respData.success) === true) {
             return respData;
@@ -60,12 +58,14 @@ const getTrustScore = async (address) => {
             return {};
         }
     } catch (error) {
+        erroredAddresses.push(address);
         console.log(error);
         return {}
     }
 }
 
 const getTrustScores = async () => {
+
     let trustScoreDb = {};
     let chunkedAddresses = await getChunkedAddresses();
     for (let index = 0; index < chunkedAddresses.length; index++) {
@@ -78,8 +78,20 @@ const getTrustScores = async () => {
         for (let i = 0; i< chunkedAddresses[index].length; i++) {
             trustScoreDb[chunkedAddresses[index][i]] = scores[i].value;
         }
-
     }
+
+    console.log(`⚠️ ErroredList ${erroredAddresses.length}`);
+    let promiseArray = [];
+    for (let index = 0; index < erroredAddresses.length; index++) {
+        promiseArray.push(getTrustScore(erroredAddresses[index]));
+    }
+    let scores = await Promise.allSettled(promiseArray);
+    for (let i = 0; i< erroredAddresses.length; i++) {
+        trustScoreDb[erroredAddresses[i]] = scores[i].value;
+    }
+    console.log(`⚠️ ErroredList ${erroredAddresses.length}`);
+    console.log(`🟢 Cached Errored Chunks`);
+
     return trustScoreDb;
 }
 
@@ -100,7 +112,7 @@ const cacheTrustScores = async () => {
 }
 
 // getChunkedAddresses().then((data)=>{
-//     console.log(data);
+//     // console.log(data);
 // });
 
 cacheTrustScores().then(()=>{

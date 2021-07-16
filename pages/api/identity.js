@@ -31,13 +31,13 @@ async function calculateScore(address) {
         'success': true,
         'poh': results[0].value,
         'brightId': Boolean(results[1].value.data?.unique),
-        'poap': results[2].value.length,
+        'poap': results[2].value?.length,
         'ens': Boolean(results[3].value),
         'idena': Boolean(results[4].value?.result),
         'cryptoScamDb': Boolean(results[5].value?.success),
         'unstoppableDomains': Boolean(results[6].value),
         'uniswapSybil': results[7].value.length,
-        'deepdao': parseInt(results[8].value.totalDaos)
+        'deepdao': parseInt(results[8].value?.totalDaos)
     };
 
     if(results[0].value === true){ // poh
@@ -64,8 +64,8 @@ async function calculateScore(address) {
     if(results[7].value.length > 0){ // uniswap sybil
         score += 10;
     }
-    if(parseInt(results[8].value.totalDaos)> 0){ // deepdao
-        score += parseInt(results[8].value.totalDaos);
+    if(parseInt(results[8].value?.totalDaos)> 0){ // deepdao
+        score += parseInt(results[8].value?.totalDaos);
     }
 
     retData['score'] = score;
