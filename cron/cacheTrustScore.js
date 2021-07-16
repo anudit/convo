@@ -87,7 +87,11 @@ const getTrustScores = async () => {
     }
     let scores = await Promise.allSettled(promiseArray);
     for (let i = 0; i< erroredAddresses.length; i++) {
-        trustScoreDb[erroredAddresses[i]] = scores[i].value;
+        try {
+            trustScoreDb[erroredAddresses[i]] = scores[i].value;
+        } catch (error) {
+            continue;
+        }
     }
     console.log(`⚠️ ErroredList ${erroredAddresses.length}`);
     console.log(`🟢 Cached Errored Chunks`);
