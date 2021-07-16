@@ -2,7 +2,7 @@ require('dotenv').config({ path: '.env.local' })
 const fetch = require('node-fetch');
 const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const { isAddress, getAddress } = require('ethers/lib/utils');
-const CHUNK_SIZE = 5;
+const CHUNK_SIZE = 3;
 
 const getClient = async () =>{
 
@@ -68,7 +68,7 @@ const getTrustScore = async (address) => {
 const getTrustScores = async () => {
     let trustScoreDb = {};
     let chunkedAddresses = await getChunkedAddresses();
-    for (let index = 0; index < 1; index++) {
+    for (let index = 0; index < chunkedAddresses.length; index++) {
         let promiseArray = [];
         for (let i = 0; i< chunkedAddresses[index].length; i++) {
             promiseArray.push(getTrustScore(chunkedAddresses[index][i]));
