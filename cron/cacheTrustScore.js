@@ -2,6 +2,7 @@ require('dotenv').config({ path: '.env.local' })
 const fetch = require('node-fetch');
 const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const { isAddress, getAddress } = require('ethers/lib/utils');
+const CHUNK_SIZE = 5;
 
 const getClient = async () =>{
 
@@ -45,7 +46,7 @@ const getChunkedAddresses = async () =>{
         }
     }
 
-    return chunkArray(Array.from(addressSet), 10);
+    return chunkArray(Array.from(addressSet), CHUNK_SIZE);
 }
 
 const getTrustScore = async (address) => {
@@ -67,14 +68,13 @@ const getTrustScore = async (address) => {
 const getTrustScores = async () => {
     let trustScoreDb = {};
     let chunkedAddresses = await getChunkedAddresses();
-    for (let index = 0; index < chunkedAddresses.length; index++) {
+    for (let index = 0; index < 1; index++) {
         let promiseArray = [];
         for (let i = 0; i< chunkedAddresses[index].length; i++) {
             promiseArray.push(getTrustScore(chunkedAddresses[index][i]));
         }
         let scores = await Promise.allSettled(promiseArray);
-        console.log(trustScoreDb);
-
+        console.log(`🟢 Cached Chunk#${index}`);
         for (let i = 0; i< chunkedAddresses[index].length; i++) {
             trustScoreDb[chunkedAddresses[index][i]] = scores[i].value;
         }
@@ -96,9 +96,12 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-    let res = await threadClient.save(threadId, 'cachedTrustScores', docs);
-    console.log(res);
+    await threadClient.save(threadId, 'cachedTrustScores', docs);
 }
+
+// getChunkedAddresses().then((data)=>{
+//     console.log(data);
+// });
 
 cacheTrustScores().then(()=>{
     console.log("✅ Cached all trust Scores");
