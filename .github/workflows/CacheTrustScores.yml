@@ -28,6 +28,5 @@ jobs:
         TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
         TEXTILE_PK: ${{ secrets.TEXTILE_PK }}
         TEXTILE_HUB_KEY_DEV: ${{ secrets.TEXTILE_HUB_KEY_DEV }}
-        TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
       run: node ./cron/cacheTrustScore.js
 
