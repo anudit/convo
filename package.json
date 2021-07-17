@@ -59,7 +59,7 @@
     "typewriter-effect": "^2.18.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.3",
-    "webpack": "^5.44.0"
+    "webpack": "^5.45.1"
   },
   "devDependencies": {
     "eslint-config-next": "^11.0.1",
