@@ -24,9 +24,9 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: yarn install
     - name: Install NextJS
-      run: yarn global add next
+      run: npm i -g next
     - name: Spin up Server
-      run: next dev &
+      run: npm run dev
     - name: Cache Trust Scores
       env:
         TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
