@@ -23,15 +23,11 @@ jobs:
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: yarn install
-    - name: Install NextJS
-      run: npm i -g next
-    - name: Spin up Server
-      run: npm run dev
     - name: Cache Trust Scores
       env:
         TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
         TEXTILE_PK: ${{ secrets.TEXTILE_PK }}
         TEXTILE_HUB_KEY_DEV: ${{ secrets.TEXTILE_HUB_KEY_DEV }}
-        NFTSTORAGE_KEY: ${{ secrets.NFTSTORAGE_KEY }}
+        TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
       run: node ./cron/cacheTrustScore.js
 
