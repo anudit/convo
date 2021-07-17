@@ -23,6 +23,8 @@ jobs:
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: yarn install
+    - name: Install NextJS
+      run: yarn global add next
     - name: Spin up Server
       run: next dev &
     - name: Cache Trust Scores
