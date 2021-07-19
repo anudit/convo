@@ -45,7 +45,7 @@
     "jsonwebtoken": "^8.5.1",
     "key-did-resolver": "^1.2.1",
     "next": "^11.0.1",
-    "next-pwa": "^5.2.23",
+    "next-pwa": "^5.2.24",
     "nft.storage": "2.1.1",
     "node-fetch": "^2.6.1",
     "react": "^17.0.2",

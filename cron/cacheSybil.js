@@ -23,6 +23,7 @@ fetch('https://raw.githubusercontent.com/Uniswap/sybil-list/master/verified.json
                 'data': data[keys[index]],
             });
         }
+        console.log(`🟡 Caching ${docs.length} Users.`);
         const threadClient = await getClient();
         const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
         await threadClient.save(threadId, 'cachedSybil', docs);

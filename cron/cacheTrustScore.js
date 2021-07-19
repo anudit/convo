@@ -4,7 +4,7 @@ const { Client, PrivateKey, ThreadID, Where } = require('@textile/hub');
 const { getAddress, isAddress } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
 
-const CHUNK_SIZE = 4;
+const CHUNK_SIZE = 5;
 
 let erroredAddresses = [];
 
@@ -248,7 +248,7 @@ async function calculateScore(address) {
     if(results[7].value.length > 0){ // uniswap sybil
         score += 10;
     }
-    if(parseInt(results[8].value.totalDaos)> 0){ // deepdao
+    if( Boolean(results[8].value?.totalDaos) === true && parseInt(results[8].value.totalDaos)> 0){ // deepdao
         score += parseInt(results[8].value.totalDaos);
     }
     if(parseInt(results[9].value?.taskData?.level)> 0){ // rabbithole
@@ -261,15 +261,10 @@ async function calculateScore(address) {
 const getTrustScore = async (address) => {
     try {
         let respData = await calculateScore(address);
-        if (Boolean(respData.success) === true) {
-            return respData;
-        }
-        else {
-            return {};
-        }
+        return respData;
     } catch (error) {
         erroredAddresses.push(address);
-        console.log(error);
+        console.log(address, error);
         return {}
     }
 }
@@ -284,7 +279,7 @@ const getTrustScores = async () => {
             promiseArray.push(getTrustScore(chunkedAddresses[index][i]));
         }
         let scores = await Promise.allSettled(promiseArray);
-        await sleep(500);
+        await sleep(300);
         console.log(`🟢 Cached Chunk#${index}`);
         for (let i = 0; i< chunkedAddresses[index].length; i++) {
             trustScoreDb[chunkedAddresses[index][i]] = scores[i].value;
@@ -298,7 +293,7 @@ const getTrustScores = async () => {
     }
     erroredAddresses = [];
     let scores = await Promise.allSettled(promiseArray);
-    await sleep(500);
+    await sleep(300);
     for (let i = 0; i < erroredAddresses.length; i++) {
         try {
             trustScoreDb[erroredAddresses[i]] = scores[i].value;
