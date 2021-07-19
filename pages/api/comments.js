@@ -46,7 +46,7 @@ export default async (req, res) => {
 
       if (Boolean(req.query?.url) === true){
         if (query === undefined) {
-          query = new Where('url').eq(req.query.url);
+          query = new Where('url').eq(decodeURIComponent(req.query.url));
         }
         else {
           query = query.and('url').eq(decodeURIComponent(req.query.url));
@@ -87,7 +87,17 @@ export default async (req, res) => {
       }
 
       const comments = await getComments(query, req.query?.page, req.query?.pageSize);
-      res.status(200).json(comments);
+
+
+      if (Boolean(req.query?.countOnly) === true && req.query.countOnly == 'true'){
+        res.status(200).json({
+          success: true,
+          count: comments.length
+        })
+      }
+      else {
+        res.status(200).json(comments);
+      }
 
     }
     else if (req.method === "POST" ) {
@@ -109,7 +119,9 @@ export default async (req, res) => {
             'tid': req.body.threadId,
             'metadata' : metadata,
             'tag1' : Boolean(req.body?.tag1) === true ? req.body.tag1 : "",
-            'tag2' : Boolean(req.body?.tag2) === true ? req.body.tag2 : ""
+            'tag2' : Boolean(req.body?.tag2) === true ? req.body.tag2 : "",
+            'upvotes': 0,
+            'downvotes': 0
           };
           let newId = await createComment(commentData);
 
