@@ -150,7 +150,7 @@ export const Web3ContextProvider = ({children}) => {
 
     let authAdd = Boolean(manualAddress) === true ? manualAddress : signerAddress;
     let tokenRes = await fetcher('/api/validateAuth?apikey=CONVO', "POST", {
-      authAdd,
+      signerAddress: authAdd,
       token: Cookies.get('CONVO_SESSION')
     });
 

@@ -2,6 +2,18 @@ import validateAuth from "@/lib/validateAuth";
 import { createComment, deleteComment, getComments } from "@/lib/thread-db";
 import { Where } from "@textile/hub";
 
+function isValidUrl(string) {
+  let url;
+
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+
 export default async (req, res) => {
 
   if (Object.keys(req.query).includes('apikey') === false || req.query.apikey !== 'CONVO' ){
@@ -50,6 +62,24 @@ export default async (req, res) => {
         }
       }
 
+      if (Boolean(req.query?.tag1) === true){
+        if (query === undefined) {
+          query = new Where('tag1').eq(req.query.tag1);
+        }
+        else {
+          query = query.and('tag1').eq(req.query.tag1);
+        }
+      }
+
+      if (Boolean(req.query?.tag2) === true){
+        if (query === undefined) {
+          query = new Where('tag2').eq(req.query.tag2);
+        }
+        else {
+          query = query.and('tag2').eq(req.query.tag2);
+        }
+      }
+
       if (Boolean(req.query?.latestFirst) === true && req.query.latestFirst == 'true'){
         if (query !== undefined) {
           query = query.orderByDesc('_mod');
@@ -65,9 +95,9 @@ export default async (req, res) => {
       if (validateAuth(req.body.token, req.body.signerAddress) === true) {
 
         if (
-          Object.keys(req.body).includes('comment') === true
-          && Object.keys(req.body).includes('url') === true
-          && Object.keys(req.body).includes('threadId') === true
+          Object.keys(req.body).includes('comment') === true && req.body?.comment.trim() !== ""
+          && Object.keys(req.body).includes('url') === true && isValidUrl(decodeURIComponent(req.body?.url)) === true
+          && Object.keys(req.body).includes('threadId') === true && req.body?.threadId.trim() !== ""
         ){
 
           let metadata = Boolean(req.body?.metadata) === true ? req.body.metadata : {};
@@ -78,8 +108,8 @@ export default async (req, res) => {
             'url': req.body.url,
             'tid': req.body.threadId,
             'metadata' : metadata,
-            'tag1' : "",
-            'tag2' : ""
+            'tag1' : Boolean(req.body?.tag1) === true ? req.body.tag1 : "",
+            'tag2' : Boolean(req.body?.tag2) === true ? req.body.tag2 : ""
           };
           let newId = await createComment(commentData);
 
