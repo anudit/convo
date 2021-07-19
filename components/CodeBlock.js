@@ -1,57 +1,17 @@
 import React from "react"
-import { Button, Box, useClipboard, useColorMode  } from "@chakra-ui/react"
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
-import { coldarkDark, materialLight } from "react-syntax-highlighter/dist/cjs/styles/prism"
-import { CheckIcon, CopyIcon } from '@chakra-ui/icons';
+import { chakra, Code, useColorMode } from "@chakra-ui/react"
 
-const CodeBlock = (props) => {
-  const { language } = props;
-  const { hasCopied, onCopy } = useClipboard(props?.code)
+export const MakeOwnCodeBlock = (props) => {
+
   const { colorMode } = useColorMode();
-
   return (
-    <Box>
-      <Button
-        aria-label="CopyCode"
-        variant="ghost"
-        w={6}
-        h={7}
-        fontSize="small"
-        letterSpacing="1px"
-        fontWeight="500"
-        color="black"
-        align="right"
-        backgroundColor="teal.200"
-        _hover={{
-          backgroundColor:"teal.400"
-        }}
-        _active={{
-          backgroundColor:"teal.400"
-        }}
-        zIndex="1"
-        position="fixed"
-        mt="20px"
-        right={{ base: "5vw", md:"12vw", lg:"21vw"}}
-        onClick={onCopy}
-      >
-        {hasCopied ? (
-          <CheckIcon/>
-        ) : (
-          <CopyIcon/>
-        )}
-      </Button>
-      <SyntaxHighlighter
-        language={language}
-        style={colorMode === 'dark' ? coldarkDark: materialLight}
-        wrapLines={true}
-        showLineNumbers={true}
-        mt={5}
-      >
-        {props?.code}
-      </SyntaxHighlighter>
-
-    </Box>
+    <Code backgroundColor={colorMode === "dark" ? "#2b213a" : "#f5f5f5"} px={4} py={2} borderRadius="5px" fontSize="md">
+      <chakra.span color="#6599FF">&lt;iframe</chakra.span>
+      <chakra.span color="#f92aad">&nbsp;src</chakra.span><chakra.span color="cyan">=</chakra.span><chakra.span color="#ff8b39">{props?.value}</chakra.span>
+      <chakra.span color="#f92aad">&nbsp;allowtransparency</chakra.span><chakra.span color="cyan">=</chakra.span><chakra.span color="#ff8b39">&quot;true&quot;</chakra.span>
+      <chakra.span color="#f92aad">&nbsp;loading</chakra.span><chakra.span color="cyan">=</chakra.span><chakra.span color="#ff8b39">&quot;eager&quot;</chakra.span>
+      <chakra.span color="#6599FF">/&gt;</chakra.span>
+    </Code>
   )
-}
 
-export default CodeBlock
+}

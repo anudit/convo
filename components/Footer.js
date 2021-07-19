@@ -102,7 +102,7 @@ const Footer = () => {
                 <Flex alignItems="center">
                     <TheConvoSpaceIcon boxSize={12} mr={4}/>
                     <Text textAlign="left" fontWeight={500} color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                        Copyright © Cupoc, Inc. All rights reserved.
+                        © CUPOC, Inc. All rights reserved.
                     </Text>
                 </Flex>
 

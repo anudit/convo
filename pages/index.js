@@ -9,7 +9,7 @@ import { CustomButton } from '@/components/CustomButtons';
 import Footer from "@/components/Footer";
 import Card from '@/components/Card';
 import NavBar from '@/components/NavbarNoAuth';
-import CodeBlock from '@/components/CodeBlock';
+import { MakeOwnCodeBlock } from "@/components/CodeBlock";
 
 const Home = () => {
 
@@ -327,9 +327,8 @@ const Home = () => {
             <Text my={2} fontWeight="500" fontSize={18} align="center">
               Just a single line of code, to get you started.
             </Text>
-            <CodeBlock
-              language="html"
-              code={`<iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/t/KIGZUnR4RzXDFheXoOwo" allowtransparency="true" loading="eager" />`}
+            <MakeOwnCodeBlock
+              value={`"${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/t/KIGZUnR4RzXDFheXoOwo`}
             />
             <br/>
             <iframe title="Comments Page Demo" src={"/embed/t/KIGZUnR4RzXDFheXoOwo?theme=" + colorMode} width="100%" height="450px" allowtransparency="true" loading="lazy" style={{overflow:"hidden"}}>
@@ -402,9 +401,8 @@ const Home = () => {
               </Button>
             </Flex>
             <br/>
-            <CodeBlock
-              language="html"
-              code={`<iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?url=${encodeURIComponent(makeyourown_link)}&threadId=${makeyourown_uid}&theme=${makeyourown_themeIsDark?"dark":"light"}" allowtransparency="true" loading="eager" />`}
+            <MakeOwnCodeBlock
+              value={`"${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?url=${encodeURIComponent(makeyourown_link)}&threadId=${makeyourown_uid}&theme=${makeyourown_themeIsDark?"dark":"light"}"`}
             />
           </Flex>
         </Flex>
