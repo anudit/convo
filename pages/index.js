@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Head from 'next/head';
 import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Input, Button, Box, UnorderedList, ListItem } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import Typewriter from 'typewriter-effect';
 
 import { DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon } from '@/public/icons';
 import { CustomButton } from '@/components/CustomButtons';
