@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Head from 'next/head';
 import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Input, Button, Box, UnorderedList, ListItem } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
@@ -27,6 +27,57 @@ const Home = () => {
   async function makeyourown_themeToggle(){
     setmakeyourown_themeIsDark(!makeyourown_themeIsDark);
   }
+
+  useEffect(() => {
+    var TxtType = function(el, toRotate, period) {
+        this.toRotate = toRotate;
+        this.el = el;
+        this.loopNum = 0;
+        this.period = parseInt(period, 10) || 2000;
+        this.txt = '';
+        this.tick();
+        this.isDeleting = false;
+    };
+
+    TxtType.prototype.tick = function() {
+        var i = this.loopNum % this.toRotate.length;
+        var fullTxt = this.toRotate[i];
+
+        if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 1);
+        } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.el.innerHTML = this.txt;
+
+        var that = this;
+        var delta = 200 - Math.random() * 100;
+
+        if (this.isDeleting) { delta /= 2; }
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 500;
+        }
+
+        setTimeout(function() {
+        that.tick();
+        }, delta);
+    };
+    var elements = document.getElementsByClassName('typewrite');
+    for (var i=0; i<elements.length; i++) {
+        var toRotate = elements[i].getAttribute('data-type');
+        var period = elements[i].getAttribute('data-period');
+        if (toRotate) {
+          new TxtType(elements[i], JSON.parse(toRotate), period);
+        }
+    }
+  }, []);
 
   return (
     <>
@@ -165,22 +216,16 @@ const Home = () => {
                   display="inline-flex"
                   color="#2065ff"
                   mx={2}
-                >
-                  <Typewriter
-                    options={{
-                      strings: [
-                        'NFTs,',
-                        'proposals,',
-                        'wallets,',
-                        'blogs,',
-                        'NFTs,',
-                        'websites,',
-                        'mobile apps,',
-                      ],
-                      autoStart: true,
-                      loop: true,
-                    }}
-                  />
+                  className="typewrite" data-period="1000" data-type='[
+                      "NFTs,",
+                      "proposals,",
+                      "wallets,",
+                      "blogs,",
+                      "NFTs,",
+                      "websites,",
+                      "mobile apps,"
+                    ]'
+                  >
                 </Flex>
                 flow across the Web.
               </Heading>
