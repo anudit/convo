@@ -5,6 +5,7 @@ const { getAddress, isAddress } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
 
 const CHUNK_SIZE = 5;
+let DEBUG = false;
 
 let erroredAddresses = [];
 
@@ -53,8 +54,12 @@ const getChunkedAddresses = async () =>{
     return chunkArray(Array.from(new Set(arr)), CHUNK_SIZE);
 }
 
-const fetcher = async (url, method="GET", bodyData = {}) => {
+const fetcher = async (url, method="GET", bodyData = {}, ISDEBUG = false) => {
+
     let res;
+
+    if (ISDEBUG === true){var startDate1 = new Date(); }
+
     if (method === "GET"){
         res = await fetch(url, {
             method: "GET",
@@ -72,8 +77,22 @@ const fetcher = async (url, method="GET", bodyData = {}) => {
     }
 
     let respData = await res.json();
+    if (ISDEBUG === true){
+        var endDate1 = new Date();
+        console.log('fetcher cost ',url, (endDate1.getTime() - startDate1.getTime()) / 1000, 's')
+    }
+
     return respData;
 };
+
+async function getSybil(address) {
+    let threadClient = await getClient();
+    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    const query = new Where('_id').eq(getAddress(address));
+    let resp = await threadClient.find(threadId, 'cachedSybil', query);
+    return resp;
+
+}
 
 async function checkPoH(address) {
 
@@ -180,12 +199,139 @@ async function checkUnstoppableDomains(address) {
 
 }
 
+async function getFoundationData(address = "") {
+
+    let body = "{\"query\":\"query getMintedArtworks($publicKey: String!) {\\n  artworks: nfts(\\n    where: {creator: $publicKey, owner_not: \\\"0x0000000000000000000000000000000000000000\\\"}\\n    orderBy: dateMinted\\n    orderDirection: desc\\n  ) {\\n    ...NftFragment\\n  }\\n}\\n\\nfragment NftFragment on Nft {\\n  ...NftBaseFragment\\n  ...NftOwnershipFragment\\n  nftHistory(orderBy: date, orderDirection: desc, first: 5) {\\n    event\\n  }\\n  mostRecentActiveAuction {\\n    ...AuctionFragment\\n    highestBid {\\n      ...BidFragment\\n    }\\n  }\\n}\\n\\nfragment NftBaseFragment on Nft {\\n  id\\n  tokenId\\n  dateMinted\\n}\\n\\nfragment NftOwnershipFragment on Nft {\\n  ownedOrListedBy {\\n    id\\n  }\\n  creator {\\n    id\\n  }\\n}\\n\\nfragment AuctionFragment on NftMarketAuction {\\n  id\\n  auctionId\\n  duration\\n  status\\n  reservePriceInETH\\n  seller {\\n    id\\n  }\\n  dateEnding\\n  dateStarted\\n  dateCreated\\n  transactionHashCreated\\n}\\n\\nfragment BidFragment on NftMarketBid {\\n  amountInETH\\n  status\\n  datePlaced\\n  bidder {\\n    id\\n  }\\n}\\n\",\"variables\":{\"moderationStatuses\":[\"ACTIVE\"],\"publicKey\":\""+address.toLocaleLowerCase()+"\"}}";
+
+    let response = await fetch("https://subgraph.fndsubgraph.com/", {
+      "headers": {
+        "accept": "*/*",
+        "content-type": "application/json",
+      },
+      "method": "POST",
+      body
+    });
+
+    let jsonData = await response.json();
+    let artworks = jsonData['data']['artworks'];
+    let totalCountSold = artworks.length;
+
+    let totalAmountSold = 0;
+    for (let index = 0; index < artworks.length; index++) {
+        if (Boolean(artworks[index]['mostRecentActiveAuction']?.highestBid) === true){
+            totalAmountSold += parseFloat(artworks[index]['mostRecentActiveAuction']['highestBid']['amountInETH']);
+        }
+        else if (Boolean(artworks[index]['mostRecentActiveAuction']?.reservePriceInETH) === true) {
+            totalAmountSold += parseFloat(artworks[index]['mostRecentActiveAuction']['reservePriceInETH']);
+        }
+    }
+    return {
+        totalCountSold,
+        totalAmountSold
+    }
+
+}
+
+async function getSuperrareData(address = "") {
+
+    let body = {
+        "contractAddresses": [
+            "0x41a322b28d0ff354040e2cbc676f0320d8c8850d",
+            "0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0"
+        ],
+        "hasBidWithAuctionAddressses": null,
+        "hasSalePriceWithMarketAddresses": null,
+        "previousCursor": null,
+        "last": null,
+        "ownedByCreator": false,
+        "creatorAddress": address.toLowerCase(),
+        "includeBurned": false,
+        "orderBy": "TOKEN_ID_DESC",
+        "hasSold": true,
+        "hasEndingAuctionInContractAddresses": null,
+        "hasReservePriceWithAuctionHouseContractAddresses": null
+    };
+
+    let response = await fetch("https://superrare.com/api/v2/nft/get-by-market-details", {
+      "headers": {
+        "accept": "*/*",
+        "content-type": "application/json",
+      },
+      "method": "POST",
+      "body": JSON.stringify(body),
+    })
+    let jsonData = await response.json();
+    let artworks = jsonData['result']['collectibles'];
+    let totalCountSold = jsonData['result']['totalCount'];
+
+    let totalAmountSold = 0;
+    for (let index = 0; index < artworks.length; index++) {
+        let amtData = artworks[index]['nftEvents']['nodes'][0];
+        if (Boolean(amtData?.sale) === true) {
+            totalAmountSold+= amtData['sale']['usdAmount'];
+        }
+        else if (Boolean(amtData?.auctionSettled) === true){
+            totalAmountSold+= amtData['auctionSettled']['usdAmount'];
+        }
+        else if (Boolean(amtData?.acceptBid) === true){
+            totalAmountSold+= amtData['acceptBid']['usdAmount'];
+        }
+    }
+
+    return {
+        totalCountSold,
+        totalAmountSold
+    }
+
+}
+
+async function getRaribleData(address = "") {
+
+    let body = {
+        "filter": {
+            "@type": "by_creator",
+            "creator": address
+        }
+    };
+
+    let response = await fetch("https://api-mainnet.rarible.com/marketplace/api/v2/items", {
+      "headers": {
+        "accept": "*/*",
+        "content-type": "application/json",
+      },
+      "method": "POST",
+      "body": JSON.stringify(body),
+    })
+    let artworks = await response.json();
+    let totalCountSold = artworks.length;
+
+    let totalAmountSold = 0;
+    for (let index = 0; index < artworks.length; index++) {
+        // console.log(artworks[index]['ownership']);
+        if(artworks[index]['ownership']?.status === 'FIXED_PRICE'){
+            totalAmountSold += artworks[index]['ownership']['priceEth'];
+        }
+        else {
+            totalCountSold-=1;
+        }
+    }
+
+    return {
+        totalCountSold,
+        totalAmountSold
+    }
+
+}
+
+async function getEthPrice() {
+
+    let data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
+    return data['data']['items'][0]['quote_rate'];
+
+}
+
 async function calculateScore(address) {
     let tp = new ethers.providers.AlchemyProvider("mainnet","qqQIm10pMOOsdmlV3p7NYIPt91bB0TL4");
-
-    let threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-    const query = new Where('_id').eq(getAddress(address));
 
     let promiseArray = [
         checkPoH(address),
@@ -195,19 +341,43 @@ async function calculateScore(address) {
         fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
     ];
 
+    if (DEBUG === true){var startDate = new Date(); }
     let results1 = await Promise.allSettled(promiseArray);
-
+    if (DEBUG === true){
+        var endDate = new Date();
+        console.log('results1', (endDate.getTime() - startDate.getTime()) / 1000, 's')
+    }
     let promiseArray2 = [
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
-        threadClient.find(threadId, 'cachedSybil', query),
+        getSybil(address),
         fetcher(`https://backend.deepdao.io/user/${address.toLowerCase()}`, "GET", {}),
         fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}),
     ];
 
+    if (DEBUG === true){ startDate = new Date(); }
     let results2 = await Promise.allSettled(promiseArray2);
+    if (DEBUG === true){
+        endDate = new Date();
+        console.log('results2', (endDate.getTime() - startDate.getTime()) / 1000, 's')
+    }
+
+    let promiseArray3 = [
+        getEthPrice(),
+        getFoundationData(address), // * ethPrice
+        getSuperrareData(address),
+        getRaribleData(address) // * ethPrice
+    ];
+
+    if (DEBUG === true){ startDate = new Date(); }
+    let results3 = await Promise.allSettled(promiseArray3);
+    if (DEBUG === true){
+        endDate = new Date();
+        console.log('results3', (endDate.getTime() - startDate.getTime()) / 1000, 's')
+    }
 
     let results = results1.concat(results2);
+    results = results.concat(results3);
 
     let score = 0;
     let retData = {
@@ -221,13 +391,25 @@ async function calculateScore(address) {
         'unstoppableDomains': Boolean(results[6].value),
         'uniswapSybil': results[7].value.length,
         'deepdao': Boolean(results[8].value?.totalDaos) === true? parseInt(results[8].value?.totalDaos) : 0,
-        'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1
+        'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,
+        'foundation': {
+            'totalCountSold': results[11]?.value?.totalCountSold,
+            'totalAmountSold': results[11]?.value?.totalAmountSold * results[10]?.value
+        },
+        'superrare': {
+            'totalCountSold': results[12]?.value?.totalCountSold,
+            'totalAmountSold': results[12]?.value?.totalAmountSold
+        },
+        'rarible': {
+            'totalCountSold': results[13]?.value?.totalCountSold,
+            'totalAmountSold': results[13]?.value?.totalAmountSold * results[10]?.value
+        }
     };
 
     if(results[0].value === true){ // poh
         score += 8;
     }
-    if(Boolean(results[1].value.data?.unique) === true){ // brightid
+    if(Boolean(results[1].value?.data?.unique) === true){ // brightid
         score += 37;
     }
     if(Boolean(results[2].value) === true){ // poap
@@ -324,7 +506,7 @@ const cacheTrustScores = async () => {
 }
 
 const cacheTrustScoresManual = async (addresses = []) => {
-
+    DEBUG = true;
     let trustScoreDb = {};
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
@@ -343,6 +525,7 @@ const cacheTrustScoresManual = async (addresses = []) => {
             })
         }
     }
+    // console.log(docs);
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
     await threadClient.save(threadId, 'cachedTrustScores', docs);

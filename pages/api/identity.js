@@ -1,4 +1,4 @@
-import { checkPoH, checkUnstoppableDomains } from "@/lib/identity";
+import { checkPoH, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData } from "@/lib/identity";
 import { getClient } from "@/lib/thread-db";
 import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
@@ -32,21 +32,43 @@ async function calculateScore(address) {
 
     let results2 = await Promise.allSettled(promiseArray2);
 
+    let promiseArray3 = [
+        getEthPrice(),
+        getFoundationData(address), // * ethPrice
+        getSuperrareData(address),
+        getRaribleData(address) // * ethPrice
+    ];
+
+    let results3 = await Promise.allSettled(promiseArray3);
+
     let results = results1.concat(results2);
+    results = results.concat(results3);
 
     let score = 0;
     let retData = {
         'success': true,
         'poh': results[0].value,
-        'brightId': Boolean(results[1].value.data?.unique),
+        'brightId': Boolean(results[1].value?.data?.unique),
         'poap': results[2].value?.length,
         'ens': Boolean(results[3].value),
         'idena': Boolean(results[4].value?.result),
         'cryptoScamDb': Boolean(results[5].value?.success),
         'unstoppableDomains': Boolean(results[6].value),
         'uniswapSybil': results[7].value.length,
-        'deepdao': parseInt(results[8].value?.totalDaos),
-        'rabbitHole': parseInt(results[9].value?.taskData?.level)
+        'deepdao': Boolean(results[8].value?.totalDaos) === true? parseInt(results[8].value?.totalDaos) : 0,
+        'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,
+        'foundation': {
+            'totalCountSold': results[11]?.value?.totalCountSold,
+            'totalAmountSold': results[11]?.value?.totalAmountSold * results[10]?.value
+        },
+        'superrare': {
+            'totalCountSold': results[12]?.value?.totalCountSold,
+            'totalAmountSold': results[12]?.value?.totalAmountSold
+        },
+        'rarible': {
+            'totalCountSold': results[13]?.value?.totalCountSold,
+            'totalAmountSold': results[13]?.value?.totalAmountSold * results[10]?.value
+        }
     };
 
     if(results[0].value === true){ // poh
@@ -108,6 +130,7 @@ export default async (req, res) => {
 
             if (req.query?.noCache == 'true') {
                 let scoreData = await calculateScore(req.query.address);
+                setCache(req.query.address, scoreData);
                 res.status(200).json(scoreData);
             }
             else {
