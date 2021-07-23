@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '.env.local' })
 const fetch = require('node-fetch');
 const { Client, PrivateKey, ThreadID, Where } = require('@textile/hub');
-const { getAddress, isAddress } = require('ethers/lib/utils');
+const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
 
 const CHUNK_SIZE = 5;
@@ -126,7 +126,7 @@ async function checkPoH(address) {
 
 }
 
-async function querySubgraph(query = '') {
+async function querySubgraph(url='', query = '') {
 
       let promise = new Promise((res) => {
 
@@ -144,7 +144,7 @@ async function querySubgraph(query = '') {
           redirect: 'follow'
           };
 
-          fetch('https://api.thegraph.com/subgraphs/name/unstoppable-domains-integrations/dot-crypto-registry', requestOptions)
+          fetch(url, requestOptions)
           .then(response => response.json())
           .then(result => res(result['data']))
           .catch(error => {
@@ -175,7 +175,7 @@ async function checkUnstoppableDomains(address) {
                   }
               `;
 
-              let queryResult = await querySubgraph(query);
+              let queryResult = await querySubgraph('https://api.thegraph.com/subgraphs/name/unstoppable-domains-integrations/dot-crypto-registry', query);
 
               if (queryResult.domains.length > 0) {
                   for (let index = 0; index < queryResult.domains.length; index++) {
@@ -196,6 +196,36 @@ async function checkUnstoppableDomains(address) {
           else {
               return false;
           }
+
+}
+
+async function getKnownOriginData(address) {
+
+    let body = "{\"operationName\":\"editionsQuery\",\"variables\":{\"artist\":[\""+address.toLowerCase()+"\"],\"orderBy\":\"createdTimestamp\",\"orderDirection\":\"desc\",\"remainingSupplyLte\":10000,\"remainingSupplyGte\":0},\"query\":\"query editionsQuery($artist: [String!], $orderBy: String!, $orderDirection: String!, $remainingSupplyLte: Int!, $remainingSupplyGte: Int!) {\\n  editions: editions(orderBy: $orderBy, orderDirection: $orderDirection, where: {collaborators_contains: $artist, active: true, remainingSupply_lte: $remainingSupplyLte, remainingSupply_gte: $remainingSupplyGte}) {\\n    id\\n    version\\n    salesType\\n    startDate\\n    artistAccount\\n    totalSupply\\n    totalAvailable\\n    totalSold\\n    priceInWei\\n    remainingSupply\\n    optionalCommissionAccount\\n    offersOnly\\n    startDate\\n    stepSaleStepPrice\\n    totalEthSpentOnEdition\\n    metadata {\\n      id\\n      name\\n      image\\n      artist\\n      image_type\\n      image_sphere\\n      __typename\\n    }\\n    reservePrice\\n    reserveAuctionBid\\n    reserveAuctionStartDate\\n    previousReserveAuctionEndTimestamp\\n    reserveAuctionEndTimestamp\\n    __typename\\n  }\\n}\\n\"}";
+
+    let response = await fetch("https://api.thegraph.com/subgraphs/name/knownorigin/known-origin", {
+      "headers": {
+        "accept": "*/*",
+        "content-type": "application/json",
+      },
+      "method": "POST",
+      body
+    });
+
+    let jsonData = await response.json();
+    let artworks = jsonData['data']['editions'];
+    let totalCountSold = artworks.length;
+
+    let totalAmountSold = 0;
+    for (let index = 0; index < artworks.length; index++) {
+        if (parseInt(artworks[index]['totalSold']) >= 1){
+            totalAmountSold += parseFloat(formatEther(artworks[index]['priceInWei']));
+        }
+    }
+    return {
+        totalCountSold,
+        totalAmountSold
+    }
 
 }
 
@@ -323,6 +353,47 @@ async function getRaribleData(address = "") {
 
 }
 
+async function getAsyncartData(address = "") {
+    let response = await fetch("https://async-2.appspot.com/users/"+address.toLowerCase()+"/arts?rel=artist&type=masters&artType=visual", {
+      "headers": {
+        "accept": "*/*",
+        "content-type": "application/json",
+      },
+      "method": "GET"
+    });
+
+    try {
+        let artworks = await response.json();
+        artworks = artworks['arts'];
+        // console.log(artworks);
+        let totalCountSold = artworks.length;
+
+        let totalAmountSold = 0;
+        for (let index = 0; index < artworks.length; index++) {
+            if(Boolean(artworks[index]['lastSale']?.buyer) === true){
+                totalAmountSold += parseFloat(artworks[index]['lastSale']['sale']['amount']);
+            }
+            else if(artworks[index]['auction']?.hasReserve === true && Boolean(artworks[index]['auction']?.endTime) === true){
+                totalAmountSold += parseFloat(artworks[index]['auction']['reservePrice']);
+            }
+            else {
+                totalCountSold-=1;
+            }
+        }
+        return {
+            totalCountSold,
+            totalAmountSold
+        }
+
+    } catch (error) {
+        return {
+            totalCountSold: 0,
+            totalAmountSold: 0
+        }
+    }
+
+}
+
 async function getEthPrice() {
 
     let data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
@@ -366,7 +437,9 @@ async function calculateScore(address) {
         getEthPrice(),
         getFoundationData(address), // * ethPrice
         getSuperrareData(address),
-        getRaribleData(address) // * ethPrice
+        getRaribleData(address), // * ethPrice
+        getKnownOriginData(address), // * ethPrice
+        getAsyncartData(address) // * ethPrice
     ];
 
     if (DEBUG === true){ startDate = new Date(); }
@@ -389,7 +462,7 @@ async function calculateScore(address) {
         'idena': Boolean(results[4].value?.result),
         'cryptoScamDb': Boolean(results[5].value?.success),
         'unstoppableDomains': Boolean(results[6].value),
-        'uniswapSybil': results[7].value.length,
+        'uniswapSybil': results[7].value?.length,
         'deepdao': Boolean(results[8].value?.totalDaos) === true? parseInt(results[8].value?.totalDaos) : 0,
         'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,
         'foundation': {
@@ -403,6 +476,14 @@ async function calculateScore(address) {
         'rarible': {
             'totalCountSold': results[13]?.value?.totalCountSold,
             'totalAmountSold': results[13]?.value?.totalAmountSold * results[10]?.value
+        },
+        'knownorigin': {
+            'totalCountSold': results[14]?.value?.totalCountSold,
+            'totalAmountSold': results[14]?.value?.totalAmountSold * results[10]?.value
+        },
+        'asyncart': {
+            'totalCountSold': results[15]?.value?.totalCountSold,
+            'totalAmountSold': results[15]?.value?.totalAmountSold * results[10]?.value
         }
     };
 
@@ -525,14 +606,14 @@ const cacheTrustScoresManual = async (addresses = []) => {
             })
         }
     }
-    // console.log(docs);
+    console.log(docs);
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
     await threadClient.save(threadId, 'cachedTrustScores', docs);
 }
 
 
-// cacheTrustScoresManual([""]).then(()=>{
+// cacheTrustScoresManual(["0x8F942ECED007bD3976927B7958B50Df126FEeCb5"]).then(()=>{
 //     console.log("✅ Cached all trust Scores");
 // });
 

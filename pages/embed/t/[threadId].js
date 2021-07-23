@@ -5,7 +5,6 @@ import { useClipboard, Table, Tbody, Text, Tr, Td, Heading, Button, InputGroup, 
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
 import Linkify from 'react-linkify';
 import { Where } from "@textile/hub";
-import { compareAsc } from 'date-fns';
 
 import { ReplyIcon, ThreeDotMenuIcon, DisconnectIcon } from '@/public/icons';
 import { getAllThreads, getComments, getThread } from "@/lib/thread-db";
@@ -120,9 +119,9 @@ const Threads = (props) => {
             else {
                 setComments((currentComments) => {
                     let finalComments = fetchedComments.concat(currentComments);
-                    finalComments.sort((a, b) =>
-                        compareAsc(parseInt(a.createdOn), parseInt(b.createdOn))
-                    );
+                    finalComments.sort((a, b) => {
+                        return parseInt(a.createdOn) - parseInt(b.createdOn)
+                    });
                     return finalComments;
                 });
                 setPage(page+1)
