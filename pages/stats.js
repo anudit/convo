@@ -2,14 +2,14 @@ import React from "react";
 import { Text, Flex, Heading, Box } from "@chakra-ui/react";
 
 import PageShell from "@/components/PageShell";
-import { getCommentsCount, getThreadsCount, getSubscriberCount } from '@/lib/thread-db';
+import { getCommentsCount, getThreadsCount, getUniqueUsersCount } from '@/lib/thread-db';
 
 export async function getStaticProps() {
 
     let promiseArray = [
         getCommentsCount(),
         getThreadsCount(),
-        getSubscriberCount()
+        getUniqueUsersCount()
     ]
     let results = await Promise.all(promiseArray);
 
@@ -18,7 +18,7 @@ export async function getStaticProps() {
             statistics: {
                 commentsCount: results[0],
                 threadsCount: results[1],
-                subscriberCount: results[2]
+                uniqueUsersCount: results[2]
             }
         },
         revalidate: 1
@@ -51,17 +51,17 @@ const Stats = ({statistics}) => {
             {
                 statistics && (
                     <Flex w="100vw" align="center" justifyContent="center" direction={{base:"column", md:"row"}}>
-                        <Box p={5} borderRadius={5} shadow="md" borderWidth="1px" w="200px">
+                        <Box p={5} borderLeftRadius={5} shadow="md" borderWidth="1px" w="200px">
                             <Heading fontSize="xl">Comments</Heading>
                             <Text mt={2} fontSize="xx-large">{statistics.commentsCount}</Text>
                         </Box>
-                        <Box p={5} borderRadius={5} shadow="md" borderWidth="1px" w="200px">
+                        <Box p={5} shadow="md" borderWidth="1px" w="200px">
+                            <Heading fontSize="xl">Unique Users</Heading>
+                            <Text mt={2} fontSize="xx-large">{statistics.uniqueUsersCount}</Text>
+                        </Box>
+                        <Box p={5} borderRightRadius={5} shadow="md" borderWidth="1px" w="200px">
                             <Heading fontSize="xl">Threads</Heading>
                             <Text mt={2} fontSize="xx-large">{statistics.threadsCount}</Text>
-                        </Box>
-                        <Box p={5} borderRadius={5} shadow="md" borderWidth="1px" w="200px">
-                            <Heading fontSize="xl">Subscribers</Heading>
-                            <Text mt={2} fontSize="xx-large">{statistics.subscriberCount}</Text>
                         </Box>
                     </Flex>
                 )

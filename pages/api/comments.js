@@ -120,8 +120,8 @@ export default async (req, res) => {
             'metadata' : metadata,
             'tag1' : Boolean(req.body?.tag1) === true ? req.body.tag1 : "",
             'tag2' : Boolean(req.body?.tag2) === true ? req.body.tag2 : "",
-            'upvotes': 0,
-            'downvotes': 0
+            'upvotes': [],
+            'downvotes': []
           };
           let newId = await createComment(commentData);
 
