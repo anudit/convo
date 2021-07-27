@@ -2,8 +2,10 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import Image from 'next/image';
 import { useToast, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, IconButton, Select, Spinner, Image as ChakraImage } from "@chakra-ui/react";
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalFooter, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
+import { AddIcon, DeleteIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import useSWR from 'swr';
 import QRCode from "react-qr-code";
+import { isAddress } from 'ethers/lib/utils';
 
 import Ceramic from '@ceramicnetwork/http-client';
 import { IDX } from '@ceramicstudio/idx';
@@ -14,24 +16,23 @@ import KeyDidResolver from 'key-did-resolver';
 
 import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
-import { Web3Context } from '@/contexts/Web3Context'
-import { checkPoH, checkUnstoppableDomains } from "@/lib/identity"
-import { VerifiedIcon, PoapIcon } from '@/public/icons';
-import { AddIcon, DeleteIcon, ExternalLinkIcon } from '@chakra-ui/icons';
-import { truncateAddress } from '@/utils/stringUtils';
-import { isAddress } from 'ethers/lib/utils';
+import { Web3Context } from '@/contexts/Web3Context';
+import { checkPoH, checkUnstoppableDomains } from "@/lib/identity";
+import { VerifiedIcon } from '@/public/icons';
+import { prettifyNumber, truncateAddress } from '@/utils/stringUtils';
 
 const IdentitySection = () => {
 
   const web3Context = useContext(Web3Context)
   const { signerAddress } = web3Context;
+  const [trustScoreData, setTrustScoreData] = useState(null);
   const [trustScore, setTrustScore] = useState("...");
 
   useEffect(() => {
-    if (isAddress(signerAddress)){
+    if (isAddress(signerAddress) === true){
       fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
-        console.log(data);
         setTrustScore(data?.score?.toString());
+        setTrustScoreData(data);
       });
     }
   }, [signerAddress]);
@@ -70,7 +71,7 @@ const IdentitySection = () => {
             <Flex direction={{base:"column", md: "row"}}>
               <Wrap>
                   <WrapItem>
-                    <SybilCard/>
+                    <SybilCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <IdxCard />
@@ -82,7 +83,7 @@ const IdentitySection = () => {
                     <BrightIdCard />
                   </WrapItem>
                   <WrapItem>
-                    <DeepdaoCard />
+                    <DeepdaoCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <RabbitholeCard />
@@ -96,16 +97,29 @@ const IdentitySection = () => {
                   <WrapItem>
                     <IdenaCard />
                   </WrapItem>
-              </Wrap>
-            </Flex>
-            <Heading as="h4" size="md" my={4}>
-              <PoapIcon mr={2}/>  POAPs
-            </Heading>
-            <Flex my={2} direction={{base:"column", md: "row"}}>
-              <Wrap>
+                  <WrapItem>
+                    <RaribleCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
+                    <SuperrareCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
+                    <FoundationCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
+                    <AsyncartCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
+                    <KnownoriginCard trustScoreData={trustScoreData} />
+                  </WrapItem>
                   <PoapSection mt={2}/>
               </Wrap>
             </Flex>
+            {/* <Heading as="h4" size="md" my={4} w="100%">
+              <PoapIcon mr={2}/>  POAPs
+            </Heading>
+            <Flex my={2} direction={{base:"column", md: "row"}} overflow="hidden">
+            </Flex> */}
           </Flex>
       </DashboardShell>
     )
@@ -114,43 +128,23 @@ const IdentitySection = () => {
 
 export default IdentitySection;
 
-const SybilCard = () => {
-
-  const web3Context = useContext(Web3Context)
-  const { signerAddress } = web3Context;
-  const [sybil, setSybil] = useState(null);
-
-  useEffect(() => {
-    fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
-      setSybil(data['uniswapSybil']);
-    });
-  }, [signerAddress]);
+const SybilCard = ({trustScoreData}) => {
 
     return (
       <IdentityCard image_url="/images/sybil.webp">
         {
-          sybil === null ? "Loading" : Boolean(sybil) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData.uniswapSybil) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
 };
 
-const DeepdaoCard = () => {
-
-  const web3Context = useContext(Web3Context)
-  const { signerAddress } = web3Context;
-  const [data, setScore] = useState(null);
-
-  useEffect(() => {
-    fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
-      setScore(data['deepdao']);
-    });
-  }, [signerAddress]);
+const DeepdaoCard = ({trustScoreData}) => {
 
     return (
       <IdentityCard image_url="/images/deepdao.webp">
         {
-          data === null ? "Loading" : Boolean(data) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://deepdao.io/">Explore on Deepdao</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData.deepdao) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://deepdao.io/">Explore on Deepdao</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -541,44 +535,44 @@ const PoapSection = () => {
 
   if (poaps && poaps.length > 0){
     return (
-      <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay backdropFilter="blur(10px)"/>
-        <ModalContent>
-          <ModalHeader>{poapDetails?.eventName}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-          {poapDetails?.description}
-          </ModalBody>
-          <ModalFooter>
-            <Button as="a" href={poapDetails?.eventLink} target="_blank" variant="ghost" size="sm">
-              View Event <ExternalLinkIcon ml={2}/>
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      {
-        poaps.map((poap, index)=>{
-          return (
-            <WrapItem key={poap.tokenId}>
-              <ChakraImage
-                h={48}
-                w={48}
-                fit="contain"
-                mt={2}
-                src={poap.event.image_url}
-                alt={poap.event.name}
-                onClick={()=>{showDetails(index)}}
-                cursor="pointer"
-                _hover={{
-                  transform:"scale(1.01)"
-                }}
-              />
-            </WrapItem>
-          );
-        })
-      }
-    </>
+      <Wrap>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay backdropFilter="blur(10px)"/>
+          <ModalContent>
+            <ModalHeader>{poapDetails?.eventName}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+            {poapDetails?.description}
+            </ModalBody>
+            <ModalFooter>
+              <Button as="a" href={poapDetails?.eventLink} target="_blank" variant="ghost" size="sm">
+                View Event <ExternalLinkIcon ml={2}/>
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+        {
+          poaps.map((poap, index)=>{
+            return (
+              <WrapItem key={poap.tokenId}>
+                <ChakraImage
+                  h={40}
+                  w={40}
+                  fit="contain"
+                  p={1}
+                  src={poap.event.image_url}
+                  alt={poap.event.name}
+                  onClick={()=>{showDetails(index)}}
+                  cursor="pointer"
+                  _hover={{
+                    transform:"scale(1.01)"
+                  }}
+                />
+              </WrapItem>
+            );
+          })
+        }
+      </Wrap>
     )
   }
   else {
@@ -623,3 +617,118 @@ const IdentityCard = (props) => {
       </Flex>
   );
 }
+
+const RaribleCard = ({trustScoreData}) => {
+
+    return (
+      <IdentityCard image_url="/images/rarible.webp">
+        {
+          trustScoreData === null ? "Loading" :
+          trustScoreData?.rarible?.totalCountSold === 0 ? (
+              <chakra.p size="xs" as="a" target="_blank" href="https://rarible.com/">
+                Create on Rarible
+              </chakra.p>
+            ) : (
+              <>
+                <Text mr={1}>
+                  {trustScoreData.rarible.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.rarible.totalAmountSold)}
+                </Text>
+                <VerifiedIcon color="blue.400"/>
+              </>
+            )
+        }
+      </IdentityCard>
+    );
+};
+
+const SuperrareCard = ({trustScoreData}) => {
+
+    return (
+      <IdentityCard image_url="/images/superrare.webp">
+        {
+          trustScoreData === null ? "Loading" :
+          trustScoreData?.superrare?.totalCountSold === 0 ? (
+              <chakra.p size="xs" as="a" target="_blank" href="https://superrare.com/">
+                Create on SuperRare
+              </chakra.p>
+            ) : (
+              <>
+                <Text mr={1}>
+                  {trustScoreData.superrare.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.superrare.totalAmountSold)}
+                </Text>
+                <VerifiedIcon color="blue.400"/>
+              </>
+            )
+        }
+      </IdentityCard>
+    );
+};
+
+const KnownoriginCard = ({trustScoreData}) => {
+
+    return (
+      <IdentityCard image_url="/images/knownorigin.webp">
+        {
+          trustScoreData === null ? "Loading" :
+          trustScoreData?.knownorigin?.totalCountSold === 0 ? (
+              <chakra.p size="xs" as="a" target="_blank" href="https://knownorigin.io/">
+                Create on KnownOrigin
+              </chakra.p>
+            ) : (
+              <>
+                <Text mr={1}>
+                  {trustScoreData?.knownorigin?.totalCountSold + " sold for $" + prettifyNumber(trustScoreData?.knownorigin?.totalAmountSold)}
+                </Text>
+                <VerifiedIcon color="blue.400"/>
+              </>
+            )
+        }
+      </IdentityCard>
+    );
+};
+
+const FoundationCard = ({trustScoreData}) => {
+
+    return (
+      <IdentityCard image_url="/images/foundation.webp">
+        {
+          trustScoreData === null ? "Loading" :
+          trustScoreData?.foundation?.totalCountSold === 0 ? (
+              <chakra.p size="xs" as="a" target="_blank" href="https://foundation.app/">
+                Create on Foundation
+              </chakra.p>
+            ) : (
+              <>
+                <Text mr={1}>
+                  {trustScoreData.foundation.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.foundation.totalAmountSold)}
+                </Text>
+                <VerifiedIcon color="blue.400"/>
+              </>
+            )
+        }
+      </IdentityCard>
+    );
+};
+
+const AsyncartCard = ({trustScoreData}) => {
+
+    return (
+      <IdentityCard image_url="/images/asyncart.webp">
+        {
+          trustScoreData === null ? "Loading" :
+          trustScoreData?.asyncart?.totalCountSold === 0 ? (
+              <chakra.p size="xs" as="a" target="_blank" href="https://async.art/">
+                Create on AsyncArt
+              </chakra.p>
+            ) : (
+              <>
+                <Text mr={1}>
+                  {trustScoreData.asyncart.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.asyncart.totalAmountSold)}
+                </Text>
+                <VerifiedIcon color="blue.400"/>
+              </>
+            )
+        }
+      </IdentityCard>
+    );
+};

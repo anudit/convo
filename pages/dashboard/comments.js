@@ -175,7 +175,7 @@ const CommentsTable = ({ columns, comments, mutate}) => {
     }
 
     return (
-    <Table {...getTableProps()} mt={4} wordBreak="break-all">
+    <Table {...getTableProps()} mt={4} wordBreak="break-all" display="block">
         <Thead>
             {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()} key="header">

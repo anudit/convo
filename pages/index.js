@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Input, Button, Box, UnorderedList, ListItem } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
-import { DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon } from '@/public/icons';
+import { DataIcon, DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon } from '@/public/icons';
 import { CustomButton } from '@/components/CustomButtons';
 import Footer from "@/components/Footer";
 import Card from '@/components/Card';
@@ -268,10 +268,11 @@ const Home = () => {
                 align="center"
               >
               <Text py={2} fontWeight={400} color={useColorModeValue("blackAlpha.800", "gray.400")}>
-                INTEGRATES WITH
+                 WITH
               </Text>
-
-
+              <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="Devfolio" rel="noreferrer" target="_blank" href="https://devfolio.co/blog/first-bif-cohort/">
+                <DevfolioIcon width="200px" height="50px"/>
+              </Link>
             </Flex> */}
           </Flex>
         </Flex>
@@ -304,6 +305,7 @@ const Home = () => {
           <Flex
             direction={{base: "column", md: "row"}}
             align="left"
+            mt={8}
           >
 
             <Card
@@ -318,6 +320,21 @@ const Home = () => {
               >
               <Text mt={2} mb={5} fontWeight="400" fontSize={20} color={useColorModeValue("blackAlpha.800", "gray.400")}>
                 Convo can be used as a singular layer to manage your conversations throughout the Internet, can be used to build upon and integrated into any application with Convo&apos;s API.
+              </Text>
+            </Card>
+
+            <Card
+              title="Own your Data, Always."
+              icon={
+                <DataIcon
+                  aria-label="Data"
+                  boxSize={16}
+                />
+              }
+              internalLink=""
+            >
+              <Text mt={2} mb={5} fontWeight="400" fontSize={20} color={useColorModeValue("blackAlpha.800", "gray.400")}>
+                All your Conversational Data generated on Convo is always in your control and linked to your Decentralized Identity, no other application can modify it without your approval.
               </Text>
             </Card>
 
@@ -375,7 +392,7 @@ const Home = () => {
               value={`"${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/t/KIGZUnR4RzXDFheXoOwo`}
             />
             <br/>
-            <iframe title="Comments Page Demo" src={"/embed/t/KIGZUnR4RzXDFheXoOwo?theme=" + colorMode} width="100%" height="450px" allowtransparency="true" loading="lazy" style={{overflow:"hidden"}}>
+            <iframe title="Comments Page Demo" src={"/embed/t/KIGZUnR4RzXDFheXoOwo?theme=" + colorMode} loading="lazy" width="100%" height="450px" allowtransparency="true" style={{overflow:"hidden"}}>
               Comments Page Demo
             </iframe>
           </Flex>

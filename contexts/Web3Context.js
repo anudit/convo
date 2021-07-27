@@ -11,6 +11,9 @@ export const Web3Context = React.createContext(undefined);
 
 export const Web3ContextProvider = ({children}) => {
 
+  const cookies = Cookies.withAttributes({
+    path: '/'
+  })
   const [web3Modal, setWeb3Modal] = useState(undefined);
   const [provider, setProvider] = useState(undefined);
   const [signerAddress, setSignerAddress] = useState("");
@@ -115,11 +118,11 @@ export const Web3ContextProvider = ({children}) => {
       let tempaddress = await tempsigner.getAddress();
 
       // there was a previous session try and validate that first.
-      if (Boolean(Cookies.get('CONVO_SESSION')) === true) {
+      if (Boolean(cookies.get('CONVO_SESSION')) === true) {
         let tokenRes = await fetcher(
           '/api/validateAuth?apikey=CONVO', "POST", {
             signerAddress: tempaddress,
-            token: Cookies.get('CONVO_SESSION')
+            token: cookies.get('CONVO_SESSION')
           }
         );
         // if previous session is invalid then request a new auth token.
@@ -141,7 +144,7 @@ export const Web3ContextProvider = ({children}) => {
   }
 
   function disconnectWallet() {
-    Cookies.remove('CONVO_SESSION');
+    cookies.remove('CONVO_SESSION');
     web3Modal?.clearCachedProvider();
     setProvider(undefined);
   }
@@ -151,11 +154,11 @@ export const Web3ContextProvider = ({children}) => {
     let authAdd = Boolean(manualAddress) === true ? manualAddress : signerAddress;
     let tokenRes = await fetcher('/api/validateAuth?apikey=CONVO', "POST", {
       signerAddress: authAdd,
-      token: Cookies.get('CONVO_SESSION')
+      token: cookies.get('CONVO_SESSION')
     });
 
     if (tokenRes['success'] === true){
-      return Cookies.get('CONVO_SESSION');
+      return cookies.get('CONVO_SESSION');
     }
     else {
       try {
@@ -210,7 +213,7 @@ export const Web3ContextProvider = ({children}) => {
     });
 
     if (res.success === true ) {
-      Cookies.set('CONVO_SESSION', res['message'], { expires: 1 });
+      cookies.set('CONVO_SESSION', res['message'], { expires: 1 });
       return res['message'];
     }
     else {
