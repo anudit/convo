@@ -50,7 +50,7 @@ const IdentitySection = () => {
 
 
   return (
-    <DashboardShell title="Identity">
+    <DashboardShell active="data" title="Identity">
         <Flex direction="column" w="100%">
             <Heading as="h4" size="md" mb={4}>
               Administration

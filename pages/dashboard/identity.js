@@ -38,7 +38,7 @@ const IdentitySection = () => {
   }, [signerAddress]);
 
     return (
-      <DashboardShell title="Identity">
+      <DashboardShell active="identity" title="Identity">
           <Flex direction="column">
             <Flex direction="column" w="80%" align="center">
               <Flex

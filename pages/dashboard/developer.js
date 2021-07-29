@@ -10,7 +10,7 @@ const DeveloperSection = () => {
     const { hasCopied, onCopy } = useClipboard("CONVO")
 
     return (
-        <DashboardShell title="Developer">
+        <DashboardShell active="developer" title="Developer">
             <Flex mt={4} direction="column">
                 <Text as="h4" size="md">
                     Your Early-Access API Key : <Code fontSize={18}>CONVO</Code>

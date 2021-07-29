@@ -402,7 +402,7 @@ async function getEthPrice() {
 }
 
 async function calculateScore(address) {
-    let tp = new ethers.providers.AlchemyProvider("mainnet","qqQIm10pMOOsdmlV3p7NYIPt91bB0TL4");
+    let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
 
     let promiseArray = [
         checkPoH(address),

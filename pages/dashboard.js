@@ -15,7 +15,7 @@ const Dashboard = () => {
     const { hasCopied, onCopy } = useClipboard(signerAddress);
 
     return (
-        <DashboardShell title="Dashboard">
+        <DashboardShell active="dashboard" title="Dashboard">
             <Flex direction="column" w="100%" align="center" justifyContent="start" alignItems="center" mt={2}>
                 <CustomAvatar address={signerAddress} badgesize="1em"  mr={2} size="2xl" />
                 <Heading  mt={2} as="h3" size="lg" color={useColorModeValue("blackAlpha.800", "gray.400")} align="center">

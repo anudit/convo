@@ -34,8 +34,7 @@ const PageShell = (props) => {
   );
 };
 
-
-const DashboardShell = ({title, children}) => {
+const DashboardShell = ({title, active, children}) => {
 
     const web3Context = useContext(Web3Context);
     const { connectWallet, signerAddress, disconnectWallet, isPortisLoading } = web3Context;
@@ -214,7 +213,20 @@ const DashboardShell = ({title, children}) => {
                             </Flex>
                         </Link>
                         <Link href="/dashboard/comments">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
+                            <Flex
+                                m={1}
+                                h={{base: "70px", md:"100px"}}
+                                w="90%"
+                                textTransform="uppercase"
+                                fontWeight={200}
+                                cursor="pointer"
+                                direction="column"
+                                align="center"
+                                justifyContent="center"
+                                alignItems="center"
+                                backgroundColor={active === "comments" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
+                            >
                                 <Text fontSize="2xl">
                                     ⚡
                                 </Text>
@@ -224,7 +236,20 @@ const DashboardShell = ({title, children}) => {
                             </Flex>
                         </Link>
                         <Link href="/dashboard/identity">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
+                            <Flex
+                                m={1}
+                                h={{base: "70px", md:"100px"}}
+                                w="90%"
+                                textTransform="uppercase"
+                                fontWeight={200}
+                                cursor="pointer"
+                                direction="column"
+                                align="center"
+                                justifyContent="center"
+                                alignItems="center"
+                                backgroundColor={active === "identity" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
+                            >
                                 <Text fontSize="2xl">
                                     🆔
                                 </Text>
@@ -234,7 +259,20 @@ const DashboardShell = ({title, children}) => {
                             </Flex>
                         </Link>
                         <Link href="/dashboard/data">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
+                            <Flex
+                                m={1}
+                                h={{base: "70px", md:"100px"}}
+                                w="90%"
+                                textTransform="uppercase"
+                                fontWeight={200}
+                                cursor="pointer"
+                                direction="column"
+                                align="center"
+                                justifyContent="center"
+                                alignItems="center"
+                                backgroundColor={active === "data" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
+                            >
                                 <Text fontSize="2xl">
                                     📂
                                 </Text>
@@ -244,7 +282,20 @@ const DashboardShell = ({title, children}) => {
                             </Flex>
                         </Link>
                         <Link href="/dashboard/developer">
-                            <Flex h={{base: "70px", md:"100px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
+                            <Flex
+                                m={1}
+                                h={{base: "70px", md:"100px"}}
+                                w="90%"
+                                textTransform="uppercase"
+                                fontWeight={200}
+                                cursor="pointer"
+                                direction="column"
+                                align="center"
+                                justifyContent="center"
+                                alignItems="center"
+                                backgroundColor={active === "developer" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
+                            >
                                 <Text fontSize="2xl">
                                     🧑‍💻
                                 </Text>
@@ -348,4 +399,3 @@ const DashboardShell = ({title, children}) => {
 };
 
 export default DashboardShell;
-

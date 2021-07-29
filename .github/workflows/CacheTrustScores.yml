@@ -4,7 +4,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0 0,8,16 * * *" # Every 8 hours.
+    - cron: "0 0,12 * * *" # Every 12 hours.
 
 jobs:
   convo_crons:

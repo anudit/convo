@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Head from 'next/head';
-import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Tooltip, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Input, Button, Box, UnorderedList, ListItem } from "@chakra-ui/react";
+import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Button, Box, UnorderedList, ListItem } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
-import { DataIcon, DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon } from '@/public/icons';
+import { DataIcon, DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon, DiscordIcon } from '@/public/icons';
 import { CustomButton } from '@/components/CustomButtons';
 import Footer from "@/components/Footer";
 import Card from '@/components/Card';
@@ -12,20 +12,7 @@ import { MakeOwnCodeBlock } from "@/components/CodeBlock";
 
 const Home = () => {
 
-  const [makeyourown_link, setmakeyourown_link] = useState("");
-  const [makeyourown_uid, setmakeyourown_uid] = useState("");
-  const [makeyourown_themeIsDark, setmakeyourown_themeIsDark] = useState(true);
   const { colorMode } = useColorMode();
-
-  async function updateUID(event){
-    setmakeyourown_uid(event.target.value);
-  }
-  async function updateLink(event){
-    setmakeyourown_link(event.target.value);
-  }
-  async function makeyourown_themeToggle(){
-    setmakeyourown_themeIsDark(!makeyourown_themeIsDark);
-  }
 
   useEffect(() => {
     var TxtType = function(el, toRotate, period) {
@@ -401,73 +388,7 @@ const Home = () => {
             View Docs<ExternalIcon ml={1}/>
           </Link>
 
-
         </Flex>
-
-        <Flex
-          direction="column"
-          align="center"
-          margin="0 auto"
-          w={{ base: "95%"}}
-          minH="80vh"
-          justifyContent="center"
-          py={8}
-          mt={4}
-          mb={2}
-        >
-          <Heading
-            as="h1"
-            fontSize={{ base: "2rem", md: "2rem", lg: "3rem", xl: "6rem" }}
-            fontWeight="700"
-            color={useColorModeValue("black", "white")}
-            lineHeight="none"
-            letterSpacing="tight"
-            textAlign="center"
-            bgClip="text"
-            bgGradient="linear(to-r, green.400,purple.500)"
-            animation="hue 10s infinite linear"
-            py={12}
-          >
-            Make your Own.
-          </Heading>
-
-          <Flex width={{ base: "95vw", md:"80vw", lg:"60vw"}} direction="column">
-            <Flex direction={{ base: "column", md:"row"}} align="center" justifyContent="center">
-              <Input
-                placeholder="Website Link"
-                padding="30px"
-                fontSize="20px"
-                type="text"
-                borderRadius="10px"
-                mr="10px"
-                w={{ base: "300px", md: "400px" }}
-                onChange={updateLink}
-              />
-              <Tooltip label="A key that uniquely identifies this comment box, eg: Contract Address, PostId etc" aria-label="Unique Id" bg="blue.200" hasArrow>
-                <Input
-                  placeholder="Unique ID"
-                  padding="30px"
-                  fontSize="20px"
-                  type="text"
-                  borderRadius="10px"
-                  mr="10px"
-                  w={{ base: "300px", md: "400px" }}
-                  onChange={updateUID}
-                />
-              </Tooltip>
-              <Button onClick={makeyourown_themeToggle} variant>
-                {
-                  makeyourown_themeIsDark === true ? "☀️" : "🌒"
-                }
-              </Button>
-            </Flex>
-            <br/>
-            <MakeOwnCodeBlock
-              value={`"${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?url=${encodeURIComponent(makeyourown_link)}&threadId=${makeyourown_uid}&theme=${makeyourown_themeIsDark?"dark":"light"}"`}
-            />
-          </Flex>
-        </Flex>
-
 
         <Flex
           direction="column"
@@ -601,6 +522,21 @@ const Home = () => {
           </Accordion>
         </Flex>
 
+      </Flex>
+
+      <Flex direction={{ base:"column", md:"row" }} w="100%" backgroundImage="linear-gradient(90deg, #455DFC, #9D41FD)" px={8} justifyContent="space-around" py={10}>
+        <Flex direction="row" alignItems="center">
+          <DiscordIcon boxSize={12} mx={4}/>
+          <Flex direction="column" >
+            <Text fontSize="3xl" lineHeight="25px" fontWeight="900" >Connect with the community</Text>
+            <Text fontSize="md" lineHeight="15px" mt={{base:2,md:3 }}>Feel free to ask questions, report issues, and meet new people.</Text>
+          </Flex>
+        </Flex>
+        <Flex direction="row" alignItems="center" justifyContent="center">
+          <Button mt={{base:2,md:0 }} size="lg" backgroundColor="white" color="black" as="a" href="https://discord.com/invite/MFtmrng9J7" rel="noreferrer" target="_blank">
+            Join the Convo Discord!
+          </Button>
+        </Flex>
       </Flex>
       <Footer/>
 

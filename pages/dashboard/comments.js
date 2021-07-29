@@ -55,7 +55,7 @@ const CommentsSection = (props) => {
 
     if (Boolean(comments) === false){
         return (
-            <DashboardShell title="Comments">
+            <DashboardShell active="comments" title="Comments">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
@@ -77,7 +77,7 @@ const CommentsSection = (props) => {
     // Does not have any comments to show.
     else if (comments && comments.length < 1 ){
         return (
-            <DashboardShell title="Comments">
+            <DashboardShell active="comments" title="Comments">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
@@ -92,14 +92,14 @@ const CommentsSection = (props) => {
     }
     else if (Boolean(comments) === true && comments.length >= 1) {
         return (
-            <DashboardShell title="Comments">
+            <DashboardShell active="comments" title="Comments">
                 <CommentsTable columns={columns} comments={formattedComments} mutate={mutate}/>
             </DashboardShell>
         );
     }
     else {
         return (
-            <DashboardShell title="Comments">
+            <DashboardShell active="comments" title="Comments">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
