@@ -126,6 +126,29 @@ async function checkPoH(address) {
 
 }
 
+async function getMirrorData(address = ""){
+    let data = await fetch("https://mirror-api.com/graphql", {
+        "headers": {
+            "accept": "*/*",
+            "accept-language": "en-US,en;q=0.9",
+            "content-type": "application/json",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "sec-gpc": "1"
+        },
+        "referrer": "https://mirror.xyz/",
+        "referrerPolicy": "strict-origin-when-cross-origin",
+        "body": "{\"operationName\":\"AddressInfo\",\"variables\":{\"address\":\""+address+"\"},\"query\":\"query AddressInfo($address: String!) {\\n  addressInfo(address: $address) {\\n    ens\\n    writeTokens\\n    hasOnboarded\\n    __typename\\n  }\\n}\\n\"}",
+        "method": "POST",
+        "mode": "cors",
+        "credentials": "omit"
+    });
+
+    let jsonData = await data.json();
+    return jsonData['data']['addressInfo']['hasOnboarded'];
+}
+
 async function querySubgraph(url='', query = '') {
 
       let promise = new Promise((res) => {
@@ -439,7 +462,8 @@ async function calculateScore(address) {
         getSuperrareData(address),
         getRaribleData(address), // * ethPrice
         getKnownOriginData(address), // * ethPrice
-        getAsyncartData(address) // * ethPrice
+        getAsyncartData(address), // * ethPrice
+        getMirrorData(address)
     ];
 
     if (DEBUG === true){ startDate = new Date(); }
@@ -465,6 +489,7 @@ async function calculateScore(address) {
         'uniswapSybil': results[7].value?.length,
         'deepdao': Boolean(results[8].value?.totalDaos) === true? parseInt(results[8].value?.totalDaos) : 0,
         'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,
+        'mirror': results[16].value,
         'foundation': {
             'totalCountSold': results[11]?.value?.totalCountSold,
             'totalAmountSold': results[11]?.value?.totalAmountSold * results[10]?.value
@@ -516,6 +541,9 @@ async function calculateScore(address) {
     }
     if(parseInt(results[9].value?.taskData?.level)> 0){ // rabbithole
         score += parseInt(results[9].value?.taskData?.level) - 1;
+    }
+    if(results[16].value === true){ // mirror
+        score += 10;
     }
 
     return {score, ...retData};
@@ -610,13 +638,12 @@ const cacheTrustScoresManual = async (addresses = []) => {
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
     await threadClient.save(threadId, 'cachedTrustScores', docs);
+    return docs;
 }
 
-
-// cacheTrustScoresManual(["0x8F942ECED007bD3976927B7958B50Df126FEeCb5"]).then(()=>{
+// cacheTrustScoresManual([""]).then(()=>{
 //     console.log("✅ Cached all trust Scores");
 // });
-
 
 cacheTrustScores().then(()=>{
     console.log("✅ Cached all trust Scores");

@@ -98,6 +98,9 @@ const IdentitySection = () => {
                     <IdenaCard />
                   </WrapItem>
                   <WrapItem>
+                    <MirrorCard />
+                  </WrapItem>
+                  <WrapItem>
                     <RaribleCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
@@ -112,6 +115,7 @@ const IdentitySection = () => {
                   <WrapItem>
                     <KnownoriginCard trustScoreData={trustScoreData} />
                   </WrapItem>
+                  <br/>
                   <PoapSection mt={2}/>
               </Wrap>
             </Flex>
@@ -148,6 +152,17 @@ const DeepdaoCard = ({trustScoreData}) => {
         }
       </IdentityCard>
     );
+};
+
+const MirrorCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url="/images/mirror.webp">
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.mirror) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://mirror.xyz/">Join the $WRITE Race</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
 };
 
 const PoHCard = () => {

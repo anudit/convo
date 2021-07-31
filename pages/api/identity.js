@@ -1,4 +1,4 @@
-import { checkPoH, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData } from "@/lib/identity";
+import { checkPoH, getMirrorData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData } from "@/lib/identity";
 import { getClient } from "@/lib/thread-db";
 import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
@@ -38,7 +38,8 @@ async function calculateScore(address) {
         getSuperrareData(address),
         getRaribleData(address), // * ethPrice
         getKnownOriginData(address), // * ethPrice
-        getAsyncartData(address) // * ethPrice
+        getAsyncartData(address), // * ethPrice
+        getMirrorData(address)
     ];
 
     let results3 = await Promise.allSettled(promiseArray3);
@@ -59,6 +60,7 @@ async function calculateScore(address) {
         'uniswapSybil': results[7].value.length,
         'deepdao': Boolean(results[8].value?.totalDaos) === true? parseInt(results[8].value?.totalDaos) : 0,
         'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,
+        'mirror': results[16].value,
         'foundation': {
             'totalCountSold': results[11]?.value?.totalCountSold,
             'totalAmountSold': results[11]?.value?.totalAmountSold * results[10]?.value
@@ -110,6 +112,9 @@ async function calculateScore(address) {
     }
     if(parseInt(results[9].value?.taskData?.level)> 0){ // rabbithole
         score += parseInt(results[9].value?.taskData?.level);
+    }
+    if(results[16].value === true){ // mirror
+        score += 10;
     }
 
     return {score, ...retData};

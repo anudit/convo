@@ -119,7 +119,7 @@ const Threads = (props) => {
             else {
                 setComments((currentComments) => {
                     let finalComments = fetchedComments.concat(currentComments);
-                    finalComments.sort((a, b) => {
+                    finalComments = finalComments.sort((a, b) => {
                         return parseInt(a.createdOn) - parseInt(b.createdOn)
                     });
                     return finalComments;
