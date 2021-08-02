@@ -4,7 +4,7 @@ const { Client, PrivateKey, ThreadID, Where } = require('@textile/hub');
 const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
 
-const CHUNK_SIZE = 5;
+const CHUNK_SIZE = 4;
 let DEBUG = false;
 
 let erroredAddresses = [];
@@ -147,6 +147,40 @@ async function getMirrorData(address = ""){
 
     let jsonData = await data.json();
     return jsonData['data']['addressInfo']['hasOnboarded'];
+}
+
+async function getCoinviseData(address = ""){
+
+    let promiseArray = [
+        fetch(`https://coinvise-prod.herokuapp.com/token?userAddress=${address}&production=true`).then(async (data)=>{return data.json()}),
+        fetch(`https://www.coinvise.co/api/nft?chain=137&address=${address}`).then(async (data)=>{return data.json()}),
+        fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()})
+    ];
+    let data = await Promise.allSettled(promiseArray);
+
+    let totalCountSold = 0;
+    let totalAmountSold = 0;
+    let MATIC_price = parseFloat(data[2]?.value[0]?.price);
+
+    for (let index = 0; index < data[1]?.value?.nfts?.length; index++) {
+        const nft = data[1]?.value?.nfts[index];
+        if (nft?.sold === true) {
+            totalCountSold += 1;
+            if (nft?.symbol === "MATIC"){
+                totalAmountSold+= parseFloat(nft?.price)*MATIC_price;
+            }
+            if (nft?.symbol === "USDC"){
+                totalAmountSold+= parseFloat(nft?.price)
+            }
+        }
+    }
+
+    return {
+        tokensCreated: data[0]?.value?.length,
+        nftsCreated: data[1]?.value?.nfts.length,
+        totalCountSold,
+        totalAmountSold
+    };
 }
 
 async function querySubgraph(url='', query = '') {
@@ -463,7 +497,8 @@ async function calculateScore(address) {
         getRaribleData(address), // * ethPrice
         getKnownOriginData(address), // * ethPrice
         getAsyncartData(address), // * ethPrice
-        getMirrorData(address)
+        getMirrorData(address),
+        getCoinviseData(address)
     ];
 
     if (DEBUG === true){ startDate = new Date(); }
@@ -509,6 +544,12 @@ async function calculateScore(address) {
         'asyncart': {
             'totalCountSold': results[15]?.value?.totalCountSold,
             'totalAmountSold': results[15]?.value?.totalAmountSold * results[10]?.value
+        },
+        'coinvise': {
+            'tokensCreated': results[17]?.value?.tokensCreated,
+            'nftsCreated': results[17]?.value?.nftsCreated,
+            'totalCountSold': results[17]?.value?.totalCountSold,
+            'totalAmountSold': results[17]?.value?.totalAmountSold
         }
     };
 

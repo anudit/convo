@@ -115,6 +115,9 @@ const IdentitySection = () => {
                   <WrapItem>
                     <KnownoriginCard trustScoreData={trustScoreData} />
                   </WrapItem>
+                  <WrapItem>
+                    <CoinviseCard trustScoreData={trustScoreData} />
+                  </WrapItem>
                   <br/>
                   <PoapSection mt={2}/>
               </Wrap>
@@ -265,6 +268,31 @@ const RabbitholeCard = () => {
       </IdentityCard>
     );
 };
+
+const CoinviseCard = ({trustScoreData}) => {
+  console.log(trustScoreData?.coinvise);
+  return (
+    <IdentityCard image_url="/images/coinvise.webp">
+      {
+        trustScoreData === null ? "Loading" :
+        trustScoreData?.coinvise?.totalCountSold === 0 ? (
+            <chakra.p size="xs" as="a" target="_blank" href="https://coinvise.co/">
+              Create on Coinvise
+            </chakra.p>
+          ) : (
+            <>
+              <Text mr={1}>
+                {trustScoreData.coinvise.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.coinvise.totalAmountSold)}
+              </Text>
+              <VerifiedIcon color="blue.400"/>
+            </>
+          )
+      }
+    </IdentityCard>
+  )
+
+};
+
 
 const BrightIdCard = () => {
 

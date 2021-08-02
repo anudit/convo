@@ -1,4 +1,4 @@
-import { checkPoH, getMirrorData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData } from "@/lib/identity";
+import { checkPoH, getMirrorData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData } from "@/lib/identity";
 import { getClient } from "@/lib/thread-db";
 import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
@@ -39,7 +39,8 @@ async function calculateScore(address) {
         getRaribleData(address), // * ethPrice
         getKnownOriginData(address), // * ethPrice
         getAsyncartData(address), // * ethPrice
-        getMirrorData(address)
+        getMirrorData(address),
+        getCoinviseData(address)
     ];
 
     let results3 = await Promise.allSettled(promiseArray3);
@@ -80,6 +81,12 @@ async function calculateScore(address) {
         'asyncart': {
             'totalCountSold': results[15]?.value?.totalCountSold,
             'totalAmountSold': results[15]?.value?.totalAmountSold * results[10]?.value
+        },
+        'coinvise': {
+            'tokensCreated': results[17]?.value?.tokensCreated,
+            'nftsCreated': results[17]?.value?.nftsCreated,
+            'totalCountSold': results[17]?.value?.totalCountSold,
+            'totalAmountSold': results[17]?.value?.totalAmountSold
         }
     };
 
