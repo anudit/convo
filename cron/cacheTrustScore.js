@@ -149,14 +149,48 @@ async function getMirrorData(address = ""){
     return jsonData['data']['addressInfo']['hasOnboarded'];
 }
 
+
 async function getCoinviseData(address = ""){
+
+    async function getPoolData(tokenAddress = ""){
+
+        let data = await fetch("https://api.thegraph.com/subgraphs/name/benesjan/uniswap-v3-subgraph", {
+      "headers": {
+        "accept": "*/*",
+        "content-type": "application/json",
+      },
+      "referrer": "https://thegraph.com/",
+      "body": "{\"query\":\"{\\n  pools (where : {token0: \\\""+tokenAddress+"\\\"}) {\\n    id\\n    totalValueLockedUSD\\n    token0 {\\n      id\\n    }\\n    token1 {\\n      id\\n    }\\n  }\\n}\\n\",\"variables\":null}",
+      "method": "POST"
+    });
+        let response = await data.json();
+        return response['data']['pools'];
+    }
 
     let promiseArray = [
         fetch(`https://coinvise-prod.herokuapp.com/token?userAddress=${address}&production=true`).then(async (data)=>{return data.json()}),
         fetch(`https://www.coinvise.co/api/nft?chain=137&address=${address}`).then(async (data)=>{return data.json()}),
-        fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()})
+        fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}),
     ];
     let data = await Promise.allSettled(promiseArray);
+
+    let promiseArray2 =[];
+    if (data[0]?.value?.length > 0) {
+        for (let index = 0; index < data[0]?.value.length; index++) {
+            const tokenData = data[0]?.value[index];
+            promiseArray2.push(getPoolData(tokenData?.address.toLowerCase()))
+        }
+    }
+
+    let totalPoolCount = 0;
+    let totalPoolTvl = 0;
+
+    let resp = await Promise.allSettled(promiseArray2);
+
+    for (let index = 0; index < resp[0]?.value.length; index++) {
+        totalPoolCount += 1
+        totalPoolTvl += parseFloat(resp[0].value[index].totalValueLockedUSD)
+    }
 
     let totalCountSold = 0;
     let totalAmountSold = 0;
@@ -178,6 +212,8 @@ async function getCoinviseData(address = ""){
     return {
         tokensCreated: data[0]?.value?.length,
         nftsCreated: data[1]?.value?.nfts.length,
+        totalPoolCount,
+        totalPoolTvl,
         totalCountSold,
         totalAmountSold
     };
@@ -549,7 +585,9 @@ async function calculateScore(address) {
             'tokensCreated': results[17]?.value?.tokensCreated,
             'nftsCreated': results[17]?.value?.nftsCreated,
             'totalCountSold': results[17]?.value?.totalCountSold,
-            'totalAmountSold': results[17]?.value?.totalAmountSold
+            'totalAmountSold': results[17]?.value?.totalAmountSold,
+            'totalPoolTvl': results[17]?.value?.totalPoolTvl,
+            'totalPoolCount': results[17]?.value?.totalPoolCount
         }
     };
 
@@ -574,7 +612,7 @@ async function calculateScore(address) {
     if(Boolean(results[6].value) === true){ // unstoppable domains
         score += 1;
     }
-    if(results[7].value.length > 0){ // uniswap sybil
+    if(results[7].value?.length > 0){ // uniswap sybil
         score += 10;
     }
     if( Boolean(results[8].value?.totalDaos) === true && parseInt(results[8].value.totalDaos)> 0){ // deepdao
@@ -586,6 +624,9 @@ async function calculateScore(address) {
     if(results[16].value === true){ // mirror
         score += 10;
     }
+
+    // Coinvise
+    score +=  (results[17]?.value?.tokensCreated**0.5 + results[17]?.value?.nftsCreated**0.5 + results[17]?.value?.totalCountSold + results[17]?.value?.totalCountSold);
 
     return {score, ...retData};
 }

@@ -86,7 +86,9 @@ async function calculateScore(address) {
             'tokensCreated': results[17]?.value?.tokensCreated,
             'nftsCreated': results[17]?.value?.nftsCreated,
             'totalCountSold': results[17]?.value?.totalCountSold,
-            'totalAmountSold': results[17]?.value?.totalAmountSold
+            'totalAmountSold': results[17]?.value?.totalAmountSold,
+            'totalPoolTvl': results[17]?.value?.totalPoolTvl,
+            'totalPoolCount': results[17]?.value?.totalPoolCount
         }
     };
 
@@ -123,6 +125,9 @@ async function calculateScore(address) {
     if(results[16].value === true){ // mirror
         score += 10;
     }
+
+    // Coinvise
+    score +=  (results[17]?.value?.tokensCreated**0.5 + results[17]?.value?.nftsCreated**0.5 + results[17]?.value?.totalCountSold + results[17]?.value?.totalCountSold);
 
     return {score, ...retData};
 }
