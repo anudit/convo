@@ -723,7 +723,19 @@ const cacheTrustScoresManual = async (addresses = []) => {
     return docs;
 }
 
-// cacheTrustScoresManual([""]).then(()=>{
+// let addrs = []
+
+// async function cm(){
+//     for (let index = 0; index < addrs.length; index++) {
+//         const add = addrs[index];
+//         await cacheTrustScoresManual([add]);
+//         console.log(`Done ${index+1}/${addrs.length}`)
+//     }
+// }
+
+// cm();
+
+// cacheTrustScoresManual(["0x0090720FeD7Fed66eD658118b7B3BB0189D3A495"]).then(()=>{
 //     console.log("✅ Cached all trust Scores");
 // });
 
