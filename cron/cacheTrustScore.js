@@ -4,7 +4,6 @@ const { Client, PrivateKey, ThreadID, Where } = require('@textile/hub');
 const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
 
-const CHUNK_SIZE = 4;
 let DEBUG = false;
 
 let erroredAddresses = [];
@@ -24,19 +23,7 @@ const getClient = async () =>{
     return client;
 }
 
-const chunkArray = (arr, chunk_size) => {
-    let index = 0;
-    let arrayLength = arr.length;
-    let tempArray = [];
-
-    for (index = 0; index < arrayLength; index += chunk_size) {
-        tempArray.push(arr.slice(index, index+chunk_size));
-    }
-
-    return tempArray;
-}
-
-const getChunkedAddresses = async () =>{
+const getAddresses = async () =>{
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
     let snapshot_comments = await threadClient.find(threadId, 'comments', {});
@@ -50,8 +37,7 @@ const getChunkedAddresses = async () =>{
         return e._id;
     })
     arr = arr.concat(arr2)
-
-    return chunkArray(Array.from(new Set(arr)), CHUNK_SIZE);
+    return Array.from(new Set(arr));
 }
 
 const fetcher = async (url, method="GET", bodyData = {}, ISDEBUG = false) => {
@@ -147,7 +133,6 @@ async function getMirrorData(address = ""){
     let jsonData = await data.json();
     return jsonData['data']['addressInfo']['hasOnboarded'];
 }
-
 
 async function getCoinviseData(address = ""){
 
@@ -641,121 +626,26 @@ const getTrustScore = async (address) => {
     }
 }
 
-const getTrustScores = async () => {
-
-    let trustScoreDb = {};
-    let chunkedAddresses = await getChunkedAddresses();
-    // let chunkedAddresses = await validateSchema();
-    for (let index = 0; index < chunkedAddresses.length; index++) {
-        let promiseArray = [];
-        for (let i = 0; i< chunkedAddresses[index].length; i++) {
-            promiseArray.push(getTrustScore(chunkedAddresses[index][i]));
-        }
-        let scores = await Promise.allSettled(promiseArray);
-        await sleep(300);
-        console.log(`🟢 Cached Chunk#${index}`);
-        for (let i = 0; i< chunkedAddresses[index].length; i++) {
-            trustScoreDb[chunkedAddresses[index][i]] = scores[i].value;
-        }
-    }
-
-    console.log(`⚠️ ErroredList ${erroredAddresses.length}`);
-    let promiseArray = [];
-    for (let index = 0; index < erroredAddresses.length; index++) {
-        promiseArray.push(getTrustScore(erroredAddresses[index]));
-    }
-    erroredAddresses = [];
-    let scores = await Promise.allSettled(promiseArray);
-    await sleep(300);
-    for (let i = 0; i < erroredAddresses.length; i++) {
-        try {
-            trustScoreDb[erroredAddresses[i]] = scores[i].value;
-        } catch (error) {
-            continue;
-        }
-    }
-    console.log(`⚠️ ErroredList ${erroredAddresses.length}`);
-    console.log(`🟢 Cached Errored Chunks`);
-
-    return trustScoreDb;
-}
-
 const cacheTrustScores = async () => {
-    let trustScoreDb = await getTrustScores();
-    let adds = Object.keys(trustScoreDb);
-    let docs = [];
-    for (let index = 0; index < adds.length; index++) {
-        docs.push({
-            '_id': getAddress(adds[index]),
-            ...trustScoreDb[adds[index]],
-        })
-    }
 
-    const threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-    await threadClient.save(threadId, 'cachedTrustScores', docs);
-}
-
-const cacheTrustScoresManual = async (addresses = []) => {
-    DEBUG = true;
-    // let trustScoreDb = {};
+    let addresses = await getAddresses();
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
 
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
-        console.log(`🟢 Cached ${index}`);
         await threadClient.save(threadId, 'cachedTrustScores', [{
             '_id': getAddress(addresses[index]),
             ...data
         }]);
-        await sleep(300);
+        console.log(`🟢 Cached ${index}`);
     }
-
-    // let adds = Object.keys(trustScoreDb);
-    // let docs = [];
-    // for (let index = 0; index < adds.length; index++) {
-    //     if (Object.keys(trustScoreDb[adds[index]]).includes('score') === true){
-    //         docs.push({
-    //             '_id': getAddress(adds[index]),
-    //             ...trustScoreDb[adds[index]],
-    //         })
-    //     }
-    // }
-    // console.log(docs);
-    // return docs;
 }
-
-// async function cm(){
-
-//     let response = await fetch("https://coinvise-prod.herokuapp.com/user/all?limit=5000", {
-//         "headers": {
-//         "accept": "*/*",
-//         "content-type": "application/json",
-//         },
-//         "method": "GET"
-//     });
-//     let json = await response.json();
-//     let adds = json['users'].slice(0, 393).map((e)=>{
-//         return e.wallet_address;
-//     })
-
-//     await cacheTrustScoresManual(adds);
-
-// }
-
-// cm();
-
-
-
-// cacheTrustScores().then(()=>{
-//     console.log("✅ Cached all trust Scores");
-// });
 
 const validateSchema = async () =>{
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-    let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
+    const snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
 
     let arr = snapshot_cached.filter((e)=>{
         return Object.keys(e).includes('score') === false;
@@ -767,8 +657,35 @@ const validateSchema = async () =>{
 
     console.log('validateSchema', arr.length);
 
-    await cacheTrustScoresManual(arr);
 
+    arr = snapshot_cached.filter((e)=>{
+        return Object.keys(e?.coinvise).includes('tokensCreated') === false;
+    })
+
+    arr = arr.map((e)=>{
+        return e._id;
+    })
+
+    console.log('validateSchema2', arr.length);
 }
 
-validateSchema();
+const cacheTrustScoresManual = async (addresses = []) => {
+
+    const threadClient = await getClient();
+    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+
+    for (let index = 0; index < addresses.length; index++) {
+        let data = await getTrustScore(addresses[index]);
+        await threadClient.save(threadId, 'cachedTrustScores', [{
+            '_id': getAddress(addresses[index]),
+            ...data
+        }]);
+        console.log(`🟢 Cached ${index}`);
+    }
+}
+
+cacheTrustScores().then(()=>{
+    console.log("✅ Cached all trust Scores");
+});
+
+// validateSchema();
