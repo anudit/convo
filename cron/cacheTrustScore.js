@@ -642,10 +642,31 @@ const getTrustScore = async (address) => {
     }
 }
 
+
+const validateSchema = async () =>{
+    const threadClient = await getClient();
+    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
+
+    let arr = snapshot_cached.filter((e)=>{
+        return Object.keys(e).includes('score') === false;
+    })
+
+    arr = arr.map((e)=>{
+        return e._id;
+    })
+
+    console.log('validateSchema', arr.length);
+
+    return chunkArray(Array.from(new Set(arr)), CHUNK_SIZE);
+
+}
+
 const getTrustScores = async () => {
 
     let trustScoreDb = {};
-    let chunkedAddresses = await getChunkedAddresses();
+    // let chunkedAddresses = await getChunkedAddresses();
+    let chunkedAddresses = await validateSchema();
     for (let index = 0; index < chunkedAddresses.length; index++) {
         let promiseArray = [];
         for (let i = 0; i< chunkedAddresses[index].length; i++) {
@@ -723,14 +744,22 @@ const cacheTrustScoresManual = async (addresses = []) => {
     return docs;
 }
 
-// let addrs = []
-
 // async function cm(){
-//     for (let index = 0; index < addrs.length; index++) {
-//         const add = addrs[index];
-//         await cacheTrustScoresManual([add]);
-//         console.log(`Done ${index+1}/${addrs.length}`)
-//     }
+
+//     let response = await fetch("https://coinvise-prod.herokuapp.com/user/all?limit=5000", {
+//         "headers": {
+//         "accept": "*/*",
+//         "content-type": "application/json",
+//         },
+//         "method": "GET"
+//     });
+//     let json = await response.json();
+//     let adds = json['users'].slice(0, 393).map((e)=>{
+//         return e.wallet_address;
+//     })
+
+//     await cacheTrustScoresManual(adds);
+
 // }
 
 // cm();
