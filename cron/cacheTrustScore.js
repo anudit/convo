@@ -641,31 +641,11 @@ const getTrustScore = async (address) => {
     }
 }
 
-
-const validateSchema = async () =>{
-    const threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-    let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
-
-    let arr = snapshot_cached.filter((e)=>{
-        return Object.keys(e).includes('score') === false;
-    })
-
-    arr = arr.map((e)=>{
-        return e._id;
-    })
-
-    console.log('validateSchema', arr.length);
-
-    return chunkArray(Array.from(new Set(arr)), CHUNK_SIZE);
-
-}
-
 const getTrustScores = async () => {
 
     let trustScoreDb = {};
-    // let chunkedAddresses = await getChunkedAddresses();
-    let chunkedAddresses = await validateSchema();
+    let chunkedAddresses = await getChunkedAddresses();
+    // let chunkedAddresses = await validateSchema();
     for (let index = 0; index < chunkedAddresses.length; index++) {
         let promiseArray = [];
         for (let i = 0; i< chunkedAddresses[index].length; i++) {
@@ -718,29 +698,32 @@ const cacheTrustScores = async () => {
 
 const cacheTrustScoresManual = async (addresses = []) => {
     DEBUG = true;
-    let trustScoreDb = {};
+    // let trustScoreDb = {};
+    const threadClient = await getClient();
+    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
-        trustScoreDb[addresses[index]] = data;
         console.log(`🟢 Cached ${index}`);
-        await sleep(1000);
+        await threadClient.save(threadId, 'cachedTrustScores', [{
+            '_id': getAddress(addresses[index]),
+            ...data
+        }]);
+        await sleep(300);
     }
 
-    let adds = Object.keys(trustScoreDb);
-    let docs = [];
-    for (let index = 0; index < adds.length; index++) {
-        if (Object.keys(trustScoreDb[adds[index]]).includes('score') === true){
-            docs.push({
-                '_id': getAddress(adds[index]),
-                ...trustScoreDb[adds[index]],
-            })
-        }
-    }
-    console.log(docs);
-    // const threadClient = await getClient();
-    // const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-    // await threadClient.save(threadId, 'cachedTrustScores', docs);
-    return docs;
+    // let adds = Object.keys(trustScoreDb);
+    // let docs = [];
+    // for (let index = 0; index < adds.length; index++) {
+    //     if (Object.keys(trustScoreDb[adds[index]]).includes('score') === true){
+    //         docs.push({
+    //             '_id': getAddress(adds[index]),
+    //             ...trustScoreDb[adds[index]],
+    //         })
+    //     }
+    // }
+    // console.log(docs);
+    // return docs;
 }
 
 // async function cm(){
@@ -763,10 +746,29 @@ const cacheTrustScoresManual = async (addresses = []) => {
 
 // cm();
 
-// cacheTrustScoresManual(["0x037BF6A1E7b137f824f46313317e033ffECEb613"]).then(()=>{
+
+
+// cacheTrustScores().then(()=>{
 //     console.log("✅ Cached all trust Scores");
 // });
 
-cacheTrustScores().then(()=>{
-    console.log("✅ Cached all trust Scores");
-});
+const validateSchema = async () =>{
+    const threadClient = await getClient();
+    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
+
+    let arr = snapshot_cached.filter((e)=>{
+        return Object.keys(e).includes('score') === false;
+    })
+
+    arr = arr.map((e)=>{
+        return e._id;
+    })
+
+    console.log('validateSchema', arr.length);
+
+    await cacheTrustScoresManual(arr);
+
+}
+
+validateSchema();
