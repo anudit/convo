@@ -94,7 +94,7 @@ async function getSybil(address) {
 
 }
 
-async function checkPoH(address) {
+async function checkPoH(address, provider) {
 
     let pohAddress = "0xc5e9ddebb09cd64dfacab4011a0d5cedaf7c9bdb";
     let pohAbi = [{
@@ -119,7 +119,6 @@ async function checkPoH(address) {
         "type": "function"
     }];
 
-    let provider = new ethers.providers.InfuraProvider('mainnet','1e7969225b2f4eefb3ae792aabf1cc17');
     let pohContract = new ethers.Contract(pohAddress, pohAbi, provider);
     let result = await pohContract.isRegistered(address);
     return result;
@@ -498,7 +497,7 @@ async function calculateScore(address) {
     let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
 
     let promiseArray = [
-        checkPoH(address),
+        checkPoH(address, tp),
         fetcher(`https://app.brightid.org/node/v5/verifications/Convo/${address.toLowerCase()}`, "GET", {}),
         fetcher(`https://api.poap.xyz/actions/scan/${address}`, "GET", {}),
         tp.lookupAddress(address),
@@ -738,9 +737,9 @@ const cacheTrustScoresManual = async (addresses = []) => {
         }
     }
     console.log(docs);
-    const threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-    await threadClient.save(threadId, 'cachedTrustScores', docs);
+    // const threadClient = await getClient();
+    // const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    // await threadClient.save(threadId, 'cachedTrustScores', docs);
     return docs;
 }
 
@@ -764,7 +763,7 @@ const cacheTrustScoresManual = async (addresses = []) => {
 
 // cm();
 
-// cacheTrustScoresManual(["0x0090720FeD7Fed66eD658118b7B3BB0189D3A495"]).then(()=>{
+// cacheTrustScoresManual(["0x037BF6A1E7b137f824f46313317e033ffECEb613"]).then(()=>{
 //     console.log("✅ Cached all trust Scores");
 // });
 
