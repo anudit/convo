@@ -3,6 +3,9 @@ const fetch = require('node-fetch');
 const { Client, PrivateKey, ThreadID, Where } = require('@textile/hub');
 const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
+const cliProgress = require('cli-progress');
+
+
 
 let DEBUG = false;
 
@@ -629,6 +632,14 @@ const getTrustScore = async (address) => {
 const cacheTrustScores = async () => {
 
     let addresses = await getAddresses();
+    const b1 = new cliProgress.SingleBar({
+        format: 'Progress |' + '{bar}' + '| {percentage}% || {value}/{total} Chunks || Speed: {speed}',
+        barCompleteChar: '\u2588',
+        barIncompleteChar: '\u2591',
+        hideCursor: true
+    });
+    b1.start(addresses.length, 0, { speed: "N/A" });
+
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
 
@@ -638,8 +649,12 @@ const cacheTrustScores = async () => {
             '_id': getAddress(addresses[index]),
             ...data
         }]);
-        console.log(`🟢 Cached ${index}`);
+        b1.increment();
+        // console.log(`🟢 Cached ${index}`);
     }
+    b1.stop();
+    console.log(`⚠️ erroredAddresses ${erroredAddresses}`);
+
 }
 
 const validateSchema = async () =>{
