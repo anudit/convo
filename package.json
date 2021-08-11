@@ -8,7 +8,7 @@
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",
     "export": "next export",
-    "tunnel": "lt --port 8000 --subdomain convo",
+    "tunnel": "lt --port 3000 --subdomain convo",
     "sync": "node sync.js",
     "lint": "next lint"
   },
