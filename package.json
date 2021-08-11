@@ -8,7 +8,7 @@
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",
     "export": "next export",
-    "tunnel": "ngrok http 3000",
+    "tunnel": "lt --port 8000 --subdomain convo",
     "sync": "node sync.js",
     "lint": "next lint"
   },
@@ -32,7 +32,7 @@
     "@oceanprotocol/lib": "^0.17.1",
     "@portis/web3": "^4.0.5",
     "@textile/hub": "^6.2.0",
-    "@walletconnect/web3-provider": "^1.5.2",
+    "@walletconnect/web3-provider": "^1.5.4",
     "critters": "^0.0.10",
     "dids": "^2.4.0",
     "dotenv": "^10.0.0",
@@ -44,8 +44,9 @@
     "key-did-resolver": "^1.2.1",
     "next": "^11.0.1",
     "next-pwa": "^5.2.24",
-    "nft.storage": "^3.0.1",
+    "nft.storage": "^3.0.2",
     "node-fetch": "^2.6.1",
+    "node-telegram-bot-api": "^0.54.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-linkify": "^1.0.0-alpha",
@@ -54,7 +55,7 @@
     "swr": "^0.5.6",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.4",
-    "webpack": "^5.49.0"
+    "webpack": "^5.50.0"
   },
   "devDependencies": {
     "cli-progress": "^3.9.0",
