@@ -88,7 +88,9 @@ async function calculateScore(address) {
             'totalCountSold': results[17]?.value?.totalCountSold,
             'totalAmountSold': results[17]?.value?.totalAmountSold,
             'totalPoolTvl': results[17]?.value?.totalPoolTvl,
-            'totalPoolCount': results[17]?.value?.totalPoolCount
+            'totalPoolCount': results[17]?.value?.totalPoolCount,
+            'multisendCount': results[17]?.value?.multisendCount,
+            'airdropCount': results[17]?.value?.airdropCount
         }
     };
 
@@ -127,7 +129,7 @@ async function calculateScore(address) {
     }
 
     // Coinvise
-    score +=  (results[17]?.value?.tokensCreated**0.5 + results[17]?.value?.nftsCreated**0.5 + results[17]?.value?.totalCountSold + results[17]?.value?.totalCountSold);
+    score +=  (results[17]?.value?.tokensCreated**0.5 + results[17]?.value?.nftsCreated**0.5 + results[17]?.value?.totalCountSold + results[17]?.value?.totalPoolCount);
 
     return {score, ...retData};
 }

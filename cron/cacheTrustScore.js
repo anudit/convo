@@ -158,6 +158,7 @@ async function getCoinviseData(address = ""){
         fetch(`https://coinvise-prod.herokuapp.com/token?userAddress=${address}&production=true`).then(async (data)=>{return data.json()}),
         fetch(`https://www.coinvise.co/api/nft?chain=137&address=${address}`).then(async (data)=>{return data.json()}),
         fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}),
+        fetch(`https://coinvise-prod.herokuapp.com/sends?size=1000`).then(async (data)=>{return data.json()}),
     ];
     let data = await Promise.allSettled(promiseArray);
 
@@ -196,13 +197,28 @@ async function getCoinviseData(address = ""){
         }
     }
 
+    let multisendCount = 0;
+    let airdropCount = 0;
+
+    for (let index = 0; index < data[3]?.value?.data?.length; index++) {
+        const item = data[3]?.value?.data[index];
+        if (item?.type === 'multisend' && item?.senderAddr === address) {
+            multisendCount += 1;
+        }
+        else if (item?.type === 'airdrop' && item?.user_addr === address) {
+            airdropCount += 1;
+        }
+    }
+
     return {
         tokensCreated: data[0]?.value?.length,
         nftsCreated: data[1]?.value?.nfts.length,
         totalPoolCount,
         totalPoolTvl,
         totalCountSold,
-        totalAmountSold
+        totalAmountSold,
+        multisendCount,
+        airdropCount
     };
 }
 
@@ -574,7 +590,9 @@ async function calculateScore(address) {
             'totalCountSold': results[17]?.value?.totalCountSold,
             'totalAmountSold': results[17]?.value?.totalAmountSold,
             'totalPoolTvl': results[17]?.value?.totalPoolTvl,
-            'totalPoolCount': results[17]?.value?.totalPoolCount
+            'totalPoolCount': results[17]?.value?.totalPoolCount,
+            'multisendCount': results[17]?.value?.multisendCount,
+            'airdropCount': results[17]?.value?.airdropCount
         }
     };
 
@@ -613,7 +631,7 @@ async function calculateScore(address) {
     }
 
     // Coinvise
-    score +=  (results[17]?.value?.tokensCreated**0.5 + results[17]?.value?.nftsCreated**0.5 + results[17]?.value?.totalCountSold + results[17]?.value?.totalCountSold);
+    score +=  (results[17]?.value?.tokensCreated**0.5 + results[17]?.value?.nftsCreated**0.5 + results[17]?.value?.totalCountSold + results[17]?.value?.totalPoolCount);
 
     return {score, ...retData};
 }
