@@ -4,7 +4,7 @@ import { isAddress, verifyMessage } from 'ethers/lib/utils';
 export default async (req, res) => {
 
   if (Object.keys(req.query).includes('apikey') === false || req.query.apikey !== 'CONVO' ){
-    res.status(401).json({
+    return res.status(401).json({
       'success':false,
       'error': 'Invalid API key, please refer to the integration docs at https://docs.theconvo.space/ to see how to get and use a new API key.'
     });
@@ -21,7 +21,7 @@ export default async (req, res) => {
       let currentTimestamp = Date.now();
 
       if (currentTimestamp - req.body.timestamp > 24*60*60*1000){ // stale signature request
-        res.status(400).json({
+        return res.status(400).json({
           'success':false,
           'message': 'Request timestamp too old.'
         });
@@ -38,21 +38,21 @@ export default async (req, res) => {
             { expiresIn: "1d" }
         );
 
-        res.status(200).json({
+        return res.status(200).json({
             'success': true,
             'message': token
         });
 
       }
       else {
-        res.status(400).json({
+        return res.status(400).json({
           'success':false,
           'message': "Recovered address from signature doesn't match signerAddress"
         });
       }
     }
     else {
-      res.status(400).json({
+      return res.status(400).json({
           'success':false,
           'message': 'signerAddress or signature or timestamp is missing/invalid.'
       });
@@ -61,7 +61,7 @@ export default async (req, res) => {
 
   } catch (error) {
 
-    res.status(500).json({
+    return res.status(500).json({
       'success': false,
       'message': error.toString()
     });

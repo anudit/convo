@@ -4,7 +4,7 @@ import { isAddress } from 'ethers/lib/utils'
 export default async (req, res) => {
 
     if (Object.keys(req.query).includes('apikey') === false || req.query.apikey !== 'CONVO' ){
-        res.status(401).json({
+        return res.status(401).json({
           'success': false,
           'error': 'Invalid API key, please refer to the integration docs at https://docs.theconvo.space/ to see how to get and use a new API key.'
         });
@@ -16,7 +16,7 @@ export default async (req, res) => {
 
             jwt.verify(req.body.token, process.env.JWT_SECRET, function(err, decoded) {
                 if (err) {
-                    res.status(400).json({
+                    return res.status(400).json({
                         'success': false,
                         'message': err.toString()
                     });
@@ -25,13 +25,14 @@ export default async (req, res) => {
                     let {user, exp} = decoded;
                     let now = Math.floor(Date.now()/1000);
                     if (req.body.signerAddress === user && now < exp) {
-                        res.status(200).json({
+
+                        return res.status(200).json({
                             'success': true,
                             'message': 'Valid Auth Token'
                         });
                     }
                     else {
-                        res.status(400).json({
+                        return res.status(400).json({
                             'success': false,
                             'message': 'Invalid Auth Token'
                         });
@@ -41,7 +42,7 @@ export default async (req, res) => {
 
         }
         else {
-            res.status(400).json({
+            return res.status(400).json({
                 'success':false,
                 'message': 'signerAddress or token is missing/invalid.'
             });
@@ -50,7 +51,7 @@ export default async (req, res) => {
 
     } catch (error) {
 
-        res.status(500).json({
+        return res.status(500).json({
             'success': false,
             'message': error.toString()
         });

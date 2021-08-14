@@ -3,7 +3,7 @@ import { getTrustScores } from "@/lib/thread-db";
 export default async (req, res) => {
 
   if (Object.keys(req.query).includes('apikey') === false || req.query.apikey !== 'CONVO' ){
-    res.status(401).json({
+    return res.status(401).json({
       'success':false,
       'error': 'Invalid API key, please refer to the integration docs at https://docs.theconvo.space/ to see how to get and use a new API key.'
     });
@@ -28,9 +28,9 @@ export default async (req, res) => {
       scoreData = scoreData.slice(0, limit);
     }
 
-    res.status(200).json(scoreData);
+    return res.status(200).json(scoreData);
 
   } catch (error) {
-    res.status(500).json({ 'success': false, error });
+    return res.status(500).json({ 'success': false, error });
   }
 }
