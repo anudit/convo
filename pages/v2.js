@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import Head from 'next/head';
 import Image from 'next/image';
 import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Button, Box, UnorderedList, ListItem, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
-import { ArrowForwardIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 
-import { DataIcon, DevfolioIcon, JoinIcon, SparklesIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon, DiscordIcon, CoinviseIcon, DecentralandIcon } from '@/public/icons';
+import { DataIcon, DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon, DiscordIcon, CoinviseIcon, DecentralandIcon } from '@/public/icons';
 import { CustomButton } from '@/components/CustomButtons';
 import Footer from "@/components/Footer";
 import Card from '@/components/Card';
@@ -80,6 +80,7 @@ const Home = () => {
       </Head>
 
       <Flex w="100%"
+        // background={useColorModeValue('linear-gradient(0deg, #7d596f 0%, #333544 50%, #3e4f66 100%)', 'linear-gradient(0deg, #000e42 0%, #1d1260 50%, #670887 100%)')}
         backgroundImage={useColorModeValue('url(/images/v2/lightbg.png)', 'url(/images/v2/darkbg.png)')}
         backgroundSize="cover"
         backgroundAttachment="fixed"
