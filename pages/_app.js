@@ -25,21 +25,21 @@ const GlobalStyle = ({ children }) => {
             font-style: normal;
             font-weight: 100;
             font-display: swap;
-            src: url('/fonts/GTWalsheimPro-Regular.woff2') format('woff2');
+            src: url('/fonts/Montserrat-Regular.woff2') format('woff2');
           }
           @font-face {
             font-family: 'GT Walsheim';
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url('/fonts/GTWalsheimPro-Medium.woff2') format('woff2');
+            src: url('/fonts/Montserrat-Medium.woff2') format('woff2');
           }
           @font-face {
             font-family: 'GT Walsheim';
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url('/fonts/GTWalsheimPro-Bold.woff2') format('woff2');
+            src: url('/fonts/Montserrat-Bold.woff2') format('woff2');
           }
           body {
             font-family: "GT Walsheim", "Segoe UI" !important;
