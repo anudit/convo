@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import Card from '@/components/Card';
 import NavBar from '@/components/NavbarV2';
 import { MakeOwnCodeBlock } from "@/components/CodeBlock";
+import Scene from "@/components/Scene"
 
 const Home = () => {
 
@@ -230,9 +231,11 @@ const Home = () => {
             wrap="no-wrap"
             px={{base: 0, md:6}}
             mb={16}
-            minH="inherit"
+            h={{base:"50vh", md:"70vh"}}
+            w={{ base: "44%"}}
           >
-            <Image src="/images/v2/anim.gif" width="600px" height="600px" alt="animation" p={2}/>
+            <Scene />
+            {/* <Image src="/images/v2/anim.gif" width="600px" height="600px" alt="animation" p={2}/> */}
           </Flex>
 
         </Flex>
