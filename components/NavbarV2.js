@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from 'next/link';
-import { Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue, Box, Image } from "@chakra-ui/react";
-import { CloseIcon,HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue, Box, Image, Text } from "@chakra-ui/react";
+import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,32 +36,31 @@ const NavBar = () => {
         </Box>
         <Box
           display={{ base: isOpen ? "block" : "none", md: "block" }}
-          flexBasis={{ base: "100%", md: "auto" }}
           >
           <Stack
-            spacing={32}
+            spacing={{base:2, md:32}}
             align="center"
             justifyContent="space-between"
-            direction={["row", "row", "row", "row"]}
+            direction={{base:"column",md: "row"}}
             pt={[4, 4, 0, 0]}
             color="whiteAlpha.800"
             textShadow="2px 2px 16px #00000091"
-            fontWeight="800"
+            fontWeight="200"
             fontSize="20px"
             w="400px"
             ml={{base:"0", md:"-200px"}}
             textTransform="uppercase"
           >
-            <Link href="/explore" style={{textDecoration: 'inherit'}} _hover={{
-              color: useColorModeValue("black", "white"),
-            }}>
-              Explore
-            </Link>
             <Link href="/dashboard" style={{textDecoration: 'inherit'}} _hover={{
               color: useColorModeValue("black", "white"),
             }}>
                 Dashboard
             </Link>
+
+            <Text fontWeight="800" fontSize="30px" display={{base:"none", md:"inline"}}>
+              Convo
+            </Text>
+
             <Link rel="noreferrer" target="_blank" href="https://docs.theconvo.space" aria-label="Docs"
               style={{textDecoration: 'inherit'}}
               _hover={{

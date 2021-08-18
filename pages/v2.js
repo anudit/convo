@@ -120,24 +120,20 @@ const Home = () => {
             >
 
               <Heading
-                fontSize={{ base: "2rem", sm: "4rem", md: "6rem" }}
-                as="h1" fontWeight="700" align="center"
-                color='whiteAlpha.800' textShadow="2px 2px 16px #00000091"
-              >
-                CONVO
-              </Heading>
-
-              <br/><br/>
-
-              <Heading
-                fontSize={{ base: "2rem", sm: "2.5rem", md: "3rem" }}
+                fontSize={{ base: "2rem", sm: "3rem", md: "4rem" }}
                 as="h1" fontWeight="400" align="center"
                 mb={5}
-                color='whiteAlpha.800' textShadow="2px 2px 16px #00000091"
+                color='whiteAlpha.800' textShadow="2px 2px 30px #00000091"
               >
                 The Decentralized
                 <br/>
-                <b>Conversation Layer</b>
+                <Text
+                  bgClip="text"
+                  bgGradient="linear-gradient(160deg, #375fbb 0%, #e8a7b6 100%)"
+                  fontWeight="600"
+                  display="inline-flex"
+                  fontSize={{ base: "2rem", sm: "3.5rem", md: "5rem" }}
+                >Conversation Layer</Text>
                 <br/>
                 of Internet
               </Heading>
@@ -160,6 +156,7 @@ const Home = () => {
             </Flex>
 
           </Flex>
+
           <Flex
             align="center"
             display={{base:"none",md:"flex"}}
@@ -171,8 +168,9 @@ const Home = () => {
             h={{base:"50vh", md:"70vh"}}
             w={{ base: "44%"}}
           >
-            <Scene />
-            {/* <Image src="/images/v2/anim.gif" width="600px" height="600px" alt="animation" p={2}/> */}
+
+              <Scene />
+
           </Flex>
 
         </Flex>
@@ -203,7 +201,7 @@ const Home = () => {
             as="h1"
             fontSize={{base:"30px", md:"50px"}}
             fontWeight="300"
-            color="gray.400"
+            color={useColorModeValue("whiteAlpha.700","gray.400")}
             lineHeight="none"
             letterSpacing="tight"
             textAlign="center"
@@ -213,7 +211,9 @@ const Home = () => {
               Social Layer to
             <Flex
               display="inline-flex"
-              color="#2065ff"
+              bgClip="text"
+              bgGradient="linear-gradient(160deg, #375fbb 0%, #e8a7b6 100%)"
+              fontWeight="800"
               mx={2}
               className="typewrite" data-period="1000" data-type='[
                   "NFTs,",
@@ -311,7 +311,7 @@ const Home = () => {
 
                         <Box
                           w={{base:"100%", md:"70%"}}
-                          bg={colorMode === "light" ? "white" : "gray.800"}
+                          bg={useColorModeValue("white","gray.800")}
                           mt={{base:0, md:-20}}
                           shadow="lg"
                           rounded="lg"
@@ -326,7 +326,7 @@ const Home = () => {
                             backdropFilter="blur(100px) opacity(1)"
                           >
                             <Text fontSize="xl" align="center" lineHeight="20px">
-                            Coinvise gives creators & communities economic freedom. It&apos;s the most simple & trusted platform to mint social tokens, manage & build incentives around them.
+                              Coinvise gives creators & communities economic freedom. It&apos;s the most simple & trusted platform to mint social tokens, manage & build incentives around them.
                             </Text>
                           </Flex>
                         </Box>
@@ -356,7 +356,7 @@ const Home = () => {
 
                         <Box
                           w={{base:"100%", md:"60%"}}
-                          bg={colorMode === "light" ? "white" : "gray.800"}
+                          bg="white"
                           mt={{base:0, md:-20}}
                           shadow="lg"
                           rounded="lg"
@@ -369,6 +369,7 @@ const Home = () => {
                             py={2}
                             px={3}
                             backdropFilter="blur(100px) opacity(1)"
+                            color="white"
                           >
                             <Text fontSize="xl" align="center">The Social Platform Built for The Creator Economy</Text>
                           </Flex>
@@ -410,6 +411,7 @@ const Home = () => {
                             py={2}
                             px={3}
                             backdropFilter="blur(100px) opacity(1)"
+                            color="white"
                           >
                             <Text fontSize="xl" align="center">Make Conversations and Interactions accessible Across Platforms like Decentraland</Text>
                           </Flex>
@@ -461,7 +463,7 @@ const Home = () => {
             letterSpacing="tight"
             textAlign="center"
             bgClip="text"
-            bgGradient="linear-gradient(160deg, #0048e9 0%, #39ffe9 100%)"
+            bgGradient="linear-gradient(160deg, #7796de 0%, #fbcbd6 100%)"
             paddingBottom={6}
           >
             Conversations, <wbr />Simplified.
@@ -542,8 +544,7 @@ const Home = () => {
             letterSpacing="tight"
             textAlign="center"
             bgClip="text"
-            bgGradient="linear(to-r, green.400,purple.500)"
-            animation="hue 10s infinite linear"
+            bgGradient="linear-gradient(160deg, #375fbb 0%, #e8a7b6 100%)"
             py={12}
           >
             Try it Out.
