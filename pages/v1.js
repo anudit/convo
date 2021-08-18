@@ -2,16 +2,14 @@ import React, { useEffect } from "react";
 import Head from 'next/head';
 import Image from 'next/image';
 import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Button, Box, UnorderedList, ListItem, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { ArrowForwardIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 import { DataIcon, DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon, DiscordIcon, CoinviseIcon, DecentralandIcon } from '@/public/icons';
 import { CustomButton } from '@/components/CustomButtons';
 import Footer from "@/components/Footer";
 import Card from '@/components/Card';
-import NavBar from '@/components/NavbarV2';
+import NavBar from '@/components/NavbarNoAuth';
 import { MakeOwnCodeBlock } from "@/components/CodeBlock";
-import Scene from "@/components/Models/Scene"
-import Scene2 from "@/components/Models/Scene2"
 
 const Home = () => {
 
@@ -80,8 +78,7 @@ const Home = () => {
       </Head>
 
       <Flex w="100%"
-        // background={useColorModeValue('linear-gradient(0deg, #7d596f 0%, #333544 50%, #3e4f66 100%)', 'linear-gradient(0deg, #000e42 0%, #1d1260 50%, #670887 100%)')}
-        backgroundImage={useColorModeValue('url(/images/v2/lightbg.png)', 'url(/images/v2/darkbg.png)')}
+        background={useColorModeValue("radial-gradient(at top right,white,white,white)", "linear-gradient(180deg, #151519, black 70%)")}
         backgroundSize="cover"
         backgroundAttachment="fixed"
         backgroundRepeat="no-repeat"
@@ -93,24 +90,24 @@ const Home = () => {
         <Flex
           // backgroundImage="radial-gradient( 98.44% 95.14% at -0.8% 0%, #f563ff 0%, rgba(8, 255, 255, 0.5) 10.76%, rgba(15, 255, 231, 0.35) 30%, rgba(255, 120, 147, 0.1) 55%, rgba(0, 5, 15, 0) 86% ),linear-gradient(#000, #000)"
           // backgroundSize="cover"
-          direction="row"
+          direction="column"
           align="center"
           m="0 auto"
-          h={{base:"60vh", md:"70vh"}}
-          w={{ base: "90%"}}
-          mt={{base:"20vh", md:"15vh"}}
+          h={{base:"110vh", md:"90vh"}}
+          w={{ base: "95%"}}
+          mt="10vh"
           zIndex="1"
-          justifyContent="space-around"
+          justifyContent="space-evenly"
         >
 
           <Flex
             align="center"
-            justify={{ base: "center", md: "space-around", xl: "space-around" }}
+            justify={{ base: "center", md: "space-around", xl: "space-evenly" }}
             direction={{ base: "column-reverse", sm: "column-reverse", md: "column" }}
             wrap="no-wrap"
             px={{base: 0, md:6}}
             mb={16}
-            minH="inherit"
+            minH="90vh"
           >
 
             <Flex
@@ -119,26 +116,126 @@ const Home = () => {
               align="center"
             >
 
+              <Flex align="center"
+              style={{
+                borderRadius:'30px',
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                paddingRight: "15px",
+                paddingLeft: "15px"
+              }}
+              fontSize="large"
+              className="gradientShadow"
+              backgroundColor={useColorModeValue('white','black')}
+              mb={2}
+              >
+                <Text fontWeight={400} align="center" lineHeight="20px">
+                  Early-access is now live ✨
+                </Text>
+              </Flex>
+
               <Heading
-                fontSize={{ base: "2rem", sm: "3rem", md: "4rem" }}
-                as="h1" fontWeight="400" align="center"
-                mb={5}
-                color='whiteAlpha.800' textShadow="2px 2px 30px #00000091"
+                fontSize={{ base: "2rem", sm: "2.5rem", md: "4rem", lg: "5rem", xl: "5rem" }}
+                as="h1" fontWeight="700" align="center"
+                color={useColorModeValue('blackAlpha.800','whiteAlpha.800')}
               >
                 The Decentralized
-                <br/>
-                <Text
+              </Heading>
+
+              <Flex direction={{ base: "column", md: "row"}}>
+                <Heading
+                  my="-15px"
+                  as="h1"
+                  fontSize={{ base: "3.5rem", sm: "4.8rem", md: "5.3rem", lg: "6.5rem", xl: "8rem" }}
+                  fontWeight="800"
+                  letterSpacing="tight"
                   bgClip="text"
-                  bgGradient="linear-gradient(160deg, #375fbb 0%, #e8a7b6 100%)"
-                  fontWeight="600"
-                  display="inline-flex"
-                  fontSize={{ base: "2rem", sm: "3.5rem", md: "5rem" }}
-                >Conversation Layer</Text>
-                <br/>
+                  bgGradient="linear-gradient(160deg, #0048e9 0%, #39ffe9 100%)"
+                  align="center"
+                  pb={2}
+                  pr={{ base: 0, md: 5}}
+                  // backgroundImage="url('/images/gradient.webp')"
+                  backgroundSize="cover"
+                >
+                  Conversation
+                </Heading>
+
+                <Heading
+                  my="-15px"
+                  as="h1"
+                  fontSize={{ base: "3.5rem", sm: "4.8rem", md: "5.3rem", lg: "6.5rem", xl: "8rem" }}
+                  fontWeight="800"
+                  letterSpacing="tight"
+                  bgClip="text"
+                  bgGradient="linear-gradient(160deg, #39ffe9 0%, #0048e9 100%)"
+                  align="center"
+                  pb={2}
+                  // backgroundImage="url('/images/gradient.webp')"
+                  backgroundSize="cover"
+                >
+                  Layer
+                </Heading>
+              </Flex>
+
+              <Heading
+                fontSize={{ base: "2rem", sm: "3rem", md: "4rem", lg: "5rem", xl: "5rem" }}
+                as="h1" fontWeight="700" align="center"
+                color={useColorModeValue('blackAlpha.800','whiteAlpha.800')}
+              >
                 of Internet
               </Heading>
+
+              <br/>
+
+              <Heading
+                as="h1"
+                fontSize={{base:"x-large", md:"xx-large"}}
+                fontWeight="100"
+                color={useColorModeValue("blackAlpha.800", "gray.400")}
+                lineHeight="none"
+                letterSpacing="tight"
+                textAlign="center"
+              >
+                Convo offers all the Tooling and Infrastructure to build
+                <br/>
+                 Social Platforms on
+                <Flex
+                  display="inline-flex"
+                  color="#2065ff"
+                  mx={2}
+                  className="typewrite" data-period="1000" data-type='[
+                      "NFTs,",
+                      "proposals,",
+                      "wallets,",
+                      "blogs,",
+                      "NFTs,",
+                      "websites,",
+                      "mobile apps,"
+                    ]'
+                  >
+                </Flex>
+                powered by Web3.
+              </Heading>
+
+              <br/>
+
+              <Flex direction={{ base: "column", md: "row"}} alignItems="center">
+                <Link href="/explore" style={{textDecoration: 'inherit'}} mr={{ base: 0, md: 2}}>
+                  <CustomButton
+                    py={6}
+                    px={8}
+                    fontSize="larger"
+                    aria-label="Explore Convo"
+                    color="white"
+                    backgroundColor={useColorModeValue("#1f30a7","#1f30a7")}
+                  >
+                    Explore Convo <ArrowForwardIcon ml={2}/>
+                  </CustomButton>
+                </Link>
+              </Flex>
               <br/><br/>
-              <Text py={2} fontWeight={400} color={"gray.400"}>
+
+              <Text py={2} fontWeight={400} color={useColorModeValue("blackAlpha.800", "gray.400")}>
                 TRUSTED BY THE INDUSTRY
               </Text>
               <Flex direction={{base:"column",md:"row"}} mt={2} w="100%" justifyContent="center" align="center">
@@ -152,294 +249,213 @@ const Home = () => {
                   <DevfolioIcon width="200px" height="50px"/>
                 </Link>
               </Flex>
-
             </Flex>
-
           </Flex>
-
-          <Flex
-            align="center"
-            display={{base:"none",md:"flex"}}
-            justify={{ base: "center", md: "space-around", xl: "space-evenly" }}
-            direction="column"
-            wrap="no-wrap"
-            px={{base: 0, md:6}}
-            mb={16}
-            h={{base:"50vh", md:"70vh"}}
-            w={{ base: "44%"}}
-          >
-
-              <Scene />
-
-          </Flex>
-
-        </Flex>
-
-        <Flex direction={{ base: "column", md: "row"}} alignItems="center" textAlign="center" justifyContent="space-evenly" >
-
-          <Flex direction="row" w="100%" justifyContent="center">
-            <Link href="/explore" style={{textDecoration: 'inherit'}} mr={{ base: 0, md: 2}} >
-              <CustomButton
-                py={8}
-                px={8}
-                fontSize="30px"
-                aria-label="Explore Convo"
-                color="white"
-                backgroundColor={useColorModeValue("#7E869D","#78687B")}
-              >
-                Explore
-                <ArrowForwardIcon ml={2}/>
-              </CustomButton>
-            </Link>
-          </Flex>
-
-        </Flex>
-
-        <Flex direction={{ base: "column", md: "row"}} alignItems="center" textAlign="center" justifyContent="space-evenly" my={8} py={8}>
-
-          <Heading
-            as="h1"
-            fontSize={{base:"30px", md:"50px"}}
-            fontWeight="300"
-            color={useColorModeValue("whiteAlpha.700","gray.400")}
-            lineHeight="none"
-            letterSpacing="tight"
-            textAlign="center"
-          >
-            Convo offers all the Tooling and Infrastructure to add a
-            <br/>
-              Social Layer to
-            <Flex
-              display="inline-flex"
-              bgClip="text"
-              bgGradient="linear-gradient(160deg, #375fbb 0%, #e8a7b6 100%)"
-              fontWeight="800"
-              mx={2}
-              className="typewrite" data-period="1000" data-type='[
-                  "NFTs,",
-                  "proposals,",
-                  "wallets,",
-                  "blogs,",
-                  "NFTs,",
-                  "websites,",
-                  "mobile apps,"
-                ]'
-              >
-            </Flex>
-            supercharged by Web3.
-          </Heading>
-
         </Flex>
 
         <Flex
-          direction="row"
+          direction="column"
+          align="center"
           m="0 auto"
-          w={{ base: "96%"}}
+          w={{ base: "95%"}}
           minH="80vh"
           mt={{base:32, md:4}}
           justifyContent="center"
         >
 
-          <Flex
-            direction="column"
-            align="left"
-            mt={8}
-            w="38%"
-            justifyContent="center"
-            alignItems="center"
-            display={{base:"none",md:"flex"}}
+          <Heading
+            as="h1"
+            fontSize={{ base: "2rem", md: "2rem", lg: "3rem", xl: "6rem" }}
+            fontWeight="700"
+            color={useColorModeValue("black", "white")}
+            lineHeight="none"
+            letterSpacing="tight"
+            textAlign="center"
+            bgClip="text"
+            bgGradient="linear-gradient(160deg, #0048e9 0%, #39ffe9 100%)"
+            paddingBottom={6}
           >
-            <Scene2/>
-          </Flex>
+            Live Products using Convo
+          </Heading>
 
-          <Flex
-              direction="column"
+          <Tabs variant="soft-rounded" colorScheme={useColorModeValue("blackAlpha","whiteAlpha")} w="100%">
+            <Flex
+              direction={{base: "column", md: "row"}}
               align="left"
               mt={8}
-              w={{base:"100%", md:"58%"}}
+              w="100%"
               justifyContent="center"
               alignItems="center"
             >
 
-            <Heading
-              as="h1"
-              fontSize={{ base: "2rem", md: "2rem", lg: "3rem", xl: "3rem" }}
-              fontWeight="700"
-              lineHeight="none"
-              letterSpacing="tight"
-              textAlign="center"
-              color="white"
-              // bgClip="text"
-              // bgGradient="linear-gradient(160deg, #0048e9 0%, #39ffe9 100%)"
-              paddingBottom={6}
-            >
-              Organizations using Convo
-            </Heading>
-
-            <Tabs variant="soft-rounded" colorScheme={useColorModeValue("blackAlpha","whiteAlpha")} w="100%">
-              <Flex
-                direction="column"
-                align="left"
-                mt={8}
-                w="100%"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Flex direction="column" justifyContent="center" alignItems="center" w="100%">
-                  <TabPanels>
-                    <TabPanel display="flex" flexDirection="column" alignItems="center" height="400px">
-                      <Flex
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        mx="auto"
-                        m={1}
-                        w="100%"
-                        h="100%"
-                        cursor="pointer"
-                        as="a"
-                        href="https://coinvise.co/"
-                        target="_blank"
-                      >
-                        <Image
-                          src="/images/usingconvo/coinvise.webp"
-                          alt=""
-                          width="640px"
-                          height="360px"
-                          className="br-10"
-                        />
-
-                        <Box
-                          w={{base:"100%", md:"70%"}}
-                          bg={useColorModeValue("white","gray.800")}
-                          mt={{base:0, md:-20}}
-                          shadow="lg"
-                          rounded="lg"
-                          overflow="hidden"
-                        >
-                          <Flex
-                            alignItems="center"
-                            justifyContent="center"
-                            minH="100px"
-                            py={2}
-                            px={4}
-                            backdropFilter="blur(100px) opacity(1)"
-                          >
-                            <Text fontSize="xl" align="center" lineHeight="20px">
-                              Coinvise gives creators & communities economic freedom. It&apos;s the most simple & trusted platform to mint social tokens, manage & build incentives around them.
-                            </Text>
-                          </Flex>
-                        </Box>
-                      </Flex>
-                    </TabPanel>
-                    <TabPanel display="flex" flexDirection="column" alignItems="center">
-                      <Flex
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        mx="auto"
-                        m={1}
-                        w="100%"
-                        h="100%"
-                        cursor="pointer"
-                        as="a"
-                        href="https://huddln.io/"
-                        target="_blank"
-                      >
-                        <Image
-                          src="/images/usingconvo/huddlnposter.webp"
-                          alt=""
-                          width="700px"
-                          height="360px"
-                          className="br-10"
-                        />
-
-                        <Box
-                          w={{base:"100%", md:"60%"}}
-                          bg="white"
-                          mt={{base:0, md:-20}}
-                          shadow="lg"
-                          rounded="lg"
-                          overflow="hidden"
-                        >
-                          <Flex
-                            alignItems="center"
-                            justifyContent="center"
-                            minH="60px"
-                            py={2}
-                            px={3}
-                            backdropFilter="blur(100px) opacity(1)"
-                            color="white"
-                          >
-                            <Text fontSize="xl" align="center">The Social Platform Built for The Creator Economy</Text>
-                          </Flex>
-                        </Box>
-                      </Flex>
-
-                    </TabPanel>
-                    <TabPanel display="flex" flexDirection="column" alignItems="center">
-                    <Flex
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        mx="auto"
-                        m={1}
-                        w="100%"
-                        h="100%"
-                        cursor="pointer"
-                        as="a"
-                        href="https://dcl.theconvo.space?ENABLE_WEB3"
-                        target="_blank"
-                      >
-                        <video controls autoPlay loop width="700px" height="350px" className="br-10">
-                          <source src="https://docs.theconvo.space/ConvoxDecentraland.mp4" type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-
-                        <Box
-                          w={{base:"100%", md:"60%"}}
-                          bg={colorMode === "light" ? "white" : "gray.800"}
-                          mt={{base:0, md:-20}}
-                          shadow="lg"
-                          rounded="lg"
-                          overflow="hidden"
-                        >
-                          <Flex
-                            alignItems="center"
-                            justifyContent="center"
-                            minH="60px"
-                            py={2}
-                            px={3}
-                            backdropFilter="blur(100px) opacity(1)"
-                            color="white"
-                          >
-                            <Text fontSize="xl" align="center">Make Conversations and Interactions accessible Across Platforms like Decentraland</Text>
-                          </Flex>
-                        </Box>
-                      </Flex>
-                    </TabPanel>
-                  </TabPanels>
-                </Flex>
-
-                <Flex direction="column" justifyContent="center" alignItems="center" w="100%">
-                  <TabList display="flex" flexDirection={{base:"column", md:"row"}} w="100%">
-                    <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
-                      <CoinviseIcon boxSize={32}/>
-                    </Tab>
-                    <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
-                      <Image src="/images/usingconvo/huddln.webp" width="30px" height="30px" alt="Huddln" p={2}/>
-                      <Text fontSize="1xl" p={2} color="#fff">Huddln</Text>
-                    </Tab>
-                    <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
-                      <DecentralandIcon boxSize={8}/>
-                      <Text fontSize="1xl" p={2} color="#fff">Decentraland</Text>
-                    </Tab>
-                  </TabList>
-                </Flex>
+              <Flex direction="column" justifyContent="center" alignItems="center" w={{base:"90%", md:"20%"}}>
+                <TabList display="flex" flexDirection="column" w="100%">
+                  <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
+                    <CoinviseIcon boxSize={48}/>
+                  </Tab>
+                  <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
+                    <Image src="/images/usingconvo/huddln.webp" width="60px" height="60px" alt="Huddln" p={2}/>
+                    <Text fontSize="3xl" p={2}>Huddln</Text>
+                  </Tab>
+                  <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
+                    <DecentralandIcon boxSize={16}/>
+                    <Text fontSize="2xl" p={2}>Decentraland</Text>
+                  </Tab>
+                  <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
+                    <Text fontSize="2xl" p={2}>Use in your Project</Text>
+                  </Tab>
+                </TabList>
               </Flex>
-            </Tabs>
-          </Flex>
+              <Flex direction="column" justifyContent="center" alignItems="center" w={{base:"90%", md:"50%"}}>
+                <TabPanels>
+                  <TabPanel display="flex" flexDirection="column" alignItems="center" height="400px">
+                    <Flex
+                      direction="column"
+                      justifyContent="center"
+                      alignItems="center"
+                      mx="auto"
+                      m={1}
+                      w="100%"
+                      h="100%"
+                      cursor="pointer"
+                      as="a"
+                      href="https://coinvise.co/"
+                      target="_blank"
+                    >
+                      <Image
+                        src="/images/usingconvo/coinvise.webp"
+                        alt=""
+                        width="640px"
+                        height="360px"
+                        className="br-10"
+                      />
 
+                      <Box
+                        w={{base:"100%", md:"70%"}}
+                        bg={colorMode === "light" ? "white" : "gray.800"}
+                        mt={{base:0, md:-20}}
+                        shadow="lg"
+                        rounded="lg"
+                        overflow="hidden"
+                      >
+                        <Flex
+                          alignItems="center"
+                          justifyContent="center"
+                          minH="100px"
+                          py={2}
+                          px={4}
+                          backdropFilter="blur(100px) opacity(1)"
+                        >
+                          <Text fontSize="xl" align="center" lineHeight="20px">
+                          Coinvise gives creators & communities economic freedom. It&apos;s the most simple & trusted platform to mint social tokens, manage & build incentives around them.
+                          </Text>
+                        </Flex>
+                      </Box>
+                    </Flex>
+                  </TabPanel>
+                  <TabPanel display="flex" flexDirection="column" alignItems="center">
+                    <Flex
+                      direction="column"
+                      justifyContent="center"
+                      alignItems="center"
+                      mx="auto"
+                      m={1}
+                      w="100%"
+                      h="100%"
+                      cursor="pointer"
+                      as="a"
+                      href="https://huddln.io/"
+                      target="_blank"
+                    >
+                      <Image
+                        src="/images/usingconvo/huddlnposter.webp"
+                        alt=""
+                        width="700px"
+                        height="360px"
+                        className="br-10"
+                      />
+
+                      <Box
+                        w={{base:"100%", md:"60%"}}
+                        bg={colorMode === "light" ? "white" : "gray.800"}
+                        mt={{base:0, md:-20}}
+                        shadow="lg"
+                        rounded="lg"
+                        overflow="hidden"
+                      >
+                        <Flex
+                          alignItems="center"
+                          justifyContent="center"
+                          minH="60px"
+                          py={2}
+                          px={3}
+                          backdropFilter="blur(100px) opacity(1)"
+                        >
+                          <Text fontSize="xl" align="center">The Social Platform Built for The Creator Economy</Text>
+                        </Flex>
+                      </Box>
+                    </Flex>
+
+                  </TabPanel>
+                  <TabPanel display="flex" flexDirection="column" alignItems="center">
+                  <Flex
+                      direction="column"
+                      justifyContent="center"
+                      alignItems="center"
+                      mx="auto"
+                      m={1}
+                      w="100%"
+                      h="100%"
+                      cursor="pointer"
+                      as="a"
+                      href="https://dcl.theconvo.space?ENABLE_WEB3"
+                      target="_blank"
+                    >
+                      <video controls autoPlay loop width="700px" height="350px" className="br-10">
+                        <source src="https://docs.theconvo.space/ConvoxDecentraland.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+
+                      <Box
+                        w={{base:"100%", md:"60%"}}
+                        bg={colorMode === "light" ? "white" : "gray.800"}
+                        mt={{base:0, md:-20}}
+                        shadow="lg"
+                        rounded="lg"
+                        overflow="hidden"
+                      >
+                        <Flex
+                          alignItems="center"
+                          justifyContent="center"
+                          minH="60px"
+                          py={2}
+                          px={3}
+                          backdropFilter="blur(100px) opacity(1)"
+                        >
+                          <Text fontSize="xl" align="center">Make Conversations and Interactions accessible Across Platforms like Decentraland</Text>
+                        </Flex>
+                      </Box>
+                    </Flex>
+                  </TabPanel>
+                  <TabPanel display="flex" flexDirection="column" alignItems="center">
+                    <Flex
+                      w="90%" direction="column" px={4} py={2} borderRadius={2} backgroundColor={useColorModeValue("white", "#121212")} justifyContent="space-between" alignItems="left"
+                    >
+                      <Text fontSize="2xl">View Documentation and explore how to integrate Convo in your own Platform.</Text>
+                      <Button my={2} width="fit-content" as="a" href="https://docs.theconvo.space/" target="_blank">View Docs <ArrowRightIcon ml={4}/></Button>
+                    </Flex>
+                    <br/>
+                    <Flex
+                      w="90%" direction="column" px={4} py={2} borderRadius={2} backgroundColor={useColorModeValue("white", "#121212")} justifyContent="space-between" alignItems="left"
+                    >
+                      <Text fontSize="2xl">Explore the API Playground and test out Convo Right in your Browser.</Text>
+                      <Button my={2} width="fit-content" as="a" href="https://playground.theconvo.space/" target="_blank">Explore <ArrowRightIcon ml={4}/></Button>
+                    </Flex>
+                  </TabPanel>
+                </TabPanels>
+              </Flex>
+            </Flex>
+          </Tabs>
 
         </Flex>
 
@@ -463,7 +479,7 @@ const Home = () => {
             letterSpacing="tight"
             textAlign="center"
             bgClip="text"
-            bgGradient="linear-gradient(160deg, #7796de 0%, #fbcbd6 100%)"
+            bgGradient="linear-gradient(160deg, #0048e9 0%, #39ffe9 100%)"
             paddingBottom={6}
           >
             Conversations, <wbr />Simplified.
@@ -544,7 +560,8 @@ const Home = () => {
             letterSpacing="tight"
             textAlign="center"
             bgClip="text"
-            bgGradient="linear-gradient(160deg, #375fbb 0%, #e8a7b6 100%)"
+            bgGradient="linear(to-r, green.400,purple.500)"
+            animation="hue 10s infinite linear"
             py={12}
           >
             Try it Out.

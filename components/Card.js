@@ -14,12 +14,12 @@ const Card = (props) => {
       color={useColorModeValue("black", "white")}
       backgroundColor={useColorModeValue("white", "#121212")}
       borderWidth="3px"
-      borderColor={useColorModeValue("gray.200", "#0557e914")}
+      borderColor={useColorModeValue("gray.200", "#8705e914")}
       borderRadius="10px"
       align="center"
       className="grow"
       _hover={{
-        borderColor: useColorModeValue("blue.200", "#07f2ff85"),
+        borderColor: useColorModeValue("#c078f5b5", "#c078f5b5"),
         boxShadow: "0px 4px 20px rgba(0,151,251,0.25)"
       }}
     >
