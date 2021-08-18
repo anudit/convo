@@ -19,7 +19,7 @@ const Card = (props) => {
       align="center"
       className="grow"
       _hover={{
-        borderColor: useColorModeValue("#c078f5b5", "#c078f5b5"),
+        borderColor: useColorModeValue("#c078f5b5", "#7c81c6"),
         boxShadow: "0px 4px 20px rgba(0,151,251,0.25)"
       }}
     >
@@ -33,7 +33,7 @@ const Card = (props) => {
 
       <Text
         as="h2"
-        fontSize="3xl"
+        fontSize="2xl"
         fontWeight="700"
         color={useColorModeValue("black", "white")}
         align="center"

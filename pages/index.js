@@ -80,8 +80,8 @@ const Home = () => {
       </Head>
 
       <Flex w="100%"
-        // background={useColorModeValue('linear-gradient(0deg, #7d596f 0%, #333544 50%, #3e4f66 100%)', 'linear-gradient(0deg, #000e42 0%, #1d1260 50%, #670887 100%)')}
-        backgroundImage={useColorModeValue('url(/images/v2/lightbg.png)', 'url(/images/v2/darkbg.png)')}
+        background={useColorModeValue('linear-gradient(318deg, rgba(70,50,64,1) 0%, rgba(87,68,83,1) 26%, rgba(91,79,94,1) 45%, rgba(75,74,93,1) 79%, rgba(50,50,66,1) 100%)', 'linear-gradient(28deg, rgba(9,8,18,1) 0%, rgba(26,36,51,1) 31%, rgba(37,39,55,1) 51%, rgba(39,34,47,1) 68%, rgba(32,29,41,1) 82%)')}
+        // backgroundImage={useColorModeValue('url(/images/v2/lightbg.png)', 'url(/images/v2/darkbg.png)')}
         backgroundSize="cover"
         backgroundAttachment="fixed"
         backgroundRepeat="no-repeat"

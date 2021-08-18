@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import { isAddress } from 'ethers/lib/utils'
 
 export default async (req, res) => {
 
@@ -12,7 +11,7 @@ export default async (req, res) => {
 
     try {
 
-        if (Object.keys(req.body).includes('token') && Object.keys(req.body).includes('signerAddress') && isAddress(req.body?.signerAddress)){
+        if (Object.keys(req.body).includes('token') && Object.keys(req.body).includes('signerAddress')){
 
             jwt.verify(req.body.token, process.env.JWT_SECRET, function(err, decoded) {
                 if (err) {

@@ -5,21 +5,12 @@ import dynamic from 'next/dynamic';
 import { Tooltip } from "@chakra-ui/react";
 const Model = dynamic(() => import('./Model'));
 
-function Box() {
-  return (
-    <mesh>
-      <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" transparent opacity={0.5} />
-    </mesh>
-  )
-}
-
 export default function Scene() {
   return (
     <Tooltip label="Click and Drag" aria-label="Click and Drag">
       <Canvas gl={{ preserveDrawingBuffer: true }} shadows dpr={[1, 1.5]}>
         <ambientLight intensity={2} />
-        <Suspense fallback={<Box/>}>
+        <Suspense fallback={null}>
           <OrbitControls enablePan={false} enableZoom={false} minPolarAngle={Math.PI/2} maxPolarAngle={Math.PI/2}/>
           <Model />
         </Suspense>
