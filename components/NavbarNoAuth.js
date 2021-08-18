@@ -26,7 +26,7 @@ const NavBar = () => {
       borderBottomWidth="1px"
     >
 
-      <Link href="/" style={{textDecoration: 'inherit'}} fontWeight={400}>
+      <Link href="/" style={{textDecoration: 'inherit'}} fontWeight={400} passHref={true}>
         <Flex direction="row">
           <TheConvoSpaceIcon boxSize={7}/>
           <Text ml={3} as="h1" fontSize="larger">

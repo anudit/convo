@@ -118,7 +118,7 @@ const DashboardShell = ({title, active, children}) => {
                         }}
                         onClick={()=>{connectWallet('injected')}}
                     >
-                        <Flex px={4} py={2} marginTop="-40px" color={colorMode === 'light' ? "white": "black"} background={colorMode === 'light' ? "black": "white"} width="130px" marginLeft="120px" borderRadius="100px">
+                        <Flex fontSize="sm" px={4} py={2} marginTop="-40px" color={colorMode === 'light' ? "white": "black"} background={colorMode === 'light' ? "black": "white"} width="130px" marginLeft="120px" borderRadius="100px">
                             Most Popular
                         </Flex>
                         <MetaMaskIcon py={2} boxSize={10}/>
@@ -205,14 +205,14 @@ const DashboardShell = ({title, active, children}) => {
                     background={colorMode === "light" ? "#ececec30" : "#15151930"}
                 >
                     <Flex direction="column">
-                        <Link href="/dashboard">
+                        <Link href="/dashboard" passHref={true}>
                             <Flex height="75px" w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                                 <Text fontSize="2xl">
                                     <TheConvoSpaceIcon />
                                 </Text>
                             </Flex>
                         </Link>
-                        <Link href="/dashboard/comments">
+                        <Link href="/dashboard/comments" passHref={true}>
                             <Flex
                                 m={1}
                                 h={{base: "70px", md:"100px"}}
@@ -235,7 +235,7 @@ const DashboardShell = ({title, active, children}) => {
                                 </Text>
                             </Flex>
                         </Link>
-                        <Link href="/dashboard/identity">
+                        <Link href="/dashboard/identity" passHref={true}>
                             <Flex
                                 m={1}
                                 h={{base: "70px", md:"100px"}}
@@ -258,7 +258,7 @@ const DashboardShell = ({title, active, children}) => {
                                 </Text>
                             </Flex>
                         </Link>
-                        <Link href="/dashboard/data">
+                        <Link href="/dashboard/data" passHref={true}>
                             <Flex
                                 m={1}
                                 h={{base: "70px", md:"100px"}}
@@ -281,7 +281,7 @@ const DashboardShell = ({title, active, children}) => {
                                 </Text>
                             </Flex>
                         </Link>
-                        <Link href="/dashboard/developer">
+                        <Link href="/dashboard/developer" passHref={true}>
                             <Flex
                                 m={1}
                                 h={{base: "70px", md:"100px"}}

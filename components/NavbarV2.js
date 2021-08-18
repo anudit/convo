@@ -23,7 +23,7 @@ const NavBar = () => {
       zIndex="100"
     >
       <Flex w={{base:"90%", md:"90%"}} justifyContent="space-between" alignItems="center">
-        <Link href="/" style={{textDecoration: 'inherit'}} fontWeight={400}>
+        <Link href="/" style={{textDecoration: 'inherit'}} fontWeight={400} passHref={true}>
           <Flex direction="row">
             <Image src="/images/v2/logo.png" alt="Logo" height={{base:"30px", md:"50px"}} width={{base:"50px", md:"80px"}} />
             {/* <Text ml={3} as="h1" fontSize="larger" color="white">

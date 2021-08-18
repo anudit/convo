@@ -235,6 +235,7 @@ const Threads = (props) => {
                                                         aria-label="View Address"
                                                         rel="noreferrer"
                                                         href={`https://etherscan.io/address/${comment.author}`}
+                                                        passHref={true}
                                                     >
                                                         <Text style={{fontWeight:'900', cursor:"pointer"}} >
                                                             {

@@ -104,7 +104,7 @@ const SimpleCard = ({title, text, emoji, link, tags}) => {
         >
             <Flex direction="column">
                 <Flex direction="row" justifyContent="space-between">
-                    <Link href={`/dashboard/${link}`}>
+                    <Link href={`/dashboard/${link}`} passHref={true}>
                         <Heading _hover={{
                             bgClip:"text",
                             backgroundImage:"url('/images/gradient.webp')",

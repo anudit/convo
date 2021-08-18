@@ -102,7 +102,7 @@ const Card = (props) => {
         <Divider my={2}/>
 
         <Flex mt="1px">
-          <Link href={process.env.NEXT_PUBLIC_API_SITE_URL + "/thread/" + props.comment.tid} rel="noreferrer" target="_blank" style={{textDecoration: 'inherit'}} >
+          <Link href={process.env.NEXT_PUBLIC_API_SITE_URL + "/thread/" + props.comment.tid} rel="noreferrer" target="_blank" style={{textDecoration: 'inherit'}} passHref={true}>
             <Button size="sm" w="fit-content" variant="ghost">
               <ExternalIcon w={6} h={6} pr={2}/>
               Reply
