@@ -25,21 +25,21 @@ const GlobalStyle = ({ children }) => {
             font-style: normal;
             font-weight: 100;
             font-display: swap;
-            src: url('/fonts/GTWalsheimPro-Regular.woff2') format('woff2');
+            src: url('/fonts/Montserrat-Regular.woff2') format('woff2');
           }
           @font-face {
             font-family: 'GT Walsheim';
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url('/fonts/GTWalsheimPro-Medium.woff2') format('woff2');
+            src: url('/fonts/Montserrat-Medium.woff2') format('woff2');
           }
           @font-face {
             font-family: 'GT Walsheim';
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url('/fonts/GTWalsheimPro-Bold.woff2') format('woff2');
+            src: url('/fonts/Montserrat-Bold.woff2') format('woff2');
           }
           body {
             font-family: "GT Walsheim", "Segoe UI" !important;
@@ -72,9 +72,9 @@ const GlobalStyle = ({ children }) => {
             -webkit-filter: blur(1px);
             filter: blur(10px);
             background: conic-gradient(from 217.29deg at 51.63% 52.16%, #2563EB 0deg , #0EA5E9 19.5deg , #EC4899 102.75deg , #F43F5E 152.25deg , #EF4444 208.88deg , #6366F1 291deg );
-            width: 250px;
+            width: 243px;
             height: 35px;
-            margin: -15px;
+            margin: -8px;
           }
           .br-10 {
             border-radius:10px;

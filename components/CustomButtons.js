@@ -5,8 +5,14 @@ export const CustomButton = (props) => {
   return (
     <Button
       backgroundColor={useColorModeValue("gray.300","#323e46")}
-      rounded="md"
+      rounded="lg"
+      boxShadow="0 5px 15px rgba(255, 255, 255, .4)"
       fontWeight="medium"
+      borderColor="white"
+      borderRadius="15px"
+      borderWidth="2px"
+      // outline="2px solid white"
+      // outline-offset="2px"
       _hover={{
         transform: "scale(1.05)",
         textShadow: "0 0 20px #fff",

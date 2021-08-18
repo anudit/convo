@@ -30,7 +30,7 @@
         ]
       },
       {
-        "source": "/fonts/GTWalsheimPro-Bold.woff2",
+        "source": "/fonts/Montserrat-Bold.woff2",
         "headers": [
           {
             "key": "Cache-Control",
@@ -39,7 +39,7 @@
         ]
       },
       {
-        "source": "/fonts/GTWalsheimPro-Medium.woff2",
+        "source": "/fonts/Montserrat-Medium.woff2",
         "headers": [
           {
             "key": "Cache-Control",
@@ -48,7 +48,7 @@
         ]
       },
       {
-        "source": "/fonts/GTWalsheimPro-Regular.woff2",
+        "source": "/fonts/Montserrat-Regular.woff2",
         "headers": [
           {
             "key": "Cache-Control",
