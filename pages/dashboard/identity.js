@@ -26,12 +26,12 @@ const IdentitySection = () => {
   const web3Context = useContext(Web3Context)
   const { signerAddress } = web3Context;
   const [trustScoreData, setTrustScoreData] = useState(null);
-  const [trustScore, setTrustScore] = useState("...");
+  const [trustScore, setTrustScore] = useState(0);
 
   useEffect(() => {
     if (isAddress(signerAddress) === true){
       fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
-        setTrustScore(data?.score?.toString());
+        setTrustScore((e)=>{return e+data?.score});
         setTrustScoreData(data);
       });
     }
@@ -84,6 +84,9 @@ const IdentitySection = () => {
                   </WrapItem>
                   <WrapItem>
                     <DeepdaoCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
+                    <BoardroomCard setTrustScore={setTrustScore }/>
                   </WrapItem>
                   <WrapItem>
                     <RabbitholeCard />
@@ -264,6 +267,40 @@ const RabbitholeCard = () => {
       <IdentityCard image_url="/images/rabbithole.webp">
         {
           rabbithole === null ? "Loading" : Boolean(rabbithole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Explorer on RabbitHole</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
+    );
+};
+
+const BoardroomCard = ({setTrustScore}) => {
+
+  const web3Context = useContext(Web3Context);
+  const { signerAddress } = web3Context;
+
+  const [br, setBr] = useState(null);
+  useEffect(() => {
+
+    fetch(`https://api.boardroom.info/v1/voters/${signerAddress}/votes`)
+    .then(response => response.json())
+    .then((data)=>{
+      let count = 0;
+      for (let index = 0; index < data['data'].length; index++) {
+        const doc = data['data'][index];
+        if (doc?.proposalInfo?.currentState === 'executed'){
+          count+=1;
+        }
+      }
+      setBr(count);
+      if (br === null){
+        setTrustScore((e)=>{return e+count})
+      }
+    });
+  });
+
+    return (
+      <IdentityCard image_url="/images/boardroom.webp">
+        {
+          br === null ? "Loading" : Boolean(br) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://boardroom.info/">Govern on Boardroom</chakra.p></>) : (<><Text mr={1}>Boardroom</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -489,7 +526,7 @@ const IdxCard = () => {
         isLoading === true ? (
           <Spinner size="md" />
         ) : (
-          <Text mr={1} onClick={getIdentities} cursor="pointer">Manage Cross-Chain Identites</Text>
+          <Text mr={1} onClick={getIdentities} cursor="pointer">Cross-Chain Identities</Text>
         )
       }
 
