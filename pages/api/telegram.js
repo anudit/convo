@@ -101,7 +101,8 @@ module.exports = async (request, response) => {
                             'tag1' : "",
                             'tag2' : "",
                             'upvotes': [],
-                            'downvotes': []
+                            'downvotes': [],
+                            'chain': "ethereum"
                         };
                         let retId = await createComment(commentData);
                         if (Boolean(retId) === false) {

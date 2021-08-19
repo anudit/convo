@@ -717,8 +717,27 @@ const cacheTrustScoresManual = async (addresses = []) => {
     }
 }
 
+
+// const updateSchema = async (addresses = []) => {
+
+//     const threadClient = await getClient();
+//     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+
+//     let snapshot_cached = await threadClient.find(threadId, 'comments', {});
+
+//     for (let index = 0; index < snapshot_cached.length; index++) {
+//         snapshot_cached[index] = {
+//             ...snapshot_cached[index],
+//             chain:"ethereum"
+//         }
+//     }
+//     console.log(snapshot_cached.length)
+//     await threadClient.save(threadId, 'comments', snapshot_cached);
+// }
+
 cacheTrustScores().then(()=>{
     console.log("✅ Cached all trust Scores");
 });
 
 // validateSchema();
+// updateSchema();
