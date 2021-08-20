@@ -26,21 +26,21 @@
     "@dicebear/micah": "^4.7.2",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
-    "@gnosis.pm/safe-apps-sdk": "^4.1.0",
-    "@gnosis.pm/safe-apps-web3modal": "^1.0.0",
+    "@gnosis.pm/safe-apps-sdk": "^4.2.0",
+    "@gnosis.pm/safe-apps-web3modal": "^2.0.0",
     "@oceanprotocol/contracts": "^0.6.5",
     "@oceanprotocol/lib": "^0.17.1",
     "@peculiar/webcrypto": "^1.1.7",
     "@portis/web3": "^4.0.5",
-    "@react-three/drei": "^7.4.0",
+    "@react-three/drei": "^7.5.0",
     "@react-three/fiber": "^7.0.6",
     "@textile/hub": "^6.2.0",
-    "@walletconnect/web3-provider": "^1.6.1",
+    "@walletconnect/web3-provider": "^1.6.2",
     "critters": "^0.0.10",
     "dids": "^2.4.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
-    "ethers": "^5.4.4",
+    "ethers": "^5.4.5",
     "framer-motion": "^4.1.17",
     "js-cookie": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
@@ -61,7 +61,7 @@
     "tweetnacl": "^1.0.3",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.4",
-    "webpack": "^5.50.0"
+    "webpack": "^5.51.1"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^11.1.0",
@@ -69,6 +69,6 @@
     "eslint-config-next": "^11.1.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "next-sitemap": "^1.6.157"
+    "next-sitemap": "^1.6.162"
   }
 }
