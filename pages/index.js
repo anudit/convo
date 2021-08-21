@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Head from 'next/head';
 import Image from 'next/image';
-import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Button, Box, UnorderedList, ListItem, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
+import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Button, Box, UnorderedList, ListItem, Tabs, TabList, Tab, TabPanels, TabPanel, SimpleGrid } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 import { DataIcon, DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon, DiscordIcon, CoinviseIcon, DecentralandIcon } from '@/public/icons';
@@ -12,8 +12,35 @@ import NavBar from '@/components/NavbarV2';
 import { MakeOwnCodeBlock } from "@/components/CodeBlock";
 import Scene from "@/components/Models/Scene"
 import Scene2 from "@/components/Models/Scene2"
+import Twitter from "twitter-v2"
+import TweetCard from "@/components/TweetCard";
 
-const Home = () => {
+export async function getStaticProps() {
+
+  const client = new Twitter({
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+  });
+
+  let { data: tweetData } = await client.get('tweets?tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,referenced_tweets,source,text,withheld', {
+    ids: ['1427635434293800974', '1428425109459591183', '1427682758621503488', '1422694888488030209', '1425853985961889795', '1411933457077260289', '1420395919229526016', '1425178007405309953', '1428848146675871752']
+  });
+
+  for (let index = 0; index < tweetData.length; index++) {
+    const {data:userData} = await client.get(`users/${tweetData[index].author_id}?`, {
+      user: { fields: 'profile_image_url' }
+    });
+    tweetData[index] = {...tweetData[index],userData}
+  }
+
+  return {
+    props: { tweetData }
+  }
+}
+
+const Home = ({tweetData}) => {
 
   const { colorMode } = useColorMode();
 
@@ -443,6 +470,7 @@ const Home = () => {
         </Flex>
 
 
+
         <Flex
           direction="column"
           align="center"
@@ -565,6 +593,44 @@ const Home = () => {
           <Link href="https://docs.theconvo.space" aria-label="View Docs" rel="noreferrer" target="_blank" style={{textDecoration: 'inherit'}} fontSize="x-large">
             View Docs<ExternalIcon ml={1}/>
           </Link>
+
+        </Flex>
+
+        <Flex
+          direction="column"
+          align="center"
+          justifyContent="center"
+          margin="0 auto"
+          w="100%"
+          minH="90vh"
+          py={8}
+          mt={16}
+          mb={2}
+        >
+          <Heading
+            as="h1"
+            fontSize={{ base: "2rem", md: "2rem", lg: "3rem", xl: "4rem" }}
+            fontWeight="700"
+            color={useColorModeValue("black", "white")}
+            lineHeight="none"
+            letterSpacing="tight"
+            textAlign="center"
+            bgClip="text"
+            bgGradient="linear-gradient(160deg, #375fbb 0%, #e8a7b6 100%)"
+            py={12}
+          >
+            Community
+          </Heading>
+
+          <SimpleGrid columns={{base:1, lg: 2, xl:3}} spacingX="10px" spacingY="10px">
+            {
+              Boolean(tweetData) === true && tweetData.map((tweet, index) => {
+                return (
+                  <TweetCard tweet={tweet} key={index}/>
+                )
+              })
+            }
+          </SimpleGrid>
 
         </Flex>
 

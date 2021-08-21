@@ -71,6 +71,10 @@ export const prettyTime = (timestamp) => {
 
 }
 
+export const prettyTimeParse = (obj) => {
+    return prettyTime(new Date(obj).getTime())
+}
+
 export const prettifyNumber = (num, digits=2) => {
     var si = [
       { value: 1, symbol: "" },

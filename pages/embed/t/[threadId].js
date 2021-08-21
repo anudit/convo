@@ -5,6 +5,7 @@ import { useClipboard, Table, Tbody, Text, Tr, Td, Heading, Button, InputGroup, 
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
 import Linkify from 'react-linkify';
 import { Where } from "@textile/hub";
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import { ReplyIcon, ThreeDotMenuIcon, DisconnectIcon } from '@/public/icons';
 import { getAllThreads, getComments, getThread } from "@/lib/thread-db";
@@ -14,6 +15,7 @@ import { Web3Context } from '@/contexts/Web3Context'
 import fetcher from '@/utils/fetcher';
 import { TheConvoSpaceIcon } from '@/public/icons';
 import CustomAvatar from '@/components/CustomAvatar';
+import useSWR from 'swr';
 
 export async function getStaticProps(context) {
     const threadId = context.params.threadId;
@@ -68,6 +70,14 @@ const Threads = (props) => {
     const [embedCode, setEmbedCode] = useState("");
     const { onCopy: onCopyEmbedCode } = useClipboard(embedCode);
 
+    const { data: initComments  } = useSWR(
+        Boolean(router?.query?.threadId) === true ? [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&apikey=CONVO&page=0&pageSize=10&latestFirst=true`, "GET"] : null,
+        fetcher,
+        {initialData: props.initialComments, refreshInterval:1000, refreshWhenHidden:false}
+    );
+
+    useHotkeys('ctrl+enter', createNewComment ,{ enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'] });
+
     function copyEmbedCode(id){
         setEmbedCode(`${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/c/${id}`);
         onCopyEmbedCode();
@@ -84,11 +94,11 @@ const Threads = (props) => {
         document.body.classList.add('tp');
         document.body.classList.add('oh');
 
-        let initComments = props.initialComments?.reverse();
-        setComments(initComments);
+        // let initComments = props.initialComments;
+        setComments(initComments?.reverse());
         setInitScroll(true);
 
-    }, [props, router]);
+    }, [initComments, props, router]);
 
     useEffect(() => {
         let commentsBox = document.getElementById('commentsBox');

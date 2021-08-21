@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import { useClipboard, Table,Tbody, Text, Tr, Td, Button, InputGroup, Input, InputRightElement, MenuItem, MenuList, MenuButton, Menu, IconButton, useToast, useColorMode, Flex, Spinner } from "@chakra-ui/react";
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
 import Linkify from 'react-linkify';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import { ReplyIcon, ThreeDotMenuIcon, DisconnectIcon, TheConvoSpaceIcon } from '@/public/icons';
 import timeAgo from '@/utils/timeAgo';
@@ -18,6 +19,8 @@ const Threads = (props) => {
     const router = useRouter();
     const { colorMode, toggleColorMode } = useColorMode();
 
+    useHotkeys('ctrl+enter', createNewComment ,{ enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'] });
+
     function getQueryURL(){
         const queryUrl = new URL(process.env.NEXT_PUBLIC_API_SITE_URL + '/api/comments?apikey=CONVO');
         if (Boolean(router.query?.threadId) === true) {
@@ -29,7 +32,11 @@ const Threads = (props) => {
         return queryUrl['href'];
     }
 
-    const { data: comments, mutate  } = useSWR([getQueryURL(), "GET"], fetcher);
+    const { data: comments, mutate  } = useSWR(
+        [getQueryURL(), "GET"],
+        fetcher,
+        {refreshInterval:1000, refreshWhenHidden:false}
+    );
 
     const newCommentRef = useRef()
     const toast = useToast()
