@@ -2,11 +2,13 @@ require('dotenv').config({ path: '.env.local' })
 const fetch = require('node-fetch');
 const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 
-const getClient = async () =>{
+const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID } = process.env;
 
-    const identity = PrivateKey.fromString(process.env.TEXTILE_PK);
+const getClient = async () => {
+
+    const identity = PrivateKey.fromString(TEXTILE_PK);
     const client = await Client.withKeyInfo({
-        key: process.env.TEXTILE_HUB_KEY_DEV,
+        key: TEXTILE_HUB_KEY_DEV,
         debug: true
     })
     await client.getToken(identity);
@@ -25,7 +27,7 @@ fetch('https://raw.githubusercontent.com/Uniswap/sybil-list/master/verified.json
         }
         console.log(`🟡 Caching ${docs.length} Users.`);
         const threadClient = await getClient();
-        const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+        const threadId = ThreadID.fromString(TEXTILE_THREADID);
         await threadClient.save(threadId, 'cachedSybil', docs);
         console.log('✅ Cached Uniswap Sybil Metrics.');
     })

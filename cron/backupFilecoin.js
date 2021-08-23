@@ -2,11 +2,13 @@ require('dotenv').config({ path: '.env.local' })
 const { NFTStorage, Blob } = require("nft.storage");
 const { Client, PrivateKey, ThreadID} = require('@textile/hub');
 
+const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, NFTSTORAGE_KEY } = process.env;
+
 const getClient = async () =>{
 
-    const identity = PrivateKey.fromString(process.env.TEXTILE_PK);
+    const identity = PrivateKey.fromString(TEXTILE_PK);
     const client = await Client.withKeyInfo({
-        key: process.env.TEXTILE_HUB_KEY_DEV,
+        key: TEXTILE_HUB_KEY_DEV,
         debug: true
     })
     await client.getToken(identity);
@@ -15,24 +17,25 @@ const getClient = async () =>{
 
 const getData = async () =>{
     const threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    const threadId = ThreadID.fromString(TEXTILE_THREADID);
     let snapshot_comments = await threadClient.find(threadId, 'comments', {});
     let snapshot_threads = await threadClient.find(threadId, 'threads', {});
     let snapshot_subscribers = await threadClient.find(threadId, 'subscribers', {});
     let snapshot_cachedTrustScores = await threadClient.find(threadId, 'cachedTrustScores', {});
     let snapshot_cachedSybil = await threadClient.find(threadId, 'cachedSybil', {});
+    let snapshot_bridge = await threadClient.find(threadId, 'bridge', {});
 
     return {
         snapshot_comments,
         snapshot_threads,
         snapshot_subscribers,
         snapshot_cachedTrustScores,
-        snapshot_cachedSybil
+        snapshot_cachedSybil,
+        snapshot_bridge
     };
 }
 
-const apiKey = process.env.NFTSTORAGE_KEY
-const client = new NFTStorage({ token: apiKey })
+const client = new NFTStorage({ token: NFTSTORAGE_KEY })
 console.log("🔃 Backing up data over NFT.Storage")
 getData().then((data)=>{
     const content = new Blob([JSON.stringify(data)]);

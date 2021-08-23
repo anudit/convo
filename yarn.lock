@@ -15293,10 +15293,10 @@ react-merge-refs@^1.0.0, react-merge-refs@^1.1.0:
   resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz#73d88b892c6c68cbb7a66e0800faa374f4c38b06"
   integrity sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==
 
-react-qr-code@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-qr-code/-/react-qr-code-2.0.1.tgz#9b7cbdb0fcbdc4bd04f27c62fe865ac6306ece5e"
-  integrity sha512-Qoe05Qkl1U7PsbhvOjhA/XSIKXDX3oX/uR1mWTrwBsi+aRJvMfPCRgWZJZLJazFFqsQAuMFyaI+UCh/Lhue+xQ==
+react-qr-code@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-qr-code/-/react-qr-code-2.0.2.tgz#64107c869079aceb897c97496d163720ab2820e8"
+  integrity sha512-73VGe81MgeE5FJNFgdY42ez/wPPJTHuooU3iE4CX+6F8M88O1Gg4zNA0L4bKEpoySQ0QjqreJgyXjFrG/QfsdA==
   dependencies:
     prop-types "^15.7.2"
     qr.js "0.0.0"

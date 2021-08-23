@@ -5,7 +5,7 @@ const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
 const cliProgress = require('cli-progress');
 
-
+const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID } = process.env;
 
 let DEBUG = false;
 
@@ -17,9 +17,9 @@ function sleep(ms) {
 
 const getClient = async () =>{
 
-    const identity = PrivateKey.fromString(process.env.TEXTILE_PK);
+    const identity = PrivateKey.fromString(TEXTILE_PK);
     const client = await Client.withKeyInfo({
-        key: process.env.TEXTILE_HUB_KEY_DEV,
+        key: TEXTILE_HUB_KEY_DEV,
         debug: true
     })
     await client.getToken(identity);
@@ -28,7 +28,7 @@ const getClient = async () =>{
 
 const getAddresses = async () =>{
     const threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    const threadId = ThreadID.fromString(TEXTILE_THREADID);
     let snapshot_comments = await threadClient.find(threadId, 'comments', {});
     let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
 
@@ -76,7 +76,7 @@ const fetcher = async (url, method="GET", bodyData = {}, ISDEBUG = false) => {
 
 async function getSybil(address) {
     let threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    const threadId = ThreadID.fromString(TEXTILE_THREADID);
     const query = new Where('_id').eq(getAddress(address));
     let resp = await threadClient.find(threadId, 'cachedSybil', query);
     return resp;
@@ -659,7 +659,7 @@ const cacheTrustScores = async () => {
     b1.start(addresses.length, 0, { speed: "N/A" });
 
     const threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
@@ -677,7 +677,7 @@ const cacheTrustScores = async () => {
 
 const validateSchema = async () =>{
     const threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    const threadId = ThreadID.fromString(TEXTILE_THREADID);
     const snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
 
     let arr = snapshot_cached.filter((e)=>{
@@ -705,7 +705,7 @@ const validateSchema = async () =>{
 const cacheTrustScoresManual = async (addresses = []) => {
 
     const threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+    const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
@@ -721,7 +721,7 @@ const cacheTrustScoresManual = async (addresses = []) => {
 // const updateSchema = async (addresses = []) => {
 
 //     const threadClient = await getClient();
-//     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
+//     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
 //     let snapshot_cached = await threadClient.find(threadId, 'comments', {});
 
