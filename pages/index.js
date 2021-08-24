@@ -25,7 +25,7 @@ export async function getStaticProps() {
   });
 
   let { data: tweetData } = await client.get('tweets?tweet.fields=attachments,author_id,created_at,entities,geo,id,in_reply_to_user_id,lang,possibly_sensitive,referenced_tweets,source,text,withheld', {
-    ids: ['1427635434293800974', '1428425109459591183', '1427682758621503488', '1422694888488030209', '1425853985961889795', '1411933457077260289', '1420395919229526016', '1425178007405309953', '1428848146675871752']
+    ids: ['1427635434293800974', '1428425109459591183', '1427682758621503488', '1422694888488030209', '1429894955053498368', '1411933457077260289', '1420395919229526016', '1425178007405309953', '1428848146675871752']
   });
 
   for (let index = 0; index < tweetData.length; index++) {
