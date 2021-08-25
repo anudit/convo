@@ -2,7 +2,7 @@ require('dotenv').config({ path: '.env.local' })
 const { NFTStorage, Blob } = require("nft.storage");
 const { Client, PrivateKey, ThreadID} = require('@textile/hub');
 
-const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, NFTSTORAGE_KEY } = process.env;
+const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET } = process.env;
 
 const getClient = async () =>{
 
@@ -35,11 +35,36 @@ const getData = async () =>{
     };
 }
 
+async function pinToPinata(hash) {
+
+    const response = await fetch(`https://api.pinata.cloud/pinning/pinByHash`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'pinata_api_key': PINATA_API_KEY,
+          'pinata_secret_api_key': PINATA_API_SECRET
+        },
+        redirect: 'follow',
+        body: JSON.stringify({
+            hashToPin: hash,
+            pinataMetadata: {
+                name: `Backup-${Date.now()}`,
+            }
+        })
+    });
+    let json = await response.json();
+    return json;
+
+}
+
 const client = new NFTStorage({ token: NFTSTORAGE_KEY })
 console.log("🔃 Backing up data over NFT.Storage")
 getData().then((data)=>{
     const content = new Blob([JSON.stringify(data)]);
-    client.storeBlob(content).then(()=>{
-        console.log("✅ Backed up Data Over NFT.Storage")
+    client.storeBlob(content).then(async (ipfsHash)=>{
+        console.log("✅ Backed up Data Over NFT.Storage");
+        await pinToPinata(ipfsHash);
+        console.log("✅ Replicated Data Over Pinata");
     });
 })

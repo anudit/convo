@@ -10,7 +10,7 @@ import CustomAvatar from '@/components/CustomAvatar';
 const Dashboard = () => {
 
     const web3Context = useContext(Web3Context);
-    const { signerAddress, ensAddress } = web3Context;
+    const { signerAddress, prettyName } = web3Context;
 
     const { hasCopied, onCopy } = useClipboard(signerAddress);
 
@@ -26,7 +26,7 @@ const Dashboard = () => {
                                 backgroundImage:"url('/images/gradient.webp')",
                                 backgroundSize:"cover"
                             }}>
-                                {ensAddress == "" ? truncateAddress(signerAddress, 3): ensAddress},
+                                {prettyName == "" ? truncateAddress(signerAddress, 3): prettyName},
                             </Text>
                         </Tooltip>
                     Welcome to your Convo Space.

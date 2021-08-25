@@ -6,6 +6,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import Cookies from "js-cookie";
 import fetcher from "@/utils/fetcher";
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
+import { checkUnstoppableDomains } from '@/lib/identity';
 
 export const Web3Context = React.createContext(undefined);
 
@@ -17,8 +18,29 @@ export const Web3ContextProvider = ({children}) => {
   const [web3Modal, setWeb3Modal] = useState(undefined);
   const [provider, setProvider] = useState(undefined);
   const [signerAddress, setSignerAddress] = useState("");
-  const [ensAddress, setEnsAddress] = useState("");
+  const [prettyName, setPrettyName] = useState("");
   const [isPortisLoading, setIsPortisLoading] = useState(false);
+
+  async function updatePrettyName(address){
+
+    let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
+    let ensReq  = tp.lookupAddress(address);
+    let udReq = checkUnstoppableDomains(address);
+
+    let promiseArray = [ensReq, udReq];
+
+    let resp = await Promise.allSettled(promiseArray);
+
+    console.log('updatePrettyName', resp);
+
+    if(Boolean(resp[0]?.value) === true){
+      setPrettyName(resp[0]?.value);
+    }
+    else if(Boolean(resp[1]?.value) === true){
+      setPrettyName(resp[1]?.value);
+    }
+
+  }
 
   useEffect(() => {
 
@@ -26,12 +48,7 @@ export const Web3ContextProvider = ({children}) => {
       const signer = provider.getSigner();
       const address = await signer.getAddress();
       setSignerAddress(ethers.utils.getAddress(address));
-      let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
-      tp.lookupAddress(address).then((ensAdd)=>{
-        if(Boolean(ensAdd) == true){
-          setEnsAddress(ensAdd);
-        }
-      });
+      updatePrettyName(address)
 
     }
     if (provider) {
@@ -39,7 +56,7 @@ export const Web3ContextProvider = ({children}) => {
     }
     else {
       setSignerAddress("");
-      setEnsAddress("");
+      setPrettyName("");
     }
 
   }, [provider]);
@@ -229,7 +246,7 @@ export const Web3ContextProvider = ({children}) => {
       disconnectWallet,
       provider,
       signerAddress,
-      ensAddress,
+      prettyName,
       getAuthToken,
       web3Modal,
       isPortisLoading

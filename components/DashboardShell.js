@@ -277,7 +277,7 @@ const DashboardShell = ({title, active, children}) => {
                                     📂
                                 </Text>
                                 <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
-                                    My Data
+                                    Data
                                 </Text>
                             </Flex>
                         </Link>

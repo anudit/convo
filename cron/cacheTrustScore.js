@@ -278,7 +278,7 @@ async function checkUnstoppableDomains(address) {
                       if (queryResult.domains[index]?.name.split('.').length === 2 && queryResult.domains[index]?.resolver?.records.length > 0 ){
                           for (let i = 0; i < queryResult.domains[index]?.resolver?.records.length; i++) {
                               if (queryResult.domains[index]?.resolver?.records[i].value?.toLowerCase() === address.toLowerCase()) {
-                                  return true;
+                                return queryResult.domains[index]?.name;
                               }
                           }
                       }
@@ -556,10 +556,10 @@ async function calculateScore(address) {
         'poh': results[0].value,
         'brightId': Boolean(results[1].value?.data?.unique),
         'poap': results[2].value?.length,
-        'ens': Boolean(results[3].value),
+        'ens': Boolean(results[3].value) === true ? results[3].value : false,
         'idena': Boolean(results[4].value?.result),
         'cryptoScamDb': Boolean(results[5].value?.success),
-        'unstoppableDomains': Boolean(results[6].value),
+        'unstoppableDomains': Boolean(results[6].value) === true ? results[6].value : false,
         'uniswapSybil': results[7].value?.length,
         'deepdao': Boolean(results[8].value?.totalDaos) === true? parseInt(results[8].value?.totalDaos) : 0,
         'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,

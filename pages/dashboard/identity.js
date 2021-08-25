@@ -30,9 +30,10 @@ const IdentitySection = () => {
 
   useEffect(() => {
     if (isAddress(signerAddress) === true){
-      fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
+      fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO&noCache=true`).then((data)=>{
         setTrustScore((e)=>{return e+data?.score});
         setTrustScoreData(data);
+        console.log(data);
       });
     }
   }, [signerAddress]);
@@ -92,7 +93,7 @@ const IdentitySection = () => {
                     <RabbitholeCard />
                   </WrapItem>
                   <WrapItem>
-                    <ENSCard />
+                    <ENSCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <UdCard />
@@ -190,15 +191,11 @@ const PoHCard = () => {
     );
 };
 
-const ENSCard = () => {
-
-  const web3Context = useContext(Web3Context);
-  const { ensAddress } = web3Context;
-
+const ENSCard = ({trustScoreData}) => {
     return (
       <IdentityCard image_url="/images/ens.webp">
         {
-          ensAddress === "" ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</chakra.p></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.ens) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</chakra.p></>) : (<><Text mr={1}>{trustScoreData.ens}</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -217,7 +214,7 @@ const UdCard = () => {
     return (
       <IdentityCard image_url="/images/unstoppable.webp">
         {
-          ud === null ? "Loading" : ud === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>Connected</Text><VerifiedIcon color="blue.400"/></>)
+          ud === null ? "Loading" : ud === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>{ud}</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -704,7 +701,7 @@ const RaribleCard = ({trustScoreData}) => {
       <IdentityCard image_url="/images/rarible.webp">
         {
           trustScoreData === null ? "Loading" :
-          trustScoreData?.rarible?.totalCountSold === 0 ? (
+          Boolean(trustScoreData?.rarible?.totalCountSold) === false ? (
               <chakra.p size="xs" as="a" target="_blank" href="https://rarible.com/">
                 Create on Rarible
               </chakra.p>

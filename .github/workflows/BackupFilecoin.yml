@@ -29,4 +29,6 @@ jobs:
         TEXTILE_PK: ${{ secrets.TEXTILE_PK }}
         TEXTILE_HUB_KEY_DEV: ${{ secrets.TEXTILE_HUB_KEY_DEV }}
         NFTSTORAGE_KEY: ${{ secrets.NFTSTORAGE_KEY }}
+        PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
+        PINATA_API_SECRET: ${{ secrets.PINATA_API_SECRET }}
       run: node ./cron/backupFilecoin.js

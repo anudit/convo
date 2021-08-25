@@ -78,7 +78,7 @@ export default IdentitySection;
 const DataTokenView = () => {
 
     const web3Context = useContext(Web3Context);
-    const { signerAddress, web3Modal, ensAddress } = web3Context;
+    const { signerAddress, web3Modal, prettyName } = web3Context;
     const { colorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useState(false);
@@ -114,8 +114,8 @@ const DataTokenView = () => {
         }
 
         fetchData();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
 
     async function createToken(){
@@ -130,9 +130,9 @@ const DataTokenView = () => {
         const dataset = {
             main: {
               type: "dataset",
-              name: `Convo data of ${ensAddress != "" ? ensAddress : signerAddress}`,
+              name: `Convo data of ${prettyName != "" ? prettyName : signerAddress}`,
               dateCreated: new Date(Date.now()).toISOString().split(".")[0] + "Z",
-              author: `${ensAddress != "" ? ensAddress : signerAddress}`,
+              author: `${prettyName != "" ? prettyName : signerAddress}`,
               license: "MIT",
               files: [
                 {
