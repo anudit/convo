@@ -1,4 +1,5 @@
 require('dotenv').config({ path: '.env.local' })
+const fetch = require('node-fetch');
 const { NFTStorage, Blob } = require("nft.storage");
 const { Client, PrivateKey, ThreadID} = require('@textile/hub');
 

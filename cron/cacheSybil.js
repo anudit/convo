@@ -15,6 +15,14 @@ const getClient = async () => {
     return client;
 }
 
+function chunkArray(arr, chunkSize) {
+    return arr.reduce((all,one,i) => {
+        const ch = Math.floor(i/chunkSize);
+        all[ch] = [].concat((all[ch]||[]),one);
+        return all
+    }, [])
+}
+
 fetch('https://raw.githubusercontent.com/Uniswap/sybil-list/master/verified.json').then(async res => {
     res.json().then(async (data) => {
         let keys = Object.keys(data);
@@ -25,10 +33,14 @@ fetch('https://raw.githubusercontent.com/Uniswap/sybil-list/master/verified.json
                 'data': data[keys[index]],
             });
         }
-        console.log(`🟡 Caching ${docs.length} Users.`);
         const threadClient = await getClient();
         const threadId = ThreadID.fromString(TEXTILE_THREADID);
-        await threadClient.save(threadId, 'cachedSybil', docs);
+
+        let chunkedArray = chunkArray(docs, 50);
+        for (let i = 0; i < chunkedArray.length; i+=1) {
+            console.log(`🟡 Caching Chunk ${i+1}/${chunkedArray.length}`);
+            await threadClient.save(threadId, 'cachedSybil', chunkedArray[i]);
+        }
         console.log('✅ Cached Uniswap Sybil Metrics.');
     })
 })
