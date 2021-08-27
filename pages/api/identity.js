@@ -155,17 +155,36 @@ export default async (req, res) => {
 
     try {
 
+        let validatedAddress = "";
+
         if (Object.keys(req.query).includes('address') === true && isAddress(req.query.address) === true ){
+            validatedAddress = req.query.address;
+        }
+        else if (Object.keys(req.query).includes('address') === true && req.query.address.toString().includes('.eth') === true ){
+            let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
+            let ensReq  = await tp.resolveName(req.query.address);
+            if (Boolean(ensReq) === true){
+                validatedAddress = ensReq;
+            }
+        }
+        else {
+            return res.status(401).json({
+                'success': false,
+                'error': 'Invalid Address.'
+            });
+        }
+
+        if (validatedAddress !== ""){
 
             if (req.query?.noCache == 'true') {
-                let scoreData = await calculateScore(req.query.address);
-                setCache(getAddress(req.query.address), scoreData);
+                let scoreData = await calculateScore(validatedAddress);
+                setCache(getAddress(validatedAddress), scoreData);
                 return res.status(200).json(scoreData);
             }
             else {
                 let threadClient = await getClient();
                 const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-                const query = new Where('_id').eq(getAddress(req.query.address));
+                const query = new Where('_id').eq(getAddress(validatedAddress));
                 let cachedTrustScore = await threadClient.find(threadId, 'cachedTrustScores', query);
 
                 // cache-hit
@@ -176,18 +195,12 @@ export default async (req, res) => {
                 }
                 // cache-miss
                 else {
-                    let scoreData = await calculateScore(req.query.address);
-                    setCache(req.query.address, scoreData);
+                    let scoreData = await calculateScore(validatedAddress);
+                    setCache(validatedAddress, scoreData);
                     return res.status(200).json(scoreData);
                 }
 
             }
-        }
-        else {
-            return res.status(401).json({
-                'success': false,
-                'error': 'Invalid Address.'
-            });
         }
 
     } catch (error) {
