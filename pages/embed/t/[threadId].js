@@ -385,7 +385,7 @@ const Threads = (props) => {
                                 borderRadius="0"
                                 max={200}
                                 id="newCommentBox"
-                                autocomplete="off"
+                                autoComplete="off"
                             />
                             <InputRightElement width="4.5rem">
                                 <Button

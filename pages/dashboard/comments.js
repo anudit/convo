@@ -1,32 +1,114 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td, chakra, useToast, useClipboard, Spinner, Flex, useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
+import {useToast, useClipboard, Spinner, Flex, useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
 import useSWR from 'swr';
-import { CheckIcon, DeleteIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons"
-import { useTable, useSortBy } from "react-table"
+import { CheckIcon, DeleteIcon} from "@chakra-ui/icons"
 
 import { Web3Context } from '@/contexts/Web3Context';
 import fetcher from '@/utils/fetcher';
 import { prettyTime } from "@/utils/stringUtils"
 import { CodeIcon } from '@/public/icons';
 import DashboardShell from '@/components/DashboardShell';
+import DataTable, { createTheme }  from 'react-data-table-component';
+
+createTheme('darkTable', {
+    text: {
+      primary: 'white',
+      secondary: 'gray',
+    },
+    background: {
+      default: 'transparent',
+    },
+    context: {
+      background: '#cb4b16',
+      text: '#FFFFFF',
+    },
+    divider: {
+      default: 'gray',
+    },
+    action: {
+      button: 'rgba(0,0,0,.54)',
+      hover: 'rgba(0,0,0,.08)',
+      disabled: 'rgba(0,0,0,.12)',
+    },
+  });
+
+createTheme('lightTable', {
+    text: {
+      primary: 'black',
+      secondary: 'gray',
+    },
+    background: {
+      default: 'transparent',
+    },
+    context: {
+      background: '#cb4b16',
+      text: '#FFFFFF',
+    },
+    divider: {
+      default: 'gray',
+    },
+    action: {
+      button: 'rgba(0,0,0,.54)',
+      hover: 'rgba(0,0,0,.08)',
+      disabled: 'rgba(0,0,0,.12)',
+    },
+  });
 
 const CommentsSection = (props) => {
 
     const web3Context = useContext(Web3Context);
-    const { signerAddress } = web3Context;
+    const { signerAddress, getAuthToken } = web3Context;
+    const { colorMode } = useColorMode();
     const [formattedComments, setFormattedComments] = useState([]);
+    const toast = useToast()
     const columns = [
         {
-            Header: 'Webpage',
-            accessor: 'url',
+            name: 'Webpage',
+            selector: row => row.url,
+            sortable: true,
+            left: true,
         },
         {
-            Header: 'Comment',
-            accessor: 'text',
+            name: 'Comment',
+            selector: row => row.text,
+            sortable: true,
+            left: true,
         },
         {
-            Header: 'Date',
-            accessor: 'createdOn',
+            name: 'Date',
+            selector: row => row.createdOn,
+            sortable: true,
+            left: true,
+        },
+        {
+            name: 'Options',
+            cell: (row) => (
+                <>
+                <Tooltip label="Delete Comment" aria-label="Delete Comment" hasArrow bg={colorMode === "light" ? "red.500" : "red.200"}>
+                    <IconButton
+                        variant="ghost"
+                        colorScheme="red"
+                        aria-label="Delete"
+                        fontSize="20px"
+                        icon={<DeleteIcon />}
+                        onClick={()=>{handleDeleteComment(row.id)}}
+                    />
+                </Tooltip>
+                <Tooltip label="Copy Embed Code" aria-label="Copy Embed Code">
+                    <IconButton
+                        variant="ghost"
+                        aria-label="Copy Embed"
+                        fontSize="20px"
+                        icon={hasCopied ? (<CheckIcon />) : (<CodeIcon />)}
+                        onClick={()=>{copyEmbedCode(row.id)}}
+                    />
+                </Tooltip>
+                </>
+            ),
+            left:true,
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
         }
     ];
 
@@ -35,6 +117,48 @@ const CommentsSection = (props) => {
         signerAddress == "" ? null: [`/api/comments?author=${signerAddress}&apikey=CONVO`, "GET"],
         fetcher
     );
+
+    const [copyCode, setCopyCode] = useState("");
+    const { hasCopied, onCopy } = useClipboard(copyCode);
+
+    function copyEmbedCode(commentId){
+        setCopyCode(`https://theconvo.space/embed/c/${commentId}`)
+        onCopy();
+    }
+
+    async function handleDeleteComment(commentId){
+
+        let token = await getAuthToken();
+
+        let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CONVO`, "DELETE", {
+            token,
+            signerAddress,
+            commentId,
+        });
+        console.log("deleted", commentId);
+
+        if (Object.keys(res).includes('success') === true) {
+            mutate(comments.filter(item => item._id !== commentId), false);
+            toast({
+                title: "Gone!",
+                description: `The comment is deleted.`,
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            })
+        }
+        else {
+            toast({
+                title: "Whoops!",
+                description: res['error'],
+                status: "error",
+                duration: 10000,
+                isClosable: true,
+            })
+        }
+
+    }
+
 
     useEffect(() => {
         let newComments = [];
@@ -93,7 +217,18 @@ const CommentsSection = (props) => {
     else if (Boolean(comments) === true && comments.length >= 1) {
         return (
             <DashboardShell active="comments" title="Comments">
-                <CommentsTable columns={columns} comments={formattedComments} mutate={mutate}/>
+                <Flex display="">
+
+                    <DataTable
+                        title="Your Conversations"
+                        data={formattedComments}
+                        columns={columns}
+                        theme={colorMode === "light" ? "lightTable" : "darkTable"}
+                        highlightOnHover
+                        responsive
+                        pagination
+                    />
+                </Flex>
             </DashboardShell>
         );
     }
@@ -116,134 +251,3 @@ const CommentsSection = (props) => {
 };
 
 export default CommentsSection;
-
-
-const CommentsTable = ({ columns, comments, mutate}) => {
-
-    const web3Context = useContext(Web3Context)
-    const {signerAddress, getAuthToken} = web3Context;
-    const { colorMode } = useColorMode();
-    const toast = useToast()
-
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable({ columns, data:comments }, useSortBy);
-
-    const [copyCode, setCopyCode] = useState("");
-    const { hasCopied, onCopy } = useClipboard(copyCode);
-
-    function copyEmbedCode(commentId){
-        setCopyCode(`https://theconvo.space/embed/c/${commentId}`)
-        onCopy();
-    }
-
-    async function handleDeleteComment(commentId){
-
-        let token = await getAuthToken();
-
-        let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CONVO`, "DELETE", {
-            token,
-            signerAddress,
-            commentId,
-        });
-        console.log("deleted", commentId);
-
-        if (Object.keys(res).includes('success') === true) {
-            mutate(comments.filter(item => item._id !== commentId), false);
-            toast({
-                title: "Gone!",
-                description: `The comment is deleted.`,
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-            })
-        }
-        else {
-            toast({
-                title: "Whoops!",
-                description: res['error'],
-                status: "error",
-                duration: 10000,
-                isClosable: true,
-            })
-        }
-
-    }
-
-    return (
-    <Table {...getTableProps()} mt={4} wordBreak="break-all" display="block">
-        <Thead>
-            {headerGroups.map((headerGroup) => (
-            <Tr {...headerGroup.getHeaderGroupProps()} key="header">
-                {headerGroup.headers.map((column) => {
-                   return (
-                <Th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    isNumeric={column.isNumeric}
-                    key={column.Header}
-                >
-                    {column.render("Header")}
-                    <chakra.span pl="4">
-                    {column.isSorted ? (
-                        column.isSortedDesc ? (
-                        <TriangleDownIcon aria-label="sorted descending" />
-                        ) : (
-                        <TriangleUpIcon aria-label="sorted ascending" />
-                        )
-                    ) : null}
-                    </chakra.span>
-                </Th>
-                )})}
-                <Th>
-                    Actions
-                </Th>
-            </Tr>
-            ))}
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-            prepareRow(row);
-            return (
-                <Tr {...row.getRowProps()} key={row.original.id}>
-                    {
-                        row.cells.map((cell) => {
-                            return(
-                                <Td {...cell.getCellProps()} isNumeric={cell.column.isNumeric} key={Math.floor(Math.random() * 1000000000)}>
-                                {cell.render("Cell")}
-                                </Td>
-                            )
-                        })
-                    }
-                    <Td display="tabel-cell">
-                        <Tooltip label="Delete Comment" aria-label="Delete Comment" hasArrow bg={colorMode === "light" ? "red.500" : "red.200"}>
-                            <IconButton
-                                variant="ghost"
-                                colorScheme="red"
-                                aria-label="Delete"
-                                fontSize="20px"
-                                icon={<DeleteIcon />}
-                                onClick={()=>{handleDeleteComment(row.original.id)}}
-                            />
-                        </Tooltip>
-                        <Tooltip label="Copy Embed Code" aria-label="Copy Embed Code">
-                            <IconButton
-                                variant="ghost"
-                                aria-label="Copy Embed"
-                                fontSize="20px"
-                                icon={hasCopied ? (<CheckIcon />) : (<CodeIcon />)}
-                                onClick={()=>{copyEmbedCode(row.original.id)}}
-                            />
-                        </Tooltip>
-                    </Td>
-                </Tr>
-            )
-            })}
-        </Tbody>
-    </Table>
-    )
-
-}

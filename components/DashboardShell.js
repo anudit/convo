@@ -399,6 +399,7 @@ const DashboardShell = ({title, active, children}) => {
                         mt="75px"
                         minH="calc(100vh - 75px)"
                         p={3}
+                        direction="column"
                     >
                       { children }
                     </Flex>
