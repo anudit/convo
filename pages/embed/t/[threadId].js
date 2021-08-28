@@ -75,6 +75,7 @@ const Threads = (props) => {
         fetcher,
         {fallbackData: props.initialComments, refreshInterval:1000, refreshWhenHidden:false}
     );
+    const [loadedMoreOnce, setLoadedMoreOnce] = useState(false);
 
     useHotkeys('ctrl+enter', createNewComment ,{ enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'] });
 
@@ -85,20 +86,23 @@ const Threads = (props) => {
 
     useEffect(() => {
 
-        if (Boolean(props?.thread)==true && Object.keys(props.thread).includes('url') == false) {
-            console.log('Invalid Thread!');
-            router.push('/explore');
+        if (loadedMoreOnce === false) {
+            if (Boolean(props?.thread)==true && Object.keys(props.thread).includes('url') == false) {
+                console.log('Invalid Thread!');
+                router.push('/explore');
+            }
+
+            document.getElementsByTagName('html')[0].classList.add('tp');
+            document.body.classList.add('tp');
+            document.body.classList.add('oh');
+
+            // let initComments = props.initialComments;
+
+            setComments(initComments?.reverse(setLoadedMoreOnce));
+            setInitScroll(true);
         }
 
-        document.getElementsByTagName('html')[0].classList.add('tp');
-        document.body.classList.add('tp');
-        document.body.classList.add('oh');
-
-        // let initComments = props.initialComments;
-        setComments(initComments?.reverse());
-        setInitScroll(true);
-
-    }, [initComments, props, router]);
+    }, [loadedMoreOnce, initComments, props, router]);
 
     useEffect(() => {
         let commentsBox = document.getElementById('commentsBox');
@@ -127,6 +131,7 @@ const Threads = (props) => {
                 setHasMoreData(false);
             }
             else {
+                setLoadedMoreOnce(true);
                 setComments((currentComments) => {
                     let finalComments = fetchedComments.concat(currentComments);
                     finalComments = finalComments.sort((a, b) => {
@@ -271,7 +276,7 @@ const Threads = (props) => {
                             </Heading>
                         )
                     }
-                    <Flex direction="column" height={300} overflowY="auto" id="commentsBox">
+                    <Flex direction="column" height={Boolean(router.query?.height) === true ? parseInt(router.query?.height) : 300} overflowY="auto" id="commentsBox">
                         <Flex style={{textAlign:"center"}} minH="50px" justifyContent="center" alignItems="center">
                             {
                                 loadingMore === true ? (
@@ -380,6 +385,7 @@ const Threads = (props) => {
                                 borderRadius="0"
                                 max={200}
                                 id="newCommentBox"
+                                autocomplete="off"
                             />
                             <InputRightElement width="4.5rem">
                                 <Button

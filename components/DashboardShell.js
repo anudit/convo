@@ -174,7 +174,7 @@ const DashboardShell = ({title, active, children}) => {
                             <ArgentIcon boxSize={6} />
                         </Text>
                         <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>WalletConnect</Text>
-                        <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Connect with Rainbow, Argent and others</Text>
+                        <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Connect with Rainbow, Argent and others.</Text>
                     </Flex>
                     <Flex
                         minHeight="170px"
@@ -197,7 +197,7 @@ const DashboardShell = ({title, active, children}) => {
                         <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>NEAR Protocol</Text>
                         <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>
                             Login with NEAR.
-                            <Tag size="md" key="md" variant="solid" colorScheme="teal">
+                            <Tag size="md" key="md" variant="solid" colorScheme="teal" mt={2}>
                                 Coming Soon
                             </Tag>
                         </Text>
