@@ -448,6 +448,16 @@ export const CoinviseIcon = createIcon({
     )
 });
 
+export const NearIcon = createIcon({
+    displayName: 'NearIcon',
+    viewBox: '0 0 90 90',
+    path: (
+        <g>
+            <path fill="currentColor" d="M72.2 4.6L53.4 32.5c-1.3 1.9 1.2 4.2 3 2.6L74.9 19c.5-.4 1.2-.1 1.2.6v50.3c0 .7-.9 1-1.3.5l-56-67A9.3 9.3 0 0011.5 0h-2A9.6 9.6 0 000 9.6v70.8a9.6 9.6 0 0017.8 5l18.8-27.9c1.3-1.9-1.2-4.2-3-2.6l-18.5 16c-.5.4-1.2.1-1.2-.6V20.1c0-.7.9-1 1.3-.5l56 67a9.4 9.4 0 007.3 3.4h2c5.3 0 9.6-4.3 9.6-9.6V9.6a9.7 9.7 0 00-17.9-5z"/>
+        </g>
+    )
+});
+
 
 export const DecentralandIcon = createIcon({
     displayName: 'DecentralandIcon',

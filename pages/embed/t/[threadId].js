@@ -73,7 +73,7 @@ const Threads = (props) => {
     const { data: initComments  } = useSWR(
         Boolean(router?.query?.threadId) === true ? [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&apikey=CONVO&page=0&pageSize=10&latestFirst=true`, "GET"] : null,
         fetcher,
-        {initialData: props.initialComments, refreshInterval:1000, refreshWhenHidden:false}
+        {fallbackData: props.initialComments, refreshInterval:1000, refreshWhenHidden:false}
     );
 
     useHotkeys('ctrl+enter', createNewComment ,{ enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'] });

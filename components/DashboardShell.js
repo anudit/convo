@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Tooltip, chakra, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner  } from "@chakra-ui/react";
+import { useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Tooltip, chakra, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag  } from "@chakra-ui/react";
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon, DocsIcon } from '@/public/icons';
+import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon, DocsIcon, NearIcon } from '@/public/icons';
 import { InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { isAddress } from 'ethers/lib/utils';
 
@@ -92,7 +92,7 @@ const DashboardShell = ({title, active, children}) => {
                 mt={2}
             >
                 <Heading as="h3" size="xl" align="center">
-                    Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/images/gradient.webp')" backgroundSize="cover">Ethereum Wallet</Text>
+                    Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/images/gradient.webp')" backgroundSize="cover">Blockchain Wallet</Text>
                 </Heading>
                 <br/>
 
@@ -175,6 +175,32 @@ const DashboardShell = ({title, active, children}) => {
                         </Text>
                         <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>WalletConnect</Text>
                         <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Connect with Rainbow, Argent and others</Text>
+                    </Flex>
+                    <Flex
+                        minHeight="170px"
+                        w={{base:"80vw", md:"30vw"}}
+                        maxW={{base:"80vw", md:"300px"}}
+                        mx={{base:0, md:2}}
+                        my={{base:2, md:0}}
+                        p={6}
+                        pt={4}
+                        direction="column"
+                        borderWidth={2}
+                        borderColor={colorMode === 'light' ? "#eee": "whiteAlpha.400"}
+                        borderRadius={16}
+                        cursor="pointer"
+                        _hover={{
+                            borderColor: colorMode === 'light' ? "blackAlpha.800": "gray.500",
+                        }}
+                    >
+                        <NearIcon py={2} boxSize={10}/>
+                        <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>NEAR Protocol</Text>
+                        <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>
+                            Login with NEAR.
+                            <Tag size="md" key="md" variant="solid" colorScheme="teal">
+                                Coming Soon
+                            </Tag>
+                        </Text>
                     </Flex>
                 </Flex>
                 <br/>

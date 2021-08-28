@@ -25,7 +25,7 @@ const Threads = (props) => {
     const { data: initialThreads, error } = useSWR(
         [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?apikey=CONVO`, "GET"],
         fetcher,
-        { initialData: props.initialThreads }
+        { fallbackData: props.initialThreads }
     );
 
     if (error) {

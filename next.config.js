@@ -8,6 +8,7 @@ module.exports = (phase) => {
       experimental: {
         optimizeCss:true
       },
+      maximumFileSizeToCacheInBytes: 5000000,
       reactStrictMode: true,
       webpack: (config, { isServer }) => {
         if (!isServer) {
@@ -28,6 +29,7 @@ module.exports = (phase) => {
         dest: 'public',
         runtimeCaching,
       },
+      maximumFileSizeToCacheInBytes: 5000000,
       target: "experimental-serverless-trace",
       poweredByHeader: false,
       reactStrictMode: true,

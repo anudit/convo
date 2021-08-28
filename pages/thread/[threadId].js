@@ -61,12 +61,12 @@ const Threads = (props) => {
     const { data: comments, mutate  } = useSWR(
         [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
         fetcher,
-        {initialData: props.initialComments}
+        {fallbackData: props.initialComments}
     );
     const { data: thread } = useSWR(
         [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
         fetcher,
-        {initialData: props.thread}
+        {fallbackData: props.thread}
     );
 
     const { hasCopied, onCopy } = useClipboard(`${process.env.NEXT_PUBLIC_API_SITE_URL}/thread/${router.query.threadId}`);

@@ -111,7 +111,7 @@ const SiteInterface = (props) => {
     const { data: threads, mutate } = useSWR(
         Boolean(router.query.siteUrlEncoded) === false? null : `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?url=${fromB64(router.query.siteUrlEncoded)}&apikey=CONVO`,
         fetcher,
-        {initialData: props.initialThreads}
+        {fallbackData: props.initialThreads}
     );
 
     const { isOpen, onClose, onOpen } = useDisclosure()
