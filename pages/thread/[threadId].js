@@ -71,7 +71,7 @@ const Threads = (props) => {
 
     const { hasCopied, onCopy } = useClipboard(`${process.env.NEXT_PUBLIC_API_SITE_URL}/thread/${router.query.threadId}`);
     const { hasCopied: hasCopiedIframe, onCopy: onCopyIframe } = useClipboard(`
-        <iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/t/${router.query.threadId}"/>
+        <iframe src="${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?threadId=${router.query.threadId}"/>
     `);
     const newCommentRef = useRef()
     const toast = useToast()
@@ -228,7 +228,7 @@ const Threads = (props) => {
                                     >
                                         <Flex direction="row" justifyContent="space-between">
                                             <Flex direction="row" >
-                                                <CustomAvatar address={comment.author} mr={2} size="sm" />
+                                                <CustomAvatar address={comment.author} mr={2} size="sm" ensName={comment.authorENS}/>
                                                 <Flex direction="column">
                                                     <Link
                                                         target="_blank"

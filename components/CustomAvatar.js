@@ -5,11 +5,13 @@ import { getAvatar } from '@/utils/avatar';
 import fetcher from '@/utils/fetcher';
 import { VerifiedIcon } from '@/public/icons';
 import { WarningIcon } from '@chakra-ui/icons';
+import { ethers } from 'ethers';
 
 const CustomAvatar = (props) => {
 
     const address = props.address;
     const [verified, setVerified] = useState(null);
+    const [customPfp, setCustomPfp] = useState(null);
 
     useEffect(() => {
         fetcher(`/api/identity?address=${address}&apikey=CONVO`, "GET", {}).then((res)=>{
@@ -17,25 +19,41 @@ const CustomAvatar = (props) => {
                 setVerified(res.score);
             }
         });
+        // const resolver = await provider.getResolver("ricmoo.eth");
     }, [address]);
+
+    useEffect(() => {
+        if (Boolean(props?.ensName) === true ){
+            let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
+            tp.getResolver(props.ensName).then(async (resolver) => {
+                let pfp = await resolver?.getText('avatar');
+                if(Boolean(pfp) === true){
+                    console.log(pfp);
+                    setCustomPfp(pfp);
+                }
+            });
+        }
+    }, [props]);
 
 
     if (Boolean(verified) === false || Boolean(verified) == 0) {
         return (<Avatar
             background="#ffffff00"
-            src={getAvatar(address, {dataUri: true})}
+            src={Boolean(customPfp) === true ? customPfp : getAvatar(address, {dataUri: true})}
             name={address}
             alt={address}
-            {...props}
+            size={props?.size}
+            mr={props?.mr}
         />);
     }
     else {
         return (<Avatar
             background="#ffffff00"
-            src={getAvatar(address, {dataUri: true})}
+            src={Boolean(customPfp) === true ? customPfp : getAvatar(address, {dataUri: true})}
             name={address}
             alt={address}
-            {...props}
+            size={props?.size}
+            mr={props?.mr}
         >
             {
                 verified >= 10 ? (

@@ -205,7 +205,7 @@ const NavLinks = () => {
                         </MenuButton>
                         <MenuList width="fit-content">
                             <MenuItem fontWeight="100" >
-                                <CustomAvatar address={signerAddress}  mr={2} size="xs" />
+                                <CustomAvatar address={signerAddress}  mr={2} size="xs" ensName={prettyName}/>
                                 {truncateAddress(signerAddress)}
                             </MenuItem>
                             <MenuItem fontWeight="100" icon={<DisconnectIcon mx="4px" />} onClick={disconnectWallet}>Disconnect</MenuItem>

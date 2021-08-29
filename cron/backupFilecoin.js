@@ -59,13 +59,31 @@ async function pinToPinata(hash) {
 
 }
 
+async function pinToInfura(hash) {
+
+    const response = await fetch(`https://ipfs.infura.io:5001/api/v0/pin/add?arg=${hash}`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        body: JSON.stringify({})
+    });
+    let json = await response.json();
+    return json;
+
+}
+
 const client = new NFTStorage({ token: NFTSTORAGE_KEY })
-console.log("🔃 Backing up data over NFT.Storage")
+console.log("🔃 Backing up data to NFT.Storage")
 getData().then((data)=>{
     const content = new Blob([JSON.stringify(data)]);
     client.storeBlob(content).then(async (ipfsHash)=>{
-        console.log("✅ Backed up Data Over NFT.Storage");
+        console.log("✅ Backed up Data to NFT.Storage");
         await pinToPinata(ipfsHash);
-        console.log("✅ Replicated Data Over Pinata");
+        console.log("✅ Replicated Backup to Pinata");
+        await pinToInfura(ipfsHash);
+        console.log("✅ Replicated Backup to Infura");
     });
 })
