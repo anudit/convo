@@ -127,7 +127,7 @@ const Threads = (props) => {
 
                 if (Object.keys(res).includes('_id') === true) {
                     res['text'] = decodeURI(res['text']);
-                    mutate(comments.concat(res), false);
+                    mutate([res].concat(comments), false);
                     newCommentRef.current.value='';
                     document.getElementById(newCommentRef.current.id).focus();
                     setInitScroll(!initScroll);
@@ -282,18 +282,24 @@ const Threads = (props) => {
                     mt="0"
                     backgroundColor="transparent"
                 >
-                    <Flex direction="column" height={Boolean(router.query?.height) === true ? parseInt(router.query?.height) : 300} overflowY="auto" id="commentsBox">
+                    <Flex direction="column" height="fit-content" maxHeight={Boolean(router.query?.height) === true ? parseInt(router.query?.height) : 300} overflowY="auto" id="commentsBox">
                         <Flex style={{textAlign:"center"}} minH="50px" justifyContent="center" alignItems="center">
                             {
-                                loadingMore === true ? (
-                                    <Spinner thickness="2px" speed="0.4s" emptyColor="white" color="black" size="sm" />
-                                ) : (
-                                    hasMoreData === true ? (
-                                        <Text cursor="pointer" onClick={fetchMoreData}>Load Previous</Text>
-                                    ):(
-                                        "All done."
+                                comments.length >= 10 ? (
+
+                                    loadingMore === true ? (
+                                        <Spinner thickness="2px" speed="0.4s" emptyColor="white" color="black" size="sm" />
+                                    ) : (
+                                        hasMoreData === true ? (
+                                            <Text cursor="pointer" onClick={fetchMoreData}>Load Previous</Text>
+                                        ):(
+                                            "All done."
+                                        )
                                     )
-                                )
+
+                                ) : comments.length == 0 ? (
+                                    <Text>Be the First One to Comment!</Text>
+                                ) : (<></>)
                             }
                         </Flex>
                         <Table size="sm" variant="striped" w="100%">
