@@ -16,10 +16,12 @@ function isValidUrl(string) {
 
 export default async (req, res) => {
 
+  // Required for CORS/Pre-flight Check.
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
+  // Validate API Key
   if (Object.keys(req.query).includes('apikey') === false || req.query.apikey !== 'CONVO' ){
     return res.status(401).json({
       'success': false,
@@ -31,7 +33,7 @@ export default async (req, res) => {
 
     if (req.method === "GET") {
 
-      // No filter params return empty request
+      // No key filter params returns Incomplete req.
       if (Boolean(req.query?.threadId) === false &&
           Boolean(req.query?.url) === false &&
           Boolean(req.query?.author) === false
@@ -157,10 +159,17 @@ export default async (req, res) => {
 
         if (Object.keys(req.body).includes('commentId') === true){
           let resp = await deleteComment(req.body.commentId);
-          return res.status(200).json({
-            success: true,
-            resp
-          });
+          if (resp === true){
+            return res.status(200).json({
+              success: true
+            });
+          }
+          else {
+            return res.status(200).json({
+              success: false,
+              'error':'Invalid commentId.'
+            });
+          }
         }
         else {
           return res.status(400).json({
