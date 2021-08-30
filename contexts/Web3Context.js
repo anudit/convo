@@ -31,7 +31,7 @@ export const Web3ContextProvider = ({children}) => {
 
     let resp = await Promise.allSettled(promiseArray);
 
-    console.log('updatePrettyName', resp);
+    // console.log('updatePrettyName', resp);
 
     if(Boolean(resp[0]?.value) === true){
       setPrettyName(resp[0]?.value);
@@ -48,7 +48,7 @@ export const Web3ContextProvider = ({children}) => {
       const signer = provider.getSigner();
       const address = await signer.getAddress();
       setSignerAddress(ethers.utils.getAddress(address));
-      updatePrettyName(address)
+      updatePrettyName(address);
 
     }
     if (provider) {

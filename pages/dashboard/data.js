@@ -122,69 +122,83 @@ const DataTokenView = () => {
 
         setLoading(true);
 
-        let data = await fetcher(`/api/comments?author=${signerAddress}&apikey=CONVO`, "GET");
-        const content = new Blob([JSON.stringify(data)]);
-        const client = new NFTStorage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnaXRodWJ8MTIwMTU1NTMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYxNjMwMjY3NzYyNCwibmFtZSI6ImRlZmF1bHQifQ.nf5d4LV9CZSGrAwus6Cb3q9amggU278rPEJSlNujLPY" });
-        let cid = await client.storeBlob(content);
+        const p = await web3Modal.connect();
+        const chainId = await p.request({ method: 'eth_chainId' });
 
-        const dataset = {
-            main: {
-              type: "dataset",
-              name: `Convo data of ${prettyName != "" ? prettyName : signerAddress}`,
-              dateCreated: new Date(Date.now()).toISOString().split(".")[0] + "Z",
-              author: `${prettyName != "" ? prettyName : signerAddress}`,
-              license: "MIT",
-              files: [
-                {
-                  url: `https://${cid}.ipfs.dweb.link`,
-                  contentType: "json",
+        if (parseInt(chainId) !== 4 ){
+            alert('Please switch to Rinkeby Testnet!')
+        }
+        else {
+
+            let data = await fetcher(`/api/comments?author=${signerAddress}&apikey=CONVO`, "GET");
+            const content = new Blob([JSON.stringify(data)]);
+            const client = new NFTStorage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnaXRodWJ8MTIwMTU1NTMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYxNjMwMjY3NzYyNCwibmFtZSI6ImRlZmF1bHQifQ.nf5d4LV9CZSGrAwus6Cb3q9amggU278rPEJSlNujLPY" });
+            let cid = await client.storeBlob(content);
+
+            var d = new Date();
+            const dataset = {
+                main: {
+                    type: "dataset",
+                    name: `Convo data of ${prettyName != "" ? prettyName : signerAddress}`,
+                    dateCreated: new Date(Date.now()).toISOString().split(".")[0] + "Z",
+                    author: `${prettyName != "" ? prettyName : signerAddress}`,
+                    datePublished: d.toISOString(),
+                    license: "MIT",
+                    files: [
+                    {
+                        url: `https://${cid}.ipfs.dweb.link`,
+                        contentType: "json",
+                    },
+                    ],
                 },
-              ],
-            },
-        };
+            };
 
-        const tokenAddress = await datatoken.create('', signerAddress);
-        console.log("Token Address: ", tokenAddress);
+            const tokenAddress = await datatoken.create('', signerAddress);
+            console.log("Token Address: ", tokenAddress);
 
-        if (isAddress(tokenAddress) === true){
+            if (isAddress(tokenAddress) === true){
 
-            let accounts = await ocean.accounts.list();
+                let accounts = await ocean.accounts.list();
 
-            let dataService = await ocean.assets.createAccessServiceAttributes(
-                accounts[0],
-                tokenCapRef.current.value, // set the price in datatoken
-                new Date(Date.now()).toISOString().split(".")[0] + "Z", // publishedDate
-                0 // timeout
-            );
+                let dataService = await ocean.assets.createAccessServiceAttributes(
+                    accounts[0],
+                    parseFloat(tokenCapRef.current.value), // set the price in datatoken
+                    new Date(Date.now()).toISOString().split(".")[0] + "Z", // publishedDate
+                    0 // timeout
+                );
 
-            console.log(dataService);
+                console.log(dataService);
 
-            // publish asset
-            const ddo = await ocean.assets.create(
-                dataset,
-                accounts[0],
-                [dataService],
-                tokenAddress
-            );
+                // publish asset
+                const ddo = await ocean.assets.create(
+                    dataset,
+                    accounts[0],
+                    [dataService],
+                    tokenAddress
+                );
 
-            console.log('Data ID:', ddo);
+                console.log('Data ID:', ddo, accounts[0].id);
 
-            // publish MetaData
-            const pubddo = await ocean.assets.publishDdo(ddo, accounts[0].id, true );
+                // publish MetaData
+                const pubddo = await ocean.assets.publishDdo(ddo, accounts[0].id, true );
 
-            console.log('pubddo', pubddo);
+                console.log('pubddo', pubddo);
 
-            toast({
-                title: "Token Created",
-                description: "Check out the Token on the Ocean Marketplace.",
-                status: "success",
-                duration: 9000,
-                isClosable: true,
-            });
+                toast({
+                    title: "Token Created 🎉",
+                    description: "Check back in a few seconds for the updates to reflect.",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                });
 
-            let assets = await ocean.assets.ownerAssets(signerAddress);
-            setTokens(assets?.results);
+                setTimeout(async()=>{
+                    let assets = await ocean.assets.ownerAssets(signerAddress);
+                    console.log('newAssets', assets);
+                    setTokens(assets?.results);
+                }, 5000);
 
+            }
         }
 
         setLoading(false);
