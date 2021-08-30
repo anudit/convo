@@ -146,6 +146,10 @@ async function setCache(address, scoreData) {
 
 export default async (req, res) => {
 
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
     if (Object.keys(req.query).includes('apikey') === false || req.query.apikey !== 'CONVO' ){
         return res.status(401).json({
           'success': false,
