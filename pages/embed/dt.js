@@ -145,7 +145,7 @@ const Threads = (props) => {
             else {
                 toast({
                     title: "Whoops!",
-                    description: "Can&apos;t send an empty message.",
+                    description: "Can't send an empty message.",
                     status: "warning",
                     duration: 10000,
                     isClosable: true,

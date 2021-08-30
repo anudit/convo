@@ -582,7 +582,7 @@ const Home = ({tweetData}) => {
               Just a single line of code, to get you started.
             </Text>
             <MakeOwnCodeBlock
-              value={`"${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?threadId=KIGZUnR4RzXDFheXoOwo"`}
+              value={`"${process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?threadId=KIGZUnR4RzXDFheXoOwo&url=https%3A%2F%2Ftheconvo.space%2F"`}
             />
             <br/>
             <iframe title="Comments Page Demo" src={"/embed/dt?threadId=KIGZUnR4RzXDFheXoOwo&url=https%3A%2F%2Ftheconvo.space%2F&height=500&theme=" + colorMode} loading="lazy" width="100%" height="650px" allowtransparency="true" style={{overflow:"hidden"}}>
