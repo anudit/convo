@@ -122,7 +122,7 @@ const Threads = (props) => {
                     signerAddress,
                     comment,
                     'threadId': router.query.threadId,
-                    'url': decodeURIComponent(router.query.url),
+                    'url': 'https://theconvo.space/',
                 });
 
                 if (Object.keys(res).includes('_id') === true) {
@@ -167,7 +167,7 @@ const Threads = (props) => {
         });
 
         if (Object.keys(res).includes('success') === true) {
-            mutate(comments.filter(item => item._id !== commentId), false);
+            mutate(comments.filter(item => item._id !== commentId).reverse(), false);
             toast({
                 title: "Gone!",
                 description: `The comment is deleted.`,
@@ -227,7 +227,7 @@ const Threads = (props) => {
     //     }
     // }, [!isLoggedIn]);
 
-    if (Boolean(router.query?.url) === false && Boolean(router.query?.threadId) === false) {
+    if (Boolean(router.query) === true && Boolean(router.query?.url) === false && Boolean(router.query?.threadId) === false) {
         return (
             <>
                 <Head>
