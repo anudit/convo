@@ -1,5 +1,5 @@
 require('dotenv').config({ path: '.env.local' })
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const { Client, PrivateKey, ThreadID, Where } = require('@textile/hub');
 const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");

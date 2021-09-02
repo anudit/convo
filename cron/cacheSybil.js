@@ -1,5 +1,5 @@
 require('dotenv').config({ path: '.env.local' })
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 
 const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID } = process.env;

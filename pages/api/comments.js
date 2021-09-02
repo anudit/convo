@@ -117,6 +117,10 @@ export default async (req, res) => {
         ){
 
           let metadata = Boolean(req.body?.metadata) === true ? req.body.metadata : {};
+          let replyTo = Boolean(req.body?.replyTo) === true ? req.body.replyTo : "";
+          let tag1 = Boolean(req.body?.tag1) === true ? req.body.tag1 : "";
+          let tag2 = Boolean(req.body?.tag2) === true ? req.body.tag2 : "";
+
           let commentData = {
             'createdOn': Date.now().toString(),
             'author': req.body.signerAddress,
@@ -124,11 +128,12 @@ export default async (req, res) => {
             'url': req.body.url,
             'tid': req.body.threadId,
             'metadata' : metadata,
-            'tag1' : Boolean(req.body?.tag1) === true ? req.body.tag1 : "",
-            'tag2' : Boolean(req.body?.tag2) === true ? req.body.tag2 : "",
+            'tag1' : tag1,
+            'tag2' : tag2,
             'upvotes': [],
             'downvotes': [],
-            'chain': "ethereum"
+            'chain': "ethereum",
+            'replyTo': replyTo,
           };
           let newId = await createComment(commentData);
 
