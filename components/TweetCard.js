@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, useColorMode, Flex, Text, Tooltip } from "@chakra-ui/react";
+import { Avatar, useColorMode, Flex, Text, Tooltip, Link } from "@chakra-ui/react";
 
 import { TwitterIcon } from "@/public/icons";
 import { prettyTimeParse } from "@/utils/stringUtils"
@@ -43,9 +43,9 @@ const TweetCard = ({tweet}) => {
 
           <Flex>
               <Tooltip label="View on Twitter" aria-label="View on Twitter" placement="left">
-                <a href={'https://twitter.com/'+tweet.userData.username+'/status/'+tweet.id} rel="noreferrer" target="_blank" style={{textDecoration: 'inherit'}} >
+                <Link href={'https://twitter.com/'+tweet.userData.username+'/status/'+tweet.id} rel="noreferrer" style={{textDecoration: 'inherit'}} isExternal>
                   <TwitterIcon boxSize={10} color="#1DA1F2"/>
-                </a>
+                </Link>
               </Tooltip>
           </Flex>
         </Flex>

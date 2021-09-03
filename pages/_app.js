@@ -100,6 +100,7 @@ const GlobalStyle = ({ children }) => {
           .typewrite::after {
             content: "|";
             animation: blink 1s infinite;
+            color: #e8a7b6;
           }
           @keyframes blink {
             0%, 100% {opacity: 1;}

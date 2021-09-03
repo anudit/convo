@@ -325,6 +325,7 @@ const Home = ({tweetData}) => {
                         as="a"
                         href="https://coinvise.co/"
                         target="_blank"
+                        rel="noopener"
                       >
                         <Image
                           src="/images/usingconvo/coinvise.webp"
@@ -371,6 +372,7 @@ const Home = ({tweetData}) => {
                         as="a"
                         href="https://huddln.io/"
                         target="_blank"
+                        rel="noopener"
                       >
                         <Image
                           src="/images/usingconvo/huddlnposter.webp"
@@ -416,6 +418,7 @@ const Home = ({tweetData}) => {
                         as="a"
                         href="https://dcl.theconvo.space?ENABLE_WEB3"
                         target="_blank"
+                        rel="noopener"
                       >
                         <video controls autoPlay loop width="700px" height="350px" className="br-10">
                           <source src="https://docs.theconvo.space/ConvoxDecentraland.mp4" type="video/mp4" />
@@ -449,14 +452,14 @@ const Home = ({tweetData}) => {
 
                 <Flex direction="column" justifyContent="center" alignItems="center" w="100%">
                   <TabList display="flex" flexDirection={{base:"column", md:"row"}} w="100%">
-                    <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
+                    <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4} aria-label="Coinvise">
                       <CoinviseIcon boxSize={32}/>
                     </Tab>
                     <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
-                      <Image src="/images/usingconvo/huddln.webp" width="30px" height="30px" alt="Huddln" p={2}/>
+                      <Image src="/images/usingconvo/huddln.webp" width="30px" height="30px" alt="Huddln" p={2} aria-label="Huddln"/>
                       <Text fontSize="1xl" p={2} color="#fff">Huddln</Text>
                     </Tab>
-                    <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
+                    <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4} aria-label="Decentraland">
                       <DecentralandIcon boxSize={8}/>
                       <Text fontSize="1xl" p={2} color="#fff">Decentraland</Text>
                     </Tab>

@@ -14,16 +14,16 @@
   },
   "dependencies": {
     "@3id/connect": "^0.2.0",
-    "@babel/core": "^7.15.0",
-    "@babel/runtime": "^7.15.3",
+    "@babel/core": "^7.15.4",
+    "@babel/runtime": "^7.15.4",
     "@ceramicnetwork/3id-did-resolver": "^1.4.0",
     "@ceramicnetwork/http-client": "^1.2.0",
     "@ceramicstudio/idx": "^0.12.1",
     "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.7",
     "@chakra-ui/system": "^1.7.3",
-    "@dicebear/avatars": "^4.8.5",
-    "@dicebear/micah": "^4.8.5",
+    "@dicebear/avatars": "^4.8.6",
+    "@dicebear/micah": "^4.8.6",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@gnosis.pm/safe-apps-sdk": "^4.2.0",
@@ -32,7 +32,7 @@
     "@oceanprotocol/lib": "^0.17.3",
     "@peculiar/webcrypto": "^1.1.7",
     "@portis/web3": "^4.0.5",
-    "@react-three/drei": "^7.6.0",
+    "@react-three/drei": "^7.6.1",
     "@react-three/fiber": "^7.0.6",
     "@textile/hub": "^6.3.0",
     "@walletconnect/web3-provider": "^1.6.5",
@@ -65,7 +65,7 @@
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.4",
-    "webpack": "^5.51.1"
+    "webpack": "^5.51.2"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^11.1.2",
