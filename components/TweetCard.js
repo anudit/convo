@@ -43,7 +43,7 @@ const TweetCard = ({tweet}) => {
 
           <Flex>
               <Tooltip label="View on Twitter" aria-label="View on Twitter" placement="left">
-                <Link href={'https://twitter.com/'+tweet.userData.username+'/status/'+tweet.id} rel="noreferrer" style={{textDecoration: 'inherit'}} isExternal>
+                <Link href={'https://twitter.com/'+tweet.userData.username+'/status/'+tweet.id} rel="noreferrer" style={{textDecoration: 'inherit'}} isExternal aria-label="Open in Twitter">
                   <TwitterIcon boxSize={10} color="#1DA1F2"/>
                 </Link>
               </Tooltip>
@@ -60,7 +60,7 @@ const TweetCard = ({tweet}) => {
           style={{lineBreak: "auto"}}
         >
             <ReactLinkify>
-                {tweet.text}
+                {tweet.text.replace('@theconvospace', 'Convo')}
             </ReactLinkify>
         </Text>
 

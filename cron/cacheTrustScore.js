@@ -718,22 +718,27 @@ const cacheTrustScoresManual = async (addresses = []) => {
 }
 
 
-// const updateSchema = async (addresses = []) => {
+const updateSchema = async (addresses = []) => {
 
-//     const threadClient = await getClient();
-//     const threadId = ThreadID.fromString(TEXTILE_THREADID);
+    const threadClient = await getClient();
+    const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
-//     let snapshot_cached = await threadClient.find(threadId, 'comments', {});
+    let snapshot_cached = await threadClient.find(threadId, 'comments', {});
+    console.log(snapshot_cached.length);
+    // console.log(snapshot_cached[0]);
+    let donot = snapshot_cached.filter(e=>{return e.replyTo != ""});
 
-//     for (let index = 0; index < snapshot_cached.length; index++) {
-//         snapshot_cached[index] = {
-//             ...snapshot_cached[index],
-//             chain:"ethereum"
-//         }
-//     }
-//     console.log(snapshot_cached.length)
-//     await threadClient.save(threadId, 'comments', snapshot_cached);
-// }
+    console.log(donot.length)
+    // for (let index = 0; index < donot.length; index++) {
+
+    //     let docs = [{
+    //         ...donot[index],
+    //         'replyTo':""
+    //     }]
+    //     await threadClient.save(threadId, 'comments', docs);
+    //     console.log(index)
+    // }
+}
 
 cacheTrustScores().then(()=>{
     console.log("✅ Cached all trust Scores");

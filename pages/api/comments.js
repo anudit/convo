@@ -86,6 +86,15 @@ export default async (req, res) => {
         }
       }
 
+      if (Boolean(req.query?.replyTo) === true){
+        if (query === undefined) {
+          query = new Where('replyTo').eq(req.query.replyTo);
+        }
+        else {
+          query = query.and('replyTo').eq(req.query.replyTo);
+        }
+      }
+
       if (Boolean(req.query?.latestFirst) === true && req.query.latestFirst == 'true'){
         if (query !== undefined) {
           query = query.orderByDesc('_mod');
