@@ -139,7 +139,6 @@ const handler = async (req, res, interaction ) => {
           })
         }
       }
-      break;
     }
     default:
       return res.status(200).json(INVALID_COMMAND_RESPONSE)
