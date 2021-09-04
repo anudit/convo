@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@3id/connect": "^0.2.0",
-    "@babel/core": "^7.15.4",
+    "@babel/core": "^7.15.5",
     "@babel/runtime": "^7.15.4",
     "@ceramicnetwork/3id-did-resolver": "^1.4.0",
     "@ceramicnetwork/http-client": "^1.2.0",
@@ -36,7 +36,6 @@
     "@react-three/fiber": "^7.0.6",
     "@textile/hub": "^6.3.0",
     "@walletconnect/web3-provider": "^1.6.5",
-    "axios": "^0.21.1",
     "critters": "^0.0.10",
     "dids": "^2.4.0",
     "dotenv": "^10.0.0",
@@ -65,7 +64,7 @@
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.4",
-    "webpack": "^5.51.2"
+    "webpack": "^5.52.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^11.1.2",

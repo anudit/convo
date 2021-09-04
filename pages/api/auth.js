@@ -5,8 +5,9 @@ const { Crypto } = require("@peculiar/webcrypto");
 
 async function validateNearSignature(data, signature, signerAddress){
   const tokenMessage = new TextEncoder().encode(data);
-  let sig = new Uint8Array(signature.toString().split(',').map((e)=>{return parseInt(e) }));
-  let sigAdd = new Uint8Array(signerAddress.toString().split(',').map((e)=>{return parseInt(e) }));
+
+  let sig = Uint8Array.from(Buffer.from(signature, 'hex'));
+  let sigAdd = Uint8Array.from(Buffer.from(signerAddress, 'hex'));
   const webcrypto = new Crypto();
   const hashed = await webcrypto.subtle.digest('SHA-256', tokenMessage);
   const hash = new Uint8Array(hashed);
