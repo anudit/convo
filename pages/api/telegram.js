@@ -49,7 +49,7 @@ module.exports = async (request, response) => {
             const { chat: { id }, text } = body.message;
 
             if (/\/help/.test(text)) {
-                const message = `🌉 Convo Bridge.\nBridge your Web2 Accounts to Web3\n\n**Step 1**\nBridge your Web2 Accounts by connecting your Wallet on [bridge.theconvo.space](https://bridge.theconvo.space/).\n\n**Step 2**\nJoin a thread by using the /join command like, /join KIGZUnR4RzXDFheXoOwo\n\n**Available Commands**\n/help Get Help.\n/bridge Get Bridge Details.\n/join Join a Thread.\n/status Your status on the Bridge.\n\nRead more about it in the [Docs](https://docs.theconvo.space/integrate/Convo-Bridge/bridge)`;
+                const message = `🌉 Convo Bridge.\nBridge your Web2 Accounts to Web3\n\n**Step 1**\nBridge your Web2 Accounts by connecting your Wallet on [bridge.theconvo.space](https://bridge.theconvo.space/).\n\n**Step 2**\nJoin a thread by using the /join command like, /join KIGZUnR4RzXDFheXoOwo\n\n**Available Commands**\n/help Get Help.\n/join Join a Thread.\n/status Your status on the Bridge.\n\nRead more about it in the [Docs](https://docs.theconvo.space/integrate/Convo-Bridge/bridge)`;
                 await bot.telegram.sendMessage(id, message,{parse_mode: 'markdown'});
             }
             else if (/\/join (.+)/.test(text)) {
@@ -106,14 +106,14 @@ module.exports = async (request, response) => {
                     let resp = await bridgeReverseLookup('telegram', body.message.from.username);
                     if (resp?.success === true && isAddress(resp?.ethAddress) === true) {
 
-                        if (Boolean(resp?.state) === true){
+                        if (Boolean(resp?.telegramState) === true){
 
                             let commentData = {
                                 'createdOn': Date.now().toString(),
                                 'author': resp?.ethAddress,
                                 'text': text,
                                 'url': 'https://telegram.org/',
-                                'tid': resp?.state,
+                                'tid': resp?.telegramState,
                                 'metadata' : {},
                                 'tag1' : "",
                                 'tag2' : "",

@@ -4,10 +4,9 @@ import { bridgeReverseLookup, joinThreadOnBridge } from "@/lib/bridge"
 import { createComment } from "@/lib/thread-db"
 
 const BASE_RESPONSE = { type: 4 }
+const helpMessage = `🌉 Convo Bridge.\nBridge your Web2 Accounts to Web3\n\n**Step 1**\nBridge your Web2 Accounts by connecting your Wallet on [bridge.theconvo.space](https://bridge.theconvo.space/).\n\n**Step 2**\nJoin a thread by using the \`/join\` command like, \`/join\` KIGZUnR4RzXDFheXoOwo\n\n**Available Commands**\n\`/help\` Get Help.\n\`/join\` Join a Thread.\n\`/status\` Your status on the Bridge.\n\`/send\` To Send a Message.\n\nRead more about it in the [Docs](https://docs.theconvo.space/integrate/Convo-Bridge/bridge)`;
 const INVALID_COMMAND_RESPONSE = { ...BASE_RESPONSE, data: { content: "Oops! I don't recognize this command." } }
-const PING_COMMAND_RESPONSE = { ...BASE_RESPONSE, data: { content: "Pong" } }
-const HELP_COMMAND_RESPONSE = { ...BASE_RESPONSE, data: { content: `**\`/help\`** Get Help \n**\`/bridge\`** Get Bridge Details \n**\`/join\`** Join a Thread \nRead more about this in the [Docs](https://docs.theconvo.space/integrate/Convo-Bridge/bridge)` } }
-const BRIDGE_COMMAND_RESPONSE = { ...BASE_RESPONSE, data: { content: `🌉 Bridge your Web2 Accounts to Web3 by connecting your Accounts on [bridge.theconvo.space](https://bridge.theconvo.space/)` } }
+const HELP_COMMAND_RESPONSE = { ...BASE_RESPONSE, data: { content: helpMessage } }
 const JOINED_THREAD_RESPONSE = { ...BASE_RESPONSE, data: { content: `🎉 Joined thread` } }
 const INVALID_THREAD_RESPONSE = { ...BASE_RESPONSE, data: { content: `⚠️ Invalid threadId` } }
 
@@ -23,18 +22,13 @@ const handler = async (req, res, interaction ) => {
   const { data: { name, options } } = interaction
 
   switch (name) {
-    case "ping":
-      return res.status(200).json(PING_COMMAND_RESPONSE)
     case "help":
       return res.status(200).json(HELP_COMMAND_RESPONSE)
-    case "bridge":
-      return res.status(200).json(BRIDGE_COMMAND_RESPONSE)
     case "status":{
       let bridgeData = await bridgeReverseLookup(
         'discord',
         interaction['user']['username']+"#"+interaction['user']['discriminator']
       );
-      console.log(bridgeData);
       if (bridgeData?.success === true){
         res.status(200).json({
           ...BASE_RESPONSE,
@@ -119,7 +113,7 @@ const handler = async (req, res, interaction ) => {
               return res.status(200).json({
                 ...BASE_RESPONSE,
                 data: {
-                  content: "✔️ Sent."
+                  content: "✅ Sent"
                 }
               });
             }
