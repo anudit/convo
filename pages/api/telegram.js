@@ -1,9 +1,7 @@
-process.env.NTBA_FIX_319 = 'test';
-const TelegramBot = require('node-telegram-bot-api');
-
 import { bridgeReverseLookup, joinThreadOnBridge } from '@/lib/bridge';
 import { createComment } from "@/lib/thread-db";
 import { isAddress } from 'ethers/lib/utils';
+import { Telegraf } from 'telegraf';
 
 const areHeadersValid = (headers) => {
 
@@ -42,7 +40,7 @@ const areHeadersValid = (headers) => {
 }
 
 module.exports = async (request, response) => {
-    const bot = new TelegramBot(process.env.TELEGRAM_TOKEN);
+    const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
     const { body } = request;
 
     try {
@@ -51,15 +49,10 @@ module.exports = async (request, response) => {
             const { chat: { id }, text } = body.message;
 
             if (/\/help/.test(text)) {
-                const message = `/help Get Help \n/bridge Get Bridge Details \n/join Join a Thread \nRead more about it in the [Docs](https://docs.theconvo.space/integrate/Convo-Bridge/bridge)`;
-                await bot.sendMessage(id, message, {parse_mode: 'Markdown'});
-            }
-            else if (/\/bridge/.test(text)) {
-                const message = `🌉 Bridge your Web2 Accounts to Web3 by connecting your Accounts on [bridge.theconvo.space](https://bridge.theconvo.space/)`;
-                await bot.sendMessage(id, message, {parse_mode: 'Markdown'});
+                const message = `🌉 Convo Bridge.\nBridge your Web2 Accounts to Web3\n\n**Step 1**\nBridge your Web2 Accounts by connecting your Wallet on [bridge.theconvo.space](https://bridge.theconvo.space/).\n\n**Step 2**\nJoin a thread by using the /join command like, /join KIGZUnR4RzXDFheXoOwo\n\n**Available Commands**\n/help Get Help.\n/bridge Get Bridge Details.\n/join Join a Thread.\n/status Your status on the Bridge.\n\nRead more about it in the [Docs](https://docs.theconvo.space/integrate/Convo-Bridge/bridge)`;
+                await bot.telegram.sendMessage(id, message,{parse_mode: 'markdown'});
             }
             else if (/\/join (.+)/.test(text)) {
-
                 if(areHeadersValid(request.headers) === true){
 
                     let threadId = text.replace("/join ", "");
@@ -69,54 +62,82 @@ module.exports = async (request, response) => {
                         threadId
                     );
                     if ( resp === true ){
-                        await bot.sendMessage(id, `🎉 Joined the thread ${threadId}`, {parse_mode: 'Markdown'});
+                        await bot.telegram.sendMessage(id, `🎉 Joined the thread ${threadId}`, {parse_mode: 'Markdown'});
                     }
                     else{
-                        await bot.sendMessage(id, `⚠️ Invalid threadId ${threadId}`, {parse_mode: 'Markdown'});
+                        await bot.telegram.sendMessage(id, `⚠️ Invalid threadId ${threadId}`, {parse_mode: 'Markdown'});
                     }
 
                 }
                 else {
-                    await bot.sendMessage(id, '⚠️ Unauthorized!', {parse_mode: 'Markdown'});
+                    await bot.telegram.sendMessage(id, '⚠️ Unauthorized!', {parse_mode: 'Markdown'});
                 }
-
             }
             else if (/\/join/.test(text)) {
-                const message = `Enter /join followed by a valid threadId, for example, \n/join KIGZUnR4RzXDFheXoOwo`;
-                await bot.sendMessage(id, message, {parse_mode: 'Markdown'});
+                if(areHeadersValid(request.headers) === true){
+                    const message = `Enter /join followed by a valid threadId, for example, \n/join KIGZUnR4RzXDFheXoOwo`;
+                    await bot.telegram.sendMessage(id, message, {parse_mode: 'Markdown'});
+                }
+                else {
+                    await bot.telegram.sendMessage(id, '⚠️ Unauthorized!', {parse_mode: 'Markdown'});
+                }
             }
-            else {
-                let resp = await bridgeReverseLookup('telegram', body.message.from.username);
-                if (resp?.success === true && isAddress(resp?.ethAddress) === true) {
-
-                    if (Boolean(resp?.state) === true){
-
-                        let commentData = {
-                            'createdOn': Date.now().toString(),
-                            'author': resp?.ethAddress,
-                            'text': text,
-                            'url': 'https://telegram.org/',
-                            'tid': resp?.state,
-                            'metadata' : {},
-                            'tag1' : "",
-                            'tag2' : "",
-                            'upvotes': [],
-                            'downvotes': [],
-                            'chain': "ethereum",
-                            'replyTo': ""
-                        };
-                        let retId = await createComment(commentData);
-                        if (Boolean(retId) === false) {
-                            await bot.sendMessage(id, '🚨 Message Delivery Failed', {parse_mode: 'Markdown'});
+            else if (/\/status/.test(text)) {
+                if(areHeadersValid(request.headers) === true){
+                    let resp = await bridgeReverseLookup('telegram', body.message.from.username);
+                    if (resp?.success === true && isAddress(resp?.ethAddress) === true) {
+                        if (Boolean(resp?.telegramState) === true){
+                            await bot.telegram.sendMessage(id, `Joined the threadId: **${resp?.telegramState}**`, {parse_mode: 'Markdown'});
                         }
-
+                        else {
+                            await bot.telegram.sendMessage(id, 'You\'ve not joined a Thread currently.', {parse_mode: 'Markdown'});
+                        }
                     }
                     else {
-                        await bot.sendMessage(id, 'ℹ️ Please /join a thread first.', {parse_mode: 'Markdown'});
+                        await bot.telegram.sendMessage(id, 'ℹ️ Please /bridge your account first.', {parse_mode: 'Markdown'});
                     }
                 }
                 else {
-                    await bot.sendMessage(id, 'ℹ️ Please /bridge your account first.', {parse_mode: 'Markdown'});
+                    await bot.telegram.sendMessage(id, '⚠️ Unauthorized!', {parse_mode: 'Markdown'});
+                }
+            }
+            else {
+                if(areHeadersValid(request.headers) === true){
+                    let resp = await bridgeReverseLookup('telegram', body.message.from.username);
+                    if (resp?.success === true && isAddress(resp?.ethAddress) === true) {
+
+                        if (Boolean(resp?.state) === true){
+
+                            let commentData = {
+                                'createdOn': Date.now().toString(),
+                                'author': resp?.ethAddress,
+                                'text': text,
+                                'url': 'https://telegram.org/',
+                                'tid': resp?.state,
+                                'metadata' : {},
+                                'tag1' : "",
+                                'tag2' : "",
+                                'upvotes': [],
+                                'downvotes': [],
+                                'chain': "ethereum",
+                                'replyTo': ""
+                            };
+                            let retId = await createComment(commentData, body.message.from.id);
+                            if (Boolean(retId) === false) {
+                                await bot.telegram.sendMessage(id, '🚨 Message Delivery Failed', {parse_mode: 'Markdown'});
+                            }
+
+                        }
+                        else {
+                            await bot.telegram.sendMessage(id, 'ℹ️ Please /join a thread first.', {parse_mode: 'Markdown'});
+                        }
+                    }
+                    else {
+                        await bot.telegram.sendMessage(id, 'ℹ️ Please /bridge your account first.', {parse_mode: 'Markdown'});
+                    }
+                }
+                else {
+                    await bot.telegram.sendMessage(id, '⚠️ Unauthorized!', {parse_mode: 'Markdown'});
                 }
             }
 
@@ -125,7 +146,7 @@ module.exports = async (request, response) => {
     catch(error) {
         console.error('Error sending message');
         console.log(error.toString());
-        await bot.sendMessage(body.message.chat.id, `🚨 Bot Error ${error.toString()}`, {parse_mode: 'Markdown'});
+        await bot.telegram.sendMessage(body.message.chat.id, `🚨 Bot Error ${error.toString()}`, {parse_mode: 'Markdown'});
     }
     response.send('OK');
 };

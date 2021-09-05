@@ -19,8 +19,8 @@ export const config = {
 }
 
 const handler = async (req, res, interaction ) => {
+  // console.log(interaction);
   const { data: { name, options } } = interaction
-  // console.log(name, options);
 
   switch (name) {
     case "ping":
@@ -30,25 +30,28 @@ const handler = async (req, res, interaction ) => {
     case "bridge":
       return res.status(200).json(BRIDGE_COMMAND_RESPONSE)
     case "status":{
-      let bridgeData = await  bridgeReverseLookup(
+      let bridgeData = await bridgeReverseLookup(
         'discord',
         interaction['user']['username']+"#"+interaction['user']['discriminator']
       );
+      console.log(bridgeData);
       if (bridgeData?.success === true){
-        return res.status(200).json({
+        res.status(200).json({
           ...BASE_RESPONSE,
           data: {
             content: Boolean(bridgeData['discordState']) === true ? `Joined the threadId: ${bridgeData?.discordState}` : "You've not joined a Thread currently."
           }
         })
+        break;
       }
       else {
-        return res.status(200).json({
+        res.status(200).json({
           ...BASE_RESPONSE,
           data: {
             content: "You've not joined a Thread currently."
           }
         })
+        break;
       }
     }
     case "join":{
@@ -102,7 +105,7 @@ const handler = async (req, res, interaction ) => {
                 'chain': "ethereum",
                 'replyTo': ""
             };
-            let retId = await createComment(commentData);
+            let retId = await createComment(commentData, interaction['user']['username']+"#"+interaction['user']['discriminator']);
             // console.log('retId', retId);
             if (Boolean(retId) === false) {
               return res.status(200).json({
