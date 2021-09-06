@@ -21,28 +21,28 @@ const GlobalStyle = ({ children }) => {
             min-height: 100vh;
           }
           @font-face {
-            font-family: 'GT Walsheim';
+            font-family: 'Montserrat';
             font-style: normal;
             font-weight: 100;
             font-display: swap;
             src: url('/fonts/Montserrat-Regular.woff2') format('woff2');
           }
           @font-face {
-            font-family: 'GT Walsheim';
+            font-family: 'Montserrat';
             font-style: normal;
             font-weight: 400;
             font-display: swap;
             src: url('/fonts/Montserrat-Medium.woff2') format('woff2');
           }
           @font-face {
-            font-family: 'GT Walsheim';
+            font-family: 'Montserrat';
             font-style: normal;
             font-weight: 700;
             font-display: swap;
             src: url('/fonts/Montserrat-Bold.woff2') format('woff2');
           }
           body {
-            font-family: "GT Walsheim", "Segoe UI" !important;
+            font-family: "Montserrat", "Segoe UI" !important;
           }
           @-webkit-keyframes hue {
             from {

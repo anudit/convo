@@ -17,6 +17,9 @@
             "@/utils/*": [
                 "utils/*"
             ],
+            "@/hooks/*": [
+                "hooks/*"
+            ],
             "@/contexts/*": [
                 "contexts/*"
             ],

@@ -1,13 +1,15 @@
 require('dotenv').config({ path: '.env.local' })
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const Headers = (...args) => import('node-fetch').then(({Headers}) => new Headers(...args));
 const { Client, PrivateKey, ThreadID, Where } = require('@textile/hub');
 const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
-const cliProgress = require('cli-progress');
 
 const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID } = process.env;
 
 let DEBUG = false;
+let GLOBAL_MATIC_PRICE = 0;
+let GLOBAL_ETH_PRICE = 0;
 
 let erroredAddresses = [];
 
@@ -52,14 +54,14 @@ const fetcher = async (url, method="GET", bodyData = {}, ISDEBUG = false) => {
     if (method === "GET"){
         res = await fetch(url, {
             method: "GET",
-            headers: new fetch.Headers({ 'Content-Type': 'application/json' }),
+            headers: Headers({ 'Content-Type': 'application/json' }),
             credentials: "same-origin",
         });
     }
     else if (method === "POST" || method === "DELETE") {
         res = await fetch(url, {
             method,
-            headers: new fetch.Headers({ 'Content-Type': 'application/json' }),
+            headers: Headers({ 'Content-Type': 'application/json' }),
             credentials: "same-origin",
             body: JSON.stringify(bodyData)
         });
@@ -157,7 +159,6 @@ async function getCoinviseData(address = ""){
     let promiseArray = [
         fetch(`https://coinvise-prod.herokuapp.com/token?userAddress=${address}&production=true`).then(async (data)=>{return data.json()}),
         fetch(`https://www.coinvise.co/api/nft?chain=137&address=${address}`).then(async (data)=>{return data.json()}),
-        fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}),
         fetch(`https://coinvise-prod.herokuapp.com/sends?size=1000`).then(async (data)=>{return data.json()}),
     ];
     let data = await Promise.allSettled(promiseArray);
@@ -182,14 +183,13 @@ async function getCoinviseData(address = ""){
 
     let totalCountSold = 0;
     let totalAmountSold = 0;
-    let MATIC_price = parseFloat(data[2]?.value[0]?.price);
 
     for (let index = 0; index < data[1]?.value?.nfts?.length; index++) {
         const nft = data[1]?.value?.nfts[index];
         if (nft?.sold === true) {
             totalCountSold += 1;
             if (nft?.symbol === "MATIC"){
-                totalAmountSold+= parseFloat(nft?.price)*MATIC_price;
+                totalAmountSold+= parseFloat(nft?.price)*GLOBAL_MATIC_PRICE;
             }
             if (nft?.symbol === "USDC"){
                 totalAmountSold+= parseFloat(nft?.price)
@@ -226,8 +226,7 @@ async function querySubgraph(url='', query = '') {
 
       let promise = new Promise((res) => {
 
-          var myHeaders = new fetch.Headers();
-          myHeaders.append("Content-Type", "application/json");
+          var myHeaders = Headers({ 'Content-Type': 'application/json' });
 
           var graphql = JSON.stringify({
           query: query
@@ -420,7 +419,7 @@ async function getRaribleData(address = "") {
         }
     };
 
-    let response = await fetch("https://api-mainnet.rarible.com/marketplace/api/v2/items", {
+    let response = await fetch("https://api-mainnet.rarible.com/marketplace/api/v4/items", {
       "headers": {
         "accept": "*/*",
         "content-type": "application/json",
@@ -429,6 +428,7 @@ async function getRaribleData(address = "") {
       "body": JSON.stringify(body),
     })
     let artworks = await response.json();
+
     let totalCountSold = artworks.length;
 
     let totalAmountSold = 0;
@@ -441,7 +441,6 @@ async function getRaribleData(address = "") {
             totalCountSold-=1;
         }
     }
-
     return {
         totalCountSold,
         totalAmountSold
@@ -492,12 +491,22 @@ async function getAsyncartData(address = "") {
 
 async function getEthPrice() {
 
-    let data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
-    return data['data']['items'][0]['quote_rate'];
+    if (Boolean(GLOBAL_ETH_PRICE) === 0){
+        let data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
+        GLOBAL_ETH_PRICE = data['data']['items'][0]['quote_rate'];
+        return data['data']['items'][0]['quote_rate'];
+    }
+    else {
+        return GLOBAL_ETH_PRICE;
+    }
 
 }
 
 async function calculateScore(address) {
+
+    let matic_price_data = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}) ;
+    GLOBAL_MATIC_PRICE = parseFloat(matic_price_data[0].price);
+
     let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
 
     let promiseArray = [
@@ -549,6 +558,7 @@ async function calculateScore(address) {
 
     let results = results1.concat(results2);
     results = results.concat(results3);
+    // console.log(results);
 
     let score = 0;
     let retData = {
@@ -650,13 +660,6 @@ const getTrustScore = async (address) => {
 const cacheTrustScores = async () => {
 
     let addresses = await getAddresses();
-    const b1 = new cliProgress.SingleBar({
-        format: 'Progress |' + '{bar}' + '| {percentage}% || {value}/{total} Chunks || Speed: {speed}',
-        barCompleteChar: '\u2588',
-        barIncompleteChar: '\u2591',
-        hideCursor: true
-    });
-    b1.start(addresses.length, 0, { speed: "N/A" });
 
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
@@ -667,10 +670,10 @@ const cacheTrustScores = async () => {
             '_id': getAddress(addresses[index]),
             ...data
         }]);
-        b1.increment();
-        // console.log(`🟢 Cached ${index}`);
+        if (index%10 == 0){
+            console.log(`🟢 Cached Chunk#${parseInt(index/10)}`);
+        }
     }
-    b1.stop();
     console.log(`⚠️ erroredAddresses ${erroredAddresses}`);
 
 }
@@ -703,7 +706,7 @@ const validateSchema = async () =>{
 }
 
 const cacheTrustScoresManual = async (addresses = []) => {
-
+    // DEBUG=true;
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
@@ -714,6 +717,7 @@ const cacheTrustScoresManual = async (addresses = []) => {
             ...data
         }]);
         console.log(`🟢 Cached ${index}`);
+        // console.log(data);
     }
 }
 
@@ -746,3 +750,5 @@ cacheTrustScores().then(()=>{
 
 // validateSchema();
 // updateSchema();
+
+// cacheTrustScoresManual(["0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8df737904ab678B99717EF553b4eFdA6E3f94589"]);
