@@ -120,9 +120,11 @@ const IdentitySection = () => {
                     <KnownoriginCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
+                    <ZoraCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
                     <CoinviseCard trustScoreData={trustScoreData} />
                   </WrapItem>
-                  <br/>
                   <PoapSection mt={2}/>
               </Wrap>
             </Flex>
@@ -612,7 +614,7 @@ const PoapSection = () => {
 
   if (poaps && poaps.length > 0){
     return (
-      <Wrap>
+      <>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay backdropFilter="blur(10px)"/>
           <ModalContent>
@@ -649,7 +651,7 @@ const PoapSection = () => {
             );
           })
         }
-      </Wrap>
+      </>
     )
   }
   else {
@@ -716,6 +718,29 @@ const RaribleCard = ({trustScoreData}) => {
         }
       </IdentityCard>
     );
+};
+
+const ZoraCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url="/images/zora.webp">
+      {
+        trustScoreData === null ? "Loading" :
+        Boolean(trustScoreData?.zora?.totalCountSold) === false ? (
+            <chakra.p size="xs" as="a" target="_blank" href="https://zora.co/">
+              Create on Zora
+            </chakra.p>
+          ) : (
+            <>
+              <Text mr={1}>
+                {trustScoreData.zora.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.zora.totalAmountSold)}
+              </Text>
+              <VerifiedIcon color="blue.400"/>
+            </>
+          )
+      }
+    </IdentityCard>
+  );
 };
 
 const SuperrareCard = ({trustScoreData}) => {

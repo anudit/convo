@@ -52,7 +52,7 @@
     "nft.storage": "^3.2.0",
     "node-fetch": "^3.0.0",
     "react": "^17.0.2",
-    "react-data-table-component": "^6.11.8",
+    "react-data-table-component": "^7.0.0",
     "react-dom": "^17.0.2",
     "react-hotkeys-hook": "^3.4.0",
     "react-linkify": "^1.0.0-alpha",

@@ -448,6 +448,36 @@ async function getRaribleData(address = "") {
 
 }
 
+async function getZoraData(address){
+
+    let response = await fetch("https://indexer-prod-mainnet.zora.co/v1/graphql", {
+      "headers": {
+        "accept": "*/*",
+        "content-type": "application/json",
+      },
+      "method": "POST",
+      "body": "{\"query\":\"query Tokens {\\n  Token(limit: 20, where:{minter:{_eq:\\\""+address+"\\\"}}){\\n    minter\\n    owner\\n    auctions{\\n      winner\\n      lastBidAmount\\n    }\\n  }\\n}\\n\",\"variables\":null,\"operationName\":\"Tokens\"}",
+    });
+    let data = await response.json();
+    let artworks = data.data?.Token;
+
+    let totalCountSold = 0;
+    let totalAmountSold = 0;
+
+    for (let index = 0; index < artworks.length; index++) {
+        // console.log(artworks[index]['ownership']);
+        if(artworks[index]['auctions'].length > 0 && artworks[index]['owner'] === artworks[index]['auctions'][artworks[index]['auctions'].length-1]['winner']){
+            totalCountSold+=1;
+            totalAmountSold += parseFloat(formatEther(artworks[index]['auctions'][artworks[index]['auctions'].length-1]['lastBidAmount']))
+        }
+    }
+
+    return {
+        totalCountSold,
+        totalAmountSold
+    }
+}
+
 async function getAsyncartData(address = "") {
     let response = await fetch("https://async-2.appspot.com/users/"+address.toLowerCase()+"/arts?rel=artist&type=masters&artType=visual", {
       "headers": {
@@ -546,7 +576,8 @@ async function calculateScore(address) {
         getKnownOriginData(address), // * ethPrice
         getAsyncartData(address), // * ethPrice
         getMirrorData(address),
-        getCoinviseData(address)
+        getCoinviseData(address),
+        getZoraData(address) // * ethPrice
     ];
 
     if (DEBUG === true){ startDate = new Date(); }
@@ -593,6 +624,10 @@ async function calculateScore(address) {
         'asyncart': {
             'totalCountSold': results[15]?.value?.totalCountSold,
             'totalAmountSold': results[15]?.value?.totalAmountSold * results[10]?.value
+        },
+        'zora': {
+            'totalCountSold': results[18]?.value?.totalCountSold,
+            'totalAmountSold': results[18]?.value?.totalAmountSold * results[10]?.value
         },
         'coinvise': {
             'tokensCreated': results[17]?.value?.tokensCreated,
@@ -706,18 +741,18 @@ const validateSchema = async () =>{
 }
 
 const cacheTrustScoresManual = async (addresses = []) => {
-    // DEBUG=true;
+    DEBUG=false;
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
+        // console.log(data);
         await threadClient.save(threadId, 'cachedTrustScores', [{
             '_id': getAddress(addresses[index]),
             ...data
         }]);
         console.log(`🟢 Cached ${index}`);
-        // console.log(data);
     }
 }
 

@@ -9,8 +9,8 @@ const theme = extendTheme({
         }),
       },
     fonts: {
-      heading: "GT Walsheim, Segoe UI",
-      body: "GT Walsheim, Segoe UI",
+      heading: "Montserrat, Segoe UI",
+      body: "Montserrat, Segoe UI",
     },
     fontWeights: {
       normal: 400,

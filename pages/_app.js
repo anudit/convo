@@ -43,6 +43,7 @@ const GlobalStyle = ({ children }) => {
           }
           body {
             font-family: "Montserrat", "Segoe UI" !important;
+            overflow-x:hidden;
           }
           @-webkit-keyframes hue {
             from {
