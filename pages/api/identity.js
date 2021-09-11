@@ -4,6 +4,7 @@ import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
 import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
+import withApikey from "@/middlewares/withApikey";
 
 async function calculateScore(address) {
     let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
@@ -144,18 +145,7 @@ async function setCache(address, scoreData) {
     }]);
 }
 
-export default async (req, res) => {
-
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-
-    if (Object.keys(req.query).includes('apikey') === false || req.query.apikey !== 'CONVO' ){
-        return res.status(401).json({
-          'success': false,
-          'error': 'Invalid API key, please refer to the integration docs at https://docs.theconvo.space/ to see how to get and use a new API key.'
-        });
-    }
+const handler = async(req, res) => {
 
     try {
 
@@ -218,3 +208,6 @@ export default async (req, res) => {
         return res.status(500).json({ 'success': false, error });
     }
 }
+
+
+export default withApikey(handler)

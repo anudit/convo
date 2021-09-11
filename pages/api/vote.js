@@ -1,7 +1,8 @@
 import validateAuth from "@/lib/validateAuth";
 import  { toggleUpvote, toggleDownvote } from "@/lib/thread-db";
+import withApikey from "@/middlewares/withApikey";
 
-export default async (req, res) => {
+const handler = async(req, res) => {
 
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
@@ -72,3 +73,5 @@ export default async (req, res) => {
 
     }
 }
+
+export default withApikey(handler);

@@ -1,5 +1,5 @@
 import { getComment } from "@/lib/thread-db";
-import withApikey from "middlewares/withApikey";
+import withApikey from "@middlewares/withApikey";
 
 const handler = async(req, res) => {
 

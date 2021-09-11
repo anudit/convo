@@ -1,6 +1,7 @@
 import validateAuth from "@/lib/validateAuth";
 import { createComment, deleteComment, getComments } from "@/lib/thread-db";
 import { Where } from "@textile/hub";
+import withApikey from "@middlewares/withApikey";
 
 function isValidUrl(string) {
   let url;
@@ -14,20 +15,7 @@ function isValidUrl(string) {
   return url.protocol === "http:" || url.protocol === "https:";
 }
 
-export default async (req, res) => {
-
-  // Required for CORS/Pre-flight Check.
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  // Validate API Key
-  if (Object.keys(req.query).includes('apikey') === false || req.query.apikey !== 'CONVO' ){
-    return res.status(401).json({
-      'success': false,
-      'error': 'Invalid API key, please refer to the integration docs at https://docs.theconvo.space/ to see how to get and use a new API key.'
-    });
-  }
+const handler = async(req, res) => {
 
   try {
 
@@ -211,3 +199,5 @@ export default async (req, res) => {
     return res.status(500).json({ success: false,'error':error.toString() });
   }
 }
+
+export default withApikey(handler);

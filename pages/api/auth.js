@@ -3,7 +3,7 @@ import { isAddress, verifyMessage } from 'ethers/lib/utils';
 import nacl from 'tweetnacl';
 const { Crypto } = require("@peculiar/webcrypto");
 
-import withApikey from 'middlewares/withApikey';
+import withApikey from "@middlewares/withApikey";
 
 async function validateNearSignature(data, signature, signerAddress){
   const tokenMessage = new TextEncoder().encode(data);
