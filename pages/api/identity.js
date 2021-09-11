@@ -164,11 +164,17 @@ export default async (req, res) => {
         if (Object.keys(req.query).includes('address') === true && isAddress(req.query.address) === true ){
             validatedAddress = req.query.address;
         }
-        else if (Object.keys(req.query).includes('address') === true && req.query.address.toString().includes('.eth') === true ){
+        else if (Object.keys(req.query).includes('address') === true && req.query.address.toString().slice(req.query.address.length-4,req.query.address.length) === '.eth' ){
             let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
             let ensReq  = await tp.resolveName(req.query.address);
             if (Boolean(ensReq) === true){
                 validatedAddress = ensReq;
+            }
+            else {
+                return res.status(401).json({
+                    'success': false,
+                    'error': 'Invalid Address.'
+                });
             }
         }
         else {

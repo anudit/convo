@@ -38,16 +38,18 @@ export const ThreadView = ({link, threads, exploreAll}) => {
 
     useEffect(() => {
         console.log('Got', link);
-        try {
-            const urlObj = new URL(link);
-            let tempurl = urlObj['origin'] + urlObj['pathname'];
-            if (tempurl.charAt(tempurl.length - 1) != "/") {
-                tempurl += '/';
+        if (link.slice(0, 7) == "http://" || link.slice(0, 8) == "https://"){
+            try {
+                const urlObj = new URL(link);
+                let tempurl = urlObj['origin'] + urlObj['pathname'];
+                if (tempurl.charAt(tempurl.length - 1) != "/") {
+                    tempurl += '/';
+                }
+                setUrl(tempurl);
+                console.log('made', tempurl);
+            } catch (error) {
+                console.log(error);
             }
-            setUrl(tempurl);
-            console.log('made', tempurl);
-        } catch (error) {
-            console.log(error);
         }
     }, [link]);
 

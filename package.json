@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
-    "start": "next start",
+    "start": "next start --port $PORT",
     "export": "next export",
     "tunnel": "lt --port 3000 --subdomain convo",
     "sync": "node sync.js",
@@ -16,14 +16,14 @@
     "@3id/connect": "^0.2.0",
     "@babel/core": "^7.15.5",
     "@babel/runtime": "^7.15.4",
-    "@ceramicnetwork/3id-did-resolver": "^1.4.0",
-    "@ceramicnetwork/http-client": "^1.2.0",
-    "@ceramicstudio/idx": "^0.12.1",
+    "@ceramicnetwork/3id-did-resolver": "^1.4.1",
+    "@ceramicnetwork/http-client": "^1.2.1",
+    "@ceramicstudio/idx": "^0.12.2",
     "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.7",
     "@chakra-ui/system": "^1.7.3",
-    "@dicebear/avatars": "^4.9.0",
-    "@dicebear/micah": "^4.9.0",
+    "@dicebear/avatars": "^4.9.1",
+    "@dicebear/micah": "^4.9.1",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@gnosis.pm/safe-apps-sdk": "^4.2.0",
@@ -65,13 +65,13 @@
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.4",
-    "webpack": "^5.52.0"
+    "webpack": "^5.52.1"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^11.1.2",
     "eslint-config-next": "^11.1.2",
     "eslint-plugin-react": "^7.25.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "next-sitemap": "^1.6.164"
+    "next-sitemap": "^1.6.168"
   }
 }
