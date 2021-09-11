@@ -1,5 +1,5 @@
 import Ably from "ably/promises";
-import withApikey from "@middlewares/withApikey";
+import withApikey from "@/middlewares/withApikey";
 
 const handler = async(req, res) => {
 

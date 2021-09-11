@@ -1,7 +1,7 @@
 import validateAuth from "@/lib/validateAuth";
 import { createComment, deleteComment, getComments } from "@/lib/thread-db";
 import { Where } from "@textile/hub";
-import withApikey from "@middlewares/withApikey";
+import withApikey from "@/middlewares/withApikey";
 
 function isValidUrl(string) {
   let url;
