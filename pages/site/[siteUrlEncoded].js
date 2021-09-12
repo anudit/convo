@@ -102,7 +102,7 @@ const Hero = ({children}) => {
 }
 
 Hero.propTypes = {
-    children: PropTypes.element
+    children: PropTypes.node
 }
 
 const SiteInterface = ({initialThreads}) => {

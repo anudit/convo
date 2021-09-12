@@ -7,6 +7,7 @@ import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 import Linkify from 'react-linkify';
 import { Where } from "@textile/hub";
+import PropTypes from 'prop-types';
 
 import PageShell from '@/components/PageShell';
 import { ReplyIcon, ThreeDotMenuIcon, CodeIcon } from '@/public/icons';
@@ -333,5 +334,11 @@ const Threads = (props) => {
 
 
 };
+
+
+Threads.propTypes = {
+    initialComments: PropTypes.array,
+    thread: PropTypes.object
+}
 
 export default Threads;

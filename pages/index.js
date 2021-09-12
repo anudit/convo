@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Button, Box, UnorderedList, ListItem, Tabs, TabList, Tab, TabPanels, TabPanel, SimpleGrid } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
+import PropTypes from 'prop-types';
 
 import { DataIcon, DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon, DiscordIcon, CoinviseIcon, DecentralandIcon } from '@/public/icons';
 import { CustomButton } from '@/components/CustomButtons';
@@ -792,3 +793,7 @@ const Home = ({tweetData}) => {
 };
 
 export default Home;
+
+Home.propTypes = {
+  tweetData: PropTypes.array,
+}

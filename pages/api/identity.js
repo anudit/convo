@@ -1,4 +1,4 @@
-import { checkPoH, getMirrorData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData } from "@/lib/identity";
+import { checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData } from "@/lib/identity";
 import { getClient } from "@/lib/thread-db";
 import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
@@ -6,34 +6,29 @@ import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
 import withApikey from "@/middlewares/withApikey";
 
-async function calculateScore(address) {
-    let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
-
+async function getSybil(address) {
     let threadClient = await getClient();
     const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
     const query = new Where('_id').eq(getAddress(address));
+    let resp = await threadClient.find(threadId, 'cachedSybil', query);
+    return resp;
+}
+
+async function calculateScore(address) {
+
+    let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
 
     let promiseArray = [
-        checkPoH(address),
+        checkPoH(address, tp),
         fetcher(`https://app.brightid.org/node/v5/verifications/Convo/${address.toLowerCase()}`, "GET", {}),
         fetcher(`https://api.poap.xyz/actions/scan/${address}`, "GET", {}),
         tp.lookupAddress(address),
         fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
-    ];
-
-    let results1 = await Promise.allSettled(promiseArray);
-
-    let promiseArray2 = [
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
-        threadClient.find(threadId, 'cachedSybil', query),
+        getSybil(address),
         fetcher(`https://backend.deepdao.io/user/${address.toLowerCase()}`, "GET", {}),
         fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}),
-    ];
-
-    let results2 = await Promise.allSettled(promiseArray2);
-
-    let promiseArray3 = [
         getEthPrice(),
         getFoundationData(address), // * ethPrice
         getSuperrareData(address),
@@ -41,13 +36,11 @@ async function calculateScore(address) {
         getKnownOriginData(address), // * ethPrice
         getAsyncartData(address), // * ethPrice
         getMirrorData(address),
-        getCoinviseData(address)
+        getCoinviseData(address),
+        getZoraData(address) // * ethPrice
     ];
 
-    let results3 = await Promise.allSettled(promiseArray3);
-
-    let results = results1.concat(results2);
-    results = results.concat(results3);
+    let results = await Promise.allSettled(promiseArray);
 
     let score = 0;
     let retData = {
@@ -59,7 +52,7 @@ async function calculateScore(address) {
         'idena': Boolean(results[4].value?.result),
         'cryptoScamDb': Boolean(results[5].value?.success),
         'unstoppableDomains': Boolean(results[6].value) === true ? results[6].value : false,
-        'uniswapSybil': results[7].value.length,
+        'uniswapSybil': results[7].value?.length,
         'deepdao': Boolean(results[8].value?.totalDaos) === true? parseInt(results[8].value?.totalDaos) : 0,
         'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,
         'mirror': results[16].value,
@@ -83,6 +76,10 @@ async function calculateScore(address) {
             'totalCountSold': results[15]?.value?.totalCountSold,
             'totalAmountSold': results[15]?.value?.totalAmountSold * results[10]?.value
         },
+        'zora': {
+            'totalCountSold': results[18]?.value?.totalCountSold,
+            'totalAmountSold': results[18]?.value?.totalAmountSold * results[10]?.value
+        },
         'coinvise': {
             'tokensCreated': results[17]?.value?.tokensCreated,
             'nftsCreated': results[17]?.value?.nftsCreated,
@@ -98,14 +95,14 @@ async function calculateScore(address) {
     if(results[0].value === true){ // poh
         score += 8;
     }
-    if(Boolean(results[1].value.data?.unique) === true){ // brightid
+    if(Boolean(results[1].value?.data?.unique) === true){ // brightid
         score += 37;
     }
     if(Boolean(results[2].value) === true){ // poap
         score += results[2].value.length;
     }
     if(Boolean(results[3].value) === true){ // ens
-        score += 12;
+        score += 2;
     }
     if(Boolean(results[4].value?.result) === true){ // idena
         score += 1;
@@ -114,23 +111,23 @@ async function calculateScore(address) {
         score -= 20;
     }
     if(Boolean(results[6].value) === true){ // unstoppable domains
-        score += 1;
+        score += 2;
     }
-    if(results[7].value.length > 0){ // uniswap sybil
+    if(results[7].value?.length > 0){ // uniswap sybil
         score += 10;
     }
-    if(parseInt(results[8].value?.totalDaos)> 0){ // deepdao
-        score += parseInt(results[8].value?.totalDaos);
+    if( Boolean(results[8].value?.totalDaos) === true && parseInt(results[8].value.totalDaos)> 0){ // deepdao
+        score += parseInt(results[8].value.totalDaos);
     }
     if(parseInt(results[9].value?.taskData?.level)> 0){ // rabbithole
-        score += parseInt(results[9].value?.taskData?.level);
+        score += parseInt(results[9].value?.taskData?.level) - 1;
     }
     if(results[16].value === true){ // mirror
         score += 10;
     }
 
     // Coinvise
-    score +=  (results[17]?.value?.tokensCreated**0.5 + results[17]?.value?.nftsCreated**0.5 + results[17]?.value?.totalCountSold + results[17]?.value?.totalPoolCount);
+    score +=  (results[17]?.value?.tokensCreated**0.5 + results[17]?.value?.nftsCreated**0.5 + results[17]?.value?.totalCountSold + results[17]?.value?.totalPoolCount + results[17]?.value?.multisendCount + results[17]?.value?.airdropCount);
 
     return {score, ...retData};
 }

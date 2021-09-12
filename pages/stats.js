@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, Flex, Heading, Box } from "@chakra-ui/react";
+import PropTypes from 'prop-types';
 
 import PageShell from "@/components/PageShell";
 import { getCommentsCount, getThreadsCount, getUniqueUsersCount } from '@/lib/thread-db';
@@ -70,5 +71,10 @@ const Stats = ({statistics}) => {
     );
 
 };
+
+Stats.propTypes = {
+    setTrustScore: PropTypes.func,
+    statistics: PropTypes.object
+}
 
 export default Stats;

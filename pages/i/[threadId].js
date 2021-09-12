@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, Heading } from "@chakra-ui/react";
+import PropTypes from 'prop-types';
 
 import PageShell from "@/components/PageShell";
 
@@ -28,5 +29,9 @@ const Instant = (props) => {
     // Abstract away chat ui inot component
 
 };
+
+Instant.propTypes = {
+    threadId: PropTypes.string,
+}
 
 export default Instant;

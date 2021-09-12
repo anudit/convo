@@ -260,6 +260,9 @@ const BoardroomCard = ({setTrustScore}) => {
       </IdentityCard>
     );
 };
+BoardroomCard.propTypes = {
+  setTrustScore: PropTypes.func
+}
 
 const BrightIdCard = () => {
 
@@ -626,6 +629,10 @@ const IdentityCard = (props) => {
         </Box>
       </Flex>
   );
+}
+IdentityCard.propTypes = {
+  image_url: PropTypes.string,
+  children: PropTypes.node
 }
 
 const propTypes = {

@@ -1,10 +1,10 @@
 import React from "react";
 import { Heading } from "@chakra-ui/react";
 import useSWR from 'swr';
+import PropTypes from 'prop-types';
 
 import { ThreadView } from '@/components/ThreadView';
 import PageShell from "@/components/PageShell";
-
 import fetcher from '@/utils/fetcher';
 import { getAllThreads } from '@/lib/thread-db';
 
@@ -59,5 +59,9 @@ const Threads = (props) => {
     }
 
 };
+
+Threads.propTypes = {
+    initialThreads: PropTypes.array,
+}
 
 export default Threads;

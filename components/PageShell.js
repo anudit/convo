@@ -51,7 +51,7 @@ PageShell.propTypes = {
   title:PropTypes.string,
   metaImageLink:PropTypes.string,
   align:PropTypes.string,
-  children:PropTypes.element
+  children:PropTypes.array
 }
 
 export default PageShell;

@@ -86,7 +86,6 @@ async function getSybil(address) {
     const query = new Where('_id').eq(getAddress(address));
     let resp = await threadClient.find(threadId, 'cachedSybil', query);
     return resp;
-
 }
 
 async function checkPoH(address, provider) {
@@ -423,7 +422,7 @@ async function getRaribleData(address = "") {
         }
     };
 
-    let response = await fetch("https://api-mainnet.rarible.com/marketplace/api/v4/items", {
+    let response = await fetch("https://api-mainnet.rarible.com/marketplace/api/v2/items", {
       "headers": {
         "accept": "*/*",
         "content-type": "application/json",
@@ -432,7 +431,6 @@ async function getRaribleData(address = "") {
       "body": JSON.stringify(body),
     })
     let artworks = await response.json();
-
     let totalCountSold = artworks.length;
 
     let totalAmountSold = 0;
@@ -445,6 +443,7 @@ async function getRaribleData(address = "") {
             totalCountSold-=1;
         }
     }
+
     return {
         totalCountSold,
         totalAmountSold
@@ -536,6 +535,18 @@ async function getEthPrice() {
 
 }
 
+function avg(array) {
+    var total = 0;
+    var count = 0;
+
+    array.forEach(function(item) {
+        total += item;
+        count++;
+    });
+
+    return total / count;
+}
+
 async function calculateScore(address) {
 
     let matic_price_data = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}) ;
@@ -543,36 +554,20 @@ async function calculateScore(address) {
 
     let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
 
+    let startDate;
+    if (DEBUG === true){ startDate = new Date(); }
+
     let promiseArray = [
         checkPoH(address, tp),
         fetcher(`https://app.brightid.org/node/v5/verifications/Convo/${address.toLowerCase()}`, "GET", {}),
         fetcher(`https://api.poap.xyz/actions/scan/${address}`, "GET", {}),
         tp.lookupAddress(address),
         fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
-    ];
-
-    if (DEBUG === true){var startDate = new Date(); }
-    let results1 = await Promise.allSettled(promiseArray);
-    if (DEBUG === true){
-        var endDate = new Date();
-        console.log('results1', (endDate.getTime() - startDate.getTime()) / 1000, 's')
-    }
-    let promiseArray2 = [
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
         getSybil(address),
         fetcher(`https://backend.deepdao.io/user/${address.toLowerCase()}`, "GET", {}),
         fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}),
-    ];
-
-    if (DEBUG === true){ startDate = new Date(); }
-    let results2 = await Promise.allSettled(promiseArray2);
-    if (DEBUG === true){
-        endDate = new Date();
-        console.log('results2', (endDate.getTime() - startDate.getTime()) / 1000, 's')
-    }
-
-    let promiseArray3 = [
         getEthPrice(),
         getFoundationData(address), // * ethPrice
         getSuperrareData(address),
@@ -584,16 +579,12 @@ async function calculateScore(address) {
         getZoraData(address) // * ethPrice
     ];
 
-    if (DEBUG === true){ startDate = new Date(); }
-    let results3 = await Promise.allSettled(promiseArray3);
-    if (DEBUG === true){
-        endDate = new Date();
-        console.log('results3', (endDate.getTime() - startDate.getTime()) / 1000, 's')
-    }
+    let results = await Promise.allSettled(promiseArray);
 
-    let results = results1.concat(results2);
-    results = results.concat(results3);
-    // console.log(results);
+    if (DEBUG === true){
+        let endDate = new Date();
+        console.log('results', (endDate.getTime() - startDate.getTime()) / 1000, 's')
+    }
 
     let score = 0;
     let retData = {
@@ -655,7 +646,7 @@ async function calculateScore(address) {
         score += results[2].value.length;
     }
     if(Boolean(results[3].value) === true){ // ens
-        score += 12;
+        score += 2;
     }
     if(Boolean(results[4].value?.result) === true){ // idena
         score += 1;
@@ -664,7 +655,7 @@ async function calculateScore(address) {
         score -= 20;
     }
     if(Boolean(results[6].value) === true){ // unstoppable domains
-        score += 1;
+        score += 2;
     }
     if(results[7].value?.length > 0){ // uniswap sybil
         score += 10;
@@ -703,17 +694,28 @@ const cacheTrustScores = async () => {
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
+    let times = [];
+
     for (let index = 0; index < addresses.length; index++) {
+        let startDate;
+        if (DEBUG === true){ startDate = new Date(); }
+
         let data = await getTrustScore(addresses[index]);
         await threadClient.save(threadId, 'cachedTrustScores', [{
             '_id': getAddress(addresses[index]),
             ...data
         }]);
+
+        let endDate = new Date();
+        let td = (endDate.getTime() - startDate.getTime()) / 1000;
+        times.push(td);
+
         if (index%10 == 0){
             console.log(`🟢 Cached Chunk#${parseInt(index/10)}`);
         }
     }
     console.log(`⚠️ erroredAddresses ${erroredAddresses}`);
+    console.log(`ℹ️ Avg Time: ${avg(times)}`);
 
 }
 
@@ -745,17 +747,17 @@ const validateSchema = async () =>{
 }
 
 const cacheTrustScoresManual = async (addresses = []) => {
-    DEBUG=false;
+    DEBUG=true;
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
-        // console.log(data);
-        await threadClient.save(threadId, 'cachedTrustScores', [{
-            '_id': getAddress(addresses[index]),
-            ...data
-        }]);
+        console.log(data);
+        // await threadClient.save(threadId, 'cachedTrustScores', [{
+        //     '_id': getAddress(addresses[index]),
+        //     ...data
+        // }]);
         console.log(`🟢 Cached ${index}`);
     }
 }
@@ -789,5 +791,4 @@ cacheTrustScores().then(()=>{
 
 // validateSchema();
 // updateSchema();
-
 // cacheTrustScoresManual(["0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8df737904ab678B99717EF553b4eFdA6E3f94589"]);

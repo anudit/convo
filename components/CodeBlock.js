@@ -1,5 +1,6 @@
 import React from "react"
 import { chakra, Code, useColorMode } from "@chakra-ui/react"
+import PropTypes from 'prop-types';
 
 export const MakeOwnCodeBlock = (props) => {
 
@@ -14,4 +15,8 @@ export const MakeOwnCodeBlock = (props) => {
     </Code>
   )
 
+}
+
+MakeOwnCodeBlock.propTypes = {
+  value: PropTypes.string
 }

@@ -37,7 +37,7 @@ const PageShell = ({title, children}) => {
 };
 PageShell.propTypes = {
     title:PropTypes.string,
-    children:PropTypes.element
+    children:PropTypes.array
 }
 
 const DashboardShell = ({title, active, children}) => {

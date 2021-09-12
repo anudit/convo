@@ -1,7 +1,8 @@
 import React, { useColorModeValue, Box, Flex, Text, Divider } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
+import PropTypes from 'prop-types';
 
-const Card = (props) => {
+const Card = ({icon, title, children, internalLink}) => {
 
   return (
     <Flex
@@ -28,7 +29,7 @@ const Card = (props) => {
         p={2}
         mr={4}
       >
-        {props.icon}
+        {icon}
       </Box>
 
       <Text
@@ -41,17 +42,17 @@ const Card = (props) => {
         pt={4}
         mt={{ base: 2, md: 0 }}
       >
-        {props.title}
+        {title}
       </Text>
 
       <Divider my={4} borderWidth="1px" borderColor={useColorModeValue("gray.200", "#3e3e3e")}/>
 
-      {props.children}
+      {children}
 
       <Text
         size="lg"
         my={3}
-        as="a" href={`https://docs.theconvo.space/${props.internalLink}`}
+        as="a" href={`https://docs.theconvo.space/${internalLink}`}
         aria-label="View Docs"
         className="glow"
       >
@@ -61,5 +62,12 @@ const Card = (props) => {
     </Flex>
   );
 };
+
+Card.propTypes = {
+  icon: PropTypes.element,
+  title: PropTypes.string,
+  internalLink: PropTypes.string,
+  children: PropTypes.element
+}
 
 export default Card;

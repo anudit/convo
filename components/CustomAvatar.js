@@ -76,7 +76,7 @@ const CustomAvatar = (props) => {
 
 CustomAvatar.propTypes = {
     address: PropTypes.string,
-    ensName: PropTypes.string,
+    ensName: PropTypes.node,
     badgesize: PropTypes.string,
     size: PropTypes.string,
     mr: PropTypes.number

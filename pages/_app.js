@@ -2,6 +2,7 @@ import React from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Global, css } from '@emotion/react';
 import Head from 'next/head'
+import PropTypes from 'prop-types';
 
 import customTheme from '@/styles/theme';
 import { Web3ContextProvider } from '@/contexts/Web3Context';
@@ -117,6 +118,10 @@ const GlobalStyle = ({ children }) => {
   );
 };
 
+GlobalStyle.propTypes = {
+  children: PropTypes.element
+}
+
 const App = ({ Component, pageProps }) => {
   return (
     <Web3ContextProvider>
@@ -129,6 +134,11 @@ const App = ({ Component, pageProps }) => {
       </ChakraProvider>
     </Web3ContextProvider>
   )
+}
+
+App.propTypes = {
+  Component: PropTypes.func,
+  pageProps: PropTypes.object
 }
 
 export default App

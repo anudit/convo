@@ -26,7 +26,7 @@ export const CustomButton = (props) => {
 };
 
 CustomButton.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.array
 }
 
 export default CustomButton;

@@ -83,7 +83,5 @@ getData().then((data)=>{
         console.log("✅ Backed up Data to NFT.Storage");
         await pinToPinata(ipfsHash);
         console.log("✅ Replicated Backup to Pinata");
-        await pinToInfura(ipfsHash);
-        console.log("✅ Replicated Backup to Infura");
     });
 })

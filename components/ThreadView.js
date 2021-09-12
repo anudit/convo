@@ -18,17 +18,15 @@ export const ThreadView = ({link, threads, exploreAll}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const searchText = useRef()
     const newThreadTitleRef = useRef()
-    const newThreadUrlRef = useRef()
     const toast = useToast()
     const [title, setTitle] = useState("");
-    const [modalUrl, setModalUrl] = useState("");
 
     const [url, setUrl] = useState(null);
 
     const [searchQuery, setSearchQuery] = useState("");
 
     function updateSearchQuery(event){
-        setSearchQuery(event.target.value.toLowerCase());
+        setSearchQuery(event.target.value);
     }
 
     useEffect(() => {
@@ -38,8 +36,8 @@ export const ThreadView = ({link, threads, exploreAll}) => {
     }, [router.query]);
 
     useEffect(() => {
-        console.log('Got', link);
-        if (link.slice(0, 7) == "http://" || link.slice(0, 8) == "https://"){
+        console.log('Got', link, Boolean(link) === true );
+        if (Boolean(link) === true && (link.slice(0, 7) === "http://" || link.slice(0, 8) === "https://")){
             try {
                 const urlObj = new URL(link);
                 let tempurl = urlObj['origin'] + urlObj['pathname'];
@@ -52,15 +50,17 @@ export const ThreadView = ({link, threads, exploreAll}) => {
                 console.log(error);
             }
         }
+        else {
+            setUrl(false)
+        }
     }, [link]);
 
     async function handleModal() {
         setTitle(searchText.current.value);
-        setModalUrl(url);
         onOpen();
     }
 
-    async function creatNewThread () {
+    async function creatNewThread() {
 
         if (signerAddress !== "") {
 
@@ -81,7 +81,7 @@ export const ThreadView = ({link, threads, exploreAll}) => {
                     'createdOn': Date.now().toString(),
                     'creator': signerAddress,
                     'title': title,
-                    'url': url,
+                    'url': 'https://theconvo.space/',
                 };
                 let threadId = await createThread(data);
                 let newData = {
@@ -169,11 +169,6 @@ export const ThreadView = ({link, threads, exploreAll}) => {
                                 <FormLabel>What&apos;s the thread about?</FormLabel>
                                 <Input placeholder="Thread Title" ref={newThreadTitleRef} max={300} isRequired={true} defaultValue={title}/>
                             </FormControl>
-                            <br/>
-                            <FormControl>
-                                <FormLabel>URL?</FormLabel>
-                                <Input placeholder="Link about the topic" ref={newThreadUrlRef} max={300} isRequired={false} defaultValue={modalUrl}/>
-                            </FormControl>
                         </ModalBody>
 
                         <ModalFooter>
@@ -207,7 +202,7 @@ export const ThreadView = ({link, threads, exploreAll}) => {
                     <Stack spacing={1}>
                         {
                             threads && threads.filter((thread) => {
-                                return thread.title.toLowerCase().search(searchQuery) >= 0 || thread.creator.toLowerCase().search(searchQuery) >= 0 || thread.url.toLowerCase().search(searchQuery) >= 0
+                                return thread.title.toLowerCase().search(searchQuery.toLowerCase()) >= 0 || thread.creator.toLowerCase().search(searchQuery.toLowerCase()) >= 0 || thread.url.toLowerCase().search(searchQuery.toLowerCase()) >= 0
                             }).map((thread) => (
                                 <ThreadCard threadData={thread} key={thread._id}/>
                             ))
