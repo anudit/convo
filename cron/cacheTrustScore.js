@@ -422,7 +422,7 @@ async function getRaribleData(address = "") {
         }
     };
 
-    let response = await fetch("https://api-mainnet.rarible.com/marketplace/api/v2/items", {
+    let response = await fetch("https://api-mainnet.rarible.com/marketplace/api/v4/items", {
       "headers": {
         "accept": "*/*",
         "content-type": "application/json",
