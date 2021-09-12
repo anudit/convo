@@ -38,6 +38,10 @@ const getAddresses = async () =>{
         return e.author;
     })
 
+    arr = arr.filter((e)=>{
+        return isAddress(e);
+    })
+
     let arr2 = snapshot_cached.map((e)=>{
         return e._id;
     })
