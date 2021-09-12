@@ -2,18 +2,20 @@ import React, { useContext } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Tooltip, chakra, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag  } from "@chakra-ui/react";
+import { Wrap, WrapItem } from "@chakra-ui/react"
+import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
 import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon, DocsIcon, NearIcon } from '@/public/icons';
 import { InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { isAddress } from 'ethers/lib/utils';
 
-const PageShell = (props) => {
+const PageShell = ({title, children}) => {
 
   return (
     <>
       <Head>
-            <title>{props.title}</title>
+            <title>{title}</title>
             <meta name='twitter:image' content='https://theconvo.space/images/poster.webp' />
             <meta property='og:image' content='https://theconvo.space/images/poster.webp' />
             <meta property="og:image:type" content="image/webp" />
@@ -28,11 +30,15 @@ const PageShell = (props) => {
         minH="100vh"
         m="0"
       >
-        {props.children}
+        {children}
       </Flex>
     </>
   );
 };
+PageShell.propTypes = {
+    title:PropTypes.string,
+    children:PropTypes.element
+}
 
 const DashboardShell = ({title, active, children}) => {
 
@@ -100,10 +106,11 @@ const DashboardShell = ({title, active, children}) => {
                     What is a wallet?
                 </Text>
                 <br/>
-                <Flex w="100%" direction={{base:"column", md:"row"}} alignItems="center" justifyContent="center">
+                <Wrap w="100%" display="flex" alignItems="center" direction={{base:"column", md:"row"}} justifyContent="center">
+                    <WrapItem>
                     <Flex
                         minHeight="170px"
-                        w={{base:"80vw", md:"30vw"}}
+                        minW={{base:"80vw", md:"300px"}}
                         maxW={{base:"80vw", md:"300px"}}
                         mx={{base:0, md:2}}
                         my={{base:2, md:0}}
@@ -125,9 +132,11 @@ const DashboardShell = ({title, active, children}) => {
                         <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>MetaMask</Text>
                         <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>One of the most Secure and Flexible Wallets.</Text>
                     </Flex>
+                    </WrapItem>
+                    <WrapItem>
                     <Flex
                         minHeight="170px"
-                        w={{base:"80vw", md:"30vw"}}
+                        minW={{base:"80vw", md:"300px"}}
                         maxW={{base:"80vw", md:"300px"}}
                         mx={{base:0, md:2}}
                         my={{base:2, md:0}}
@@ -150,9 +159,11 @@ const DashboardShell = ({title, active, children}) => {
                         <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>Portis</Text>
                         <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Connect with your Email and Password.</Text>
                     </Flex>
+                    </WrapItem>
+                    <WrapItem>
                     <Flex
                         minHeight="170px"
-                        w={{base:"80vw", md:"30vw"}}
+                        minW={{base:"80vw", md:"300px"}}
                         maxW={{base:"80vw", md:"300px"}}
                         mx={{base:0, md:2}}
                         my={{base:2, md:0}}
@@ -176,9 +187,11 @@ const DashboardShell = ({title, active, children}) => {
                         <Text fontSize="xl" mb={2} color={colorMode === "light"? "black": "white"} fontWeight={800}>WalletConnect</Text>
                         <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Connect with Rainbow, Argent and others.</Text>
                     </Flex>
+                    </WrapItem>
+                    <WrapItem>
                     <Flex
                         minHeight="170px"
-                        w={{base:"80vw", md:"30vw"}}
+                        minW={{base:"80vw", md:"300px"}}
                         maxW={{base:"80vw", md:"300px"}}
                         mx={{base:0, md:2}}
                         my={{base:2, md:0}}
@@ -202,7 +215,8 @@ const DashboardShell = ({title, active, children}) => {
                             </Tag>
                         </Text>
                     </Flex>
-                </Flex>
+                    </WrapItem>
+                </Wrap>
                 <br/>
                 <Text  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"} align="center">
                 <InfoIcon mr={1}/> We do not own your private keys and cannot access your funds without your confirmation.
@@ -323,7 +337,7 @@ const DashboardShell = ({title, active, children}) => {
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
                                 <Text fontSize="2xl">
-                                    🧑‍💻
+                                    🔮
                                 </Text>
                                 <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
                                     Developer
@@ -422,7 +436,11 @@ const DashboardShell = ({title, active, children}) => {
             </PageShell>
         );
     }
-
 };
+DashboardShell.propTypes = {
+    title:PropTypes.string,
+    active: PropTypes.string,
+    children:PropTypes.element
+}
 
 export default DashboardShell;

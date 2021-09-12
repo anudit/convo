@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Avatar, useColorMode, Flex, Text, Button, Divider, Tooltip, useClipboard } from "@chakra-ui/react";
 import { LinkIcon } from "@chakra-ui/icons";
 import { ethers } from 'ethers';
+import PropTypes from 'prop-types';
 
 import { TheConvoSpaceIcon, ExternalIcon } from "@/public/icons";
 import { getComment } from "@/lib/thread-db"
@@ -27,11 +28,11 @@ export async function getServerSideProps(context) {
   }
 }
 
-const Card = (props) => {
+const Card = ({comment}) => {
 
   const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { hasCopied, onCopy } = useClipboard(process.env.NEXT_PUBLIC_API_SITE_URL + '/embed/c/' + props?.comment?._id);
+  const { hasCopied, onCopy } = useClipboard(process.env.NEXT_PUBLIC_API_SITE_URL + '/embed/c/' + comment?._id);
 
   useEffect(() => {
     if ( Boolean(router.query?.theme) === true && colorMode != router.query.theme ){
@@ -40,7 +41,7 @@ const Card = (props) => {
   }, [router.query, colorMode, toggleColorMode]);
 
 
-  if (props.comment){
+  if (comment){
 
     return (
       <Flex
@@ -65,8 +66,8 @@ const Card = (props) => {
             width="fit-content"
           >
             <Flex>
-              <Avatar mr={2} bg="#00000000" size="xs" name="Avatar" src={getAvatar(props.comment.author, {dataUri: true})} alt="author image"/>
-              { Boolean(props.comment?.authorENS) === true ? props.comment.authorENS : truncateAddress(props.comment.author) }
+              <Avatar mr={2} bg="#00000000" size="xs" name="Avatar" src={getAvatar(comment.author, {dataUri: true})} alt="author image"/>
+              { Boolean(comment?.authorENS) === true ? comment.authorENS : truncateAddress(comment.author) }
             </Flex>
           </Flex>
 
@@ -88,7 +89,7 @@ const Card = (props) => {
           pt={2}
           style={{lineBreak: "anywhere"}}
         >
-          {decodeURI(props.comment.text)}
+          {decodeURI(comment.text)}
         </Text>
 
         <Text
@@ -96,13 +97,13 @@ const Card = (props) => {
           fontWeight="200"
           color={colorMode === "light" ? "black" : "gray.300"}
         >
-          {prettyTime(props.comment.createdOn)}
+          {prettyTime(comment.createdOn)}
         </Text>
 
         <Divider my={2}/>
 
         <Flex mt="1px">
-          <Link href={process.env.NEXT_PUBLIC_API_SITE_URL + "/thread/" + props.comment.tid} rel="noreferrer" target="_blank" style={{textDecoration: 'inherit'}} passHref={true}>
+          <Link href={process.env.NEXT_PUBLIC_API_SITE_URL + "/thread/" + comment.tid} rel="noreferrer" target="_blank" style={{textDecoration: 'inherit'}} passHref={true}>
             <Button size="sm" w="fit-content" variant="ghost">
               <ExternalIcon w={6} h={6} pr={2}/>
               Reply
@@ -156,5 +157,8 @@ const Card = (props) => {
     )
   }
 };
+Card.propTypes = {
+  comment: PropTypes.object
+}
 
 export default Card;

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Button, useColorModeValue } from "@chakra-ui/react";
 
 export const CustomButton = (props) => {
@@ -23,3 +24,9 @@ export const CustomButton = (props) => {
     </Button>
   );
 };
+
+CustomButton.propTypes = {
+  children: PropTypes.element
+}
+
+export default CustomButton;

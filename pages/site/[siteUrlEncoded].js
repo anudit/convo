@@ -6,6 +6,7 @@ import { AddIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input, Button} from "@chakra-ui/react";
 import Head from 'next/head';
 import useSWR from 'swr';
+import PropTypes from 'prop-types';
 
 import { ThreadView } from '@/components/ThreadView';
 import NavBar from '@/components/NavBar';
@@ -43,7 +44,7 @@ export async function getStaticPaths() {
     };
 }
 
-const Hero = (props) => {
+const Hero = ({children}) => {
 
     const router = useRouter()
     const link = fromB64(router.query.siteUrlEncoded);
@@ -77,7 +78,7 @@ const Hero = (props) => {
                 </Flex>
 
 
-                {props.children}
+                {children}
             </Flex>
         )
     }
@@ -93,14 +94,18 @@ const Hero = (props) => {
                 height={{sm: "150px", md: "200px"}}
                 mt="7vh"
             >
-                {props.children}
+                {children}
             </Flex>
         )
     }
 
 }
 
-const SiteInterface = (props) => {
+Hero.propTypes = {
+    children: PropTypes.element
+}
+
+const SiteInterface = ({initialThreads}) => {
 
     const router = useRouter();
 
@@ -111,7 +116,7 @@ const SiteInterface = (props) => {
     const { data: threads, mutate } = useSWR(
         Boolean(router.query.siteUrlEncoded) === false? null : `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?url=${fromB64(router.query.siteUrlEncoded)}&apikey=CONVO`,
         fetcher,
-        {fallbackData: props.initialThreads}
+        {fallbackData: initialThreads}
     );
 
     const { isOpen, onClose, onOpen } = useDisclosure()
@@ -262,5 +267,9 @@ const SiteInterface = (props) => {
     );
 
 };
+
+SiteInterface.propTypes = {
+    initialThreads: PropTypes.array
+}
 
 export default SiteInterface;

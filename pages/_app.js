@@ -107,6 +107,9 @@ const GlobalStyle = ({ children }) => {
             0%, 100% {opacity: 1;}
             50% {opacity: 0;}
           }
+          .chakra-wrap__list {
+            justify-content: center !important;
+          }
         `}
       />
       {children}

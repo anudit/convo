@@ -1,20 +1,21 @@
 import React from "react";
 import { Flex } from "@chakra-ui/react";
 import Head from 'next/head';
+import PropTypes from 'prop-types';
 
 import NavBar from '@/components/NavBar';
 
-const PageShell = (props) => {
+const PageShell = ({title, metaImageLink, align, children}) => {
 
   return (
     <>
       <Head>
-        <title>{props.title}</title>
+        <title>{title}</title>
         {
-          Boolean(props?.metaImageLink) === true ? (
+          Boolean(metaImageLink) === true ? (
             <>
-              <meta name='twitter:image' content={props?.metaImageLink} />
-              <meta property='og:image' content={props?.metaImageLink} />
+              <meta name='twitter:image' content={metaImageLink} />
+              <meta property='og:image' content={metaImageLink} />
               <meta property="og:image:type" content="image/jpg" />
               <meta property="og:image:width" content="1920" />
               <meta property="og:image:height" content="1080" />
@@ -34,16 +35,23 @@ const PageShell = (props) => {
       <NavBar/>
       <Flex
         direction="column"
-        align={Boolean(props?.align) === true ? props.align : "center"}
+        align={Boolean(align) === true ? align : "center"}
         maxW="1600px"
         w={{ base: "95%", md: "80%", lg: "90%"}}
         m="0 auto"
         mt="10vh"
       >
-        {props.children}
+        {children}
       </Flex>
     </>
   );
 };
+
+PageShell.propTypes = {
+  title:PropTypes.string,
+  metaImageLink:PropTypes.string,
+  align:PropTypes.string,
+  children:PropTypes.element
+}
 
 export default PageShell;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, AvatarBadge  } from "@chakra-ui/react";
+import PropTypes from 'prop-types';
 
 import { getAvatar } from '@/utils/avatar';
 import fetcher from '@/utils/fetcher';
@@ -71,5 +72,14 @@ const CustomAvatar = (props) => {
     }
 
 };
+
+
+CustomAvatar.propTypes = {
+    address: PropTypes.string,
+    ensName: PropTypes.string,
+    badgesize: PropTypes.string,
+    size: PropTypes.string,
+    mr: PropTypes.number
+}
 
 export default CustomAvatar;

@@ -6,6 +6,7 @@ import { AddIcon, DeleteIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import useSWR from 'swr';
 import QRCode from "react-qr-code";
 import { isAddress } from 'ethers/lib/utils';
+import PropTypes from 'prop-types';
 
 import Ceramic from '@ceramicnetwork/http-client';
 import { IDX } from '@ceramicstudio/idx';
@@ -41,7 +42,7 @@ const IdentitySection = () => {
     return (
       <DashboardShell active="identity" title="Identity">
           <Flex direction="column">
-            <Flex direction="column" w="80%" align="center">
+            <Flex direction="column" align="center">
               <Flex
                 direction="column"
                 w={{base:"100%"}}
@@ -125,14 +126,12 @@ const IdentitySection = () => {
                   <WrapItem>
                     <CoinviseCard trustScoreData={trustScoreData} />
                   </WrapItem>
-                  <PoapSection mt={2}/>
+                  {/* <PoapSection mt={2}/> */}
               </Wrap>
             </Flex>
-            {/* <Heading as="h4" size="md" my={4} w="100%">
-              <PoapIcon mr={2}/>  POAPs
-            </Heading>
-            <Flex my={2} direction={{base:"column", md: "row"}} overflow="hidden">
-            </Flex> */}
+            <Flex my={2} direction={{base:"column", md: "row"}} justifyContent="center" overflow="hidden">
+              <PoapSection mt={2}/>
+            </Flex>
           </Flex>
       </DashboardShell>
     )
@@ -140,39 +139,6 @@ const IdentitySection = () => {
 }
 
 export default IdentitySection;
-
-const SybilCard = ({trustScoreData}) => {
-
-    return (
-      <IdentityCard image_url="/images/sybil.webp">
-        {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData.uniswapSybil) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
-        }
-      </IdentityCard>
-    );
-};
-
-const DeepdaoCard = ({trustScoreData}) => {
-
-    return (
-      <IdentityCard image_url="/images/deepdao.webp">
-        {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData.deepdao) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://deepdao.io/">Explore on Deepdao</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
-        }
-      </IdentityCard>
-    );
-};
-
-const MirrorCard = ({trustScoreData}) => {
-
-  return (
-    <IdentityCard image_url="/images/mirror.webp">
-      {
-        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.mirror) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://mirror.xyz/">Join the $WRITE Race</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
-      }
-    </IdentityCard>
-  );
-};
 
 const PoHCard = () => {
 
@@ -188,16 +154,6 @@ const PoHCard = () => {
       <IdentityCard image_url="/images/poh.webp">
         {
           poh === null ? "Loading" : poh === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
-        }
-      </IdentityCard>
-    );
-};
-
-const ENSCard = ({trustScoreData}) => {
-    return (
-      <IdentityCard image_url="/images/ens.webp">
-        {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.ens) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</chakra.p></>) : (<><Text mr={1}>{trustScoreData.ens}</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -304,31 +260,6 @@ const BoardroomCard = ({setTrustScore}) => {
       </IdentityCard>
     );
 };
-
-const CoinviseCard = ({trustScoreData}) => {
-  console.log(trustScoreData?.coinvise);
-  return (
-    <IdentityCard image_url="/images/coinvise.webp">
-      {
-        trustScoreData === null ? "Loading" :
-        trustScoreData?.coinvise?.totalCountSold === 0 ? (
-            <chakra.p size="xs" as="a" target="_blank" href="https://coinvise.co/">
-              Create on Coinvise
-            </chakra.p>
-          ) : (
-            <>
-              <Text mr={1}>
-                {trustScoreData.coinvise.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.coinvise.totalAmountSold)}
-              </Text>
-              <VerifiedIcon color="blue.400"/>
-            </>
-          )
-      }
-    </IdentityCard>
-  )
-
-};
-
 
 const BrightIdCard = () => {
 
@@ -697,31 +628,104 @@ const IdentityCard = (props) => {
   );
 }
 
-const RaribleCard = ({trustScoreData}) => {
+const propTypes = {
+  trustScoreData: PropTypes.object,
+};
+
+const SybilCard = ({trustScoreData}) => {
 
     return (
-      <IdentityCard image_url="/images/rarible.webp">
+      <IdentityCard image_url="/images/sybil.webp">
         {
-          trustScoreData === null ? "Loading" :
-          Boolean(trustScoreData?.rarible?.totalCountSold) === false ? (
-              <chakra.p size="xs" as="a" target="_blank" href="https://rarible.com/">
-                Create on Rarible
-              </chakra.p>
-            ) : (
-              <>
-                <Text mr={1}>
-                  {trustScoreData.rarible.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.rarible.totalAmountSold)}
-                </Text>
-                <VerifiedIcon color="blue.400"/>
-              </>
-            )
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData.uniswapSybil) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
 };
+SybilCard.propTypes = propTypes
+
+const DeepdaoCard = ({trustScoreData}) => {
+
+    return (
+      <IdentityCard image_url="/images/deepdao.webp">
+        {
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData.deepdao) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://deepdao.io/">Explore on Deepdao</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
+    );
+};
+DeepdaoCard.propTypes = propTypes
+
+const MirrorCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url="/images/mirror.webp">
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.mirror) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://mirror.xyz/">Join the $WRITE Race</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+MirrorCard.propTypes = propTypes
+
+const ENSCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url="/images/ens.webp">
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.ens) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</chakra.p></>) : (<><Text mr={1}>{trustScoreData.ens}</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+ENSCard.propTypes = propTypes
+
+const CoinviseCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url="/images/coinvise.webp">
+      {
+        trustScoreData === null ? "Loading" :
+        trustScoreData?.coinvise?.totalCountSold === 0 ? (
+            <chakra.p size="xs" as="a" target="_blank" href="https://coinvise.co/">
+              Create on Coinvise
+            </chakra.p>
+          ) : (
+            <>
+              <Text mr={1}>
+                {trustScoreData.coinvise.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.coinvise.totalAmountSold)}
+              </Text>
+              <VerifiedIcon color="blue.400"/>
+            </>
+          )
+      }
+    </IdentityCard>
+  )
+};
+CoinviseCard.propTypes = propTypes
+
+const RaribleCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url="/images/rarible.webp">
+      {
+        trustScoreData === null ? "Loading" :
+        Boolean(trustScoreData?.rarible?.totalCountSold) === false ? (
+            <chakra.p size="xs" as="a" target="_blank" href="https://rarible.com/">
+              Create on Rarible
+            </chakra.p>
+          ) : (
+            <>
+              <Text mr={1}>
+                {trustScoreData.rarible.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.rarible.totalAmountSold)}
+              </Text>
+              <VerifiedIcon color="blue.400"/>
+            </>
+          )
+      }
+    </IdentityCard>
+  );
+};
+RaribleCard.propTypes = propTypes
 
 const ZoraCard = ({trustScoreData}) => {
-
   return (
     <IdentityCard image_url="/images/zora.webp">
       {
@@ -742,78 +746,78 @@ const ZoraCard = ({trustScoreData}) => {
     </IdentityCard>
   );
 };
+ZoraCard.propTypes = propTypes
 
 const SuperrareCard = ({trustScoreData}) => {
-
-    return (
-      <IdentityCard image_url="/images/superrare.webp">
-        {
-          trustScoreData === null ? "Loading" :
-          trustScoreData?.superrare?.totalCountSold === 0 ? (
-              <chakra.p size="xs" as="a" target="_blank" href="https://superrare.com/">
-                Create on SuperRare
-              </chakra.p>
-            ) : (
-              <>
-                <Text mr={1}>
-                  {trustScoreData.superrare.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.superrare.totalAmountSold)}
-                </Text>
-                <VerifiedIcon color="blue.400"/>
-              </>
-            )
-        }
-      </IdentityCard>
-    );
+  return (
+    <IdentityCard image_url="/images/superrare.webp">
+      {
+        trustScoreData === null ? "Loading" :
+        trustScoreData?.superrare?.totalCountSold === 0 ? (
+            <chakra.p size="xs" as="a" target="_blank" href="https://superrare.com/">
+              Create on SuperRare
+            </chakra.p>
+          ) : (
+            <>
+              <Text mr={1}>
+                {trustScoreData.superrare.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.superrare.totalAmountSold)}
+              </Text>
+              <VerifiedIcon color="blue.400"/>
+            </>
+          )
+      }
+    </IdentityCard>
+  );
 };
+SuperrareCard.propTypes = propTypes
 
 const KnownoriginCard = ({trustScoreData}) => {
-
-    return (
-      <IdentityCard image_url="/images/knownorigin.webp">
-        {
-          trustScoreData === null ? "Loading" :
-          trustScoreData?.knownorigin?.totalCountSold === 0 ? (
-              <chakra.p size="xs" as="a" target="_blank" href="https://knownorigin.io/">
-                Create on KnownOrigin
-              </chakra.p>
-            ) : (
-              <>
-                <Text mr={1}>
-                  {trustScoreData?.knownorigin?.totalCountSold + " sold for $" + prettifyNumber(trustScoreData?.knownorigin?.totalAmountSold)}
-                </Text>
-                <VerifiedIcon color="blue.400"/>
-              </>
-            )
-        }
-      </IdentityCard>
-    );
+  return (
+    <IdentityCard image_url="/images/knownorigin.webp">
+      {
+        trustScoreData === null ? "Loading" :
+        trustScoreData?.knownorigin?.totalCountSold === 0 ? (
+            <chakra.p size="xs" as="a" target="_blank" href="https://knownorigin.io/">
+              Create on KnownOrigin
+            </chakra.p>
+          ) : (
+            <>
+              <Text mr={1}>
+                {trustScoreData?.knownorigin?.totalCountSold + " sold for $" + prettifyNumber(trustScoreData?.knownorigin?.totalAmountSold)}
+              </Text>
+              <VerifiedIcon color="blue.400"/>
+            </>
+          )
+      }
+    </IdentityCard>
+  );
 };
+KnownoriginCard.propTypes = propTypes
 
 const FoundationCard = ({trustScoreData}) => {
-
-    return (
-      <IdentityCard image_url="/images/foundation.webp">
-        {
-          trustScoreData === null ? "Loading" :
-          trustScoreData?.foundation?.totalCountSold === 0 ? (
-              <chakra.p size="xs" as="a" target="_blank" href="https://foundation.app/">
-                Create on Foundation
-              </chakra.p>
-            ) : (
-              <>
-                <Text mr={1}>
-                  {trustScoreData.foundation.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.foundation.totalAmountSold)}
-                </Text>
-                <VerifiedIcon color="blue.400"/>
-              </>
-            )
-        }
-      </IdentityCard>
-    );
+  return (
+    <IdentityCard image_url="/images/foundation.webp">
+      {
+        trustScoreData === null ? "Loading" :
+        trustScoreData?.foundation?.totalCountSold === 0 ? (
+            <chakra.p size="xs" as="a" target="_blank" href="https://foundation.app/">
+              Create on Foundation
+            </chakra.p>
+          ) : (
+            <>
+              <Text mr={1}>
+                {trustScoreData.foundation.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.foundation.totalAmountSold)}
+              </Text>
+              <VerifiedIcon color="blue.400"/>
+            </>
+          )
+      }
+    </IdentityCard>
+  );
 };
+FoundationCard.propTypes = propTypes
 
 const AsyncartCard = ({trustScoreData}) => {
-
     return (
       <IdentityCard image_url="/images/asyncart.webp">
         {
@@ -834,3 +838,4 @@ const AsyncartCard = ({trustScoreData}) => {
       </IdentityCard>
     );
 };
+AsyncartCard.propTypes = propTypes

@@ -1,14 +1,15 @@
 import React from "react";
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 
 import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
 import { Flex, Skeleton, Box, Link, Text, useColorModeValue, IconButton, Tooltip, useClipboard } from "@chakra-ui/react";
 import timeAgo from "@/utils/timeAgo";
 import { truncateAddress } from '@/utils/stringUtils';
 
-export const ThreadCard = (props) => {
+export const ThreadCard = ({threadData}) => {
 
-    const { hasCopied, onCopy } = useClipboard(`https://theconvo.space/thread/${props.threadData._id}`);
+    const { hasCopied, onCopy } = useClipboard(`https://theconvo.space/thread/${threadData._id}`);
 
     return (
         <motion.div
@@ -32,7 +33,7 @@ export const ThreadCard = (props) => {
 
             <Box>
                 <Link
-                    href={`/thread/${props.threadData._id}`}
+                    href={`/thread/${threadData._id}`}
                     textDecoration="none"
                     fontSize="xl"
                     fontWeight="700"
@@ -46,7 +47,7 @@ export const ThreadCard = (props) => {
                     prefetch="true"
                     align="left"
                 >
-                    {decodeURI(props.threadData?.title)}
+                    {decodeURI(threadData?.title)}
                 </Link>
             </Box>
 
@@ -64,9 +65,9 @@ export const ThreadCard = (props) => {
                         pl={1}
                         href="/#"
                     >
-                        {truncateAddress(props.threadData?.creator)}
+                        {truncateAddress(threadData?.creator)}
                     </ Link>
-                    , {timeAgo(props.threadData?.createdOn)}.
+                    , {timeAgo(threadData?.createdOn)}.
                 </Text>
                 <Tooltip label="Copy Link to Thread" placement="top">
                     <IconButton
@@ -82,8 +83,11 @@ export const ThreadCard = (props) => {
         </Box>
       </motion.div>
     );
-  };
+};
 
+ThreadCard.propTypes = {
+    threadData: PropTypes.object
+}
 
 export const ThreadCardSkeleton = () => {
 

@@ -6,6 +6,7 @@ import { useClipboard, Table,Tbody, Text, Tr, Td, Button, InputGroup, Input, Inp
 import { DeleteIcon, CopyIcon, SettingsIcon, MoonIcon, SunIcon, LinkIcon } from '@chakra-ui/icons';
 import Linkify from 'react-linkify';
 import { useHotkeys } from 'react-hotkeys-hook';
+import PropTypes from 'prop-types';
 
 import { ReplyIcon, ThreeDotMenuIcon, DisconnectIcon, TheConvoSpaceIcon } from '@/public/icons';
 import timeAgo from '@/utils/timeAgo';
@@ -425,5 +426,9 @@ const Threads = (props) => {
         )
     }
 };
+
+Threads.propTypes = {
+    align: PropTypes.string
+}
 
 export default Threads;

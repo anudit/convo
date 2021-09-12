@@ -2905,10 +2905,10 @@
   resolved "https://registry.yarnpkg.com/@next/env/-/env-11.1.2.tgz#27996efbbc54c5f949f5e8c0a156e3aa48369b99"
   integrity sha512-+fteyVdQ7C/OoulfcF6vd1Yk0FEli4453gr8kSFbU8sKseNSizYq6df5MKz/AjwLptsxrUeIkgBdAzbziyJ3mA==
 
-"@next/eslint-plugin-next@11.1.2", "@next/eslint-plugin-next@^11.1.2":
-  version "11.1.2"
-  resolved "https://registry.yarnpkg.com/@next/eslint-plugin-next/-/eslint-plugin-next-11.1.2.tgz#f26cf90bcb6cd2e4645e2ba253bbc9aaaa43a170"
-  integrity sha512-cN+ojHRsufr9Yz0rtvjv8WI5En0RPZRJnt0y16Ha7DD+0n473evz8i1ETEJHmOLeR7iPJR0zxRrxeTN/bJMOjg==
+"@next/eslint-plugin-next@11.1.0":
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/@next/eslint-plugin-next/-/eslint-plugin-next-11.1.0.tgz#bee19a333e3d2d81d381b9c2fdf2df713f5774e8"
+  integrity sha512-HjLhyshV+ANzTDCFLN1UZMQIyYwZkCdhydfIcOQQVCrqLSd0hCi+AYIGqWfDPhXmP7aeOuKQsmhRmdennQV2qw==
   dependencies:
     glob "7.1.7"
 
@@ -4465,9 +4465,9 @@
     source-map "^0.7.3"
 
 "@types/webpack@^4.4.31":
-  version "4.41.30"
-  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.41.30.tgz#fd3db6d0d41e145a8eeeafcd3c4a7ccde9068ddc"
-  integrity sha512-GUHyY+pfuQ6haAfzu4S14F+R5iGRwN6b2FRNJY7U0NilmFAqbsOfK6j1HwuLBAqwRIT+pVdNDJGJ6e8rpp0KHA==
+  version "4.41.31"
+  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.41.31.tgz#c35f252a3559ddf9c85c0d8b0b42019025e581aa"
+  integrity sha512-/i0J7sepXFIp1ZT7FjUGi1eXMCg8HCCzLJEQkKsOtbJFontsJLolBcDC+3qxn5pPwiCt1G0ZdRmYRzNBtvpuGQ==
   dependencies:
     "@types/node" "*"
     "@types/tapable" "^1"
@@ -7852,9 +7852,9 @@ detect-browser@5.2.0, detect-browser@^5.1.0:
   integrity sha512-tr7XntDAu50BVENgQfajMLzacmSe34D+qZc4zjnniz0ZVuw/TZcLcyxHQjYpJTM36sGEkZZlYLnIM1hH7alTMA==
 
 detect-gpu@^3.0.0:
-  version "3.1.16"
-  resolved "https://registry.yarnpkg.com/detect-gpu/-/detect-gpu-3.1.16.tgz#acd5322f660a972af2f6cffb514403e625fe3247"
-  integrity sha512-OPAc+qwVnETg3F4kWjIL4Y0fkDfHKIFZjwcbNogOcqWbr6H+QBQIvvlKTYpiutpPnOr0t6qQKURzgiCnAecy6A==
+  version "3.1.17"
+  resolved "https://registry.yarnpkg.com/detect-gpu/-/detect-gpu-3.1.17.tgz#4dad5e64afbc4c0082dfdc8a11aa6d1c7b560721"
+  integrity sha512-veetiL2XcjIo45Jm/BBEUrROp8SBBqmpbYgDjE2M6HA5jyumIsxxQQB3uCvFVpNydLHS72ScfxJ5e8aIewmTcA==
   dependencies:
     webgl-constants "^1.1.1"
 
@@ -8541,12 +8541,12 @@ esdoc@^1.0.4:
     minimist "1.2.0"
     taffydb "2.7.3"
 
-eslint-config-next@^11.1.2:
-  version "11.1.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-next/-/eslint-config-next-11.1.2.tgz#73c918f2fa6120d5f65080bf3fcf6b154905707e"
-  integrity sha512-dFutecxX2Z5/QVlLwdtKt+gIfmNMP8Qx6/qZh3LM/DFVdGJEAnUKrr4VwGmACB2kx/PQ5bx3R+QxnEg4fDPiTg==
+eslint-config-next@11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-next/-/eslint-config-next-11.1.0.tgz#722d6901f7162f4bb1e9236aef7b3fd8ceb0f2d6"
+  integrity sha512-8KeBg3qUEhM06vhzvs9MwZl2lsSfu3bm0wa3QVTc9kBdFxSRY6Gu/1GM0FKzWG0sQmWqzjLbynazczu/037Ibw==
   dependencies:
-    "@next/eslint-plugin-next" "11.1.2"
+    "@next/eslint-plugin-next" "11.1.0"
     "@rushstack/eslint-patch" "^1.0.6"
     "@typescript-eslint/parser" "^4.20.0"
     eslint-import-resolver-node "^0.3.4"
@@ -15538,10 +15538,10 @@ react-clientside-effect@^1.2.2:
   dependencies:
     "@babel/runtime" "^7.12.13"
 
-react-data-table-component@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.0.0.tgz#7a3cbc89794bdc31bbb2c9761537648b5b4cd817"
-  integrity sha512-ro6r5igdkaG2qEosDmY7LxOy7sTlYdb3uL6Hr/BXQ3uoUzmuSbsSMiT4ZDLLZiaNNujPzTDvrCLn/v7KvJ4v4g==
+react-data-table-component@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.0.1.tgz#7ab920ef548585391ad3d68838b5b112628c1e18"
+  integrity sha512-Vp0tAH5Ubi27dZD9hLS091FJhTQKO5e18EZOtZtpbzTb9XcQ5pNMY39gbcC41S+fwpJZFoxKc+TZhLMeWNx76Q==
   dependencies:
     deepmerge "^4.2.2"
     lodash.orderby "^4.6.0"
@@ -17614,10 +17614,10 @@ tar@^4, tar@^4.0.2:
     safe-buffer "^5.2.1"
     yallist "^3.1.1"
 
-telegraf@^4.4.1:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-4.4.1.tgz#f7a9c82db17417149494aa63f9956e3484ffdcf6"
-  integrity sha512-jxV8fC/K6abcUTlhy/l8txJAmEJIkJoDu/cN0yXOJWLp9csfLIp+cD4qlwJ6ko+4EgOJmNZvWK7Tr2dxKolJQQ==
+telegraf@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-4.4.2.tgz#dd1b99a50593de303c8f47bbe98201a93a125f31"
+  integrity sha512-OGt9w1LbxYUOsRk3htAavBnL9hqWycmJNiOmS74oARzxKFnYS/MdwW8b5CX9VLCJt537AXkm8/eBNiEYD8E7lQ==
   dependencies:
     abort-controller "^3.0.0"
     debug "^4.3.1"

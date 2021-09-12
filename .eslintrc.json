@@ -26,8 +26,7 @@
         "react"
     ],
     "rules": {
-        "react/prop-types": 0,
-        "@next/next/no-document-import-in-page":0
+        "react/prop-types": 0
     },
     "globals": {
         "process": true

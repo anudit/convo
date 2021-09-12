@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { useRouter } from 'next/router';
 import { useDisclosure, useToast, Link, InputGroup, Stack, InputLeftElement,InputRightElement ,  Input,Text, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Button} from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
+import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context'
 import { createThread } from "@/lib/thread-db";
@@ -219,3 +220,8 @@ export const ThreadView = ({link, threads, exploreAll}) => {
 
 };
 
+ThreadView.propTypes ={
+    link: PropTypes.string,
+    threads: PropTypes.array,
+    exploreAll: PropTypes.bool
+}

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
-import { Tag, Tooltip, Text, Flex, useClipboard, useColorModeValue, Heading } from "@chakra-ui/react";
+import { Wrap, WrapItem, Tag, Tooltip, Text, Flex, useClipboard, useColorModeValue, Heading } from "@chakra-ui/react";
+import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
 import { truncateAddress } from "@/utils/stringUtils";
@@ -32,9 +33,9 @@ const Dashboard = () => {
                     Welcome to your Convo Space.
                 </Heading>
 
-                <Flex direction="column" w={{base:"90%", md:"60%"}} mt={2}>
+                <Flex direction="column" w={{base:"90%"}} mt={2}>
 
-                    <Flex direction={{base:"column", md:"row"}} w="100%" align="center" justifyContent="center" alignItems="center">
+                    <Wrap display="flex" direction={{base:"column", md:"row"}} w="100%" align="center" justifyContent="center" alignItems="center">
 
                         <SimpleCard
                             title="My Comments"
@@ -51,8 +52,8 @@ const Dashboard = () => {
                             tags={['IDX', 'PoH', 'BrightID', 'ENS', 'Idena']}
                         />
 
-                    </Flex>
-                    <Flex direction={{base:"column", md:"row"}} w="100%" align="center" justifyContent="center" alignItems="center">
+                    </Wrap>
+                    <Wrap display="flex" direction={{base:"column", md:"row"}} w="100%" align="center" justifyContent="center" alignItems="center">
 
                         <SimpleCard
                             title="My Data"
@@ -63,13 +64,13 @@ const Dashboard = () => {
                         />
                         <SimpleCard
                             title="Developer"
-                            emoji="🧑‍💻"
+                            emoji="🔮"
                             text="Buidl using The Convo Space."
                             link="developer"
                             tags={['Convo API']}
                         />
 
-                    </Flex>
+                    </Wrap>
 
                 </Flex>
 
@@ -84,6 +85,7 @@ export default Dashboard;
 const SimpleCard = ({title, text, emoji, link, tags}) => {
 
     return (
+        <WrapItem>
         <Flex
             direction="column"
             maxW="500px"
@@ -130,8 +132,16 @@ const SimpleCard = ({title, text, emoji, link, tags}) => {
                 ))}
             </Flex>)
             }
-
         </Flex>
+        </WrapItem>
     )
 
+}
+
+SimpleCard.propTypes = {
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    emoji: PropTypes.string.isRequired,
+    link: PropTypes.string.isRequired,
+    tags: PropTypes.array.isRequired
 }

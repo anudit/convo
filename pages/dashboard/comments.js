@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import {useToast, useClipboard, Spinner, Flex, useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
 import useSWR from 'swr';
 import { CheckIcon, DeleteIcon} from "@chakra-ui/icons"
+import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
 import fetcher from '@/utils/fetcher';
@@ -250,4 +251,7 @@ const CommentsSection = (props) => {
 
 };
 
+CommentsSection.propTypes = {
+    align: PropTypes.string,
+}
 export default CommentsSection;

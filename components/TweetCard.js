@@ -1,5 +1,6 @@
 import React from 'react';
 import { Avatar, useColorMode, Flex, Text, Tooltip, Link } from "@chakra-ui/react";
+import PropTypes from 'prop-types';
 
 import { TwitterIcon } from "@/public/icons";
 import { prettyTimeParse } from "@/utils/stringUtils"
@@ -76,5 +77,9 @@ const TweetCard = ({tweet}) => {
     );
 
 };
+
+TweetCard.propTypes = {
+  tweet: PropTypes.object.isRequired,
+}
 
 export default TweetCard;
