@@ -724,9 +724,7 @@ const cacheTrustScores = async () => {
         let td = (endDate.getTime() - startDate.getTime()) / 1000;
         times.push(td/CHUNK_SIZE);
 
-        if (index%10 == 0){
-            console.log(`🟢 Cached Chunk#${parseInt(index/10)} | Avg Time: ${parseFloat(avg(times)).toFixed(3)}s`);
-        }
+        console.log(`🟢 Cached Chunk#${parseInt(index/CHUNK_SIZE)} | Avg Time: ${parseFloat(avg(times)).toFixed(3)}s`);
     }
     console.log(`⚠️ erroredAddresses ${erroredAddresses}`);
 
