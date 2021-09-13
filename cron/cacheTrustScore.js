@@ -10,6 +10,7 @@ const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID } = process.env;
 let DEBUG = false;
 let GLOBAL_MATIC_PRICE = 0;
 let GLOBAL_ETH_PRICE = 0;
+let CHUNK_SIZE = 4;
 
 let erroredAddresses = [];
 
@@ -549,9 +550,6 @@ function avg(array) {
 
 async function calculateScore(address) {
 
-    let matic_price_data = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}) ;
-    GLOBAL_MATIC_PRICE = parseFloat(matic_price_data[0].price);
-
     let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
 
     let startDate;
@@ -677,7 +675,9 @@ async function calculateScore(address) {
 }
 
 const getTrustScore = async (address) => {
+
     try {
+
         let respData = await calculateScore(address);
         return respData;
     } catch (error) {
@@ -691,31 +691,44 @@ const cacheTrustScores = async () => {
 
     let addresses = await getAddresses();
 
+    let matic_price_data = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}) ;
+    GLOBAL_MATIC_PRICE = parseFloat(matic_price_data[0].price);
+
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
     let times = [];
 
-    for (let index = 0; index < addresses.length; index++) {
-        let startDate;
-        if (DEBUG === true){ startDate = new Date(); }
+    for (let index = 0; index < addresses.length; index+=CHUNK_SIZE) {
+        let startDate = new Date();
 
-        let data = await getTrustScore(addresses[index]);
-        await threadClient.save(threadId, 'cachedTrustScores', [{
-            '_id': getAddress(addresses[index]),
-            ...data
-        }]);
+        let promiseArray = []
+        for (let i=0;i<CHUNK_SIZE;i++){
+            promiseArray.push(getTrustScore(addresses[index+i]));
+        }
+
+        let data = await Promise.allSettled(promiseArray);
+
+        let docs = []
+        for (let i=0;i<CHUNK_SIZE;i++){
+            docs.push({
+                '_id': getAddress(addresses[index]),
+                ...data[i].value
+            });
+        }
+
+        // console.log(docs);
+        await threadClient.save(threadId, 'cachedTrustScores', docs);
 
         let endDate = new Date();
         let td = (endDate.getTime() - startDate.getTime()) / 1000;
-        times.push(td);
+        times.push(td/CHUNK_SIZE);
 
         if (index%10 == 0){
-            console.log(`🟢 Cached Chunk#${parseInt(index/10)}`);
+            console.log(`🟢 Cached Chunk#${parseInt(index/10)} | Avg Time: ${parseFloat(avg(times)).toFixed(3)}s`);
         }
     }
     console.log(`⚠️ erroredAddresses ${erroredAddresses}`);
-    console.log(`ℹ️ Avg Time: ${avg(times)}`);
 
 }
 
