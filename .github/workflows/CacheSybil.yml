@@ -1,8 +1,5 @@
 name: "Cache Uniswap Sybil Scores"
 on:
-  push:
-    branches:
-      - main
   schedule:
     - cron: "0 0 * * *" # Every Day
 
