@@ -712,7 +712,7 @@ const cacheTrustScores = async () => {
         let docs = []
         for (let i=0;i<CHUNK_SIZE;i++){
             docs.push({
-                '_id': getAddress(addresses[index]),
+                '_id': getAddress(addresses[index+i]),
                 ...data[i].value
             });
         }
