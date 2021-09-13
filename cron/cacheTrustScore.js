@@ -40,7 +40,7 @@ const getAddresses = async () =>{
     })
 
     arr = arr.filter((e)=>{
-        return isAddress(e);
+        return isAddress(e)===true;
     })
 
     let arr2 = snapshot_cached.map((e)=>{
@@ -703,14 +703,14 @@ const cacheTrustScores = async () => {
         let startDate = new Date();
 
         let promiseArray = []
-        for (let i=0;i<CHUNK_SIZE;i++){
+        for (let i=0;i<Math.min(addresses.length-index, CHUNK_SIZE);i++){
             promiseArray.push(getTrustScore(addresses[index+i]));
         }
 
         let data = await Promise.allSettled(promiseArray);
 
         let docs = []
-        for (let i=0;i<CHUNK_SIZE;i++){
+        for (let i=0;i<Math.min(addresses.length-index, CHUNK_SIZE);i++){
             docs.push({
                 '_id': getAddress(addresses[index+i]),
                 ...data[i].value
@@ -722,7 +722,7 @@ const cacheTrustScores = async () => {
 
         let endDate = new Date();
         let td = (endDate.getTime() - startDate.getTime()) / 1000;
-        times.push(td/CHUNK_SIZE);
+        times.push(td/Math.min(addresses.length-index, CHUNK_SIZE));
 
         console.log(`🟢 Cached Chunk#${parseInt(index/CHUNK_SIZE)} | Avg Time: ${parseFloat(avg(times)).toFixed(3)}s`);
     }
