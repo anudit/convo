@@ -10,7 +10,7 @@ const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID } = process.env;
 let DEBUG = false;
 let GLOBAL_MATIC_PRICE = 0;
 let GLOBAL_ETH_PRICE = 0;
-let CHUNK_SIZE = 2;
+let CHUNK_SIZE = 1;
 
 let erroredAddresses = [];
 
