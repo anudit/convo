@@ -10,7 +10,7 @@ const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID } = process.env;
 let DEBUG = false;
 let GLOBAL_MATIC_PRICE = 0;
 let GLOBAL_ETH_PRICE = 0;
-let CHUNK_SIZE = 4;
+let CHUNK_SIZE = 2;
 
 let erroredAddresses = [];
 
@@ -717,7 +717,7 @@ const cacheTrustScores = async () => {
             });
         }
 
-        // console.log(docs);
+        console.log('Storing ',docs.length, docs[0]?.score,  docs[1]?.score);
         await threadClient.save(threadId, 'cachedTrustScores', docs);
 
         let endDate = new Date();
