@@ -717,7 +717,7 @@ const cacheTrustScores = async () => {
             });
         }
 
-        console.log('Storing ',docs.length, docs[0]?.score,  docs[1]?.score);
+        console.log('Storing ',docs.length, docs[0]?.score);
         await threadClient.save(threadId, 'cachedTrustScores', docs);
 
         let endDate = new Date();
