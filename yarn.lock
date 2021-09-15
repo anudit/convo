@@ -11,7 +11,7 @@
     deep-eql "^0.1.3"
     keypather "^1.10.2"
 
-"@3id/common@^0.2.1":
+"@3id/common@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@3id/common/-/common-0.2.0.tgz#563c2d92f27869cc10b56b2edf39cbac98e17997"
   integrity sha512-V7eReTnZSmunx52laGjTLeer+j+bpo6DVVWdDrtKE/FGb6wi+s2MseiMm4lXKDRUEVZDoEhbtntaH3CQ76PhMQ==
@@ -19,7 +19,7 @@
     errors-utils "^0.1.0"
     uint8arrays "^2.1.5"
 
-"@3id/connect-display@^0.2.1":
+"@3id/connect-display@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@3id/connect-display/-/connect-display-0.2.0.tgz#52b56065eeef7fea8fa0f6e16303d83211c963eb"
   integrity sha512-vvY5rXvI4cLuduooASECoyrshe54MQ4Uww+eBEHL+EdUglFRVHwOTGvL7JG0M96nNQXJlahVocMt7qPhOCVBEA==
@@ -28,20 +28,20 @@
     "@ceramicnetwork/transport-postmessage" "^0.3.0"
     rxjs "^6.6.6"
 
-"@3id/connect@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@3id/connect/-/connect-0.2.2.tgz#2343744e8ee0251d6b8d52ca68b220b8df6ffe8d"
-  integrity sha512-KLLViSOLUNKRzWUlwFb2BDct+60GVvo4yAvrS/x3eQfcdWg8I8Ocqg6sjucUhC/HJqVLwsVvFd89+qVjJHA7Rg==
+"@3id/connect@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@3id/connect/-/connect-0.2.0.tgz#b1407a0bec0a287e37ef487d82f87388135be966"
+  integrity sha512-gT4ugkUEe0My6twa+xKB8ufgzd+PnU3PQzNQrZcNJ05gbJR30RS7Cr2pp0GL7Qj0TNlVZShwIJGr5Iu6KHtR5w==
   dependencies:
-    "@3id/common" "^0.2.1"
-    "@3id/connect-display" "^0.2.1"
-    "@3id/window-auth-provider" "^0.2.2"
-    "@ceramicnetwork/blockchain-utils-linking" "^1.1.3"
+    "@3id/common" "^0.2.0"
+    "@3id/connect-display" "^0.2.0"
+    "@3id/window-auth-provider" "^0.2.0"
+    "@ceramicnetwork/blockchain-utils-linking" "^1.0.0"
     postmsg-rpc "^2.4.0"
-    rpc-utils "^0.4.0"
+    rpc-utils "^0.3.4"
     rxjs "^6.6.6"
 
-"@3id/window-auth-provider@^0.2.2":
+"@3id/window-auth-provider@^0.2.0":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@3id/window-auth-provider/-/window-auth-provider-0.2.2.tgz#25b5c8d4694df36a2985a6654fc08d1a73cbc411"
   integrity sha512-ThAxKul7cinC0rsK5FX5GssU9lwjxxFtzEhvfFDbUxMQTBlGyH1o22j9j53N8+G9j1VGGkNXJNKe2yKKYsUIkQ==
@@ -1124,7 +1124,7 @@
     lru_map "^0.4.1"
     uint8arrays "^2.0.5"
 
-"@ceramicnetwork/blockchain-utils-linking@^1.1.3":
+"@ceramicnetwork/blockchain-utils-linking@^1.0.0":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@ceramicnetwork/blockchain-utils-linking/-/blockchain-utils-linking-1.1.3.tgz#554f19ea25e2d670d6ce8e1587648bee2e77569d"
   integrity sha512-ItEIMJzg9rbYgcTT01QvJh+x2FoiSzeOk+INeAQbxV3NOSOIzJ1ZaHgLD6aPdTxhuDWWgEOI9dYk5HMSEJdDvQ==

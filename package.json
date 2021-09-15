@@ -13,7 +13,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@3id/connect": "^0.2.0",
+    "@3id/connect": "0.2.0",
     "@babel/core": "^7.15.5",
     "@babel/runtime": "^7.15.4",
     "@ceramicnetwork/3id-did-resolver": "^1.4.2",
