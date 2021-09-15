@@ -14,10 +14,6 @@ let CHUNK_SIZE = 1;
 
 let erroredAddresses = [];
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 const getClient = async () =>{
 
     const identity = PrivateKey.fromString(TEXTILE_PK);
@@ -89,6 +85,25 @@ async function getSybil(address) {
     return resp;
 }
 
+async function getGitcoin(address) {
+    let threadClient = await getClient();
+    const threadId = ThreadID.fromString(TEXTILE_THREADID);
+    const query = new Where('_id').eq(getAddress(address));
+    let resp = await threadClient.find(threadId, 'cachedGitcoin', query);
+    if(resp.length === 0){
+        return {
+            "_id": getAddress(address),
+            "funder": false
+        }
+    }
+    else {
+        return {
+            "_id": getAddress(address),
+            "funder": Boolean(resp[0]?.funder)
+        }
+    }
+}
+
 async function checkPoH(address, provider) {
 
     let pohAddress = "0xc5e9ddebb09cd64dfacab4011a0d5cedaf7c9bdb";
@@ -148,14 +163,14 @@ async function getCoinviseData(address = ""){
     async function getPoolData(tokenAddress = ""){
 
         let data = await fetch("https://api.thegraph.com/subgraphs/name/benesjan/uniswap-v3-subgraph", {
-      "headers": {
-        "accept": "*/*",
-        "content-type": "application/json",
-      },
-      "referrer": "https://thegraph.com/",
-      "body": "{\"query\":\"{\\n  pools (where : {token0: \\\""+tokenAddress+"\\\"}) {\\n    id\\n    totalValueLockedUSD\\n    token0 {\\n      id\\n    }\\n    token1 {\\n      id\\n    }\\n  }\\n}\\n\",\"variables\":null}",
-      "method": "POST"
-    });
+        "headers": {
+            "accept": "*/*",
+            "content-type": "application/json",
+        },
+        "referrer": "https://thegraph.com/",
+        "body": "{\"query\":\"{\\n  pools (where : {token0: \\\""+tokenAddress+"\\\"}) {\\n    id\\n    totalValueLockedUSD\\n    token0 {\\n      id\\n    }\\n    token1 {\\n      id\\n    }\\n  }\\n}\\n\",\"variables\":null}",
+        "method": "POST"
+        });
         let response = await data.json();
         return response['data']['pools'];
     }
@@ -523,19 +538,6 @@ async function getAsyncartData(address = "") {
 
 }
 
-async function getEthPrice() {
-
-    if (Boolean(GLOBAL_ETH_PRICE) === 0){
-        let data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
-        GLOBAL_ETH_PRICE = data['data']['items'][0]['quote_rate'];
-        return data['data']['items'][0]['quote_rate'];
-    }
-    else {
-        return GLOBAL_ETH_PRICE;
-    }
-
-}
-
 function avg(array) {
     var total = 0;
     var count = 0;
@@ -566,7 +568,6 @@ async function calculateScore(address) {
         getSybil(address),
         fetcher(`https://backend.deepdao.io/user/${address.toLowerCase()}`, "GET", {}),
         fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}),
-        getEthPrice(),
         getFoundationData(address), // * ethPrice
         getSuperrareData(address),
         getRaribleData(address), // * ethPrice
@@ -574,7 +575,8 @@ async function calculateScore(address) {
         getAsyncartData(address), // * ethPrice
         getMirrorData(address),
         getCoinviseData(address),
-        getZoraData(address) // * ethPrice
+        getZoraData(address), // * ethPrice
+        getGitcoin(address)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -599,38 +601,41 @@ async function calculateScore(address) {
         'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,
         'mirror': results[16].value,
         'foundation': {
-            'totalCountSold': results[11]?.value?.totalCountSold,
-            'totalAmountSold': results[11]?.value?.totalAmountSold * results[10]?.value
+            'totalCountSold': results[10]?.value?.totalCountSold,
+            'totalAmountSold': results[10]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
         },
         'superrare': {
-            'totalCountSold': results[12]?.value?.totalCountSold,
-            'totalAmountSold': results[12]?.value?.totalAmountSold
+            'totalCountSold': results[11]?.value?.totalCountSold,
+            'totalAmountSold': results[11]?.value?.totalAmountSold
         },
         'rarible': {
-            'totalCountSold': results[13]?.value?.totalCountSold,
-            'totalAmountSold': results[13]?.value?.totalAmountSold * results[10]?.value
+            'totalCountSold': results[12]?.value?.totalCountSold,
+            'totalAmountSold': results[12]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
         },
         'knownorigin': {
-            'totalCountSold': results[14]?.value?.totalCountSold,
-            'totalAmountSold': results[14]?.value?.totalAmountSold * results[10]?.value
+            'totalCountSold': results[13]?.value?.totalCountSold,
+            'totalAmountSold': results[13]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
         },
         'asyncart': {
-            'totalCountSold': results[15]?.value?.totalCountSold,
-            'totalAmountSold': results[15]?.value?.totalAmountSold * results[10]?.value
+            'totalCountSold': results[14]?.value?.totalCountSold,
+            'totalAmountSold': results[14]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
         },
         'zora': {
-            'totalCountSold': results[18]?.value?.totalCountSold,
-            'totalAmountSold': results[18]?.value?.totalAmountSold * results[10]?.value
+            'totalCountSold': results[17]?.value?.totalCountSold,
+            'totalAmountSold': results[17]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
         },
         'coinvise': {
-            'tokensCreated': results[17]?.value?.tokensCreated,
-            'nftsCreated': results[17]?.value?.nftsCreated,
-            'totalCountSold': results[17]?.value?.totalCountSold,
-            'totalAmountSold': results[17]?.value?.totalAmountSold,
-            'totalPoolTvl': results[17]?.value?.totalPoolTvl,
-            'totalPoolCount': results[17]?.value?.totalPoolCount,
-            'multisendCount': results[17]?.value?.multisendCount,
-            'airdropCount': results[17]?.value?.airdropCount
+            'tokensCreated': results[16]?.value?.tokensCreated,
+            'nftsCreated': results[16]?.value?.nftsCreated,
+            'totalCountSold': results[16]?.value?.totalCountSold,
+            'totalAmountSold': results[16]?.value?.totalAmountSold,
+            'totalPoolTvl': results[16]?.value?.totalPoolTvl,
+            'totalPoolCount': results[16]?.value?.totalPoolCount,
+            'multisendCount': results[16]?.value?.multisendCount,
+            'airdropCount': results[16]?.value?.airdropCount
+        },
+        'gitcoin': {
+            'funder': results[18]?.value?.funder
         }
     };
 
@@ -664,20 +669,29 @@ async function calculateScore(address) {
     if(parseInt(results[9].value?.taskData?.level)> 0){ // rabbithole
         score += parseInt(results[9].value?.taskData?.level) - 1;
     }
-    if(results[16].value === true){ // mirror
+    if(results[15].value === true){ // mirror
         score += 10;
     }
 
-    // Coinvise
-    score +=  (results[17]?.value?.tokensCreated**0.5 + results[17]?.value?.nftsCreated**0.5 + results[17]?.value?.totalCountSold + results[17]?.value?.totalPoolCount + results[17]?.value?.multisendCount + results[17]?.value?.airdropCount);
+    let coinviseScore = (
+        results[16]?.value?.tokensCreated**0.5 +
+        results[16]?.value?.nftsCreated**0.5 +
+        results[16]?.value?.totalCountSold +
+        results[16]?.value?.totalPoolCount +
+        results[16]?.value?.multisendCount +
+        results[16]?.value?.airdropCount
+    )
+    score +=  Boolean(coinviseScore) === true ? coinviseScore : 0;
+
+    if(results[18]?.value?.funder === true){ // Gitcoin
+        score += 10;
+    }
 
     return {score, ...retData};
 }
 
 const getTrustScore = async (address) => {
-
     try {
-
         let respData = await calculateScore(address);
         return respData;
     } catch (error) {
@@ -693,6 +707,11 @@ const cacheTrustScores = async () => {
 
     let matic_price_data = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}) ;
     GLOBAL_MATIC_PRICE = parseFloat(matic_price_data[0].price);
+
+    let eth_price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
+    GLOBAL_ETH_PRICE = eth_price_data['data']['items'][0]['quote_rate'];
+
+    console.log(`GLOBAL_MATIC_PRICE:${GLOBAL_MATIC_PRICE}$`,`GLOBAL_ETH_PRICE:${GLOBAL_ETH_PRICE}$`);
 
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
@@ -717,14 +736,17 @@ const cacheTrustScores = async () => {
             });
         }
 
-        console.log('Storing ',docs.length, docs[0]?.score);
+        // console.log(docs);
+        // console.log('Storing ',docs.length, docs[0]?.score);
         await threadClient.save(threadId, 'cachedTrustScores', docs);
 
         let endDate = new Date();
         let td = (endDate.getTime() - startDate.getTime()) / 1000;
         times.push(td/Math.min(addresses.length-index, CHUNK_SIZE));
 
-        console.log(`🟢 Cached Chunk#${parseInt(index/CHUNK_SIZE)} | Avg Time: ${parseFloat(avg(times)).toFixed(3)}s`);
+        if(index%10 === 0) {
+            console.log(`🟢 Cached Chunk#${parseInt(index/CHUNK_SIZE)} | Avg Time: ${parseFloat(avg(times)).toFixed(3)}s`);
+        }
     }
     console.log(`⚠️ erroredAddresses ${erroredAddresses}`);
 
@@ -744,7 +766,6 @@ const validateSchema = async () =>{
     })
 
     console.log('validateSchema', arr.length);
-
 
     arr = snapshot_cached.filter((e)=>{
         return Object.keys(e?.coinvise).includes('tokensCreated') === false;
@@ -772,7 +793,6 @@ const cacheTrustScoresManual = async (addresses = []) => {
         console.log(`🟢 Cached ${index}`);
     }
 }
-
 
 const updateSchema = async (addresses = []) => {
 
@@ -802,4 +822,4 @@ cacheTrustScores().then(()=>{
 
 // validateSchema();
 // updateSchema();
-// cacheTrustScoresManual(["0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8df737904ab678B99717EF553b4eFdA6E3f94589"]);
+// cacheTrustScoresManual(["0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8df737904ab678B99717EF553b4eFdA6E3f94589","0x0015A00724E5FDC51aE2648231B1405F5b79597b"]);

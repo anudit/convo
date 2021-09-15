@@ -25,6 +25,7 @@ const getData = async () =>{
     let snapshot_cachedTrustScores = await threadClient.find(threadId, 'cachedTrustScores', {});
     let snapshot_cachedSybil = await threadClient.find(threadId, 'cachedSybil', {});
     let snapshot_bridge = await threadClient.find(threadId, 'bridge', {});
+    let snapshot_cachedGitcoin = await threadClient.find(threadId, 'cachedGitcoin', {});
 
     return {
         snapshot_comments,
@@ -32,7 +33,8 @@ const getData = async () =>{
         snapshot_subscribers,
         snapshot_cachedTrustScores,
         snapshot_cachedSybil,
-        snapshot_bridge
+        snapshot_bridge,
+        snapshot_cachedGitcoin
     };
 }
 
