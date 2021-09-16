@@ -8,6 +8,8 @@ const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID } = process.env;
 const fs = require('fs');
 const path = require('path');
 
+const threadId = ThreadID.fromString(TEXTILE_THREADID);
+
 const getClient = async () => {
 
     const identity = PrivateKey.fromString(TEXTILE_PK);
@@ -27,74 +29,109 @@ function chunkArray(arr, chunkSize) {
     }, [])
 }
 
+const getDocs = async (threadClient) =>{
+
+    let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
+
+    snapshot_cached = snapshot_cached.filter((e)=>{
+        return isAddress(e._id) === true;
+    })
+
+    return snapshot_cached;
+}
+
+
 async function getUniswapSybilData(){
 
     let req = await fetch('https://raw.githubusercontent.com/Uniswap/sybil-list/master/verified.json');
     let data = await req.json();
 
-    let keys = Object.keys(data);
-    let docs = [];
-    for (let index = 0; index < keys.length; index++) {
-        docs.push({
-            '_id': keys[index],
-            'data': data[keys[index]],
-        });
-    }
-    const threadClient = await getClient();
-    const threadId = ThreadID.fromString(TEXTILE_THREADID);
-
-    let chunkedArray = chunkArray(docs, 50);
-    for (let i = 0; i < chunkedArray.length; i+=1) {
-        console.log(`🟡 Caching Chunk ${i+1}/${chunkedArray.length}`);
-        await threadClient.save(threadId, 'cachedSybil', chunkedArray[i]);
-    }
-    console.log('✅ Cached Uniswap Sybil Metrics.');
+    return Object.keys(data);
 
 }
 
 async function getGitcoinData(){
-
-    fs.readFile(path.resolve(__dirname, 'all.json'), 'utf8', async function (err, fileData) {
-        try {
-            if (!err){
-                let data = JSON.parse(fileData)
-                let docs = [];
-                for (let index = 0; index < data['addresses'].length; index++) {
-                    if(isAddress(data['addresses'][index][0]) === true){
-                        docs.push({
-                            '_id': data['addresses'][index][0],
-                            'funder': true,
-                        });
+    let promise = new Promise((res, rej) => {
+        fs.readFile(path.resolve(__dirname, 'all.json'), 'utf8', async function (err, fileData) {
+            try {
+                if (!err){
+                    let data = JSON.parse(fileData)
+                    let addDb = [];
+                    for (let index = 0; index < data['addresses'].length; index++) {
+                        if(isAddress(data['addresses'][index][0]) === true){
+                            addDb.push(data['addresses'][index][0]);
+                        }
                     }
+                    res(addDb);
                 }
-                const threadClient = await getClient();
-                const threadId = ThreadID.fromString(TEXTILE_THREADID);
-
-                let chunkedArray = chunkArray(docs, 100);
-                for (let i = 0; i < chunkedArray.length; i+=1) {
-                    console.log(`🟡 Caching Chunk ${i+1}/${chunkedArray.length}`);
-                    await threadClient.save(threadId, 'cachedGitcoin', chunkedArray[i]);
+                else {
+                    console.error(err)
+                    res([]);
                 }
-                console.log('✅ Cached Gitcoin Funders');
+            } catch (e) {
+                console.log(e)
+                res([]);
             }
-            else {
-                console.error(err)
-            }
-        } catch (e) {
-            console.log(e)
-        }
 
+        });
     });
-
+    let result = await promise;
+    return result;
 }
 
 async function cacheIndependent(){
-    try {
-        await getUniswapSybilData();
-        // await getGitcoinData();
-    } catch (error) {
-        console.log(error);
+    const threadClient = await getClient();
+    const docs = await getDocs(threadClient);
+    // console.log('docs.length', docs.length);
+
+    const uniswapSybilData = await getUniswapSybilData();
+    const gitcoinData = await getGitcoinData();
+
+    // console.log(gitcoinData.length);
+
+    for (let index = 0; index < docs.length; index++) {
+        const doc = docs[index];
+        let update = {}
+        if (uniswapSybilData.includes(doc._id)){
+            update = {
+                ...update,
+                'score': doc.score + 10,
+                'uniswapSybil': true,
+            }
+        }
+        else {
+            update = {
+                ...update,
+                'uniswapSybil': false
+            }
+        }
+
+        if (gitcoinData.includes(doc._id)){
+            update = {
+                ...update,
+                'score': doc.score + 10,
+                'gitcoin': {
+                    'funder': true,
+                }
+            }
+        }
+        else {
+            update = {
+                ...update,
+                'gitcoin': {
+                    'funder': false,
+                }
+            }
+        }
+
+        await threadClient.save(threadId, 'cachedTrustScores', [
+            {
+                ...doc,
+                ...update
+            }
+        ]);
     }
+
 }
 
 cacheIndependent();

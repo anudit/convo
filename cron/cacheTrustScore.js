@@ -13,6 +13,7 @@ let GLOBAL_ETH_PRICE = 0;
 let CHUNK_SIZE = 1;
 
 let erroredAddresses = [];
+const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
 const getClient = async () =>{
 
@@ -25,9 +26,8 @@ const getClient = async () =>{
     return client;
 }
 
-const getAddresses = async () =>{
-    const threadClient = await getClient();
-    const threadId = ThreadID.fromString(TEXTILE_THREADID);
+const getAddresses = async (threadClient) =>{
+
     let snapshot_comments = await threadClient.find(threadId, 'comments', {});
     let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
 
@@ -76,33 +76,6 @@ const fetcher = async (url, method="GET", bodyData = {}, ISDEBUG = false) => {
 
     return respData;
 };
-
-async function getSybil(address) {
-    let threadClient = await getClient();
-    const threadId = ThreadID.fromString(TEXTILE_THREADID);
-    const query = new Where('_id').eq(getAddress(address));
-    let resp = await threadClient.find(threadId, 'cachedSybil', query);
-    return resp;
-}
-
-async function getGitcoin(address) {
-    let threadClient = await getClient();
-    const threadId = ThreadID.fromString(TEXTILE_THREADID);
-    const query = new Where('_id').eq(getAddress(address));
-    let resp = await threadClient.find(threadId, 'cachedGitcoin', query);
-    if(resp.length === 0){
-        return {
-            "_id": getAddress(address),
-            "funder": false
-        }
-    }
-    else {
-        return {
-            "_id": getAddress(address),
-            "funder": Boolean(resp[0]?.funder)
-        }
-    }
-}
 
 async function checkPoH(address, provider) {
 
@@ -565,7 +538,6 @@ async function calculateScore(address) {
         fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
-        getSybil(address),
         fetcher(`https://backend.deepdao.io/user/${address.toLowerCase()}`, "GET", {}),
         fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}),
         getFoundationData(address), // * ethPrice
@@ -575,8 +547,7 @@ async function calculateScore(address) {
         getAsyncartData(address), // * ethPrice
         getMirrorData(address),
         getCoinviseData(address),
-        getZoraData(address), // * ethPrice
-        getGitcoin(address)
+        getZoraData(address) // * ethPrice
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -596,46 +567,42 @@ async function calculateScore(address) {
         'idena': Boolean(results[4].value?.result),
         'cryptoScamDb': Boolean(results[5].value?.success),
         'unstoppableDomains': Boolean(results[6].value) === true ? results[6].value : false,
-        'uniswapSybil': results[7].value?.length,
-        'deepdao': Boolean(results[8].value?.totalDaos) === true? parseInt(results[8].value?.totalDaos) : 0,
-        'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,
-        'mirror': results[16].value,
+        'deepdao': Boolean(results[7].value?.totalDaos) === true? parseInt(results[7].value?.totalDaos) : 0,
+        'rabbitHole': parseInt(results[8].value?.taskData?.level) - 1,
+        'mirror': results[15].value,
         'foundation': {
-            'totalCountSold': results[10]?.value?.totalCountSold,
-            'totalAmountSold': results[10]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
+            'totalCountSold': results[9]?.value?.totalCountSold,
+            'totalAmountSold': results[9]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
         },
         'superrare': {
-            'totalCountSold': results[11]?.value?.totalCountSold,
-            'totalAmountSold': results[11]?.value?.totalAmountSold
+            'totalCountSold': results[10]?.value?.totalCountSold,
+            'totalAmountSold': results[10]?.value?.totalAmountSold
         },
         'rarible': {
+            'totalCountSold': results[11]?.value?.totalCountSold,
+            'totalAmountSold': results[11]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
+        },
+        'knownorigin': {
             'totalCountSold': results[12]?.value?.totalCountSold,
             'totalAmountSold': results[12]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
         },
-        'knownorigin': {
+        'asyncart': {
             'totalCountSold': results[13]?.value?.totalCountSold,
             'totalAmountSold': results[13]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
         },
-        'asyncart': {
-            'totalCountSold': results[14]?.value?.totalCountSold,
-            'totalAmountSold': results[14]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
-        },
         'zora': {
-            'totalCountSold': results[17]?.value?.totalCountSold,
-            'totalAmountSold': results[17]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
+            'totalCountSold': results[16]?.value?.totalCountSold,
+            'totalAmountSold': results[16]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
         },
         'coinvise': {
-            'tokensCreated': results[16]?.value?.tokensCreated,
-            'nftsCreated': results[16]?.value?.nftsCreated,
-            'totalCountSold': results[16]?.value?.totalCountSold,
-            'totalAmountSold': results[16]?.value?.totalAmountSold,
-            'totalPoolTvl': results[16]?.value?.totalPoolTvl,
-            'totalPoolCount': results[16]?.value?.totalPoolCount,
-            'multisendCount': results[16]?.value?.multisendCount,
-            'airdropCount': results[16]?.value?.airdropCount
-        },
-        'gitcoin': {
-            'funder': results[18]?.value?.funder
+            'tokensCreated': results[15]?.value?.tokensCreated,
+            'nftsCreated': results[15]?.value?.nftsCreated,
+            'totalCountSold': results[15]?.value?.totalCountSold,
+            'totalAmountSold': results[15]?.value?.totalAmountSold,
+            'totalPoolTvl': results[15]?.value?.totalPoolTvl,
+            'totalPoolCount': results[15]?.value?.totalPoolCount,
+            'multisendCount': results[15]?.value?.multisendCount,
+            'airdropCount': results[15]?.value?.airdropCount
         }
     };
 
@@ -660,30 +627,27 @@ async function calculateScore(address) {
     if(Boolean(results[6].value) === true){ // unstoppable domains
         score += 2;
     }
-    if(results[7].value?.length > 0){ // uniswap sybil
-        score += 10;
+    if( Boolean(results[7].value?.totalDaos) === true && parseInt(results[8].value.totalDaos)> 0){ // deepdao
+        score += parseInt(results[7].value.totalDaos);
     }
-    if( Boolean(results[8].value?.totalDaos) === true && parseInt(results[8].value.totalDaos)> 0){ // deepdao
-        score += parseInt(results[8].value.totalDaos);
+    if(parseInt(results[8].value?.taskData?.level)> 0){ // rabbithole
+        score += parseInt(results[8].value?.taskData?.level) - 1;
     }
-    if(parseInt(results[9].value?.taskData?.level)> 0){ // rabbithole
-        score += parseInt(results[9].value?.taskData?.level) - 1;
-    }
-    if(results[15].value === true){ // mirror
+    if(results[14].value === true){ // mirror
         score += 10;
     }
 
     let coinviseScore = (
-        results[16]?.value?.tokensCreated**0.5 +
-        results[16]?.value?.nftsCreated**0.5 +
-        results[16]?.value?.totalCountSold +
-        results[16]?.value?.totalPoolCount +
-        results[16]?.value?.multisendCount +
-        results[16]?.value?.airdropCount
+        results[15]?.value?.tokensCreated**0.5 +
+        results[15]?.value?.nftsCreated**0.5 +
+        results[15]?.value?.totalCountSold +
+        results[15]?.value?.totalPoolCount +
+        results[15]?.value?.multisendCount +
+        results[15]?.value?.airdropCount
     )
     score +=  Boolean(coinviseScore) === true ? coinviseScore : 0;
 
-    if(results[18]?.value?.funder === true){ // Gitcoin
+    if(results[17]?.value?.funder === true){ // Gitcoin
         score += 10;
     }
 
@@ -701,9 +665,28 @@ const getTrustScore = async (address) => {
     }
 }
 
+const getDocs = async (threadClient) =>{
+
+    let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
+
+    snapshot_cached = snapshot_cached.filter((e)=>{
+        return isAddress(e._id) === true;
+    })
+
+    return snapshot_cached;
+}
+
 const cacheTrustScores = async () => {
 
-    let addresses = await getAddresses();
+    const threadClient = await getClient();
+    let addresses = await getAddresses(threadClient);
+
+    let currentDocs = await getDocs(threadClient);
+    let pastUpdates = {};
+    for (let index = 0; index < currentDocs.length; index++) {
+        const doc = currentDocs[index];
+        pastUpdates[doc._id] = doc
+    }
 
     let matic_price_data = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}) ;
     GLOBAL_MATIC_PRICE = parseFloat(matic_price_data[0].price);
@@ -712,9 +695,6 @@ const cacheTrustScores = async () => {
     GLOBAL_ETH_PRICE = eth_price_data['data']['items'][0]['quote_rate'];
 
     console.log(`GLOBAL_MATIC_PRICE:${GLOBAL_MATIC_PRICE}$`,`GLOBAL_ETH_PRICE:${GLOBAL_ETH_PRICE}$`);
-
-    const threadClient = await getClient();
-    const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
     let times = [];
 
@@ -726,18 +706,20 @@ const cacheTrustScores = async () => {
             promiseArray.push(getTrustScore(addresses[index+i]));
         }
 
-        let data = await Promise.allSettled(promiseArray);
+        let update = await Promise.allSettled(promiseArray);
 
         let docs = []
-        for (let i=0;i<Math.min(addresses.length-index, CHUNK_SIZE);i++){
+        for (let i=0;i<Math.min(addresses.length-index, CHUNK_SIZE);i++) {
+            // console.log('old', currentDocs[getAddress(addresses[index+i])])
             docs.push({
+                ...pastUpdates[getAddress(addresses[index+i])],
                 '_id': getAddress(addresses[index+i]),
-                ...data[i].value
+                ...update[i].value
             });
         }
 
         // console.log(docs);
-        // console.log('Storing ',docs.length, docs[0]?.score);
+        console.log('Storing ', docs.length, docs[0]?.score);
         await threadClient.save(threadId, 'cachedTrustScores', docs);
 
         let endDate = new Date();

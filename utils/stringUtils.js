@@ -1,3 +1,5 @@
+import { isAddress } from "@ethersproject/address";
+
 export const fromB64 = (b64) => {
 
     if (Boolean(b64) == false){
@@ -93,4 +95,16 @@ export const prettifyNumber = (num, digits=2) => {
       }
     }
     return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+}
+
+export const addressToChainName = (address) => {
+    if(isAddress(address) === true){
+        return "ethereum";
+    }
+    else if(address.slice(address.length-5, address.length) === ".near" || address.slice(address.length-8, address.length) === ".testnet"){
+        return "near";
+    }
+    else {
+        return "ethereum";
+    }
 }

@@ -11,40 +11,40 @@
     deep-eql "^0.1.3"
     keypather "^1.10.2"
 
-"@3id/common@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@3id/common/-/common-0.2.0.tgz#563c2d92f27869cc10b56b2edf39cbac98e17997"
-  integrity sha512-V7eReTnZSmunx52laGjTLeer+j+bpo6DVVWdDrtKE/FGb6wi+s2MseiMm4lXKDRUEVZDoEhbtntaH3CQ76PhMQ==
+"@3id/common@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@3id/common/-/common-0.2.1.tgz#7232d086b983f0a1ee910d14d6505e0d6eac596d"
+  integrity sha512-/48ukOfqxAYYkKFmZUSU7Xajo1bm/aic5ucd433BdupGiuSS6P60Lxx/YUbgazT4fDcV9OgZ/qhXJLFuhHs5RQ==
   dependencies:
     errors-utils "^0.1.0"
     uint8arrays "^2.1.5"
 
-"@3id/connect-display@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@3id/connect-display/-/connect-display-0.2.0.tgz#52b56065eeef7fea8fa0f6e16303d83211c963eb"
-  integrity sha512-vvY5rXvI4cLuduooASECoyrshe54MQ4Uww+eBEHL+EdUglFRVHwOTGvL7JG0M96nNQXJlahVocMt7qPhOCVBEA==
+"@3id/connect-display@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@3id/connect-display/-/connect-display-0.2.1.tgz#c6ec92edd6e267915c021f447dc8ef0b2142c098"
+  integrity sha512-cKRhMdoC1I93IejcQJlvEMmRNvqG5ktKf6VqpH6VaKjbqHBBkZbw1/QesMoQWH4H4fS56SnMOYvGTVUfPc0Y2Q==
   dependencies:
-    "@ceramicnetwork/rpc-window" "^0.1.0"
+    "@ceramicnetwork/rpc-window" "^0.1.1"
     "@ceramicnetwork/transport-postmessage" "^0.3.0"
     rxjs "^6.6.6"
 
-"@3id/connect@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@3id/connect/-/connect-0.2.0.tgz#b1407a0bec0a287e37ef487d82f87388135be966"
-  integrity sha512-gT4ugkUEe0My6twa+xKB8ufgzd+PnU3PQzNQrZcNJ05gbJR30RS7Cr2pp0GL7Qj0TNlVZShwIJGr5Iu6KHtR5w==
+"@3id/connect@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@3id/connect/-/connect-0.2.3.tgz#fa387541bbd06edd5ad5819da7bd1bbe71c8b078"
+  integrity sha512-OcyeAP0+FCQHTUHXhyIo4Vfc04gUt+JHuHQAg6Bsh9mLStttlueGkR4GbW6gIJ+3Jpy45mHSp7gQePjAusm6bg==
   dependencies:
-    "@3id/common" "^0.2.0"
-    "@3id/connect-display" "^0.2.0"
-    "@3id/window-auth-provider" "^0.2.0"
-    "@ceramicnetwork/blockchain-utils-linking" "^1.0.0"
+    "@3id/common" "^0.2.1"
+    "@3id/connect-display" "^0.2.1"
+    "@3id/window-auth-provider" "^0.2.3"
+    "@ceramicnetwork/blockchain-utils-linking" "^1.1.3"
     postmsg-rpc "^2.4.0"
-    rpc-utils "^0.3.4"
+    rpc-utils "^0.4.0"
     rxjs "^6.6.6"
 
-"@3id/window-auth-provider@^0.2.0":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@3id/window-auth-provider/-/window-auth-provider-0.2.2.tgz#25b5c8d4694df36a2985a6654fc08d1a73cbc411"
-  integrity sha512-ThAxKul7cinC0rsK5FX5GssU9lwjxxFtzEhvfFDbUxMQTBlGyH1o22j9j53N8+G9j1VGGkNXJNKe2yKKYsUIkQ==
+"@3id/window-auth-provider@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@3id/window-auth-provider/-/window-auth-provider-0.2.3.tgz#6d40b6f2d9c0545399984389b3ee120854ef5e43"
+  integrity sha512-d5XZAtBhDkTOMEKh/1pp1A9RXUfWcUohuyyTylq20k//nIvspugGVWJeAXk1zCiMpFWt9f0fI5ZQHAw83F8DTA==
   dependencies:
     "@ceramicnetwork/rpc-window" "^0.1.1"
     caip "^0.9.2"
@@ -1124,7 +1124,7 @@
     lru_map "^0.4.1"
     uint8arrays "^2.0.5"
 
-"@ceramicnetwork/blockchain-utils-linking@^1.0.0":
+"@ceramicnetwork/blockchain-utils-linking@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@ceramicnetwork/blockchain-utils-linking/-/blockchain-utils-linking-1.1.3.tgz#554f19ea25e2d670d6ce8e1587648bee2e77569d"
   integrity sha512-ItEIMJzg9rbYgcTT01QvJh+x2FoiSzeOk+INeAQbxV3NOSOIzJ1ZaHgLD6aPdTxhuDWWgEOI9dYk5HMSEJdDvQ==
@@ -1180,7 +1180,7 @@
     rpc-utils "^0.4.0"
     rxjs "^6.6.6"
 
-"@ceramicnetwork/rpc-window@^0.1.0", "@ceramicnetwork/rpc-window@^0.1.1":
+"@ceramicnetwork/rpc-window@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@ceramicnetwork/rpc-window/-/rpc-window-0.1.1.tgz#6dc69963129b7028cff00fbb531a25ac084e1ba1"
   integrity sha512-WoaRVj39yt5RuCEsXrt9Dnd5/MKOloNwEvJiCB1GQ2KMWK5NdAJ91cHuw5Pmmo2sKpV0t2dwoYOpvOchNqQvUw==
@@ -3016,6 +3016,17 @@
     truffle "^5.3.9"
     truffle-assertions "^0.9.2"
 
+"@oceanprotocol/contracts@^0.6.7":
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/@oceanprotocol/contracts/-/contracts-0.6.7.tgz#1f39277b0d8b36872755cd749501b3adc1dface2"
+  integrity sha512-OFnSAK6yV/a4Sigq5ojJ3tktzqQPqnZgOGRTChgspFZPfQIL28pudtVG6cV0+7pin9MkFx0emLGKvwQZd1d5+g==
+  dependencies:
+    "@truffle/contract" "^4.3.34"
+    "@truffle/hdwallet-provider" "^1.5.0"
+    truffle "^5.4.10"
+    truffle-assertions "^0.9.2"
+    websocket "^1.0.34"
+
 "@oceanprotocol/lib@^0.17.3":
   version "0.17.3"
   resolved "https://registry.yarnpkg.com/@oceanprotocol/lib/-/lib-0.17.3.tgz#0906ac657562a1410927a3ae558ec97ae72eec4f"
@@ -3165,10 +3176,10 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
-"@react-three/drei@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.7.0.tgz#b92e00342ca631f692e7c333c448ca8cd693be86"
-  integrity sha512-76uyOu0DPMLoa+LOdkI7fFPyP+HAUZdZDQ7V9VWw+731tf5FYKpFAjSTwuxnmoUkx0ZfV3ZE6fWdXaW4steYNQ==
+"@react-three/drei@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.8.0.tgz#ef052779a4398a0665390eb2be84b6b2681353f5"
+  integrity sha512-2HbNZB3HEzMC1sDBTZwCA973MW1ke65oIQAlH+ZW5pucNnuHgpiuDmmWRSq055sJfgY2GtTEHCzFjb5J465W6A==
   dependencies:
     "@babel/runtime" "^7.11.2"
     blob-polyfill "^5.0.20210201"
@@ -3185,10 +3196,10 @@
     utility-types "^3.10.0"
     zustand "^3.5.1"
 
-"@react-three/fiber@^7.0.6":
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-7.0.6.tgz#faa5aa5d496ae778a89fe2d3f503428a0e3c841b"
-  integrity sha512-GSMmnk66B/xGGfbSj5lGiZCxGQD0i8rm0Bt/Xp6TD2b9cYe2Lxb2wegU04zIeN89aoUYMHXhL1GNXsZvvOjfUA==
+"@react-three/fiber@^7.0.7":
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-7.0.7.tgz#32a3fc43871890d03ce55fd08db064e4c7af308a"
+  integrity sha512-cDRweUmJUbyGSn1j0r3bzKdS+MobIA93LR0j3pa2XOpjutKJsS2va38xEbbGK7ODTKVvCOdjJ9xlBB4TSS1Vhg==
   dependencies:
     "@babel/runtime" "^7.13.10"
     react-merge-refs "^1.1.0"
@@ -3901,7 +3912,7 @@
   resolved "https://registry.yarnpkg.com/@truffle/expect/-/expect-0.0.18.tgz#022353a212942437e1a57ac1191d692347367bb5"
   integrity sha512-ZcYladRCgwn3bbhK3jIORVHcUOBk/MXsUxjfzcw+uD+0H1Kodsvcw1AAIaqd5tlyFhdOb7YkOcH0kUES7F8d1A==
 
-"@truffle/hdwallet-provider@^1.4.0":
+"@truffle/hdwallet-provider@^1.4.0", "@truffle/hdwallet-provider@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@truffle/hdwallet-provider/-/hdwallet-provider-1.5.0.tgz#f27158753bfb184389358ca43ea72aeee02a31ac"
   integrity sha512-nWgOBRT3ZCX7VAFVrDrWLvX405J502WlP5azmnWbM5r3fqDKUJlBdtHZTCGeiDKAT6twtpTUj6tO8mKmrjF8PA==
@@ -18013,7 +18024,7 @@ truffle-assertions@^0.9.2:
     assertion-error "^1.1.0"
     lodash.isequal "^4.5.0"
 
-truffle@^5.3.9:
+truffle@^5.3.9, truffle@^5.4.10:
   version "5.4.10"
   resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.4.10.tgz#284522b2dbed708a6f11ef6987b57a13e1fe5724"
   integrity sha512-i2EOTmsIkirSdqPGj9FAgVxy45bD5py1WOCMeeGz8I39L9lM/zP1A3NzihWplSL5nYv9A/fM9NY/N/CnVkIAnQ==
@@ -19172,7 +19183,7 @@ webpack@^5.52.1:
     watchpack "^2.2.0"
     webpack-sources "^3.2.0"
 
-websocket@^1.0.31, websocket@^1.0.32:
+websocket@^1.0.31, websocket@^1.0.32, websocket@^1.0.34:
   version "1.0.34"
   resolved "https://registry.yarnpkg.com/websocket/-/websocket-1.0.34.tgz#2bdc2602c08bf2c82253b730655c0ef7dcab3111"
   integrity sha512-PRDso2sGwF6kM75QykIesBijKSVceR6jL2G8NGYyq2XrItNC2P5/qL5XeR056GhA+Ly7JMFvJb9I312mJfmqnQ==

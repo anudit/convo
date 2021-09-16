@@ -2,6 +2,7 @@ import validateAuth from "@/lib/validateAuth";
 import { createComment, deleteComment, getComments } from "@/lib/thread-db";
 import { Where } from "@textile/hub";
 import withApikey from "@/middlewares/withApikey";
+import { addressToChainName } from "@/utils/stringUtils";
 
 function isValidUrl(string) {
   let url;
@@ -129,7 +130,7 @@ const handler = async(req, res) => {
             'tag2' : tag2,
             'upvotes': [],
             'downvotes': [],
-            'chain': "ethereum",
+            'chain': addressToChainName(req.body.signerAddress),
             'replyTo': replyTo,
           };
           let newId = await createComment(commentData);
