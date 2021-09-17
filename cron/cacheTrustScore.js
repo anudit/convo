@@ -768,10 +768,10 @@ const cacheTrustScoresManual = async (addresses = []) => {
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
         console.log(data);
-        // await threadClient.save(threadId, 'cachedTrustScores', [{
-        //     '_id': getAddress(addresses[index]),
-        //     ...data
-        // }]);
+        await threadClient.save(threadId, 'cachedTrustScores', [{
+            '_id': getAddress(addresses[index]),
+            ...data
+        }]);
         console.log(`🟢 Cached ${index}`);
     }
 }

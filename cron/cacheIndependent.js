@@ -115,7 +115,7 @@ async function cacheIndependent(manual =[]){
         if (gitcoinData.includes(doc._id)){
             update = {
                 ...update,
-                'score': doc.score + 10,
+                'score': Boolean(update?.score)===true? update?.score + 10 : doc.score + 10,
                 'gitcoin': {
                     'funder': true,
                 }
@@ -130,11 +130,13 @@ async function cacheIndependent(manual =[]){
             }
         }
 
+        // console.log(doc);
         // console.log(update);
         // console.log({
         //     ...doc,
         //     ...update
         // });
+        // break;
         await threadClient.save(threadId, 'cachedTrustScores', [
             {
                 ...doc,
