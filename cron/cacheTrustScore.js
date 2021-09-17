@@ -569,7 +569,7 @@ async function calculateScore(address) {
         'unstoppableDomains': Boolean(results[6].value) === true ? results[6].value : false,
         'deepdao': Boolean(results[7].value?.totalDaos) === true? parseInt(results[7].value?.totalDaos) : 0,
         'rabbitHole': parseInt(results[8].value?.taskData?.level) - 1,
-        'mirror': results[15].value,
+        'mirror': results[14].value,
         'foundation': {
             'totalCountSold': results[9]?.value?.totalCountSold,
             'totalAmountSold': results[9]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
@@ -616,7 +616,7 @@ async function calculateScore(address) {
         score += results[2].value.length;
     }
     if(Boolean(results[3].value) === true){ // ens
-        score += 2;
+        score += 10;
     }
     if(Boolean(results[4].value?.result) === true){ // idena
         score += 1;
@@ -625,7 +625,7 @@ async function calculateScore(address) {
         score -= 20;
     }
     if(Boolean(results[6].value) === true){ // unstoppable domains
-        score += 2;
+        score += 10;
     }
     if( Boolean(results[7].value?.totalDaos) === true && parseInt(results[8].value.totalDaos)> 0){ // deepdao
         score += parseInt(results[7].value.totalDaos);
@@ -719,7 +719,7 @@ const cacheTrustScores = async () => {
         }
 
         // console.log(docs);
-        console.log('Storing ', docs.length, docs[0]?.score);
+        // console.log('Storing ', docs.length, docs[0]?.score);
         await threadClient.save(threadId, 'cachedTrustScores', docs);
 
         let endDate = new Date();
@@ -805,3 +805,5 @@ cacheTrustScores().then(()=>{
 // validateSchema();
 // updateSchema();
 // cacheTrustScoresManual(["0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8df737904ab678B99717EF553b4eFdA6E3f94589","0x0015A00724E5FDC51aE2648231B1405F5b79597b"]);
+
+// cacheTrustScoresManual(["0x8df737904ab678B99717EF553b4eFdA6E3f94589"])

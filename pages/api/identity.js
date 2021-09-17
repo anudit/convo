@@ -102,7 +102,7 @@ async function calculateScore(address) {
         score += results[2].value.length;
     }
     if(Boolean(results[3].value) === true){ // ens
-        score += 2;
+        score += 10;
     }
     if(Boolean(results[4].value?.result) === true){ // idena
         score += 1;
@@ -111,7 +111,7 @@ async function calculateScore(address) {
         score -= 20;
     }
     if(Boolean(results[6].value) === true){ // unstoppable domains
-        score += 2;
+        score += 10;
     }
     if(results[7].value?.length > 0){ // uniswap sybil
         score += 10;
@@ -127,7 +127,15 @@ async function calculateScore(address) {
     }
 
     // Coinvise
-    score +=  (results[17]?.value?.tokensCreated**0.5 + results[17]?.value?.nftsCreated**0.5 + results[17]?.value?.totalCountSold + results[17]?.value?.totalPoolCount + results[17]?.value?.multisendCount + results[17]?.value?.airdropCount);
+    let coinviseScore = (
+        results[17]?.value?.tokensCreated**0.5 +
+        results[17]?.value?.nftsCreated**0.5 +
+        results[17]?.value?.totalCountSold +
+        results[17]?.value?.totalPoolCount +
+        results[17]?.value?.multisendCount +
+        results[17]?.value?.airdropCount
+    )
+    score +=  Boolean(coinviseScore) === true ? coinviseScore : 0;
 
     return {score, ...retData};
 }

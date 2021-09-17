@@ -79,9 +79,15 @@ async function getGitcoinData(){
     return result;
 }
 
-async function cacheIndependent(){
+async function cacheIndependent(manual =[]){
     const threadClient = await getClient();
-    const docs = await getDocs(threadClient);
+    let docs;
+    if (manual.length === 0){
+        docs = await getDocs(threadClient);
+    }
+    else{
+        docs = manual;
+    }
     // console.log('docs.length', docs.length);
 
     const uniswapSybilData = await getUniswapSybilData();
@@ -124,6 +130,11 @@ async function cacheIndependent(){
             }
         }
 
+        // console.log(update);
+        // console.log({
+        //     ...doc,
+        //     ...update
+        // });
         await threadClient.save(threadId, 'cachedTrustScores', [
             {
                 ...doc,
@@ -135,3 +146,6 @@ async function cacheIndependent(){
 }
 
 cacheIndependent();
+// cacheIndependent([{
+//     _id:"0x8df737904ab678B99717EF553b4eFdA6E3f94589"
+// }]);
