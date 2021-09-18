@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {InputRightElement, InputGroup, Input, Button, useToast, useClipboard, Spinner, Flex, useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
 import useSWR from 'swr';
-import { CheckIcon, CloseIcon, DeleteIcon} from "@chakra-ui/icons"
+import { CheckIcon, DeleteIcon} from "@chakra-ui/icons"
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
