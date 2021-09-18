@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {useToast, useClipboard, Spinner, Flex, useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
+import {InputRightElement, InputGroup, Input, Button, useToast, useClipboard, Spinner, Flex, useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
 import useSWR from 'swr';
-import { CheckIcon, DeleteIcon} from "@chakra-ui/icons"
+import { CheckIcon, CloseIcon, DeleteIcon} from "@chakra-ui/icons"
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
@@ -176,6 +176,41 @@ const CommentsSection = (props) => {
         setFormattedComments(newComments);
     }, [comments]);
 
+    const [filterText, setFilterText] = useState('');
+	const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+	const filteredItems = formattedComments.filter(
+		item => item.text.toLowerCase().includes(filterText.toLowerCase()) || item.url.toLowerCase().includes(filterText.toLowerCase()),
+	);
+
+    const subHeaderComponentMemo = React.useMemo(() => {
+		const handleClear = () => {
+			if (filterText) {
+				setResetPaginationToggle(!resetPaginationToggle);
+				setFilterText('');
+			}
+		};
+
+		return (
+            <>
+                <InputGroup size="md">
+                    <Input
+                        id="search"
+                        type="text"
+                        placeholder="Filter By Message or Website"
+                        aria-label="Search Input"
+                        value={filterText}
+                        onChange={e => setFilterText(e.target.value)}
+                    />
+                    <InputRightElement width="4.5rem">
+                        <Button type="button" size="sm" onClick={handleClear}>
+                            Clear
+                        </Button>
+                    </InputRightElement>
+                </InputGroup>
+            </>
+		);
+	}, [filterText, resetPaginationToggle]);
+
     // Comments are loading
 
     if (Boolean(comments) === false){
@@ -222,12 +257,15 @@ const CommentsSection = (props) => {
 
                     <DataTable
                         title="Your Conversations"
-                        data={formattedComments}
+                        data={filteredItems}
                         columns={columns}
+                        paginationResetDefaultPage={resetPaginationToggle}
                         theme={colorMode === "light" ? "lightTable" : "darkTable"}
                         highlightOnHover
                         responsive
                         pagination
+                        subHeader
+			            subHeaderComponent={subHeaderComponentMemo}
                     />
                 </Flex>
             </DashboardShell>

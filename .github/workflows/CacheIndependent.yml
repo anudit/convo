@@ -1,9 +1,7 @@
 name: "Cache Independent Scores"
 on:
-  push:
-    branches: [ main ]
   schedule:
-    - cron: "0 0 * * *" # Every Day
+    - cron: "0 1 * * *" # Every Day
 
 jobs:
   convo_crons:

@@ -111,6 +111,14 @@ const GlobalStyle = ({ children }) => {
           .chakra-wrap__list {
             justify-content: center !important;
           }
+          .accent::before {
+            border-left: solid .2rem #ffffff;
+            border-radius: 1rem;
+            content: "";
+            height: 3rem;
+            left: 0.2rem;
+            position: absolute;
+        }
         `}
       />
       {children}

@@ -158,10 +158,13 @@ const Home = ({tweetData}) => {
                 <Text
                   bgClip="text"
                   bgGradient="linear-gradient(160deg, #b6ccff 0%, #fdc0ce 100%)"
+                  boxDecorationBreak="clone"
                   fontWeight="600"
                   display="inline-flex"
                   fontSize={{ base: "2rem", sm: "3.5rem", md: "5rem" }}
-                >Conversation Layer</Text>
+                >
+                  Conversation Layer
+                </Text>
                 <br/>
                 of Internet
               </Heading>

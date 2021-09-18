@@ -264,6 +264,7 @@ const DashboardShell = ({title, active, children}) => {
                                 align="center"
                                 justifyContent="center"
                                 alignItems="center"
+                                className={active === "comments" ? "accent" : ""}
                                 backgroundColor={active === "comments" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
@@ -287,6 +288,7 @@ const DashboardShell = ({title, active, children}) => {
                                 align="center"
                                 justifyContent="center"
                                 alignItems="center"
+                                className={active === "identity" ? "accent" : ""}
                                 backgroundColor={active === "identity" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
@@ -310,6 +312,7 @@ const DashboardShell = ({title, active, children}) => {
                                 align="center"
                                 justifyContent="center"
                                 alignItems="center"
+                                className={active === "data" ? "accent" : ""}
                                 backgroundColor={active === "data" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
@@ -333,6 +336,7 @@ const DashboardShell = ({title, active, children}) => {
                                 align="center"
                                 justifyContent="center"
                                 alignItems="center"
+                                className={active === "developer" ? "accent" : ""}
                                 backgroundColor={active === "developer" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
@@ -341,6 +345,29 @@ const DashboardShell = ({title, active, children}) => {
                                 </Text>
                                 <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
                                     Developer
+                                </Text>
+                            </Flex>
+                        </Link>
+                        <Link href="https://bridge.theconvo.space/" passHref={true} isExternal target="_blank">
+                            <Flex
+                                m={1}
+                                h={{base: "70px", md:"100px"}}
+                                w="90%"
+                                textTransform="uppercase"
+                                fontWeight={200}
+                                cursor="pointer"
+                                direction="column"
+                                align="center"
+                                justifyContent="center"
+                                alignItems="center"
+                                backgroundColor={active === "developer" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
+                            >
+                                <Text fontSize="2xl">
+                                    🌉
+                                </Text>
+                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
+                                    Bridge
                                 </Text>
                             </Flex>
                         </Link>
