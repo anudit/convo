@@ -265,7 +265,7 @@ const CommentsSection = (props) => {
                         responsive
                         pagination
                         subHeader
-			            subHeaderComponent={subHeaderComponentMemo}
+                        subHeaderComponent={subHeaderComponentMemo}
                     />
                 </Flex>
             </DashboardShell>
