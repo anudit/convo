@@ -16,7 +16,6 @@ import timeAgo from '@/utils/timeAgo';
 import { toB64, cleanAdd, truncateAddress, prettyTime } from '@/utils/stringUtils';
 import { Web3Context } from '@/contexts/Web3Context';
 import CustomAvatar from '@/components/CustomAvatar';
-import comment from 'pages/api/comment';
 
 export async function getStaticProps(context) {
     const threadId = context.params.threadId;
