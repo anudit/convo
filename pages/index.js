@@ -157,7 +157,8 @@ const Home = ({tweetData}) => {
                 <br/>
                 <Text
                   bgClip="text"
-                  bgGradient="linear-gradient(160deg, #b6ccff 0%, #fdc0ce 100%)"
+                  color="rgba(217, 156, 177, 0.94)"
+                  bgGradient="-webkit-linear-gradient(160deg, rgba(182,204,255,1) 0%, rgba(253,192, 206,1) 100%)"
                   boxDecorationBreak="clone"
                   fontWeight="600"
                   display="inline-flex"
@@ -240,8 +241,9 @@ const Home = ({tweetData}) => {
               Social Layer to
             <Flex
               display="inline-flex"
+              color="rgba(217, 156, 177, 0.94)"
               bgClip="text"
-              bgGradient="linear-gradient(160deg, #375fbb 0%, #e8a7b6 100%)"
+              bgGradient="-webkit-linear-gradient(160deg, rgba(182,204,255,1) 0%, rgba(253,192, 206,1) 100%)"
               fontWeight="800"
               mx={2}
               className="typewrite" data-period="1000" data-type='[

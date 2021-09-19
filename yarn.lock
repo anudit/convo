@@ -3224,10 +3224,10 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
-"@react-three/drei@^7.8.4":
-  version "7.8.4"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.8.4.tgz#0b6c4af8b7c7bd3a471971e44cada625d8ca4b6f"
-  integrity sha512-hrb8J8gZb1Tz2vFTw8oIUW6WGFFAgcpq5FwNqoK6/eebG2Wvr9WLjMkJWXfexIKNXnq4w8bvgNtzBCCAbq6UJA==
+"@react-three/drei@^7.8.5":
+  version "7.8.5"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.8.5.tgz#0858c0afa8984a211a4d6e0b88fdcc4c69a18713"
+  integrity sha512-adrAqJOgeWHhbXRWyZGfa2758ufDdV5pKQJyHT0GOmvhjddCvq8FVyTbl/ARu2nEgprLchG+BpInTE+2i1qxKg==
   dependencies:
     "@babel/runtime" "^7.11.2"
     blob-polyfill "^5.0.20210201"

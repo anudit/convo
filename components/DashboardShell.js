@@ -384,10 +384,10 @@ const DashboardShell = ({title, active, children}) => {
                             />
                         </Flex>
 
-                        <Flex as="a" href="https://docs.theconvo.space" target="_blank" h={{base: "50px", md:"50px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
+                        <Flex as="a" href="https://blog.theconvo.space" target="_blank" h={{base: "50px", md:"50px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
                             <IconButton
                                 colorScheme={colorMode === 'light' ? "blackAlpha": "gray"}
-                                aria-label="Docs"
+                                aria-label="Blog"
                                 size="lg"
                                 icon={<DocsIcon/>}
                                 variant="ghost"

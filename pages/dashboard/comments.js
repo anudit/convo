@@ -14,6 +14,7 @@ import DataTable, { createTheme }  from 'react-data-table-component';
 createTheme('darkTable', {
     text: {
       primary: 'white',
+      hover: 'white',
       secondary: 'gray',
     },
     background: {
@@ -36,6 +37,7 @@ createTheme('darkTable', {
 createTheme('lightTable', {
     text: {
       primary: 'black',
+      hover: 'black',
       secondary: 'gray',
     },
     background: {
@@ -68,18 +70,21 @@ const CommentsSection = (props) => {
             selector: row => row.url,
             sortable: true,
             left: true,
+            reorder: true,
         },
         {
             name: 'Comment',
             selector: row => row.text,
             sortable: true,
             left: true,
+            reorder: true,
         },
         {
             name: 'Date',
             selector: row => row.createdOn,
             sortable: true,
             left: true,
+            reorder: true,
         },
         {
             name: 'Options',
@@ -110,6 +115,7 @@ const CommentsSection = (props) => {
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
+            reorder: true,
         }
     ];
 
@@ -266,6 +272,7 @@ const CommentsSection = (props) => {
                         pagination
                         subHeader
                         subHeaderComponent={subHeaderComponentMemo}
+                        onColumnOrderChange={cols => console.log(cols)}
                     />
                 </Flex>
             </DashboardShell>
