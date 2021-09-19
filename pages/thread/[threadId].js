@@ -16,6 +16,7 @@ import timeAgo from '@/utils/timeAgo';
 import { toB64, cleanAdd, truncateAddress, prettyTime } from '@/utils/stringUtils';
 import { Web3Context } from '@/contexts/Web3Context';
 import CustomAvatar from '@/components/CustomAvatar';
+import comment from 'pages/api/comment';
 
 export async function getStaticProps(context) {
     const threadId = context.params.threadId;
@@ -53,6 +54,15 @@ export async function getStaticPaths() {
 function makeThumbnailImage(title, creator, creation_time){
     const imagelink = `https://image.theconvo.space/api/image?title=${title}&author=${truncateAddress(creator)}&creation_time=${encodeURIComponent(creation_time)}`;
     return imagelink;
+}
+
+function processText(data){
+    try {
+        return cleanAdd(decodeURIComponent(data));
+    } catch (error) {
+        console.log(error);
+        return data;
+    }
 }
 
 const Threads = (props) => {
@@ -246,7 +256,7 @@ const Threads = (props) => {
                                                     </Link>
                                                     <Text pt={1}>
                                                         <Linkify>
-                                                            {cleanAdd(decodeURI(comment.text))}
+                                                            {processText(comment.text)}
                                                         </Linkify>
                                                     </Text>
                                                 </Flex>

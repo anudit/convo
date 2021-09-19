@@ -7,6 +7,7 @@ import fetcher from '@/utils/fetcher';
 import { VerifiedIcon } from '@/public/icons';
 import { WarningIcon } from '@chakra-ui/icons';
 import { ethers } from 'ethers';
+import { isAddress } from '@ethersproject/address';
 
 const CustomAvatar = (props) => {
 
@@ -15,11 +16,13 @@ const CustomAvatar = (props) => {
     const [customPfp, setCustomPfp] = useState(null);
 
     useEffect(() => {
-        fetcher(`/api/identity?address=${address}&apikey=CONVO`, "GET", {}).then((res)=>{
-            if (Boolean(res?.success) === true) {
-                setVerified(res.score);
-            }
-        });
+        if (isAddress(address)){
+            fetcher(`/api/identity?address=${address}&apikey=CONVO`, "GET", {}).then((res)=>{
+                if (Boolean(res?.success) === true) {
+                    setVerified(res.score);
+                }
+            });
+        }
         // const resolver = await provider.getResolver("ricmoo.eth");
     }, [address]);
 

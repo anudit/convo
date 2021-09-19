@@ -42,7 +42,15 @@ export const cleanAdd = (message) => {
 };
 
 export const truncateAddress = (address, len=4) => {
-    return address.slice(0, 2+len) + "..." + address.slice(-len);
+    if(addressToChainName(address) === "ethereum") {
+        return address.slice(0, 2+len) + "..." + address.slice(-len);
+    }
+    else if (addressToChainName(address) === "near"){
+        return address;
+    }
+    else {
+        return address.slice(0, 2+len) + "..." + address.slice(-len);
+    }
 };
 
 
