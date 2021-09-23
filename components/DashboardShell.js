@@ -360,7 +360,7 @@ const DashboardShell = ({title, active, children}) => {
                                 align="center"
                                 justifyContent="center"
                                 alignItems="center"
-                                backgroundColor={active === "developer" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                                backgroundColor={active === "bridge" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
                                 <Text fontSize="2xl">

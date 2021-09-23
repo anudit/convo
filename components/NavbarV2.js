@@ -47,10 +47,14 @@ const NavBar = () => {
             textShadow="2px 2px 16px #00000091"
             fontWeight="200"
             fontSize="20px"
-            w="400px"
-            ml={{base:"0", md:"-200px"}}
             textTransform="uppercase"
           >
+            <Link href="/explore" style={{textDecoration: 'inherit'}} _hover={{
+              color: useColorModeValue("black", "white"),
+            }}>
+                Explore
+            </Link>
+
             <Link href="/dashboard" style={{textDecoration: 'inherit'}} _hover={{
               color: useColorModeValue("black", "white"),
             }}>
@@ -68,6 +72,15 @@ const NavBar = () => {
               }}
             >
               Docs
+            </Link>
+
+            <Link rel="noreferrer" target="_blank" href="https://blog.theconvo.space" aria-label="Blog"
+              style={{textDecoration: 'inherit'}}
+              _hover={{
+                color: useColorModeValue("black", "white"),
+              }}
+            >
+              Blog
             </Link>
           </Stack>
         </Box>

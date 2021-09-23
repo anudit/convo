@@ -119,6 +119,15 @@ const GlobalStyle = ({ children }) => {
             left: 0.2rem;
             position: absolute;
         }
+        .gradient-title {
+          background: -webkit-linear-gradient(160deg, rgba(182,204,255,1) 0%, rgba(253,192, 206,1) 100%);
+          background: linear-gradient(160deg, rgba(182,204,255,1) 0%, rgba(253,192, 206,1) 100%)
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-fill-color: transparent;
+          boxDecorationBreak="clone"
+        }
         `}
       />
       {children}

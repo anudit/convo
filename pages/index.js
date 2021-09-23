@@ -156,10 +156,7 @@ const Home = ({tweetData}) => {
                 The Decentralized
                 <br/>
                 <Text
-                  bgClip="text"
-                  color="rgba(217, 156, 177, 0.94)"
-                  bgGradient="-webkit-linear-gradient(160deg, rgba(182,204,255,1) 0%, rgba(253,192, 206,1) 100%)"
-                  boxDecorationBreak="clone"
+                  className="gradient-title"
                   fontWeight="600"
                   display="inline-flex"
                   fontSize={{ base: "2rem", sm: "3.5rem", md: "5rem" }}
@@ -241,9 +238,9 @@ const Home = ({tweetData}) => {
               Social Layer to
             <Flex
               display="inline-flex"
-              color="rgba(217, 156, 177, 0.94)"
               bgClip="text"
               bgGradient="-webkit-linear-gradient(160deg, rgba(182,204,255,1) 0%, rgba(253,192, 206,1) 100%)"
+              color="rgba(217, 156, 177, 0.94)"
               fontWeight="800"
               mx={2}
               className="typewrite" data-period="1000" data-type='[
@@ -761,7 +758,7 @@ const Home = ({tweetData}) => {
               <AccordionPanel pb={4}>
                 <UnorderedList spacing={2}>
                   <ListItem>
-                    Twitter: <chakra.a _hover={{textDecoration:'underline'}} href="https://twitter.com/anudit" rel="noreferrer" target="_blank">https://twitter.com/anudit</chakra.a>
+                    Twitter: <chakra.a _hover={{textDecoration:'underline'}} href="https://twitter.com/anuditnagar" rel="noreferrer" target="_blank">https://twitter.com/anuditnagar</chakra.a>
                   </ListItem>
                   <ListItem>
                     Discord: <chakra.a _hover={{textDecoration:'underline'}} href="https://discord.com/invite/MFtmrng9J7" rel="noreferrer" target="_blank">https://discord.com/invite/MFtmrng9J7</chakra.a>
