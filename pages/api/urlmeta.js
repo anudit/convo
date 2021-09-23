@@ -2,7 +2,7 @@ import urlMetadata from 'url-metadata';
 
 function isValidURL(string){
   try {
-    new URL(string);
+    new URL(decodeURIComponent(string));
   } catch (_) {
     return false;
   }

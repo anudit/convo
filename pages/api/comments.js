@@ -8,7 +8,7 @@ function isValidUrl(string) {
   let url;
 
   try {
-    url = new URL(string);
+    url = new URL(decodeURIComponent(string));
   } catch (_) {
     return false;
   }
