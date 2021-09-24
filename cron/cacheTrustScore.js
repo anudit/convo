@@ -4,13 +4,17 @@ const Headers = (...args) => import('node-fetch').then(({Headers}) => new Header
 const { Client, PrivateKey, ThreadID, Where } = require('@textile/hub');
 const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
+const fs = require('fs');
+const path = require('path');
 
 const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID } = process.env;
 
 let DEBUG = false;
 let GLOBAL_MATIC_PRICE = 0;
 let GLOBAL_ETH_PRICE = 0;
-let CHUNK_SIZE = 1;
+let CHUNK_SIZE = 2;
+let uniswapData;
+let gitcoinData;
 
 let erroredAddresses = [];
 const threadId = ThreadID.fromString(TEXTILE_THREADID);
@@ -203,8 +207,8 @@ async function getCoinviseData(address = ""){
     }
 
     return {
-        tokensCreated: data[0]?.value?.length,
-        nftsCreated: data[1]?.value?.nfts.length,
+        tokensCreated: Boolean(data[0]?.value?.length) === true ? data[0]?.value?.length: 0,
+        nftsCreated: Boolean(data[1]?.value?.nfts.length) === true ? data[1]?.value?.nfts.length: 0,
         totalPoolCount,
         totalPoolTvl,
         totalCountSold,
@@ -511,6 +515,71 @@ async function getAsyncartData(address = "") {
 
 }
 
+async function getAllUniswapSybilData(){
+
+    let req = await fetch('https://raw.githubusercontent.com/Uniswap/sybil-list/master/verified.json');
+    let data = await req.json();
+
+    return Object.keys(data);
+
+}
+
+async function getAllGitcoinData(){
+    let promise = new Promise((res, rej) => {
+        fs.readFile(path.resolve(__dirname, 'all.json'), 'utf8', async function (err, fileData) {
+            try {
+                if (!err){
+                    let data = JSON.parse(fileData)
+                    let addDb = [];
+                    for (let index = 0; index < data['addresses'].length; index++) {
+                        if(isAddress(data['addresses'][index][0]) === true){
+                            addDb.push(data['addresses'][index][0]);
+                        }
+                    }
+                    res(addDb);
+                }
+                else {
+                    console.error(err)
+                    res([]);
+                }
+            } catch (e) {
+                console.log(e)
+                res([]);
+            }
+
+        });
+    });
+    let result = await promise;
+    return result;
+}
+
+async function getDeepDaoData(address){
+    var requestOptions = {
+        method: 'GET',
+        headers: Headers({ "x-api-key": "LfYMTHGu6J7oTEXT1JDkZ+SrbSD5ETfaXguV0mL44rMowgRsClZwaENG3LHBHv7rFeDJrQnOvEmxcLVZvNqVFA==" }),
+        redirect: 'follow'
+    };
+
+    let data = await fetch(`https://api.deepdao.io/v0.1/participation-score/address/${address}`, requestOptions)
+    let json = await data.json();
+
+    let resp = {
+        "score": 0,
+        "rank": 0,
+        "relativeScore": 0,
+        "daos": 0,
+        "proposals": 0,
+        "votes": 0
+    }
+
+    resp = {
+        ...resp,
+        ...json['data']
+    }
+
+    return resp;
+}
+
 function avg(array) {
     var total = 0;
     var count = 0;
@@ -538,7 +607,7 @@ async function calculateScore(address) {
         fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
-        fetcher(`https://backend.deepdao.io/user/${address.toLowerCase()}`, "GET", {}),
+        getDeepDaoData(address),
         fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}),
         getFoundationData(address), // * ethPrice
         getSuperrareData(address),
@@ -547,7 +616,7 @@ async function calculateScore(address) {
         getAsyncartData(address), // * ethPrice
         getMirrorData(address),
         getCoinviseData(address),
-        getZoraData(address) // * ethPrice
+        getZoraData(address), // * ethPrice
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -567,7 +636,7 @@ async function calculateScore(address) {
         'idena': Boolean(results[4].value?.result),
         'cryptoScamDb': Boolean(results[5].value?.success),
         'unstoppableDomains': Boolean(results[6].value) === true ? results[6].value : false,
-        'deepdao': Boolean(results[7].value?.totalDaos) === true? parseInt(results[7].value?.totalDaos) : 0,
+        'deepdao': results[7].value,
         'rabbitHole': parseInt(results[8].value?.taskData?.level) - 1,
         'mirror': results[14].value,
         'foundation': {
@@ -603,7 +672,11 @@ async function calculateScore(address) {
             'totalPoolCount': results[15]?.value?.totalPoolCount,
             'multisendCount': results[15]?.value?.multisendCount,
             'airdropCount': results[15]?.value?.airdropCount
-        }
+        },
+        'gitcoin': {
+            "funder":gitcoinData.includes(getAddress(address)),
+        },
+        'uniswapSybil': uniswapData.includes(getAddress(address))
     };
 
     if(results[0].value === true){ // poh
@@ -627,13 +700,19 @@ async function calculateScore(address) {
     if(Boolean(results[6].value) === true){ // unstoppable domains
         score += 10;
     }
-    if( Boolean(results[7].value?.totalDaos) === true && parseInt(results[8].value.totalDaos)> 0){ // deepdao
-        score += parseInt(results[7].value.totalDaos);
+    if(Boolean(parseInt(results[7].value?.score)) === true){ // deepdao
+        score += parseInt(results[7].value?.score);
     }
     if(parseInt(results[8].value?.taskData?.level)> 0){ // rabbithole
         score += parseInt(results[8].value?.taskData?.level) - 1;
     }
     if(results[14].value === true){ // mirror
+        score += 10;
+    }
+    if(uniswapData.includes(getAddress(address)) === true){ // uniswap
+        score += 10;
+    }
+    if(gitcoinData.includes(getAddress(address)) === true){ // gitcoin
         score += 10;
     }
 
@@ -646,10 +725,6 @@ async function calculateScore(address) {
         results[15]?.value?.airdropCount
     )
     score +=  Boolean(coinviseScore) === true ? coinviseScore : 0;
-
-    if(results[17]?.value?.funder === true){ // Gitcoin
-        score += 10;
-    }
 
     return {score, ...retData};
 }
@@ -681,12 +756,8 @@ const cacheTrustScores = async () => {
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
 
-    let currentDocs = await getDocs(threadClient);
-    let pastUpdates = {};
-    for (let index = 0; index < currentDocs.length; index++) {
-        const doc = currentDocs[index];
-        pastUpdates[doc._id] = doc
-    }
+    uniswapData = await getAllUniswapSybilData();
+    gitcoinData = await getAllGitcoinData();
 
     let matic_price_data = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}) ;
     GLOBAL_MATIC_PRICE = parseFloat(matic_price_data[0].price);
@@ -709,10 +780,8 @@ const cacheTrustScores = async () => {
         let update = await Promise.allSettled(promiseArray);
 
         let docs = []
-        for (let i=0;i<Math.min(addresses.length-index, CHUNK_SIZE);i++) {
-            // console.log('old', currentDocs[getAddress(addresses[index+i])])
+        for (let i=0;i<update.length;i++) {
             docs.push({
-                ...pastUpdates[getAddress(addresses[index+i])],
                 '_id': getAddress(addresses[index+i]),
                 ...update[i].value
             });

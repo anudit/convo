@@ -146,7 +146,6 @@ const Home = ({tweetData}) => {
               w="100%"
               align="center"
             >
-
               <Heading
                 fontSize={{ base: "2rem", sm: "3rem", md: "3rem" }}
                 as="h1" fontWeight="400" align="center"
@@ -154,19 +153,27 @@ const Home = ({tweetData}) => {
                 color='whiteAlpha.800'
               >
                 The Decentralized
-                <br/>
-                <Text
-                  as="h1"
-                  fontWeight="600"
-                  display="inline-flex"
-                  fontSize={{ base: "2rem", sm: "3.5rem", md: "5rem" }}
-                  color="rgba(217, 156, 177, 0.94)"
-                  bgClip="text"
-                  bgGradient="linear-gradient(160deg, #375fbb 0%, #e8a7b6 100%)"
-                >
-                  Conversation Layer
-                </Text>
-                <br/>
+              </Heading>
+              <Heading
+                as="h1"
+                fontSize={{ base: "2rem", sm: "4rem", md: "4rem" }}
+                fontWeight="700"
+                color={useColorModeValue("black", "white")}
+                lineHeight="none"
+                letterSpacing="tight"
+                textAlign="center"
+                bgClip="text"
+                bgGradient="linear-gradient(160deg, #7796de 0%, #fbcbd6 100%)"
+                paddingBottom={6}
+              >
+                Conversation Layer
+              </Heading>
+              <Heading
+                fontSize={{ base: "2rem", sm: "3rem", md: "3rem" }}
+                as="h1" fontWeight="400" align="center"
+                mb={5}
+                color='whiteAlpha.800'
+              >
                 of Internet
               </Heading>
               <br/><br/>
