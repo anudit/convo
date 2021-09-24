@@ -151,15 +151,18 @@ const Home = ({tweetData}) => {
                 fontSize={{ base: "2rem", sm: "3rem", md: "3rem" }}
                 as="h1" fontWeight="400" align="center"
                 mb={5}
-                color='whiteAlpha.800' textShadow="2px 2px 30px #00000091"
+                color='whiteAlpha.800'
               >
                 The Decentralized
                 <br/>
                 <Text
-                  className="gradient-title"
+                  as="h1"
                   fontWeight="600"
                   display="inline-flex"
                   fontSize={{ base: "2rem", sm: "3.5rem", md: "5rem" }}
+                  color="rgba(217, 156, 177, 0.94)"
+                  bgClip="text"
+                  bgGradient="linear-gradient(160deg, #375fbb 0%, #e8a7b6 100%)"
                 >
                   Conversation Layer
                 </Text>

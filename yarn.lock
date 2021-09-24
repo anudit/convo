@@ -28,23 +28,23 @@
     "@ceramicnetwork/transport-postmessage" "^0.3.0"
     rxjs "^6.6.6"
 
-"@3id/connect@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@3id/connect/-/connect-0.2.3.tgz#fa387541bbd06edd5ad5819da7bd1bbe71c8b078"
-  integrity sha512-OcyeAP0+FCQHTUHXhyIo4Vfc04gUt+JHuHQAg6Bsh9mLStttlueGkR4GbW6gIJ+3Jpy45mHSp7gQePjAusm6bg==
+"@3id/connect@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@3id/connect/-/connect-0.2.5.tgz#2331828cb6d2a079a61ae2c8e896654debba76be"
+  integrity sha512-K3T9ExUjilYyHdQeRUnvd5H5Qanz/XseJTOkRVJyCeADrw2RGPH1gFEJ8XtP7UDqsZwrdcIilLNwSCi72ybGYA==
   dependencies:
     "@3id/common" "^0.2.1"
     "@3id/connect-display" "^0.2.1"
-    "@3id/window-auth-provider" "^0.2.3"
-    "@ceramicnetwork/blockchain-utils-linking" "^1.1.3"
+    "@3id/window-auth-provider" "^0.2.5"
+    "@ceramicnetwork/blockchain-utils-linking" "^1.2.0"
     postmsg-rpc "^2.4.0"
     rpc-utils "^0.4.0"
     rxjs "^6.6.6"
 
-"@3id/window-auth-provider@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@3id/window-auth-provider/-/window-auth-provider-0.2.3.tgz#6d40b6f2d9c0545399984389b3ee120854ef5e43"
-  integrity sha512-d5XZAtBhDkTOMEKh/1pp1A9RXUfWcUohuyyTylq20k//nIvspugGVWJeAXk1zCiMpFWt9f0fI5ZQHAw83F8DTA==
+"@3id/window-auth-provider@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@3id/window-auth-provider/-/window-auth-provider-0.2.5.tgz#7c51065e2149bc2fcd248f204ae724837927c94f"
+  integrity sha512-HEONYQQtwSK07BZiZ7QtVbEHEspmXD0HD5JLR8Jza9K3+bNRSkYuUVxkIxDgT0TsXF8l3hRGfm6AD+vR+4CBCw==
   dependencies:
     "@ceramicnetwork/rpc-window" "^0.1.1"
     caip "^0.9.2"
@@ -1124,10 +1124,10 @@
     lru_map "^0.4.1"
     uint8arrays "^2.0.5"
 
-"@ceramicnetwork/blockchain-utils-linking@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@ceramicnetwork/blockchain-utils-linking/-/blockchain-utils-linking-1.1.3.tgz#554f19ea25e2d670d6ce8e1587648bee2e77569d"
-  integrity sha512-ItEIMJzg9rbYgcTT01QvJh+x2FoiSzeOk+INeAQbxV3NOSOIzJ1ZaHgLD6aPdTxhuDWWgEOI9dYk5HMSEJdDvQ==
+"@ceramicnetwork/blockchain-utils-linking@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@ceramicnetwork/blockchain-utils-linking/-/blockchain-utils-linking-1.2.0.tgz#542953c323bc85f6087e74fdf95190b2e037639f"
+  integrity sha512-hqPH35CzOAxtyrVrZHid8PmAAgsI8gy5sGxT1L00kAHLrGl6aLyihkUw2qMnq9l24moLuzY8JiovrqIIKWuwOQ==
   dependencies:
     "@stablelib/sha256" "^1.0.0"
     caip "~0.9.2"
@@ -3438,10 +3438,10 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
-"@react-three/drei@^7.11.0":
-  version "7.11.0"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.11.0.tgz#43f80a037e28fbffb2a3e89fb95ab8a35975c1bc"
-  integrity sha512-kwXpl0Flwr0PvawRea0GNu8bEJU3m5q7FQNlB0Of09ktdlRgDlR23pDLeQxk7iszOV/a8L8bJQi3/g6Q3dTjwA==
+"@react-three/drei@^7.12.1":
+  version "7.12.1"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.12.1.tgz#b808c6c9b14dd1cb11ef6c94f391e5701aa36f46"
+  integrity sha512-0H19vqhfNYDJYgiMhLSUJtahO9jKcE2+pSdhWLAMVhvRuzC6/NMFPwBW2omqoxwLDazyxx5GnhNtW6QD9aj+tQ==
   dependencies:
     "@babel/runtime" "^7.11.2"
     blob-polyfill "^5.0.20210201"
@@ -16212,10 +16212,10 @@ react-composer@^5.0.1:
   dependencies:
     prop-types "^15.6.0"
 
-react-data-table-component@^7.2.1:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.2.1.tgz#54ed9134ff9388092911bbfb46025256f7393525"
-  integrity sha512-guBxNbHBRzAybECIKGvO9G8foEy4SVra7JBEwWdHNAtVltRDzGzAIHTPDsNNHYhgDmw1JhqvXU/1OtEwcZVd9g==
+react-data-table-component@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.3.0.tgz#d20726de0056875fdc5080eded2ab4f534468ae8"
+  integrity sha512-h0Azcpg9ipgwXHcZwVgjSdVU5Ve47C/IhRZ201pkgoE/OVN9WqRFuSsJypRi4Frs/WEL4PuQn74UeLiNsyQM7A==
   dependencies:
     deepmerge "^4.2.2"
     lodash.orderby "^4.6.0"
