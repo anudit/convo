@@ -68,7 +68,7 @@
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.4",
-    "webpack": "^5.53.0"
+    "webpack": "^5.54.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "11.1.0",
