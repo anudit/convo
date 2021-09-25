@@ -111,14 +111,6 @@ const GlobalStyle = ({ children }) => {
           .chakra-wrap__list {
             justify-content: center !important;
           }
-          .accent::before {
-            border-left: solid .2rem #ffffff;
-            border-radius: 1rem;
-            content: "";
-            height: 3rem;
-            left: 0.2rem;
-            position: absolute;
-        }
         .gradient-title {
           background: -webkit-linear-gradient(160deg, rgba(182,204,255,1) 0%, rgba(253,192, 206,1) 100%);
           background: linear-gradient(160deg, rgba(182,204,255,1) 0%, rgba(253,192, 206,1) 100%)

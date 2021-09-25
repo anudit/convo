@@ -6,7 +6,7 @@ import { Wrap, WrapItem } from "@chakra-ui/react"
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon, DocsIcon, NearIcon } from '@/public/icons';
+import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon } from '@/public/icons';
 import { InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { isAddress } from 'ethers/lib/utils';
 
@@ -232,7 +232,7 @@ const DashboardShell = ({title, active, children}) => {
                 <Flex
                     direction="column"
                     align="center"
-                    w={{base:"64px", md:"100px"}}
+                    w={{base:"64px", md:"200px"}}
                     m="0"
                     height="100vh"
                     position="fixed"
@@ -244,58 +244,52 @@ const DashboardShell = ({title, active, children}) => {
                     alignItems="space-between"
                     background={colorMode === "light" ? "#ececec30" : "#15151930"}
                 >
-                    <Flex direction="column">
+                    <Flex direction="column" alignItems="center">
                         <Link href="/dashboard" passHref={true}>
-                            <Flex height="75px" w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
+                            <Flex height="75px" w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                                 <Text fontSize="2xl">
                                     <TheConvoSpaceIcon />
                                 </Text>
                             </Flex>
                         </Link>
-                        <Link href="/dashboard/comments" passHref={true}>
+                        <Link href="/dashboard/messages" passHref={true}>
                             <Flex
                                 m={1}
-                                h={{base: "70px", md:"100px"}}
+                                h={{base: "50px", md:"50px"}}
                                 w="90%"
-                                textTransform="uppercase"
-                                fontWeight={200}
+                                fontWeight={400}
                                 cursor="pointer"
-                                direction="column"
-                                align="center"
-                                justifyContent="center"
+                                direction="row"
+                                align="left"
+                                justifyContent="flex-start"
+                                paddingLeft="20px"
                                 alignItems="center"
-                                className={active === "comments" ? "accent" : ""}
                                 backgroundColor={active === "comments" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
-                                <Text fontSize="2xl">
-                                    ⚡
-                                </Text>
-                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
-                                    Comments
+                                <MessagesIcon mr={4}/>
+                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="sm">
+                                    Messages
                                 </Text>
                             </Flex>
                         </Link>
                         <Link href="/dashboard/identity" passHref={true}>
                             <Flex
                                 m={1}
-                                h={{base: "70px", md:"100px"}}
+                                h={{base: "50px", md:"50px"}}
                                 w="90%"
-                                textTransform="uppercase"
-                                fontWeight={200}
+                                fontWeight={400}
                                 cursor="pointer"
-                                direction="column"
-                                align="center"
-                                justifyContent="center"
+                                direction="row"
+                                align="left"
+                                justifyContent="flex-start"
+                                paddingLeft="20px"
                                 alignItems="center"
-                                className={active === "identity" ? "accent" : ""}
                                 backgroundColor={active === "identity" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
-                                <Text fontSize="2xl">
-                                    🆔
-                                </Text>
-                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
+                                <IdentityIcon mr={4}/>
+                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="sm">
                                     Identity
                                 </Text>
                             </Flex>
@@ -303,23 +297,20 @@ const DashboardShell = ({title, active, children}) => {
                         <Link href="/dashboard/data" passHref={true}>
                             <Flex
                                 m={1}
-                                h={{base: "70px", md:"100px"}}
+                                h={{base: "50px", md:"50px"}}
                                 w="90%"
-                                textTransform="uppercase"
-                                fontWeight={200}
+                                fontWeight={400}
                                 cursor="pointer"
-                                direction="column"
-                                align="center"
-                                justifyContent="center"
+                                direction="row"
+                                align="left"
+                                justifyContent="flex-start"
+                                paddingLeft="20px"
                                 alignItems="center"
-                                className={active === "data" ? "accent" : ""}
                                 backgroundColor={active === "data" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
-                                <Text fontSize="2xl">
-                                    📂
-                                </Text>
-                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
+                                <DataIcon2 mr={4} />
+                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="sm">
                                     Data
                                 </Text>
                             </Flex>
@@ -327,23 +318,20 @@ const DashboardShell = ({title, active, children}) => {
                         <Link href="/dashboard/developer" passHref={true}>
                             <Flex
                                 m={1}
-                                h={{base: "70px", md:"100px"}}
+                                h={{base: "50px", md:"50px"}}
                                 w="90%"
-                                textTransform="uppercase"
-                                fontWeight={200}
+                                fontWeight={400}
                                 cursor="pointer"
-                                direction="column"
-                                align="center"
-                                justifyContent="center"
+                                direction="row"
+                                align="left"
+                                justifyContent="flex-start"
+                                paddingLeft="20px"
                                 alignItems="center"
-                                className={active === "developer" ? "accent" : ""}
                                 backgroundColor={active === "developer" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
-                                <Text fontSize="2xl">
-                                    🔮
-                                </Text>
-                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
+                                <DeveloperIcon mr={4}/>
+                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="sm">
                                     Developer
                                 </Text>
                             </Flex>
@@ -351,29 +339,27 @@ const DashboardShell = ({title, active, children}) => {
                         <Link href="https://bridge.theconvo.space/" passHref={true} isExternal target="_blank">
                             <Flex
                                 m={1}
-                                h={{base: "70px", md:"100px"}}
+                                h={{base: "50px", md:"50px"}}
                                 w="90%"
-                                textTransform="uppercase"
-                                fontWeight={200}
+                                fontWeight={400}
                                 cursor="pointer"
-                                direction="column"
-                                align="center"
-                                justifyContent="center"
+                                direction="row"
+                                align="left"
+                                justifyContent="flex-start"
+                                paddingLeft="20px"
                                 alignItems="center"
                                 backgroundColor={active === "bridge" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
-                                <Text fontSize="2xl">
-                                    🌉
-                                </Text>
-                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="xs">
+                                <BridgeIcon mr={3} boxSize="20px"/>
+                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="sm">
                                     Bridge
                                 </Text>
                             </Flex>
                         </Link>
                     </Flex>
-                    <Flex direction="column">
-                        <Flex onClick={toggleColorMode} h={{base: "50px", md:"50px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
+                    <Flex direction={{base:"column", md:"row"}} justifyContent="space-around">
+                        <Flex onClick={toggleColorMode} h={{base: "50px", md:"50px"}} w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
                             <IconButton
                                 colorScheme={colorMode === 'light' ? "blackAlpha": "gray" }
                                 aria-label="Docs"
@@ -384,7 +370,7 @@ const DashboardShell = ({title, active, children}) => {
                             />
                         </Flex>
 
-                        <Flex as="a" href="https://blog.theconvo.space" target="_blank" h={{base: "50px", md:"50px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
+                        <Flex as="a" href="https://blog.theconvo.space" target="_blank" h={{base: "50px", md:"50px"}} w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
                             <IconButton
                                 colorScheme={colorMode === 'light' ? "blackAlpha": "gray"}
                                 aria-label="Blog"
@@ -394,7 +380,7 @@ const DashboardShell = ({title, active, children}) => {
                                 borderRadius="100px"
                             />
                         </Flex>
-                        <Flex as="a" href="https://gihtub.com/anudit/convo" target="_blank" h={{base: "50px", md:"50px"}} w="100%" textTransform="uppercase" fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
+                        <Flex as="a" href="https://gihtub.com/anudit/convo" target="_blank" h={{base: "50px", md:"50px"}} w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
                             <IconButton
                                 colorScheme={colorMode === 'light' ? "blackAlpha": "gray" }
                                 aria-label="Github"
@@ -409,15 +395,15 @@ const DashboardShell = ({title, active, children}) => {
                 </Flex>
                 <Flex
                     direction="column"
-                    w={{base:"calc(100% - 64px)", md:"calc(100% - 100px)"}}
+                    w={{base:"calc(100% - 64px)", md:"calc(100% - 200px)"}}
                     minH="100vh"
                     position="relative"
-                    left={{base:"64px", md:"100px"}}
+                    left={{base:"64px", md:"200px"}}
                 >
                     <Flex
                         as="nav"
                         align="center"
-                        w={{base:"calc(100% - 64px)", md:"calc(100% - 100px)"}}
+                        w={{base:"calc(100% - 64px)", md:"calc(100% - 200px)"}}
                         p={5}
                         display="flex"
                         position="fixed"
