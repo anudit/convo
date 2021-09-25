@@ -1,18 +1,10 @@
-import { checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData } from "@/lib/identity";
+import { getAllUniswapSybilData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData } from "@/lib/identity";
 import { getClient } from "@/lib/thread-db";
 import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
 import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
 import withApikey from "@/middlewares/withApikey";
-
-async function getSybil(address) {
-    let threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-    const query = new Where('_id').eq(getAddress(address));
-    let resp = await threadClient.find(threadId, 'cachedSybil', query);
-    return resp;
-}
 
 async function calculateScore(address) {
 
@@ -26,8 +18,8 @@ async function calculateScore(address) {
         fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
-        getSybil(address),
-        fetcher(`https://backend.deepdao.io/user/${address.toLowerCase()}`, "GET", {}),
+        getAllUniswapSybilData(),
+        getDeepDaoData(address),
         fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}),
         getEthPrice(),
         getFoundationData(address), // * ethPrice
@@ -37,7 +29,8 @@ async function calculateScore(address) {
         getAsyncartData(address), // * ethPrice
         getMirrorData(address),
         getCoinviseData(address),
-        getZoraData(address) // * ethPrice
+        getZoraData(address), // * ethPrice
+        getAllGitcoinData()
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -52,7 +45,7 @@ async function calculateScore(address) {
         'idena': Boolean(results[4].value?.result),
         'cryptoScamDb': Boolean(results[5].value?.success),
         'unstoppableDomains': Boolean(results[6].value) === true ? results[6].value : false,
-        'uniswapSybil': results[7].value?.length,
+        'uniswapSybil': results[7].value?.includes(getAddress(address)),
         'deepdao': Boolean(results[8].value?.totalDaos) === true? parseInt(results[8].value?.totalDaos) : 0,
         'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,
         'mirror': results[16].value,
@@ -89,6 +82,9 @@ async function calculateScore(address) {
             'totalPoolCount': results[17]?.value?.totalPoolCount,
             'multisendCount': results[17]?.value?.multisendCount,
             'airdropCount': results[17]?.value?.airdropCount
+        },
+        'gitcoin': {
+            "funder": results[19]?.value?.includes(getAddress(address)),
         }
     };
 

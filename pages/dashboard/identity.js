@@ -39,6 +39,7 @@ import superrare from '../../public/images/superrare.webp';
 import sybil from '../../public/images/sybil.webp';
 import unstoppable from '../../public/images/unstoppable.webp';
 import zora from '../../public/images/zora.webp';
+import gitcoin from '../../public/images/gitcoin.webp';
 
 const IdentitySection = () => {
 
@@ -101,6 +102,9 @@ const IdentitySection = () => {
                   </WrapItem>
                   <WrapItem>
                     <BrightIdCard />
+                  </WrapItem>
+                  <WrapItem>
+                    <GitcoinCard trustScoreData={trustScoreData}/>
                   </WrapItem>
                   <WrapItem>
                     <DeepdaoCard trustScoreData={trustScoreData} />
@@ -826,3 +830,14 @@ const RabbitholeCard = ({trustScoreData}) => {
     );
 };
 RabbitholeCard.propTypes = propTypes
+
+const GitcoinCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={gitcoin}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.gitcoin?.funder) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://gitcoin.co/">Fund on Gitcoin</chakra.p></>) : (<><Text mr={1}>OSS Funder</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+GitcoinCard.propTypes = propTypes
