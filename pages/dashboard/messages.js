@@ -197,23 +197,21 @@ const CommentsSection = (props) => {
 		};
 
 		return (
-            <>
-                <InputGroup size="md">
-                    <Input
-                        id="search"
-                        type="text"
-                        placeholder="Filter By Message or Website"
-                        aria-label="Search Input"
-                        value={filterText}
-                        onChange={e => setFilterText(e.target.value)}
-                    />
-                    <InputRightElement width="4.5rem">
-                        <Button type="button" size="sm" onClick={handleClear}>
-                            Clear
-                        </Button>
-                    </InputRightElement>
-                </InputGroup>
-            </>
+            <InputGroup size="md">
+                <Input
+                    id="search"
+                    type="text"
+                    placeholder="Filter By Message or Website"
+                    aria-label="Search Input"
+                    value={filterText}
+                    onChange={e => setFilterText(e.target.value)}
+                />
+                <InputRightElement width="4.5rem">
+                    <Button type="button" size="sm" onClick={handleClear}>
+                        Clear
+                    </Button>
+                </InputRightElement>
+            </InputGroup>
 		);
 	}, [filterText, resetPaginationToggle]);
 
@@ -221,7 +219,7 @@ const CommentsSection = (props) => {
 
     if (Boolean(comments) === false){
         return (
-            <DashboardShell active="comments" title="Comments">
+            <DashboardShell active="comments" title="Your Conversations">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
@@ -243,7 +241,7 @@ const CommentsSection = (props) => {
     // Does not have any comments to show.
     else if (comments && comments.length < 1 ){
         return (
-            <DashboardShell active="comments" title="Comments">
+            <DashboardShell active="comments" title="Your Conversations">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
@@ -251,18 +249,17 @@ const CommentsSection = (props) => {
                     w={{ base: "95%", md: "80%", lg: "90%"}}
                     m="0 auto"
                 >
-                    No Comments
+                    No Conversations
                 </Flex>
             </DashboardShell>
         );
     }
     else if (Boolean(comments) === true && comments.length >= 1) {
         return (
-            <DashboardShell active="comments" title="Comments">
+            <DashboardShell active="comments" title="Your Conversations">
                 <Flex display="">
 
                     <DataTable
-                        title="Your Conversations"
                         data={filteredItems}
                         columns={columns}
                         paginationResetDefaultPage={resetPaginationToggle}
@@ -280,7 +277,7 @@ const CommentsSection = (props) => {
     }
     else {
         return (
-            <DashboardShell active="comments" title="Comments">
+            <DashboardShell active="comments" title="Your Conversations">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}

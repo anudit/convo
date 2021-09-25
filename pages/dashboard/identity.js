@@ -18,9 +18,27 @@ import KeyDidResolver from 'key-did-resolver';
 import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context';
-import { checkPoH, checkUnstoppableDomains } from "@/lib/identity";
 import { VerifiedIcon } from '@/public/icons';
 import { prettifyNumber, truncateAddress } from '@/utils/stringUtils';
+
+import brightid from '../../public/images/brightid.webp';
+import asyncart from '../../public/images/asyncart.webp';
+import boardroom from '../../public/images/boardroom.webp';
+import coinvise from '../../public/images/coinvise.webp';
+import deepdao from '../../public/images/deepdao.webp';
+import ens from '../../public/images/ens.webp';
+import foundation from '../../public/images/foundation.webp';
+import idenaimage from '../../public/images/idena.webp';
+import idximage from '../../public/images/idx.webp';
+import knownorigin from '../../public/images/knownorigin.webp';
+import mirror from '../../public/images/mirror.webp';
+import pohimage from '../../public/images/poh.webp';
+import rabbitholeimage from '../../public/images/rabbithole.webp';
+import rarible from '../../public/images/rarible.webp';
+import superrare from '../../public/images/superrare.webp';
+import sybil from '../../public/images/sybil.webp';
+import unstoppable from '../../public/images/unstoppable.webp';
+import zora from '../../public/images/zora.webp';
 
 const IdentitySection = () => {
 
@@ -31,7 +49,7 @@ const IdentitySection = () => {
 
   useEffect(() => {
     if (isAddress(signerAddress) === true){
-      fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`).then((data)=>{
+      fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`, "GET", {}).then((data)=>{
         setTrustScore((e)=>{return e+data?.score});
         setTrustScoreData(data);
         console.log(data);
@@ -79,7 +97,7 @@ const IdentitySection = () => {
                     <IdxCard />
                   </WrapItem>
                   <WrapItem>
-                    <PoHCard/>
+                    <PoHCard trustScoreData={trustScoreData}/>
                   </WrapItem>
                   <WrapItem>
                     <BrightIdCard />
@@ -88,22 +106,22 @@ const IdentitySection = () => {
                     <DeepdaoCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
-                    <BoardroomCard setTrustScore={setTrustScore }/>
+                    <BoardroomCard setTrustScore={setTrustScore}/>
                   </WrapItem>
                   <WrapItem>
-                    <RabbitholeCard />
+                    <RabbitholeCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <ENSCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
-                    <UdCard />
+                    <UdCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
-                    <IdenaCard />
+                    <IdenaCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
-                    <MirrorCard />
+                    <MirrorCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <RaribleCard trustScoreData={trustScoreData} />
@@ -140,92 +158,7 @@ const IdentitySection = () => {
 
 export default IdentitySection;
 
-const PoHCard = () => {
 
-  const web3Context = useContext(Web3Context);
-  const { signerAddress } = web3Context;
-
-  const [poh, setPoH] = useState(null);
-  useEffect(() => {
-    checkPoH(signerAddress).then(setPoH);
-  }, [signerAddress]);
-
-    return (
-      <IdentityCard image_url="/images/poh.webp">
-        {
-          poh === null ? "Loading" : poh === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
-        }
-      </IdentityCard>
-    );
-};
-
-const UdCard = () => {
-
-  const web3Context = useContext(Web3Context)
-  const { signerAddress } = web3Context;
-  const [ud, setUd] = useState(null);
-
-  useEffect(() => {
-    checkUnstoppableDomains(signerAddress).then(setUd);
-  }, [signerAddress]);
-
-    return (
-      <IdentityCard image_url="/images/unstoppable.webp">
-        {
-          ud === null ? "Loading" : ud === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>{ud}</Text><VerifiedIcon color="blue.400"/></>)
-        }
-      </IdentityCard>
-    );
-};
-
-const IdenaCard = () => {
-
-  const web3Context = useContext(Web3Context);
-  const { signerAddress } = web3Context;
-
-  const [idena, setIdena] = useState(null);
-  useEffect(() => {
-    async function fetchData() {
-      let data = await fetcher(`https://api.idena.io/api/Address/${signerAddress}`, "GET", {});
-      if (Boolean(data?.result) === true) {
-        setIdena(true);
-      }
-      else {
-        setIdena(false);
-      }
-    }
-    fetchData();
-  }, [signerAddress]);
-
-    return (
-      <IdentityCard image_url="/images/idena.webp">
-        {
-          idena === null ? "Loading" : idena === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.idena.io/">Verify on Idena</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
-        }
-      </IdentityCard>
-    );
-};
-
-const RabbitholeCard = () => {
-
-  const web3Context = useContext(Web3Context);
-  const { signerAddress } = web3Context;
-
-  const [rabbithole, setRabbithole] = useState(null);
-  useEffect(() => {
-    fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${signerAddress}`, "GET", {}).then((data)=>{
-      setRabbithole(data?.taskData?.score);
-    });
-  }, [signerAddress]);
-
-    return (
-      <IdentityCard image_url="/images/rabbithole.webp">
-        {
-          rabbithole === null ? "Loading" : Boolean(rabbithole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Explorer on RabbitHole</Text><VerifiedIcon color="blue.400"/></>)
-        }
-      </IdentityCard>
-    );
-};
 
 const BoardroomCard = ({setTrustScore}) => {
 
@@ -253,7 +186,7 @@ const BoardroomCard = ({setTrustScore}) => {
   });
 
     return (
-      <IdentityCard image_url="/images/boardroom.webp">
+      <IdentityCard image_url={boardroom}>
         {
           br === null ? "Loading" : Boolean(br) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://boardroom.info/">Govern on Boardroom</chakra.p></>) : (<><Text mr={1}>Boardroom</Text><VerifiedIcon color="blue.400"/></>)
         }
@@ -286,7 +219,7 @@ const BrightIdCard = () => {
   }
 
   return (
-    <IdentityCard image_url="/images/brightid.webp">
+    <IdentityCard image_url={brightid}>
         <>
           {
             data === undefined ? "Loading" : Boolean(data?.error) === true ? (<><chakra.p size="sm" onClick={startVerify} cursor="pointer">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
@@ -454,7 +387,7 @@ const IdxCard = () => {
   }
 
   return (
-    <IdentityCard image_url="/images/idx.webp">
+    <IdentityCard image_url={idximage}>
       {
         isLoading === true ? (
           <Spinner size="md" />
@@ -607,7 +540,7 @@ const IdentityCard = (props) => {
         mx="auto"
         m={1}
       >
-        <Image src={props.image_url} alt="" width="288px" height="162px" className="br-10" />
+        <Image src={props.image_url} alt="" width="288px" height="162px" className="br-10" placeholder="blur"/>
 
         <Box
           w={{ base: 56, md: 64 }}
@@ -631,7 +564,7 @@ const IdentityCard = (props) => {
   );
 }
 IdentityCard.propTypes = {
-  image_url: PropTypes.string,
+  image_url: PropTypes.object,
   children: PropTypes.node
 }
 
@@ -642,7 +575,7 @@ const propTypes = {
 const SybilCard = ({trustScoreData}) => {
 
     return (
-      <IdentityCard image_url="/images/sybil.webp">
+      <IdentityCard image_url={sybil}>
         {
           trustScoreData === null ? "Loading" : Boolean(trustScoreData.uniswapSybil) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
@@ -654,9 +587,9 @@ SybilCard.propTypes = propTypes
 const DeepdaoCard = ({trustScoreData}) => {
 
     return (
-      <IdentityCard image_url="/images/deepdao.webp">
+      <IdentityCard image_url={deepdao}>
         {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData.deepdao) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://deepdao.io/">Explore on Deepdao</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData.deepdao.score) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://deepdao.io/">Explore on Deepdao</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -666,7 +599,7 @@ DeepdaoCard.propTypes = propTypes
 const MirrorCard = ({trustScoreData}) => {
 
   return (
-    <IdentityCard image_url="/images/mirror.webp">
+    <IdentityCard image_url={mirror}>
       {
         trustScoreData === null ? "Loading" : Boolean(trustScoreData?.mirror) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://mirror.xyz/">Join the $WRITE Race</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
       }
@@ -677,7 +610,7 @@ MirrorCard.propTypes = propTypes
 
 const ENSCard = ({trustScoreData}) => {
   return (
-    <IdentityCard image_url="/images/ens.webp">
+    <IdentityCard image_url={ens}>
       {
         trustScoreData === null ? "Loading" : Boolean(trustScoreData?.ens) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</chakra.p></>) : (<><Text mr={1}>{trustScoreData.ens}</Text><VerifiedIcon color="blue.400"/></>)
       }
@@ -688,7 +621,7 @@ ENSCard.propTypes = propTypes
 
 const CoinviseCard = ({trustScoreData}) => {
   return (
-    <IdentityCard image_url="/images/coinvise.webp">
+    <IdentityCard image_url={coinvise}>
       {
         trustScoreData === null ? "Loading" :
         trustScoreData?.coinvise?.totalCountSold === 0 ? (
@@ -711,7 +644,7 @@ CoinviseCard.propTypes = propTypes
 
 const RaribleCard = ({trustScoreData}) => {
   return (
-    <IdentityCard image_url="/images/rarible.webp">
+    <IdentityCard image_url={rarible}>
       {
         trustScoreData === null ? "Loading" :
         Boolean(trustScoreData?.rarible?.totalCountSold) === false ? (
@@ -734,7 +667,7 @@ RaribleCard.propTypes = propTypes
 
 const ZoraCard = ({trustScoreData}) => {
   return (
-    <IdentityCard image_url="/images/zora.webp">
+    <IdentityCard image_url={zora}>
       {
         trustScoreData === null ? "Loading" :
         Boolean(trustScoreData?.zora?.totalCountSold) === false ? (
@@ -757,7 +690,7 @@ ZoraCard.propTypes = propTypes
 
 const SuperrareCard = ({trustScoreData}) => {
   return (
-    <IdentityCard image_url="/images/superrare.webp">
+    <IdentityCard image_url={superrare}>
       {
         trustScoreData === null ? "Loading" :
         trustScoreData?.superrare?.totalCountSold === 0 ? (
@@ -780,7 +713,7 @@ SuperrareCard.propTypes = propTypes
 
 const KnownoriginCard = ({trustScoreData}) => {
   return (
-    <IdentityCard image_url="/images/knownorigin.webp">
+    <IdentityCard image_url={knownorigin}>
       {
         trustScoreData === null ? "Loading" :
         trustScoreData?.knownorigin?.totalCountSold === 0 ? (
@@ -803,7 +736,7 @@ KnownoriginCard.propTypes = propTypes
 
 const FoundationCard = ({trustScoreData}) => {
   return (
-    <IdentityCard image_url="/images/foundation.webp">
+    <IdentityCard image_url={foundation}>
       {
         trustScoreData === null ? "Loading" :
         trustScoreData?.foundation?.totalCountSold === 0 ? (
@@ -826,7 +759,7 @@ FoundationCard.propTypes = propTypes
 
 const AsyncartCard = ({trustScoreData}) => {
     return (
-      <IdentityCard image_url="/images/asyncart.webp">
+      <IdentityCard image_url={asyncart}>
         {
           trustScoreData === null ? "Loading" :
           trustScoreData?.asyncart?.totalCountSold === 0 ? (
@@ -846,3 +779,50 @@ const AsyncartCard = ({trustScoreData}) => {
     );
 };
 AsyncartCard.propTypes = propTypes
+
+const PoHCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={pohimage}>
+      {
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData.poh) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+PoHCard.propTypes = propTypes
+
+const UdCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url={unstoppable}>
+      {
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData.unstoppableDomains) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>{trustScoreData.unstoppableDomains}</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+UdCard.propTypes = propTypes
+
+const IdenaCard = ({trustScoreData}) => {
+
+    return (
+      <IdentityCard image_url={idenaimage}>
+        {
+         trustScoreData === null ? "Loading" : Boolean(trustScoreData.idena) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.idena.io/">Verify on Idena</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
+    );
+};
+IdenaCard.propTypes = propTypes
+
+const RabbitholeCard = ({trustScoreData}) => {
+
+    return (
+      <IdentityCard image_url={rabbitholeimage}>
+        {
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData.rabbithole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Explorer on RabbitHole</Text><VerifiedIcon color="blue.400"/></>)
+        }
+      </IdentityCard>
+    );
+};
+RabbitholeCard.propTypes = propTypes

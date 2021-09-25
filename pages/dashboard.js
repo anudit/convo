@@ -30,7 +30,7 @@ const Dashboard = () => {
                                 {prettyName == "" ? truncateAddress(signerAddress, 3): prettyName},
                             </Text>
                         </Tooltip>
-                    Welcome to your Convo Space.
+                    Welcome to your Space.
                 </Heading>
 
                 <Flex direction="column" w={{base:"90%"}} mt={2}>
@@ -38,7 +38,7 @@ const Dashboard = () => {
                     <Wrap display="flex" direction={{base:"column", md:"row"}} w="100%" align="center" justifyContent="center" alignItems="center">
 
                         <SimpleCard
-                            title="My Comments"
+                            title="My Conversations"
                             emoji="⚡"
                             text="Manage your Decentralized Conversations across the Web."
                             link="comments"

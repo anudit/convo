@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
 import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon } from '@/public/icons';
-import { InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
 import { isAddress } from 'ethers/lib/utils';
 
 const PageShell = ({title, children}) => {
@@ -268,7 +268,7 @@ const DashboardShell = ({title, active, children}) => {
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
                                 <MessagesIcon mr={4}/>
-                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="sm">
+                                <Text display={{base:"none", md:"block"}} fontSize="sm">
                                     Messages
                                 </Text>
                             </Flex>
@@ -289,7 +289,7 @@ const DashboardShell = ({title, active, children}) => {
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
                                 <IdentityIcon mr={4}/>
-                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="sm">
+                                <Text display={{base:"none", md:"block"}} fontSize="sm">
                                     Identity
                                 </Text>
                             </Flex>
@@ -310,7 +310,7 @@ const DashboardShell = ({title, active, children}) => {
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
                                 <DataIcon2 mr={4} />
-                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="sm">
+                                <Text display={{base:"none", md:"block"}} fontSize="sm">
                                     Data
                                 </Text>
                             </Flex>
@@ -331,12 +331,12 @@ const DashboardShell = ({title, active, children}) => {
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
                                 <DeveloperIcon mr={4}/>
-                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="sm">
+                                <Text display={{base:"none", md:"block"}} fontSize="sm">
                                     Developer
                                 </Text>
                             </Flex>
                         </Link>
-                        <Link href="https://bridge.theconvo.space/" passHref={true} isExternal target="_blank">
+                        <Link href="https://bridge.theconvo.space/" passHref={true} isExternal>
                             <Flex
                                 m={1}
                                 h={{base: "50px", md:"50px"}}
@@ -352,8 +352,30 @@ const DashboardShell = ({title, active, children}) => {
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
                                 <BridgeIcon mr={3} boxSize="20px"/>
-                                <Text mt={1} display={{base:"none", md:"block"}} fontSize="sm">
-                                    Bridge
+                                <Text display={{base:"none", md:"block"}} fontSize="sm">
+                                    Bridge <ExternalIcon ml={2}/>
+                                </Text>
+                            </Flex>
+                        </Link>
+                        <Link href="https://varta.theconvo.space/" passHref={true} isExternal>
+                            <Flex
+                                m={1}
+                                h={{base: "50px", md:"50px"}}
+                                w="90%"
+                                fontWeight={400}
+                                cursor="pointer"
+                                direction="row"
+                                align="left"
+                                justifyContent="flex-start"
+                                paddingLeft="20px"
+                                alignItems="center"
+                                backgroundColor={active === "bridge" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
+                            >
+                                <QuestionIcon mr={4}/>
+                                <Text display={{base:"none", md:"block"}} fontSize="sm" >
+                                    Varta
+                                    <Tag size="sm" ml={2}>soon</Tag>
                                 </Text>
                             </Flex>
                         </Link>

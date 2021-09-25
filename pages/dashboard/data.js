@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
 import { Alert, AlertIcon, Text, Link, useToast, ModalFooter, Heading, Button, Flex, useColorMode, VStack, Input, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from "@chakra-ui/react";
 import { NFTStorage, Blob } from "nft.storage";
-import { DownloadIcon } from '@chakra-ui/icons';
+import { DownloadIcon, InfoIcon } from '@chakra-ui/icons';
 import Web3 from "web3";
 
 import DashboardShell from '@/components/DashboardShell';
@@ -109,8 +109,20 @@ const DataTokenView = () => {
             );
             setDatatoken(datatokenInstance);
 
-            let assets = await oceanInstance.assets.ownerAssets(signerAddress);
-            setTokens(assets?.results);
+            let assets = await oceanInstance.assets.query({
+                from: 0,
+                size: 100,
+                query: {
+                  query_string: {
+                    query: `(publicKey.owner:${signerAddress})`
+                  }
+                },
+                sort: {
+                  created: 'asc'
+                }
+            });
+            console.log(assets);
+            setTokens(assets?.hits.hits);
         }
 
         fetchData();
@@ -153,7 +165,7 @@ const DataTokenView = () => {
                 },
             };
 
-            const tokenAddress = await datatoken.create('', signerAddress);
+            const tokenAddress = await datatoken._source.create('', signerAddress);
             console.log("Token Address: ", tokenAddress);
 
             if (isAddress(tokenAddress) === true){
@@ -193,9 +205,20 @@ const DataTokenView = () => {
                 });
 
                 setTimeout(async()=>{
-                    let assets = await ocean.assets.ownerAssets(signerAddress);
+                    let assets = await ocean.assets.query({
+                        from: 0,
+                        size: 100,
+                        query: {
+                          query_string: {
+                            query: `(publicKey.owner:${signerAddress})`
+                          }
+                        },
+                        sort: {
+                          created: 'asc'
+                        }
+                    });
                     console.log('newAssets', assets);
-                    setTokens(assets?.results);
+                    setTokens(assets?.hits.hits);
                 }, 5000);
 
             }
@@ -228,14 +251,19 @@ const DataTokenView = () => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-            <Button leftIcon={<OceanProtocolIcon />} size="md" onClick={onOpen} w="fit-content">
-                Mint a DataToken
-            </Button>
+            <Flex direction="row" alignContent="center">
+                <Button leftIcon={<OceanProtocolIcon />} size="md" onClick={onOpen} w="fit-content">
+                    Mint a DataToken
+                </Button>
+                <Link href="https://oceanprotocol.com/technology/data-tokens" isExternal>
+                    <InfoIcon m={3}/>
+                </Link>
+            </Flex>
             <VStack mt={2} align="left">
             {
                 tokens && tokens.map((token) => (
                     <Flex
-                        key={token.dataToken}
+                        key={token._source.dataToken}
                         direction="row"
                         justifyContent="space-between"
                         px={6}
@@ -265,10 +293,10 @@ const DataTokenView = () => {
                         }}
                         align="left"
                     >
-                        {token.dataTokenInfo.name} ({token.dataTokenInfo.symbol})
+                        {token._source.dataTokenInfo.name} ({token._source.dataTokenInfo.symbol})
                     </Text>
 
-                    <Link href={`https://market.oceanprotocol.com/asset/${token.id}`} target="_blank">
+                    <Link href={`https://market.oceanprotocol.com/asset/${token._source.id}`} target="_blank">
                         <Button w="fit-content" colorScheme="twitter" leftIcon={<ExternalIcon />} size="sm">
                             Marketplace
                         </Button>

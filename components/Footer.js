@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { useColorModeValue, Flex, Divider, Text, Stack } from "@chakra-ui/react";
+import { Tooltip, useColorModeValue, Flex, Divider, Text, Stack } from "@chakra-ui/react";
 
 import SubscribeCard from '@/components/SubscribeCard';
-import { DiscordIcon, GithubIcon, TheConvoSpaceIcon, TwitterIcon } from '@/public/icons';
+import { DiscordIcon, GithubIcon, IndiaFlag, TheConvoSpaceIcon, TwitterIcon } from '@/public/icons';
 
 const Footer = () => {
     return (
@@ -107,7 +107,7 @@ const Footer = () => {
                 </Flex>
 
                 <Text textAlign="center" fontWeight={500} my={4}>
-                    Made in 🇮🇳 with ❤️ by <Link rel="noreferrer" fontWeight={700} href="https://anudit.dev/">Anudit Nagar </Link>
+                    Made in <Tooltip label="India" aria-label="India" hasArrow placement="top"><IndiaFlag ml={1} boxSize="25px"/></Tooltip>
                 </Text>
             </Flex>
 

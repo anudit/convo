@@ -681,14 +681,14 @@ const Home = ({tweetData}) => {
             <AccordionItem>
               <AccordionButton>
                 <Box flex="1" textAlign="left">
-                  <Text fontSize="25px" fontWeight={800}>
+                  <Text fontSize="25px" fontWeight={800} color={useColorModeValue("black", "white")}>
                     Why Convo ?
                   </Text>
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
               <AccordionPanel pb={4}>
-                <UnorderedList spacing={2}>
+                <UnorderedList spacing={2} color={useColorModeValue("black", "white")}>
                   <ListItem>
                     Convo enables Developers build Composable Components, for Conversations that can continue anywhere on the web.
                   </ListItem>
@@ -706,7 +706,7 @@ const Home = ({tweetData}) => {
               <Text fontWeight={800}>
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
-                    <Text fontSize="25px" fontWeight={800}>
+                    <Text fontSize="25px" fontWeight={800} color={useColorModeValue("black", "white")}>
                       What can I build with Convo ?
                     </Text>
                   </Box>
@@ -714,7 +714,7 @@ const Home = ({tweetData}) => {
                 </AccordionButton>
               </Text>
               <AccordionPanel pb={4}>
-              <UnorderedList spacing={2}>
+              <UnorderedList spacing={2} color={useColorModeValue("black", "white")}>
                   <ListItem>
                     Comments on Etherscan, alerting users of a compromised contract can be made accessible on MetaMask/Rainbow Wallet to alert users before sending a transaction.
                   </ListItem>
@@ -735,7 +735,7 @@ const Home = ({tweetData}) => {
               <h2>
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
-                    <Text fontSize="25px" fontWeight={800}>
+                    <Text fontSize="25px" fontWeight={800} color={useColorModeValue("black", "white")}>
                       How do I get started ?
                     </Text>
                   </Box>
@@ -743,7 +743,7 @@ const Home = ({tweetData}) => {
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                <UnorderedList spacing={2}>
+                <UnorderedList spacing={2} color={useColorModeValue("black", "white")}>
                   <ListItem>
                     Checkout the docs here : <chakra.a _hover={{textDecoration:'underline'}} href="https://docs.theconvo.space/" rel="noreferrer" target="_blank">https://docs.theconvo.space/</chakra.a>
                   </ListItem>
@@ -758,7 +758,7 @@ const Home = ({tweetData}) => {
               <h2>
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
-                    <Text fontSize="25px" fontWeight={800}>
+                    <Text fontSize="25px" fontWeight={800} color={useColorModeValue("black", "white")}>
                       Where can I get my queries answered ?
                     </Text>
                   </Box>
@@ -766,7 +766,7 @@ const Home = ({tweetData}) => {
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                <UnorderedList spacing={2}>
+                <UnorderedList spacing={2} color={useColorModeValue("black", "white")}>
                   <ListItem>
                     Twitter: <chakra.a _hover={{textDecoration:'underline'}} href="https://twitter.com/anuditnagar" rel="noreferrer" target="_blank">https://twitter.com/anuditnagar</chakra.a>
                   </ListItem>
