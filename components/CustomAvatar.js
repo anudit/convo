@@ -17,7 +17,7 @@ const CustomAvatar = (props) => {
 
     useEffect(() => {
         if (isAddress(address)){
-            fetcher(`/api/identity?address=${address}&apikey=CONVO`, "GET", {}).then((res)=>{
+            fetcher(`/api/identity?address=${address}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET", {}).then((res)=>{
                 if (Boolean(res?.success) === true) {
                     setVerified(res.score);
                 }

@@ -137,7 +137,7 @@ export const Web3ContextProvider = ({children}) => {
       // there was a previous session try and validate that first.
       if (Boolean(cookies.get('CONVO_SESSION')) === true) {
         let tokenRes = await fetcher(
-          '/api/validateAuth?apikey=CONVO', "POST", {
+          '/api/validateAuth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', "POST", {
             signerAddress: tempaddress,
             token: cookies.get('CONVO_SESSION')
           }
@@ -169,7 +169,7 @@ export const Web3ContextProvider = ({children}) => {
   async function getAuthToken(manualAddress = undefined) {
 
     let authAdd = Boolean(manualAddress) === true ? manualAddress : signerAddress;
-    let tokenRes = await fetcher('/api/validateAuth?apikey=CONVO', "POST", {
+    let tokenRes = await fetcher('/api/validateAuth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', "POST", {
       signerAddress: authAdd,
       token: cookies.get('CONVO_SESSION')
     });
@@ -223,7 +223,7 @@ export const Web3ContextProvider = ({children}) => {
       [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
     );
 
-    let res = await fetcher(`/api/auth?apikey=CONVO`, "POST", {
+    let res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
       signerAddress,
       signature,
       timestamp

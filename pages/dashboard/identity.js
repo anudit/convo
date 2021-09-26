@@ -50,7 +50,7 @@ const IdentitySection = () => {
 
   useEffect(() => {
     if (isAddress(signerAddress) === true){
-      fetcher(`/api/identity?address=${signerAddress}&apikey=CONVO`, "GET", {}).then((data)=>{
+      fetcher(`/api/identity?address=${signerAddress}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET", {}).then((data)=>{
         setTrustScore((e)=>{return e+data?.score});
         setTrustScoreData(data);
         console.log(data);

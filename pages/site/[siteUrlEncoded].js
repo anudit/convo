@@ -49,7 +49,7 @@ const Hero = ({children}) => {
     const router = useRouter()
     const link = fromB64(router.query.siteUrlEncoded);
     const { data: metaData } = useSWR(
-        `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/urlmeta?link=${link}&apikey=CONVO`,
+        `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/urlmeta?link=${link}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`,
         fetcher,
     );
 
@@ -114,7 +114,7 @@ const SiteInterface = ({initialThreads}) => {
     }, [router.query]);
 
     const { data: threads, mutate } = useSWR(
-        Boolean(router.query.siteUrlEncoded) === false? null : `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?url=${fromB64(router.query.siteUrlEncoded)}&apikey=CONVO`,
+        Boolean(router.query.siteUrlEncoded) === false? null : `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?url=${fromB64(router.query.siteUrlEncoded)}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`,
         fetcher,
         {fallbackData: initialThreads}
     );

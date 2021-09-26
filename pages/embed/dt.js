@@ -42,7 +42,7 @@ const Threads = (props) => {
     }
 
     function getQueryURL(){
-        const queryUrl = new URL(process.env.NEXT_PUBLIC_API_SITE_URL + `/api/comments?page=0&pageSize=10&latestFirst=true&apikey=CONVO`);
+        const queryUrl = new URL(process.env.NEXT_PUBLIC_API_SITE_URL + `/api/comments?page=0&pageSize=10&latestFirst=true&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`);
         let paramSet = false;
         if (Boolean(router.query?.threadId) === true) {
             paramSet = true;
@@ -118,7 +118,7 @@ const Threads = (props) => {
             if (comment != '') {
                 let token = await getAuthToken();
 
-                let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CONVO`, "POST", {
+                let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
                     token,
                     signerAddress,
                     comment,
@@ -161,7 +161,7 @@ const Threads = (props) => {
 
         let token = await getAuthToken();
 
-        let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CONVO`, "DELETE", {
+        let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "DELETE", {
             token,
             signerAddress,
             commentId,
@@ -195,7 +195,7 @@ const Threads = (props) => {
     async function fetchMoreData(){
         setLoadingMore(true);
         try {
-            let fetchedComments = await fetcher(`/api/comments?threadId=${router.query.threadId}&page=${page+1}&pageSize=10&latestFirst=true&apikey=CONVO`, "GET", {});
+            let fetchedComments = await fetcher(`/api/comments?threadId=${router.query.threadId}&page=${page+1}&pageSize=10&latestFirst=true&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET", {});
             if (fetchedComments.length === 0){
                 setHasMoreData(false);
             }

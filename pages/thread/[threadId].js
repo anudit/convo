@@ -69,12 +69,12 @@ const Threads = (props) => {
     const router = useRouter()
 
     const { data: comments, mutate  } = useSWR(
-        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
+        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET"],
         fetcher,
         {fallbackData: props.initialComments}
     );
     const { data: thread } = useSWR(
-        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?threadId=${router.query.threadId}&apikey=CONVO`, "GET"],
+        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?threadId=${router.query.threadId}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET"],
         fetcher,
         {fallbackData: props.thread}
     );
@@ -110,7 +110,7 @@ const Threads = (props) => {
 
                 let token = await getAuthToken();
 
-                let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CONVO`, "POST", {
+                let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
                     token,
                     signerAddress,
                     comment,
@@ -151,7 +151,7 @@ const Threads = (props) => {
 
         let token = await getAuthToken();
 
-        let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CONVO`, "DELETE", {
+        let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "DELETE", {
             token,
             signerAddress,
             commentId,

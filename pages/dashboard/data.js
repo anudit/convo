@@ -142,7 +142,7 @@ const DataTokenView = () => {
         }
         else {
 
-            let data = await fetcher(`/api/comments?author=${signerAddress}&apikey=CONVO`, "GET");
+            let data = await fetcher(`/api/comments?author=${signerAddress}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET");
             const content = new Blob([JSON.stringify(data)]);
             const client = new NFTStorage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnaXRodWJ8MTIwMTU1NTMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYxNjMwMjY3NzYyNCwibmFtZSI6ImRlZmF1bHQifQ.nf5d4LV9CZSGrAwus6Cb3q9amggU278rPEJSlNujLPY" });
             let cid = await client.storeBlob(content);

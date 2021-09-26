@@ -121,7 +121,7 @@ const CommentsSection = (props) => {
 
 
     const { data: comments, error, mutate } = useSWR(
-        signerAddress == "" ? null: [`/api/comments?author=${signerAddress}&apikey=CONVO`, "GET"],
+        signerAddress == "" ? null: [`/api/comments?author=${signerAddress}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET"],
         fetcher
     );
 
@@ -137,7 +137,7 @@ const CommentsSection = (props) => {
 
         let token = await getAuthToken();
 
-        let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CONVO`, "DELETE", {
+        let res = await fetcher(`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "DELETE", {
             token,
             signerAddress,
             commentId,
