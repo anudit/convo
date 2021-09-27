@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '.env.local' })
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const Headers = (...args) => import('node-fetch').then(({Headers}) => new Headers(...args));
-const { Client, PrivateKey, ThreadID, Where } = require('@textile/hub');
+const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
 const fs = require('fs');
@@ -795,7 +795,7 @@ const cacheTrustScores = async () => {
         let td = (endDate.getTime() - startDate.getTime()) / 1000;
         times.push(td/Math.min(addresses.length-index, CHUNK_SIZE));
 
-        if(index%10 === 0) {
+        if(index % 20 === 0) {
             console.log(`🟢 Cached Chunk#${parseInt(index/CHUNK_SIZE)} | Avg Time: ${parseFloat(avg(times)).toFixed(3)}s`);
         }
     }
