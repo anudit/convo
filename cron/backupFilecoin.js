@@ -2,6 +2,7 @@ require('dotenv').config({ path: '.env.local' })
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const { NFTStorage, Blob } = require("nft.storage");
 const { Client, PrivateKey, ThreadID} = require('@textile/hub');
+const Redis = require("ioredis");
 
 const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET } = process.env;
 
@@ -14,6 +15,35 @@ const getClient = async () =>{
     })
     await client.getToken(identity);
     return client;
+
+}
+
+async function getRedisData() {
+
+    let promise = new Promise((res) => {
+
+        let client = new Redis(process.env.REDIS_CONNECTION);
+        client.keys('*').then((data)=>{
+
+            let recObj = client.multi();
+            for (let index = 0; index < data.length; index++) {
+                recObj = recObj.get(data[index])
+            }
+            recObj.exec((err, results) => {
+                let db = {}
+                for (let i = 0; i < results.length; i++) {
+                    db[data[i]] = results[i][1]
+                }
+                client.quit();
+                res(db);
+            });
+
+        });
+
+    })
+    let result = await promise;
+    return result;
+
 }
 
 const getData = async () =>{
@@ -23,18 +53,18 @@ const getData = async () =>{
     let snapshot_threads = await threadClient.find(threadId, 'threads', {});
     let snapshot_subscribers = await threadClient.find(threadId, 'subscribers', {});
     let snapshot_cachedTrustScores = await threadClient.find(threadId, 'cachedTrustScores', {});
-    let snapshot_cachedSybil = await threadClient.find(threadId, 'cachedSybil', {});
     let snapshot_bridge = await threadClient.find(threadId, 'bridge', {});
-    let snapshot_cachedGitcoin = await threadClient.find(threadId, 'cachedGitcoin', {});
+    let redis_data = await getRedisData();
+
+    console.log(redis_data);
 
     return {
         snapshot_comments,
         snapshot_threads,
         snapshot_subscribers,
         snapshot_cachedTrustScores,
-        snapshot_cachedSybil,
         snapshot_bridge,
-        snapshot_cachedGitcoin
+        redis_data
     };
 }
 

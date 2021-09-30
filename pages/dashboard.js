@@ -38,10 +38,10 @@ const Dashboard = () => {
                     <Wrap display="flex" direction={{base:"column", md:"row"}} w="100%" align="center" justifyContent="center" alignItems="center">
 
                         <SimpleCard
-                            title="My Conversations"
+                            title="My Messages"
                             emoji="⚡"
                             text="Manage your Decentralized Conversations across the Web."
-                            link="comments"
+                            link="messages"
                             tags={['Textile', 'ThreadDB']}
                         />
                         <SimpleCard
