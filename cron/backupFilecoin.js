@@ -4,7 +4,7 @@ const { NFTStorage, Blob } = require("nft.storage");
 const { Client, PrivateKey, ThreadID} = require('@textile/hub');
 const Redis = require("ioredis");
 
-const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET } = process.env;
+const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET, REDIS_CONNECTION} = process.env;
 
 const getClient = async () =>{
 
@@ -22,7 +22,7 @@ async function getRedisData() {
 
     let promise = new Promise((res) => {
 
-        let client = new Redis(process.env.REDIS_CONNECTION);
+        let client = new Redis(REDIS_CONNECTION);
         client.keys('*').then((data)=>{
 
             let recObj = client.multi();
