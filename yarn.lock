@@ -3277,10 +3277,10 @@
     truffle "^5.3.9"
     truffle-assertions "^0.9.2"
 
-"@oceanprotocol/contracts@^0.6.7":
-  version "0.6.7"
-  resolved "https://registry.yarnpkg.com/@oceanprotocol/contracts/-/contracts-0.6.7.tgz#1f39277b0d8b36872755cd749501b3adc1dface2"
-  integrity sha512-OFnSAK6yV/a4Sigq5ojJ3tktzqQPqnZgOGRTChgspFZPfQIL28pudtVG6cV0+7pin9MkFx0emLGKvwQZd1d5+g==
+"@oceanprotocol/contracts@^0.6.9":
+  version "0.6.9"
+  resolved "https://registry.yarnpkg.com/@oceanprotocol/contracts/-/contracts-0.6.9.tgz#219c3308e63f91b544f9700e89ae9c99b44cf5f6"
+  integrity sha512-3VqI+TBy07QwJJrhkXUyqJ2nHFs2n1G98KLTzxUPjJgOXZMPnWlmJnmWMKqSj23S/eT16DgEdlTfsqtzC+eKUg==
   dependencies:
     "@truffle/contract" "^4.3.34"
     "@truffle/hdwallet-provider" "^1.5.0"
@@ -14354,10 +14354,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-near-api-js@^0.43.0:
-  version "0.43.0"
-  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.43.0.tgz#cb3da72176f5724cad7adac2c6675e43fd32122b"
-  integrity sha512-drkq4Kc4pdUJdjv1t8VXF3VnV4S3ymTj8UBPduVdkO4CrnrEUhFyByPENTEuuSjFtiDpmOiYRHFq6y/9f/Gm0A==
+near-api-js@^0.43.1:
+  version "0.43.1"
+  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.43.1.tgz#aa3f1669afae9eb37f65b02dca3f28472ebe4bb7"
+  integrity sha512-bgFuboD/a3eintaWqWMN9oWcGHkxbrKiJhxkJwHmwJrYx49y9QvWwEtoxeHSjKskJHUVXGKvaYRsc9XirrJ5JQ==
   dependencies:
     bn.js "5.2.0"
     borsh "^0.6.0"
@@ -20252,10 +20252,10 @@ webpack@^3.0.0:
     webpack-sources "^1.0.1"
     yargs "^8.0.2"
 
-webpack@^5.55.1:
-  version "5.55.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.55.1.tgz#426ebe54c15fa57f7b242590f65fd182382b5998"
-  integrity sha512-EYp9lwaOOAs+AA/KviNZ7bQiITHm4bXQvyTPewD2+f5YGjv6sfiClm40yeX5FgBMxh5bxcB6LryiFoP09B97Ug==
+webpack@^5.56.0:
+  version "5.56.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.56.0.tgz#91a04de09c85765002818678538c319b6e461324"
+  integrity sha512-pJ7esw2AGkpZL0jqsEAKnDEfRZdrc9NVjAWA+d1mFkwj68ng9VQ6+Wnrl+kS5dlDHvrat5ASK5vd7wp6I7f53Q==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.50"

@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { isAddress, verifyMessage } from 'ethers/lib/utils';
+import { isAddress, verifyMessage, getAddress } from 'ethers/lib/utils';
 import nacl from 'tweetnacl';
 const { Crypto } = require("@peculiar/webcrypto");
 
@@ -42,7 +42,7 @@ const handler = async(req, res) => {
         let data = `I allow this site to access my data on The Convo Space using the account ${req.body.signerAddress}. Timestamp:${req.body.timestamp}`;
         let recoveredAddress = verifyMessage(data, req.body.signature);
 
-        if(req.body.signerAddress === recoveredAddress){
+        if(getAddress(req.body.signerAddress) === getAddress(recoveredAddress)){
 
           let token = jwt.sign(
               {user: req.body.signerAddress, chain: "ethereum"},
