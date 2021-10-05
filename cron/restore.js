@@ -21,7 +21,6 @@ const restore = async() => {
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
-    await threadClient.save(threadId, 'cachedSybil', data['snapshot_cachedSybil']);
     await threadClient.save(threadId, 'cachedTrustScores', data['snapshot_cachedTrustScores']);
     await threadClient.save(threadId, 'comments', data['snapshot_comments']);
     await threadClient.save(threadId, 'subscribers', data['snapshot_subscribers']);
@@ -41,7 +40,6 @@ const createDB = async() =>{
     // const thread = await threadClient.newDB(undefined, 'theconvospace');
     // console.log(thread.id);
     const threadid = ThreadID.fromString(TEXTILE_THREADID);
-    // await threadClient.newCollection(threadid, {name: 'cachedSybil'});
     // await threadClient.newCollection(threadid, {name: 'cachedTrustScores'});
     // await threadClient.newCollection(threadid, {name: 'comments'});
     // await threadClient.newCollection(threadid, {name: 'subscribers'});

@@ -116,3 +116,15 @@ export const addressToChainName = (address) => {
         return "ethereum";
     }
 }
+
+export const isBlockchainAddress = (address) => {
+    if(isAddress(address) === true){
+        return true;
+    }
+    else if(address.slice(address.length-5, address.length) === ".near" || address.slice(address.length-8, address.length) === ".testnet"){
+        return true;
+    }
+    else {
+        return false;
+    }
+}

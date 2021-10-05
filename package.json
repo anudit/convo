@@ -29,7 +29,7 @@
     "@gnosis.pm/safe-apps-sdk": "^4.3.0",
     "@gnosis.pm/safe-apps-web3modal": "^3.0.0",
     "@oceanprotocol/contracts": "^0.6.9",
-    "@oceanprotocol/lib": "^0.19.0",
+    "@oceanprotocol/lib": "^0.19.2",
     "@peculiar/webcrypto": "^1.1.7",
     "@portis/web3": "^4.0.5",
     "@react-three/drei": "7.7.0",
@@ -43,7 +43,7 @@
     "eslint": "^7.32.0",
     "ethers": "^5.4.7",
     "framer-motion": "^4.1.17",
-    "ioredis": "^4.27.9",
+    "ioredis": "^4.27.10",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "key-did-resolver": "^1.4.0",
@@ -64,12 +64,12 @@
     "styled-components": "^5.3.1",
     "swr": "^1.0.1",
     "telegraf": "^4.4.2",
-    "three": "^0.132.2",
+    "three": "^0.133.1",
     "tweetnacl": "^1.0.3",
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.4",
-    "webpack": "^5.56.0"
+    "webpack": "^5.56.1"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "11.1.0",
