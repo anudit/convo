@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 import { ThreadView } from '@/components/ThreadView';
 import NavBar from '@/components/NavBar';
-import { getThreads, getAllThreads } from "@/lib/thread-db";
+import { getThreadsByUrl, getAllThreads } from "@/lib/thread-db";
 import { toB64, fromB64 } from '@/utils/stringUtils';
 import { createThread } from "@/lib/thread-db";
 import { Web3Context } from '@/contexts/Web3Context'
@@ -20,7 +20,7 @@ export async function getStaticProps(context) {
 
     const siteUrlEncoded = context.params.siteUrlEncoded;
     const siteUrl = fromB64(siteUrlEncoded);
-    const threads = await getThreads(siteUrl);
+    const threads = await getThreadsByUrl(siteUrl);
 
     return {
         props: {
