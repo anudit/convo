@@ -247,7 +247,7 @@ const DashboardShell = ({title, active, children}) => {
                     <Flex direction="column" alignItems="center">
                         <Link href="/dashboard" passHref={true}>
                             <Flex height="75px" w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
-                                <Text fontSize="2xl">
+                                <Text fontSize  ="2xl">
                                     <TheConvoSpaceIcon />
                                 </Text>
                             </Flex>
@@ -264,7 +264,7 @@ const DashboardShell = ({title, active, children}) => {
                                 justifyContent="flex-start"
                                 paddingLeft="20px"
                                 alignItems="center"
-                                backgroundColor={active === "comments" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                                backgroundColor={active === "messages" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
                                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
                             >
                                 <MessagesIcon mr={4}/>

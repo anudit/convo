@@ -40,6 +40,7 @@ import sybil from '../../public/images/sybil.webp';
 import unstoppable from '../../public/images/unstoppable.webp';
 import zora from '../../public/images/zora.webp';
 import gitcoin from '../../public/images/gitcoin.webp';
+import coordinape from '../../public/images/coordinape.webp';
 
 const IdentitySection = () => {
 
@@ -114,6 +115,9 @@ const IdentitySection = () => {
                   </WrapItem>
                   <WrapItem>
                     <RabbitholeCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
+                    <CoordinapeCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <ENSCard trustScoreData={trustScoreData} />
@@ -841,3 +845,15 @@ const GitcoinCard = ({trustScoreData}) => {
   );
 };
 GitcoinCard.propTypes = propTypes
+
+
+const CoordinapeCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={coordinape}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.coordinape?.teammates) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://coordinape.com/">Create on Coordinape</chakra.p></>) : (<><Text mr={1}>{trustScoreData?.coordinape?.teammates} Teammates</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+CoordinapeCard.propTypes = propTypes

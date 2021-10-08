@@ -3490,10 +3490,10 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
-"@react-three/drei@^7.12.6":
-  version "7.12.6"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.12.6.tgz#9d09d493e39e7d4505f3e4f97c3c93b3115dab6d"
-  integrity sha512-JCj1HUMBowLzLxwalDm4XU1JN+YGnceYFqYidtpsKwmGC0I7UPKpV9MmNFG3yCby27y5NkA0G9ZfsX4IyaE05g==
+"@react-three/drei@^7.13.1":
+  version "7.13.1"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.13.1.tgz#e7a5408362c829243037f1e33c286789816eaaaa"
+  integrity sha512-GH6AU5DXiRA8aSf2SBtotvvvCGU8PVEmhhRnfr8a8jId+ULbUTsbleIEThITbw+2LdBPzsSncIcTxEE7YInhqg==
   dependencies:
     "@babel/runtime" "^7.11.2"
     blob-polyfill "^5.0.20210201"
@@ -20535,10 +20535,10 @@ webpack@^3.0.0:
     webpack-sources "^1.0.1"
     yargs "^8.0.2"
 
-webpack@^5.57.1:
-  version "5.57.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.57.1.tgz#ead5ace2c17ecef2ae8126f143bfeaa7f55eab44"
-  integrity sha512-kHszukYjTPVfCOEyrUthA3jqJwduY/P3eO8I0gMNOZGIQWKAwZftxmp5hq6paophvwo9NoUrcZOecs9ulOyyTg==
+webpack@^5.58.0:
+  version "5.58.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.58.0.tgz#9ec621cf8534f23c25e779e7c35dfde1211d5ccb"
+  integrity sha512-xc2k5MLbR1iah24Z5xUm1nBh1PZXEdUnrX6YkTSOScq/VWbl5JCLREXJzGYqEAUbIO8tZI+Dzv82lGtnuUnVCQ==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.50"

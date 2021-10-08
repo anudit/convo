@@ -219,7 +219,7 @@ const CommentsSection = (props) => {
 
     if (Boolean(comments) === false){
         return (
-            <DashboardShell active="comments" title="Your Conversations">
+            <DashboardShell active="messages" title="Your Conversations">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
@@ -241,7 +241,7 @@ const CommentsSection = (props) => {
     // Does not have any comments to show.
     else if (comments && comments.length < 1 ){
         return (
-            <DashboardShell active="comments" title="Your Conversations">
+            <DashboardShell active="messages" title="Your Messages">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
@@ -249,16 +249,15 @@ const CommentsSection = (props) => {
                     w={{ base: "95%", md: "80%", lg: "90%"}}
                     m="0 auto"
                 >
-                    No Conversations
+                    No Messages
                 </Flex>
             </DashboardShell>
         );
     }
     else if (Boolean(comments) === true && comments.length >= 1) {
         return (
-            <DashboardShell active="comments" title="Your Conversations">
-                <Flex display="">
-
+            <DashboardShell active="messages" title="Your Messages">
+                <Flex flexDirection="column">
                     <DataTable
                         data={filteredItems}
                         columns={columns}
@@ -277,7 +276,7 @@ const CommentsSection = (props) => {
     }
     else {
         return (
-            <DashboardShell active="comments" title="Your Conversations">
+            <DashboardShell active="messages" title="Your Messages">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}

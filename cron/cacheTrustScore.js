@@ -112,6 +112,29 @@ async function checkPoH(address, provider) {
 
 }
 
+async function getCoordinapeData(address) {
+    let response = await fetch(`https://coordinape.me/api/profile/${address}`, {
+        "headers": {
+        "accept": "*/*",
+        "content-type": "application/json",
+        },
+        "method": "GET"
+    });
+
+    let json = await response.json();
+
+    let teammates = 0;
+    if (Boolean(json?.users) === true){
+        json['users'].forEach(user => {
+            teammates += user.teammates.length;
+        });
+    }
+
+    return {
+        teammates
+    }
+}
+
 async function getMirrorData(address = ""){
     let data = await fetch("https://mirror-api.com/graphql", {
         "headers": {
@@ -617,6 +640,7 @@ async function calculateScore(address) {
         getMirrorData(address),
         getCoinviseData(address),
         getZoraData(address), // * ethPrice
+        getCoordinapeData(address)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -676,7 +700,8 @@ async function calculateScore(address) {
         'gitcoin': {
             "funder":gitcoinData.includes(getAddress(address)),
         },
-        'uniswapSybil': uniswapData.includes(getAddress(address))
+        'uniswapSybil': uniswapData.includes(getAddress(address)),
+        'coordinape': results[17]?.value
     };
 
     if(results[0].value === true){ // poh
@@ -714,6 +739,9 @@ async function calculateScore(address) {
     }
     if(gitcoinData.includes(getAddress(address)) === true){ // gitcoin
         score += 10;
+    }
+    if(Boolean(results[17]?.value?.teammates) === true){ // coordinape
+        score += results[17]?.value?.teammates ;
     }
 
     let coinviseScore = (

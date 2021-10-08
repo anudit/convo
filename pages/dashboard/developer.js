@@ -46,10 +46,14 @@ const DeveloperSection = () => {
                         let usageKeys= Object.keys(usageDB);
                         for (let index = 0; index < usageKeys.length; index++) {
                             localChartData.push({
+                                'sortby': parseInt( usageKeys[index].slice(2, 4) + usageKeys[index].slice(0, 2)),
                                 'name': monthNames[parseInt(usageKeys[index].slice(0, 2))-1] + " '" + usageKeys[index].slice(2, 4),
                                 'Usage': usageDB[usageKeys[index]]
                             })
                         }
+                        localChartData = localChartData.sort((l, r)=>{
+                            return l.sortby - r.sortby
+                        })
                         console.log(localChartData);
                         setChartData(localChartData);
                     }

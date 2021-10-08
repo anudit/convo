@@ -1,4 +1,4 @@
-import { getAllUniswapSybilData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData } from "@/lib/identity";
+import { getAllUniswapSybilData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData } from "@/lib/identity";
 import { getClient } from "@/lib/thread-db";
 import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
@@ -30,7 +30,8 @@ async function calculateScore(address) {
         getMirrorData(address),
         getCoinviseData(address),
         getZoraData(address), // * ethPrice
-        getAllGitcoinData()
+        getAllGitcoinData(),
+        getCoordinapeData(address)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -85,7 +86,8 @@ async function calculateScore(address) {
         },
         'gitcoin': {
             "funder": results[19]?.value?.includes(getAddress(address)),
-        }
+        },
+        'coordinape':  results[20]?.value
     };
 
     if(results[0].value === true){ // poh
