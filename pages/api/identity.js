@@ -123,6 +123,9 @@ async function calculateScore(address) {
     if(results[16].value === true){ // mirror
         score += 10;
     }
+    if(Boolean(results[20]?.value.teammates) === true){ // coordinape
+        score += results[20]?.value.teammates;
+    }
 
     // Coinvise
     let coinviseScore = (
