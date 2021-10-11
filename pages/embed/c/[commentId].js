@@ -14,7 +14,7 @@ import { getAvatar } from '@/utils/avatar';
 export async function getServerSideProps(context) {
 
   let commentData = await getComment(context.params.commentId);
-  let provider = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
+  let provider = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
   let ensAdd = await provider.lookupAddress(commentData.author);
 
   if (Boolean(ensAdd) === true) {

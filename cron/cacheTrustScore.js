@@ -617,7 +617,7 @@ function avg(array) {
 
 async function calculateScore(address) {
 
-    let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
+    let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
 
     let startDate;
     if (DEBUG === true){ startDate = new Date(); }

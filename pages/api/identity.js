@@ -8,7 +8,7 @@ import withApikey from "@/middlewares/withApikey";
 
 async function calculateScore(address) {
 
-    let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
+    let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
 
     let promiseArray = [
         checkPoH(address, tp),
@@ -161,7 +161,7 @@ const handler = async(req, res) => {
             validatedAddress = req.query.address;
         }
         else if (Object.keys(req.query).includes('address') === true && req.query.address.toString().slice(req.query.address.length-4,req.query.address.length) === '.eth' ){
-            let tp = new ethers.providers.AlchemyProvider("mainnet","hHgRhUVdMTMcG3_gezsZSGAi_HoK43cA");
+            let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
             let ensReq  = await tp.resolveName(req.query.address);
             if (Boolean(ensReq) === true){
                 validatedAddress = ensReq;
