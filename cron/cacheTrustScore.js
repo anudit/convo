@@ -7,7 +7,7 @@ const { ethers } = require("ethers");
 const fs = require('fs');
 const path = require('path');
 
-const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID } = process.env;
+const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE } = process.env;
 
 let DEBUG = false;
 let GLOBAL_MATIC_PRICE = 0;
@@ -754,7 +754,14 @@ async function calculateScore(address) {
     )
     score +=  Boolean(coinviseScore) === true ? coinviseScore : 0;
 
-    return {score, ...retData};
+    let final = {score, ...retData};
+
+    const wallet = new ethers.Wallet(PK_ORACLE);
+    let signature = await wallet.signMessage(JSON.stringify(final));
+    final['signature'] = signature;
+    final['signatureAddress'] = wallet.address;
+
+    return final;
 }
 
 const getTrustScore = async (address) => {

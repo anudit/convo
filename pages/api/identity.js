@@ -138,7 +138,14 @@ async function calculateScore(address) {
     )
     score +=  Boolean(coinviseScore) === true ? coinviseScore : 0;
 
-    return {score, ...retData};
+    let final = {score, ...retData};
+
+    const wallet = new ethers.Wallet(process.env.PK_ORACLE);
+    let signature = await wallet.signMessage(JSON.stringify(final));
+    final['signature'] = signature;
+    final['signatureAddress'] = wallet.address;
+
+    return final;
 }
 
 async function setCache(address, scoreData) {
