@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { isAddress, verifyMessage, getAddress } from 'ethers/lib/utils';
 import nacl from 'tweetnacl';
 const { Crypto } = require("@peculiar/webcrypto");
+import * as fcl from "@onflow/fcl";
 
 import withApikey from "@/middlewares/withApikey";
 
@@ -97,6 +98,65 @@ const handler = async(req, res) => {
 
           let token = jwt.sign(
               {user: req.body.accountId, chain: "near"},
+              process.env.JWT_SECRET,
+              { expiresIn: "1d" }
+          );
+
+          return res.status(200).json({
+              'success': true,
+              'message': token
+          });
+
+        }
+        else {
+          return res.status(400).json({
+            'success':false,
+            'message': "Recovered address from signature doesn't match signerAddress"
+          });
+        }
+
+      }
+      else {
+        return res.status(400).json({
+            'success':false,
+            'message': 'signerAddress or signature or timestamp is missing/invalid.'
+        });
+      }
+
+    }
+    else if(chain  === 'flow') {
+
+      if (
+        Object.keys(req.body).includes('signature') &&
+        Object.keys(req.body).includes('signerAddress') &&
+        Object.keys(req.body).includes('timestamp')
+      ){
+
+        let currentTimestamp = Date.now();
+
+        if (currentTimestamp - req.body.timestamp > 24*60*60*1000){ // stale signature request
+          return res.status(400).json({
+            'success':false,
+            'message': 'Request timestamp too old.'
+          });
+        }
+
+        let data = `I allow this site to access my data on The Convo Space using the account ${req.body.signerAddress}. Timestamp:${req.body.timestamp}`;
+        fcl.config()
+            .put("challenge.scope", "email") // request for Email
+            .put("accessNode.api", "https://access-testnet.onflow.org") // Flow testnet
+            .put("discovery.wallet", "https://flow-wallet-testnet.blocto.app/api/flow/authn") // Blocto testnet wallet
+            .put("discovery.wallet.method", "HTTP/POST")
+            .put("service.OpenID.scopes", "email!")
+
+        const MSG = Buffer.from(data).toString("hex")
+
+        let isValid = await fcl.verifyUserSignatures(MSG, req.body.signature);
+
+        if(isValid === true){
+
+          let token = jwt.sign(
+              {user: req.body.signerAddress, chain: "flow"},
               process.env.JWT_SECRET,
               { expiresIn: "1d" }
           );
