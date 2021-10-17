@@ -1,5 +1,8 @@
 name: "Cache Trust Scores"
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: "0 0,12 * * *" # Every 12 hours.
 
@@ -25,5 +28,6 @@ jobs:
         TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
         TEXTILE_PK: ${{ secrets.TEXTILE_PK }}
         TEXTILE_HUB_KEY_DEV: ${{ secrets.TEXTILE_HUB_KEY_DEV }}
+        PK_ORACLE: ${{ secrets.PK_ORACLE }}
       run: node ./cron/cacheTrustScore.js
 
