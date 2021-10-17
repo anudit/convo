@@ -1,4 +1,5 @@
 import withApikey from '@/middlewares/withApikey';
+import { unseal, defaults } from '@hapi/iron';
 import jwt from 'jsonwebtoken'
 
 const handler = async(req, res) => {
@@ -7,7 +8,9 @@ const handler = async(req, res) => {
 
         if (Object.keys(req.body).includes('token') && Object.keys(req.body).includes('signerAddress')){
 
-            jwt.verify(req.body.token, process.env.JWT_SECRET, function(err, decoded) {
+            let token = await unseal(req.body.token, process.env.JWT_SECRET, defaults);
+
+            jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
                 if (err) {
                     return res.status(400).json({
                         'success': false,
@@ -15,7 +18,7 @@ const handler = async(req, res) => {
                     });
                 }
                 else {
-                    let {user, exp} = decoded;
+                    let { user, exp } = decoded;
                     let now = Math.floor(Date.now()/1000);
                     if (req.body.signerAddress === user && now < exp) {
 

@@ -869,6 +869,18 @@ const cacheTrustScoresManual = async (addresses = []) => {
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
+    uniswapData = await getAllUniswapSybilData();
+    gitcoinData = await getAllGitcoinData();
+
+    let matic_price_data = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}) ;
+    GLOBAL_MATIC_PRICE = parseFloat(matic_price_data[0].price);
+
+    let eth_price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
+    GLOBAL_ETH_PRICE = eth_price_data['data']['items'][0]['quote_rate'];
+
+    console.log(`GLOBAL_MATIC_PRICE:${GLOBAL_MATIC_PRICE}$`,`GLOBAL_ETH_PRICE:${GLOBAL_ETH_PRICE}$`);
+
+
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
         console.log(data);

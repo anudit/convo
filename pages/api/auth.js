@@ -3,6 +3,7 @@ import { isAddress, verifyMessage, getAddress } from 'ethers/lib/utils';
 import nacl from 'tweetnacl';
 const { Crypto } = require("@peculiar/webcrypto");
 import * as fcl from "@onflow/fcl";
+import { seal, defaults } from "@hapi/iron";
 
 import withApikey from "@/middlewares/withApikey";
 
@@ -50,6 +51,7 @@ const handler = async(req, res) => {
               process.env.JWT_SECRET,
               { expiresIn: "1d" }
           );
+          token = await seal(token, process.env.JWT_SECRET, defaults);
 
           return res.status(200).json({
               'success': true,
@@ -101,6 +103,7 @@ const handler = async(req, res) => {
               process.env.JWT_SECRET,
               { expiresIn: "1d" }
           );
+          token = await seal(token, process.env.JWT_SECRET, defaults);
 
           return res.status(200).json({
               'success': true,
@@ -160,6 +163,7 @@ const handler = async(req, res) => {
               process.env.JWT_SECRET,
               { expiresIn: "1d" }
           );
+          token = await seal(token, process.env.JWT_SECRET, defaults);
 
           return res.status(200).json({
               'success': true,

@@ -230,7 +230,7 @@ export const Web3ContextProvider = ({children}) => {
     });
 
     if (res.success === true ) {
-      cookies.set('CONVO_SESSION', res['message'], { expires: 1 });
+      cookies.set('CONVO_SESSION', res['message'], { expires: 1, secure: true });
       return res['message'];
     }
     else {
