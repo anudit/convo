@@ -19,7 +19,9 @@ const handler = async(req, res) => {
 
         if(req.method === "POST") {
 
-            if (validateAuth(req.body?.token, req.body?.signerAddress) === true) {
+            let valAuthResp = await validateAuth(req.query?.token, req.query?.signerAddress);
+
+            if (valAuthResp === true) {
 
                 if (Boolean(req.body?.type) === true && Boolean(req.body?.commentId) === true) {
                     if (req.body.type.toLowerCase() === 'toggleupvote') {

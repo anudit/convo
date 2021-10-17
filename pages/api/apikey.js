@@ -6,7 +6,9 @@ const handler = async(req, res) => {
     try {
 
         if (req.method === "GET") {
-            if (validateAuth(req.query?.token, req.query?.signerAddress) === true) {
+            let valAuthResp = await validateAuth(req.query?.token, req.query?.signerAddress);
+
+            if (valAuthResp === true) {
 
                 // return all apikey data.
                 let resp = await getApikeyData(req.query.signerAddress);
@@ -26,7 +28,9 @@ const handler = async(req, res) => {
         }
         else if (req.method === "POST" ) {
 
-            if (validateAuth(req.body.token, req.body.signerAddress) === true) {
+            let valAuthResp = await validateAuth(req.query.token, req.query.signerAddress);
+
+            if (valAuthResp === true) {
 
                 // create/regenerate api key.
                 let data = await createApikey(req.body.signerAddress);

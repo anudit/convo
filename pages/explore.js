@@ -23,7 +23,7 @@ export async function getStaticProps() {
 const Threads = (props) => {
 
     const { data: initialThreads, error } = useSWR(
-        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET"],
+        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?allPublic=true&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET"],
         fetcher,
         { fallbackData: props.initialThreads }
     );

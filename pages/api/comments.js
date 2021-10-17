@@ -106,7 +106,9 @@ const handler = async(req, res) => {
     }
     else if (req.method === "POST" ) {
 
-      if (validateAuth(req.body.token, req.body.signerAddress) === true) {
+      let valAuthResp = await validateAuth(req.query.token, req.query.signerAddress);
+
+      if (valAuthResp === true) {
 
         if (
           Object.keys(req.body).includes('comment') === true && req.body?.comment.trim() !== ""
@@ -158,7 +160,9 @@ const handler = async(req, res) => {
 
     }
     else if (req.method === "DELETE" ) {
-      if (validateAuth(req.body.token, req.body.signerAddress) === true) {
+
+      let valAuthResp = await validateAuth(req.query.token, req.query.signerAddress);
+      if (valAuthResp === true) {
 
         if (Object.keys(req.body).includes('commentId') === true){
           let resp = await deleteComment(req.body.commentId);

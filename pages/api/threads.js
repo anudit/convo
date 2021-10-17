@@ -10,9 +10,15 @@ const handler = async(req, res) => {
 
     if (req.method === "GET") {
 
+      if (req.query?.allPublic == 'true'){
+        let query = new Where('isReadPublic').eq(true);
+        const threads = await getThreads(query, req.query?.page, req.query?.pageSize);
+        return res.status(200).json(threads);
+      }
+
       // No key filter params returns Incomplete req.
       if (Boolean(req.query?.threadId) === false &&
-          Boolean(req.query?.creator) === false
+      Boolean(req.query?.creator) === false
       ){
         return res.status(400).json({
           'success': false,
@@ -101,7 +107,9 @@ const handler = async(req, res) => {
     }
     else if (req.method === "POST" ) {
 
-      if (validateAuth(req.body.token, req.body.signerAddress ) === true) {
+      let valAuthResp = await validateAuth(req.query.token, req.query.signerAddress);
+
+      if (valAuthResp === true) {
 
         if (req.body?.action === "create") {
 
@@ -554,7 +562,10 @@ const handler = async(req, res) => {
 
     }
     else if (req.method === "DELETE" ) {
-      if (validateAuth(req.body.token, req.body.signerAddress) === true) {
+
+      let valAuthResp = await validateAuth(req.query.token, req.query.signerAddress);
+
+      if (valAuthResp === true) {
 
         //delete threadId with all the comments
         if ( Object.keys(req.body).includes('threadId') === true){

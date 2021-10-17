@@ -8,6 +8,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { CopyIcon, CheckIcon } from '@chakra-ui/icons';
 import { Web3Context } from '@/contexts/Web3Context';
 import fetcher from '@/utils/fetcher';
+import { prettifyNumber } from '@/utils/stringUtils';
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -136,7 +137,9 @@ const DeveloperSection = () => {
                                         </linearGradient>
                                     </defs>
                                     <XAxis dataKey="name" />
-                                    <YAxis />
+                                    <YAxis tickFormatter={tick => {
+                                        return prettifyNumber(tick);
+                                    }} />
                                     <Tooltip />
                                     <Area type="monotone" dataKey="Usage" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
                                     {/* <Area type="monotone" dataKey="usage" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" /> */}
