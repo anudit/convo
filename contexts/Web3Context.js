@@ -105,7 +105,7 @@ export const Web3ContextProvider = ({children}) => {
       let modalProvider;
       let isSafeApp = await web3Modal.isSafeApp();
       if (isSafeApp === true) {
-        modalProvider = await web3Modal.requestProvider();
+        modalProvider = await web3Modal.getProvider();
         await modalProvider.connect();
       }
       else {
@@ -191,35 +191,33 @@ export const Web3ContextProvider = ({children}) => {
 
   async function updateAuthToken(signerAddress, tempProvider) {
 
-    // let signer = await provider.getSigner();
     let timestamp = Date.now();
     let data = `I allow this site to access my data on The Convo Space using the account ${signerAddress}. Timestamp:${timestamp}`;
-    // if (!!tempSigner.provider.provider.safe === true) {
-    //   console.log('call eth_sign for safe.', tempSigner.provider.provider);
 
-    //   provider.sendAsync(
-    //     {
-    //       jsonrpc: '2.0',
-    //       method: 'eth_sign',
-    //       params: [sender, safeTxHash],
-    //       id: new Date().getTime(),
-    //     },
-    //     async function (err, signature) {
-    //       if (err) {
-    //         return reject(err)
-    //       }
-    //   const partialTx = {
-    //     data: '0x1',
-    //   }
-    //   const safeTransaction = await  tempSigner.provider.provider.sdk.createTransaction(partialTx)
-    //   console.log(safeTransaction);
-    // }
-    // let signature = await tempSigner.signMessage(data);
-
-    let signature = await tempProvider.send(
-      'personal_sign',
-      [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
-    );
+    let isSafeApp = await web3Modal.isSafeApp();
+    let signature = "";
+    if (isSafeApp === true) {
+      signature = await tempProvider.send(
+        {
+          method:'personal_sign',
+          params:[ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ],
+          from: signerAddress
+        },
+        (error, result) => {
+          if (error || result.error) {
+            console.log(error)
+          }
+          console.log('safe sig', result);
+          return result.result.substring(2);
+        }
+      );
+    }
+    else {
+      signature = await tempProvider.send(
+        'personal_sign',
+        [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
+      );
+    }
 
     let res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
       signerAddress,
