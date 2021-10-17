@@ -103,31 +103,29 @@ export const Web3ContextProvider = ({children}) => {
       }
 
       let modalProvider;
-      // if (await web3Modal.canAutoConnect()) {
-      //   modalProvider = await web3Modal.requestProvider();
-      //   if (!!modalProvider.safe === true){
-      //     console.log('Safe Detected', modalProvider, modalProvider.safe)
-      //   }
-      //   await modalProvider.connect();
-      // }
-      // else {
-      // }
-
-      if (choice !== "") {
-        modalProvider = await web3Modal.connectTo(choice);
+      let isSafeApp = await web3Modal.isSafeApp();
+      if (isSafeApp === true) {
+        modalProvider = await web3Modal.requestProvider();
+        await modalProvider.connect();
       }
       else {
-        modalProvider = await web3Modal.connect();
+        if (choice !== "") {
+          modalProvider = await web3Modal.connectTo(choice);
+        }
+        else {
+          modalProvider = await web3Modal.connect();
+        }
+
+        if (modalProvider.on) {
+          modalProvider.on("accountsChanged", () => {
+            window.location.reload();
+          });
+          modalProvider.on("chainChanged", () => {
+            window.location.reload();
+          });
+        }
       }
 
-      if (modalProvider.on) {
-        modalProvider.on("accountsChanged", () => {
-          window.location.reload();
-        });
-        modalProvider.on("chainChanged", () => {
-          window.location.reload();
-        });
-      }
       const ethersProvider = new ethers.providers.Web3Provider(modalProvider);
 
       setProvider(ethersProvider);

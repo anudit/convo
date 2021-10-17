@@ -42,8 +42,7 @@ PageShell.propTypes = {
 
 const DashboardShell = ({title, active, children}) => {
 
-    const web3Context = useContext(Web3Context);
-    const { connectWallet, signerAddress, disconnectWallet, isPortisLoading } = web3Context;
+    const { connectWallet, signerAddress, disconnectWallet, isPortisLoading } = useContext(Web3Context);
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
 

@@ -2020,19 +2020,19 @@
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.4.0.tgz#c3c5ae543c897caa9c2a68630bed355be5f9990f"
   integrity sha512-JZButFdZ1+/xAfpguQHoabIXkcqRRKpMrWKBkpEZZyxfY9C1DpADFB8PEqGSTeFr135SaTRfKqGKx5xSCLI7ZQ==
 
-"@dicebear/avatars@^4.9.1":
-  version "4.9.1"
-  resolved "https://registry.yarnpkg.com/@dicebear/avatars/-/avatars-4.9.1.tgz#3606f8ba9c681389bca9e31cc6396458466aaf92"
-  integrity sha512-5g9BEFHAKXlUooYMzLjCqy3OYmBVi6h99iS5Z+65Yo4WQ9xMWg4FtdsWhUCsfH+/B/EfZd0pCWfxbfDbvbD37Q==
+"@dicebear/avatars@^4.10.0":
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/@dicebear/avatars/-/avatars-4.10.0.tgz#73f36f79a9f5da8bdf99e29f001b90ac586adf23"
+  integrity sha512-hODs31R1STbeLyX+aj/icFhrdYHM7xeUJp0zaW75V9l9/H31f3S+pDSI33H/s7Q3daFTd+qR+LbQZRKTI/MOsQ==
   dependencies:
     "@types/json-schema" "^7.0.7"
     pure-color "^1.3.0"
     svgson "^5.2.1"
 
-"@dicebear/micah@^4.9.1":
-  version "4.9.1"
-  resolved "https://registry.yarnpkg.com/@dicebear/micah/-/micah-4.9.1.tgz#9b2030dd106030afba62d87630d623f9f3a6b512"
-  integrity sha512-YIxtgyOdvNkCfJl2SBtxoFO4lK7gSBZcCTY2P3yNJal10rl8Jx8Lv7dUz06TJWBenF9Sh4ug49HxbN5NnX6JcA==
+"@dicebear/micah@^4.10.0":
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/@dicebear/micah/-/micah-4.10.0.tgz#b2aa0c98021055780f412c3b8eba6a0aab66673e"
+  integrity sha512-pa4epFpjf4uWoE0c34jzHHJTBUALctuTaGv5qLd4Lwpmji0gjoggHwRYH9JrB0AB41005v+vRGOxnZR7azq+jA==
 
 "@emotion/babel-plugin@^11.3.0":
   version "11.3.0"
