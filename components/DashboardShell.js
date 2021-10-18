@@ -43,7 +43,7 @@ PageShell.propTypes = {
 
 const DashboardShell = ({title, active, children}) => {
 
-    const { connectWallet, signerAddress, disconnectWallet, isPortisLoading, activeChain } = useContext(Web3Context);
+    const { connectWallet, signerAddress, disconnectWallet, isPortisLoading, connectedChain } = useContext(Web3Context);
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -299,7 +299,7 @@ const DashboardShell = ({title, active, children}) => {
                         </Link>
                         <Link href="/dashboard/identity" passHref={true} >
                             <Flex
-                                display={activeChain === "ethereum" ? "flex" : "none"}
+                                display={connectedChain === "ethereum" ? "flex" : "none"}
                                 m={1}
                                 h={{base: "50px", md:"50px"}}
                                 w="90%"

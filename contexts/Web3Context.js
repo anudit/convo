@@ -37,8 +37,6 @@ export const Web3ContextProvider = ({children}) => {
 
       let resp = await Promise.allSettled(promiseArray);
 
-      // console.log('updatePrettyName', resp);
-
       if(Boolean(resp[0]?.value) === true){
         setPrettyName(resp[0]?.value);
       }
@@ -51,33 +49,46 @@ export const Web3ContextProvider = ({children}) => {
   }
 
   useEffect(() => {
-
-    const getAddress = async () => {
-      const signer = provider.getSigner();
-      const address = await signer.getAddress();
-      setSignerAddress(ethers.utils.getAddress(address));
-      updatePrettyName(address);
-    }
-
-    if (connectedChain === "ethereum") {
-
-      if (provider) {
-        getAddress();
-      }
-      else {
-        setSignerAddress("");
-        setPrettyName("");
-      }
-
-    }
-
+    updatePrettyName(signerAddress);
   }, [provider]);
 
   useEffect(() => {
     if (router.query?.account_id != undefined) {
       connectWallet("near");
     }
-}, [router.query]);
+  }, [router.query]);
+
+  useEffect(() => {
+
+    const providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          infuraId: '1e7969225b2f4eefb3ae792aabf1cc17',
+        },
+      },
+      portis: {
+        display: {
+          name: "Portis",
+          description: "Connect with your Email and Password"
+        },
+        package: Portis,
+        options: {
+          id: "d3230cb7-51c6-414f-a47f-293364021451"
+        }
+      }
+    };
+
+    let w3m = new Web3Modal({
+      network: "mainnet",
+      cacheProvider: true,
+      theme: "dark",
+      providerOptions,
+    })
+
+    setWeb3Modal(w3m);
+
+  }, []);
 
   async function connectWallet(choice = "") {
 
@@ -91,46 +102,18 @@ export const Web3ContextProvider = ({children}) => {
           setIsPortisLoading(true);
         }
 
-        const providerOptions = {
-          walletconnect: {
-            package: WalletConnectProvider,
-            options: {
-              infuraId: '1e7969225b2f4eefb3ae792aabf1cc17',
-            },
-          },
-          portis: {
-            display: {
-              name: "Portis",
-              description: "Connect with your Email and Password"
-            },
-            package: Portis,
-            options: {
-              id: "d3230cb7-51c6-414f-a47f-293364021451"
-            }
-          }
-        };
-
-        let w3m = new Web3Modal({
-          network: "mainnet",
-          cacheProvider: true,
-          theme: "dark",
-          providerOptions,
-        })
-
-        setWeb3Modal(w3m);
-
         let modalProvider;
-        let isSafeApp = await w3m.isSafeApp();
+        let isSafeApp = await web3Modal.isSafeApp();
         if (isSafeApp === true) {
-          modalProvider = await w3m.getProvider();
+          modalProvider = await web3Modal.getProvider();
           await modalProvider.connect();
         }
         else {
           if (choice !== "") {
-            modalProvider = await w3m.connectTo(choice);
+            modalProvider = await web3Modal.connectTo(choice);
           }
           else {
-            modalProvider = await w3m.connect();
+            modalProvider = await web3Modal.connect();
           }
 
           if (modalProvider.on) {
@@ -149,7 +132,7 @@ export const Web3ContextProvider = ({children}) => {
         let tempsigner = ethersProvider.getSigner();
         let tempaddress = await tempsigner.getAddress();
 
-        // there was a previous session try and validate that first.
+        // if there was a previous session, try and validate that first.
         if (Boolean(cookies.get('CONVO_SESSION')) === true) {
           let tokenRes = await fetcher(
             '/api/validateAuth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', "POST", {
@@ -158,12 +141,24 @@ export const Web3ContextProvider = ({children}) => {
             }
           );
           // if previous session is invalid then request a new auth token.
-          if (tokenRes['success'] !== true) {
-            await updateAuthToken(tempaddress, "ethereum" , w3m);
+          if (tokenRes['success'] === false) {
+            let token = await updateAuthToken(tempaddress, "ethereum", ethersProvider);
+            if (token !== false){
+              setProvider(ethersProvider);
+              setConnectedChain("ethereum");
+              setSignerAddress(tempaddress);
+            }
+          }
+          else {
+            setProvider(ethersProvider);
+            setConnectedChain("ethereum");
+            setSignerAddress(tempaddress);
           }
         }
-        else { // get a auth token
-          await updateAuthToken(tempaddress, "ethereum" , w3m);
+        else {
+          setProvider(ethersProvider);
+          setConnectedChain("ethereum");
+          setSignerAddress(tempaddress);
         }
 
       } catch(e) {
@@ -240,7 +235,6 @@ export const Web3ContextProvider = ({children}) => {
     cookies.remove('CONVO_SESSION');
     web3Modal?.clearCachedProvider();
     setProvider(undefined);
-    setWeb3Modal(undefined);
     setConnectedChain("");
     setSignerAddress("");
     setPrettyName("");
@@ -274,6 +268,7 @@ export const Web3ContextProvider = ({children}) => {
 
   async function updateAuthToken(signerAddress, chainName, tempProvider) {
 
+    console.log('update auth token');
     let timestamp = Date.now();
     let data = `I allow this site to access my data on The Convo Space using the account ${signerAddress}. Timestamp:${timestamp}`;
     let res;
@@ -283,11 +278,12 @@ export const Web3ContextProvider = ({children}) => {
 
       console.log('here1', tempProvider)
 
-      let ethProvider = await tempProvider.requestProvider();
-      let isSafeApp = await tempProvider.isSafeApp();
+      // let ethProvider = await web3Modal.requestProvider();
+      let isSafeApp = await web3Modal.isSafeApp();
+
       console.log('isSafeApp', isSafeApp);
 
-      tempProvider = new ethers.providers.Web3Provider(ethProvider);
+      // tempProvider = new ethers.providers.Web3Provider(ethProvider);
       if (isSafeApp === true) {
         signature = await tempProvider.send(
           {

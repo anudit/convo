@@ -3595,10 +3595,10 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
-"@react-three/drei@^7.16.4":
-  version "7.16.4"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.16.4.tgz#6bbeed32a9a7251a5437ea08ce49c42b6730904c"
-  integrity sha512-rZcvin19sw31Bx4WDSk2wr+Dq0w5d8c9cITfuiLWlcvVKm20gSgvr2PVza9m3Fxwd78FwIrOlXQ7njUxfzHSWw==
+"@react-three/drei@^7.16.6":
+  version "7.16.6"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.16.6.tgz#92168a89bd517d987fd0d5ce0c539dec4417d5c5"
+  integrity sha512-j3RatzX2bHl5JwRj9BpxEpZSUahrejgMRArpYItUO++aB1vYRbMoxWP6OTQxdlnfIlmLVH78pJ3OIsn+qpmdsw==
   dependencies:
     "@babel/runtime" "^7.11.2"
     detect-gpu "^3.1.21"
@@ -17069,10 +17069,10 @@ react-focus-lock@2.5.0:
     use-callback-ref "^1.2.1"
     use-sidecar "^1.0.1"
 
-react-hotkeys-hook@^3.4.3:
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-3.4.3.tgz#74da79c2a5106f8d203f543794833c1af39030ac"
-  integrity sha512-rb8wjXItbZ0ItX1lHKd1lVfqoiGhzrnNo+rtqNoTkxMdyUcxI3RIdP8wmAHoK9Z/0F+aHo2yWAeKgv3pUvmGpw==
+react-hotkeys-hook@^3.4.4:
+  version "3.4.4"
+  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-3.4.4.tgz#52ba5d8ef5e47cc2e776c70a9036d518e0993d51"
+  integrity sha512-vaORq07rWgmuF3owWRhgFV/3VL8/l2q9lz0WyVEddJnWTtKW+AOgU5YgYKuwN6h6h7bCcLG3MFsJIjCrM/5DvQ==
   dependencies:
     hotkeys-js "3.8.7"
 
