@@ -118,10 +118,13 @@ export const addressToChainName = (address) => {
 }
 
 export const isBlockchainAddress = (address) => {
-    if(isAddress(address) === true){
+    if(isAddress(address) === true){ // ethereum
         return true;
     }
-    else if(address.slice(address.length-5, address.length) === ".near" || address.slice(address.length-8, address.length) === ".testnet"){
+    if(address.length === 18 && address.slice(0, 2) === "0x"){  // flow
+        return true;
+    }
+    else if(address.slice(address.length-5, address.length) === ".near" || address.slice(address.length-8, address.length) === ".testnet"){ //near
         return true;
     }
     else {

@@ -29,7 +29,6 @@ const withApikey = (next) => async (req, res) => {
 
     try {
 
-
         if (req.method === 'OPTIONS') {
             return res.status(200).end();
         }
@@ -64,7 +63,6 @@ const withApikey = (next) => async (req, res) => {
                 res.setHeader('X-Rate-Limit-Remaining', CAP - parseInt(data[1][1]) -1 )
                 return await next(req, res);
             }
-
         }
         else {
             return res.status(401).json({
