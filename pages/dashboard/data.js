@@ -29,7 +29,7 @@ const contracts = {
 const IdentitySection = () => {
 
   const web3Context = useContext(Web3Context);
-  const { signerAddress } = web3Context;
+  const { signerAddress, connectedChain } = web3Context;
 
   async function downloadAllData(){
       let backup = JSON.stringify([{}]);
@@ -63,10 +63,12 @@ const IdentitySection = () => {
                     💣 Nuke my Data
                 </Button>
             </Flex>
-            <Heading as="h4" size="md" my={4}>
-                Data Tokens (🚧 Rinkeby Testnet)
-            </Heading>
-            <DataTokenView/>
+            <Flex display={connectedChain === "ethereum" ? "flex" : "none"} flexDirection="column">
+                <Heading as="h4" size="md" my={4}>
+                    Data Tokens (🚧 Rinkeby Testnet)
+                </Heading>
+                <DataTokenView/>
+            </Flex>
         </Flex>
     </DashboardShell>
   )
@@ -78,7 +80,7 @@ export default IdentitySection;
 const DataTokenView = () => {
 
     const web3Context = useContext(Web3Context);
-    const { signerAddress, web3Modal, prettyName } = web3Context;
+    const { signerAddress, web3Modal, prettyName, connectedChain } = web3Context;
     const { colorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useState(false);
@@ -125,7 +127,9 @@ const DataTokenView = () => {
             setTokens(assets?.hits.hits);
         }
 
-        fetchData();
+        if (connectedChain === "ethereum") {
+            fetchData();
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

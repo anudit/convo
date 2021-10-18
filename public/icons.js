@@ -537,6 +537,20 @@ export const BridgeIcon = createIcon({
     )
 });
 
+export const FlowIcon = createIcon({
+    displayName: 'FlowIcon',
+    viewBox: '0 0 256 256',
+    path: (
+        <g transform="scale(2.56)">
+            <circle fill="#00ef8b" cx="50" cy="50" r="50"/>
+            <path fill="#fff" d="M58 42h14v14H58z"/>
+            <path fill="#fff" d="M44 62c0 3-3 5-6 5s-5-2-5-5 3-6 5-6h6V42h-6a19 19 0 1 0 20 20v-6H44v6z"/>
+            <path fill="#fff" d="M63 35h16V21H63c-11 0-19 9-19 19v2h14v-2c0-2 2-5 5-5z"/>
+            <path fill="#16ff99" d="M58 42H44v14h14z"/>
+        </g>
+    )
+});
+
 export const IndiaFlag = createIcon({
     displayName: 'IndiaFlag',
     viewBox: '0 0 640 480',

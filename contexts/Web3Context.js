@@ -1,28 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import { ethers } from "ethers";
-// import Web3Modal from "web3modal";
 import Portis from "@portis/web3";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Cookies from "js-cookie";
 import fetcher from "@/utils/fetcher";
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import { checkUnstoppableDomains } from '@/lib/identity';
+import * as fcl from "@onflow/fcl";
+import { WalletConnection, connect, keyStores, KeyPairEd25519 } from 'near-api-js';
+import { useRouter } from 'next/router';
 
 export const Web3Context = React.createContext(undefined);
 
 export const Web3ContextProvider = ({children}) => {
 
+  const router = useRouter();
   const cookies = Cookies.withAttributes({
     path: '/'
   })
   const [web3Modal, setWeb3Modal] = useState(undefined);
   const [provider, setProvider] = useState(undefined);
+  const [connectedChain, setConnectedChain] = useState("");
   const [signerAddress, setSignerAddress] = useState("");
   const [prettyName, setPrettyName] = useState("");
   const [isPortisLoading, setIsPortisLoading] = useState(false);
 
   async function updatePrettyName(address){
-
     let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
     let ensReq  = tp.lookupAddress(address);
     let udReq = checkUnstoppableDomains(address);
@@ -31,35 +34,19 @@ export const Web3ContextProvider = ({children}) => {
 
     let resp = await Promise.allSettled(promiseArray);
 
-    // console.log('updatePrettyName', resp);
-
     if(Boolean(resp[0]?.value) === true){
       setPrettyName(resp[0]?.value);
     }
     else if(Boolean(resp[1]?.value) === true){
       setPrettyName(resp[1]?.value);
     }
-
   }
 
   useEffect(() => {
-
-    const getAddress = async () => {
-      const signer = provider.getSigner();
-      const address = await signer.getAddress();
-      setSignerAddress(ethers.utils.getAddress(address));
-      updatePrettyName(address);
-
+    if (router.query?.account_id != undefined) {
+      connectWallet("near");
     }
-    if (provider) {
-      getAddress();
-    }
-    else {
-      setSignerAddress("");
-      setPrettyName("");
-    }
-
-  }, [provider]);
+  }, [router.query]);
 
   useEffect(() => {
 
@@ -94,76 +81,158 @@ export const Web3ContextProvider = ({children}) => {
   }, []);
 
   async function connectWallet(choice = "") {
+
     console.log("choice", choice);
 
-    try {
+    if (choice === "portis" || choice === "injected" || choice === "walletconnect") {
 
-      if (choice === "portis") {
-        setIsPortisLoading(true);
+      try {
+
+        if (choice === "portis") {
+          setIsPortisLoading(true);
+        }
+
+        let modalProvider;
+        let isSafeApp = await web3Modal.isSafeApp();
+        if (isSafeApp === true) {
+          modalProvider = await web3Modal.getProvider();
+          let resp = await modalProvider.connect();
+          console.log('using safe', resp);
+        }
+        else {
+          if (choice !== "") {
+            modalProvider = await web3Modal.connectTo(choice);
+          }
+          else {
+            modalProvider = await web3Modal.connect();
+          }
+
+          if (modalProvider.on) {
+            modalProvider.on("accountsChanged", () => {
+              window.location.reload();
+            });
+            modalProvider.on("chainChanged", () => {
+              window.location.reload();
+            });
+          }
+        }
+
+        const ethersProvider = new ethers.providers.Web3Provider(modalProvider);
+
+        setProvider(ethersProvider);
+        let tempsigner = ethersProvider.getSigner();
+        let tempaddress = await tempsigner.getAddress();
+
+        // if there was a previous session, try and validate that first.
+        if (Boolean(cookies.get('CONVO_SESSION')) === true) {
+          let tokenRes = await fetcher(
+            '/api/validateAuth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', "POST", {
+              signerAddress: tempaddress,
+              token: cookies.get('CONVO_SESSION')
+            }
+          );
+          // if previous session is invalid then request a new auth token.
+          if (tokenRes['success'] === false) {
+            let token = await updateAuthToken(tempaddress, "ethereum", ethersProvider);
+            if (token !== false){
+              setProvider(ethersProvider);
+              setConnectedChain("ethereum");
+              updatePrettyName(tempaddress);
+              setSignerAddress(tempaddress);
+            }
+          }
+          else {
+            setProvider(ethersProvider);
+            setConnectedChain("ethereum");
+            updatePrettyName(tempaddress);
+            setSignerAddress(tempaddress);
+          }
+        }
+        else {
+          setProvider(ethersProvider);
+          setConnectedChain("ethereum");
+          updatePrettyName(tempaddress);
+          setSignerAddress(tempaddress);
+        }
+
+      } catch(e) {
+        disconnectWallet();
+        console.log('NO_WALLET_CONNECTED', e);
       }
 
-      let modalProvider;
-      // if (await web3Modal.canAutoConnect()) {
-      //   modalProvider = await web3Modal.requestProvider();
-      //   if (!!modalProvider.safe === true){
-      //     console.log('Safe Detected', modalProvider, modalProvider.safe)
-      //   }
-      //   await modalProvider.connect();
-      // }
-      // else {
-      // }
+      setIsPortisLoading(false);
 
-      if (choice !== "") {
-        modalProvider = await web3Modal.connectTo(choice);
+    }
+    else if(choice === "flow") {
+
+      try {
+
+        fcl.config()
+          .put("challenge.scope", "email") // request for Email
+          .put("accessNode.api", "https://access-testnet.onflow.org") // Flow testnet
+          .put("discovery.wallet", "https://flow-wallet-testnet.blocto.app/api/flow/authn") // Blocto testnet wallet
+          .put("discovery.wallet.method", "HTTP/POST")
+          .put("service.OpenID.scopes", "email!")
+
+        let userData = await fcl.authenticate();
+
+        await updateAuthToken(userData.addr, "flow", fcl);
+        setProvider(fcl);
+        setConnectedChain("flow");
+        setSignerAddress(userData.addr);
+
+      }
+      catch(e) {
+        disconnectWallet();
+        console.log('NO_WALLET_CONNECTED', e);
+      }
+
+    }
+    else if (choice === "near") {
+      const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+
+      const config = {
+          networkId: "testnet",
+          keyStore,
+          nodeUrl: "https://rpc.testnet.near.org",
+          walletUrl: "https://wallet.testnet.near.org",
+          helperUrl: "https://helper.testnet.near.org",
+          explorerUrl: "https://explorer.testnet.near.org",
+      };
+      let near = await connect(config);
+      let wallet = new WalletConnection(near);
+
+      if (wallet.isSignedIn() === true){
+        console.log('signedin');
+        let accountId = wallet.getAccountId();
+
+        await updateAuthToken(accountId, "near", wallet);
+        setProvider(wallet);
+        setConnectedChain("near");
+        setSignerAddress(accountId);
       }
       else {
-        modalProvider = await web3Modal.connect();
-      }
-
-      if (modalProvider.on) {
-        modalProvider.on("accountsChanged", () => {
-          window.location.reload();
-        });
-        modalProvider.on("chainChanged", () => {
-          window.location.reload();
-        });
-      }
-      const ethersProvider = new ethers.providers.Web3Provider(modalProvider);
-
-      setProvider(ethersProvider);
-      let tempsigner = ethersProvider.getSigner();
-      let tempaddress = await tempsigner.getAddress();
-
-      // there was a previous session try and validate that first.
-      if (Boolean(cookies.get('CONVO_SESSION')) === true) {
-        let tokenRes = await fetcher(
-          '/api/validateAuth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', "POST", {
-            signerAddress: tempaddress,
-            token: cookies.get('CONVO_SESSION')
-          }
+        let resp = await wallet.requestSignIn(
+          "example-contract.testnet",
+          "The Convo Space",
+          window.location.href,
+          window.location.href
         );
-        // if previous session is invalid then request a new auth token.
-        if (tokenRes['success'] !== true) {
-          await updateAuthToken(tempaddress, ethersProvider);
-        }
       }
-      else { // get a auth token
-        await updateAuthToken(tempaddress, ethersProvider);
-      }
-
-
-    } catch(e) {
-      disconnectWallet();
-      console.log('NO_WALLET_CONNECTED', e);
     }
-
-    setIsPortisLoading(false);
+    else {
+      console.log('Invalid Choice.')
+    }
   }
 
   function disconnectWallet() {
     cookies.remove('CONVO_SESSION');
     web3Modal?.clearCachedProvider();
     setProvider(undefined);
+    setConnectedChain("");
+    setSignerAddress("");
+    setPrettyName("");
+    setIsPortisLoading(false);
   }
 
   async function getAuthToken(manualAddress = undefined) {
@@ -179,7 +248,7 @@ export const Web3ContextProvider = ({children}) => {
     }
     else {
       try {
-        let tokenUpdateRes = await updateAuthToken(authAdd, provider);
+        let tokenUpdateRes = await updateAuthToken(authAdd, connectedChain, provider);
         if (tokenUpdateRes) {
           return tokenUpdateRes;
         }
@@ -191,43 +260,83 @@ export const Web3ContextProvider = ({children}) => {
     }
   }
 
-  async function updateAuthToken(signerAddress, tempProvider) {
+  async function updateAuthToken(signerAddress, chainName, tempProvider) {
 
-    // let signer = await provider.getSigner();
+    console.log('update auth token');
     let timestamp = Date.now();
     let data = `I allow this site to access my data on The Convo Space using the account ${signerAddress}. Timestamp:${timestamp}`;
-    // if (!!tempSigner.provider.provider.safe === true) {
-    //   console.log('call eth_sign for safe.', tempSigner.provider.provider);
+    let res;
 
-    //   provider.sendAsync(
-    //     {
-    //       jsonrpc: '2.0',
-    //       method: 'eth_sign',
-    //       params: [sender, safeTxHash],
-    //       id: new Date().getTime(),
-    //     },
-    //     async function (err, signature) {
-    //       if (err) {
-    //         return reject(err)
-    //       }
-    //   const partialTx = {
-    //     data: '0x1',
-    //   }
-    //   const safeTransaction = await  tempSigner.provider.provider.sdk.createTransaction(partialTx)
-    //   console.log(safeTransaction);
-    // }
-    // let signature = await tempSigner.signMessage(data);
+    if (chainName === "ethereum") {
+      let signature = "";
 
-    let signature = await tempProvider.send(
-      'personal_sign',
-      [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
-    );
+      console.log('here1', tempProvider)
 
-    let res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
-      signerAddress,
-      signature,
-      timestamp
-    });
+      // let ethProvider = await web3Modal.requestProvider();
+      let isSafeApp = await web3Modal.isSafeApp();
+
+      console.log('isSafeApp', isSafeApp);
+
+      // tempProvider = new ethers.providers.Web3Provider(ethProvider);
+      if (isSafeApp === true) {
+        console.log('creating safe sig');
+        signature = await tempProvider.send(
+          {
+            method:'personal_sign',
+            params:[ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ],
+            from: signerAddress
+          },
+          (error, result) => {
+            if (error || result.error) {
+              console.log(error)
+            }
+            console.log('safe sig', result);
+            return result.result.substring(2);
+          }
+        );
+      }
+      else {
+        signature = await tempProvider.send(
+          'personal_sign',
+          [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
+        );
+      }
+
+      res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+        signerAddress,
+        signature,
+        timestamp,
+        chain: "ethereum"
+      });
+
+    }
+    else if (chainName === "near"){
+
+      const tokenMessage = new TextEncoder().encode(data);
+      const signatureData = await tempProvider.account().connection.signer.signMessage(tokenMessage, signerAddress, 'testnet');
+
+      res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+        "signature": Buffer.from(signatureData.signature).toString('hex'),
+        "signerAddress": Buffer.from(signatureData.publicKey.data).toString('hex'),
+        "accountId": signerAddress,
+        "timestamp": timestamp,
+        "chain": "near"
+      });
+
+    }
+    else if (chainName === "flow"){
+
+      const MSG = Buffer.from(data).toString("hex")
+      const signature = await fcl.currentUser().signUserMessage(MSG)
+
+      res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+        signerAddress,
+        signature,
+        timestamp,
+        chain: "flow"
+      });
+
+    }
 
     if (res.success === true ) {
       cookies.set('CONVO_SESSION', res['message'], { expires: 1, secure: true });
@@ -245,6 +354,7 @@ export const Web3ContextProvider = ({children}) => {
       connectWallet,
       disconnectWallet,
       provider,
+      connectedChain,
       signerAddress,
       prettyName,
       getAuthToken,

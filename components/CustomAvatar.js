@@ -11,7 +11,7 @@ import { isAddress } from '@ethersproject/address';
 
 const CustomAvatar = (props) => {
 
-    const address = props.address;
+    const address = props?.address;
     const [verified, setVerified] = useState(null);
     const [customPfp, setCustomPfp] = useState(null);
 
@@ -24,7 +24,7 @@ const CustomAvatar = (props) => {
             });
         }
         // const resolver = await provider.getResolver("ricmoo.eth");
-    }, [address]);
+    }, [props]);
 
     useEffect(() => {
         if (Boolean(props?.ensName) === true ){
