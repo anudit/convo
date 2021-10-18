@@ -26,8 +26,8 @@ export const Web3ContextProvider = ({children}) => {
   const [isPortisLoading, setIsPortisLoading] = useState(false);
 
   async function updatePrettyName(address){
-
     if (connectedChain === "ethereum"){
+      console.log('updating prettyName', address);
 
       let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
       let ensReq  = tp.lookupAddress(address);

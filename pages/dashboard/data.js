@@ -63,7 +63,7 @@ const IdentitySection = () => {
                     💣 Nuke my Data
                 </Button>
             </Flex>
-            <Flex display={connectedChain === "ethereum" ? "flex" : "none"}>
+            <Flex display={connectedChain === "ethereum" ? "flex" : "none"} flexDirection="column">
                 <Heading as="h4" size="md" my={4}>
                     Data Tokens (🚧 Rinkeby Testnet)
                 </Heading>

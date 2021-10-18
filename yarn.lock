@@ -3595,10 +3595,10 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
-"@react-three/drei@^7.16.6":
-  version "7.16.6"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.16.6.tgz#92168a89bd517d987fd0d5ce0c539dec4417d5c5"
-  integrity sha512-j3RatzX2bHl5JwRj9BpxEpZSUahrejgMRArpYItUO++aB1vYRbMoxWP6OTQxdlnfIlmLVH78pJ3OIsn+qpmdsw==
+"@react-three/drei@^7.16.7":
+  version "7.16.7"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.16.7.tgz#90d8306c2c6d385c4b99bb214d227791969eebe3"
+  integrity sha512-FyYp/pxAuYjddmAZywz1kHZoT/yAQs/vglTJlQ8LI2osC0gKeeLVrl/05WpDINYd0U09y7B5T5t9LMy3oBhfNg==
   dependencies:
     "@babel/runtime" "^7.11.2"
     detect-gpu "^3.1.21"

@@ -34,7 +34,7 @@
     "@onflow/fcl": "^0.0.77",
     "@peculiar/webcrypto": "^1.1.7",
     "@portis/web3": "^4.0.6",
-    "@react-three/drei": "^7.16.6",
+    "@react-three/drei": "^7.16.7",
     "@react-three/fiber": "^7.0.16",
     "@textile/hub": "^6.3.0",
     "@walletconnect/web3-provider": "^1.6.6",
