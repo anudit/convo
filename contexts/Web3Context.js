@@ -84,7 +84,7 @@ export const Web3ContextProvider = ({children}) => {
 
     console.log("choice", choice);
 
-    if (choice === "portis" || choice === "injected" || choice === "walletconnect") {
+    if (choice === "" || choice === "portis" || choice === "injected" || choice === "walletconnect") {
 
       try {
 
