@@ -455,7 +455,7 @@ const WalletItem = (props) => {
     )
 }
 WalletItem.propTypes = {
-    children:PropTypes.element,
+    children:PropTypes.any,
     backgroundImage: PropTypes.string,
     onClick: PropTypes.func.isRequired
 }

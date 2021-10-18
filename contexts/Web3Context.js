@@ -26,31 +26,21 @@ export const Web3ContextProvider = ({children}) => {
   const [isPortisLoading, setIsPortisLoading] = useState(false);
 
   async function updatePrettyName(address){
-    if (connectedChain === "ethereum"){
-      console.log('updating prettyName', address);
+    let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
+    let ensReq  = tp.lookupAddress(address);
+    let udReq = checkUnstoppableDomains(address);
 
-      let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
-      let ensReq  = tp.lookupAddress(address);
-      let udReq = checkUnstoppableDomains(address);
+    let promiseArray = [ensReq, udReq];
 
-      let promiseArray = [ensReq, udReq];
+    let resp = await Promise.allSettled(promiseArray);
 
-      let resp = await Promise.allSettled(promiseArray);
-
-      if(Boolean(resp[0]?.value) === true){
-        setPrettyName(resp[0]?.value);
-      }
-      else if(Boolean(resp[1]?.value) === true){
-        setPrettyName(resp[1]?.value);
-      }
-
+    if(Boolean(resp[0]?.value) === true){
+      setPrettyName(resp[0]?.value);
     }
-
+    else if(Boolean(resp[1]?.value) === true){
+      setPrettyName(resp[1]?.value);
+    }
   }
-
-  useEffect(() => {
-    updatePrettyName(signerAddress);
-  }, [provider]);
 
   useEffect(() => {
     if (router.query?.account_id != undefined) {
@@ -106,7 +96,8 @@ export const Web3ContextProvider = ({children}) => {
         let isSafeApp = await web3Modal.isSafeApp();
         if (isSafeApp === true) {
           modalProvider = await web3Modal.getProvider();
-          await modalProvider.connect();
+          let resp = await modalProvider.connect();
+          console.log('using safe', resp);
         }
         else {
           if (choice !== "") {
@@ -146,18 +137,21 @@ export const Web3ContextProvider = ({children}) => {
             if (token !== false){
               setProvider(ethersProvider);
               setConnectedChain("ethereum");
+              updatePrettyName(tempaddress);
               setSignerAddress(tempaddress);
             }
           }
           else {
             setProvider(ethersProvider);
             setConnectedChain("ethereum");
+            updatePrettyName(tempaddress);
             setSignerAddress(tempaddress);
           }
         }
         else {
           setProvider(ethersProvider);
           setConnectedChain("ethereum");
+          updatePrettyName(tempaddress);
           setSignerAddress(tempaddress);
         }
 
@@ -285,6 +279,7 @@ export const Web3ContextProvider = ({children}) => {
 
       // tempProvider = new ethers.providers.Web3Provider(ethProvider);
       if (isSafeApp === true) {
+        console.log('creating safe sig');
         signature = await tempProvider.send(
           {
             method:'personal_sign',
