@@ -28,7 +28,7 @@ const handler = async(req, res) => {
         }
         else if (req.method === "POST" ) {
 
-            let valAuthResp = await validateAuth(req.query.token, req.query.signerAddress);
+            let valAuthResp = await validateAuth(req.body.token, req.body.signerAddress);
 
             if (valAuthResp === true) {
 

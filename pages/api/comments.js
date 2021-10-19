@@ -20,6 +20,8 @@ const handler = async(req, res) => {
 
   try {
 
+
+
     if (req.method === "GET") {
 
       // No key filter params returns Incomplete req.
@@ -106,7 +108,7 @@ const handler = async(req, res) => {
     }
     else if (req.method === "POST" ) {
 
-      let valAuthResp = await validateAuth(req.query.token, req.query.signerAddress);
+      let valAuthResp = await validateAuth(req.body.token, req.body.signerAddress);
 
       if (valAuthResp === true) {
 
@@ -161,7 +163,7 @@ const handler = async(req, res) => {
     }
     else if (req.method === "DELETE" ) {
 
-      let valAuthResp = await validateAuth(req.query.token, req.query.signerAddress);
+      let valAuthResp = await validateAuth(req.body.token, req.body.signerAddress);
       if (valAuthResp === true) {
 
         if (Object.keys(req.body).includes('commentId') === true){
