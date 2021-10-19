@@ -15,8 +15,8 @@ export const Web3Context = React.createContext(undefined);
 export const Web3ContextProvider = ({children}) => {
 
   const router = useRouter();
+  path: '/'
   const cookies = Cookies.withAttributes({
-    path: '/'
   })
   const [web3Modal, setWeb3Modal] = useState(undefined);
   const [provider, setProvider] = useState(undefined);
@@ -285,15 +285,14 @@ export const Web3ContextProvider = ({children}) => {
         console.log('creating safe sig');
         signature = await tempProvider.send(
           {
-            method:'personal_sign',
-            params:[ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ],
-            from: signerAddress
+            method: 'personal_sign',
+            params:[ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
           },
           (error, result) => {
+            console.log('safe sig', error, result);
             if (error || result.error) {
               console.log(error)
             }
-            console.log('safe sig', result);
             return result.result.substring(2);
           }
         );

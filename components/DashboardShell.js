@@ -97,7 +97,7 @@ const DashboardShell = ({title, active, children}) => {
                 m="0 auto"
                 mt={2}
             >
-                <Heading as="h3" size={{base: "md", md:"xl"}} align="center">
+                <Heading as="h3" fontSize={{base: "20px", md:"40px"}} align="center">
                     Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/images/gradient.webp')" backgroundSize="cover">Blockchain Wallet</Text>
                 </Heading>
                 <br/>
@@ -124,7 +124,7 @@ const DashboardShell = ({title, active, children}) => {
                         </Flex>
                         <MetaMaskIcon boxSize={9} mx={2} />
                         <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
-                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800} width="100%">Sign-in with MetaMask</Text>
+                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with MetaMask</Text>
                             <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>One of the most Secure and Flexible Wallets.</Text>
                         </Flex>
                     </WalletItem>
@@ -141,7 +141,7 @@ const DashboardShell = ({title, active, children}) => {
                         <NearIcon boxSize={7} mx={2}/>
                         <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
                             <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with NEAR</Text>
-                            <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in using your NEAR Web Wallet.</Text>
+                            <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in using your NEAR Web Wallet Account.</Text>
                         </Flex>
                     </WalletItem>
 
