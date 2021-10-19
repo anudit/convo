@@ -97,7 +97,7 @@ const DashboardShell = ({title, active, children}) => {
                 m="0 auto"
                 mt={2}
             >
-                <Heading as="h3" size="xl" align="center">
+                <Heading as="h3" size={{base: "md", md:"xl"}} align="center">
                     Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/images/gradient.webp')" backgroundSize="cover">Blockchain Wallet</Text>
                 </Heading>
                 <br/>
@@ -111,7 +111,7 @@ const DashboardShell = ({title, active, children}) => {
                         <Flex
                             fontSize="xs"
                             px={2} py={1}
-                            marginTop="-80px" marginLeft="370px"
+                            marginTop={{base: "-100px", md:"-80px"}} marginLeft={{base: "170px", md:"370px"}}
                             color={colorMode === 'light' ? "white": "black"}
                             background={colorMode === 'light' ? "black": "white"}
                             width="100px"
@@ -123,33 +123,33 @@ const DashboardShell = ({title, active, children}) => {
                             Most Popular
                         </Flex>
                         <MetaMaskIcon boxSize={9} mx={2} />
-                        <Flex direction="column" alignItems="center" width="100%">
-                            <Text fontSize="xl" color={colorMode === "light"? "black": "white"} fontWeight={800} width="100%" align="center">Sign-in with MetaMask</Text>
-                            <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>One of the most Secure and Flexible Wallets.</Text>
+                        <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
+                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800} width="100%">Sign-in with MetaMask</Text>
+                            <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>One of the most Secure and Flexible Wallets.</Text>
                         </Flex>
                     </WalletItem>
 
                    <WalletItem onClick={()=>{connectWallet('walletconnect')}} backgroundImage="linear-gradient(229.83deg, rgb(59 153 252) -258.34%, rgb(82 153 231 / 18%) 100.95%)">
                         <WalletConnectIcon boxSize={10} mx={2} />
-                        <Flex direction="column" alignItems="center" width="100%">
-                            <Text fontSize="xl" color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with WalletConnect</Text>
-                            <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Rainbow, Argent and others.</Text>
+                        <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
+                            <Text fontSize={{base:"sm", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with WalletConnect</Text>
+                            <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Rainbow, Argent and others.</Text>
                         </Flex>
                     </WalletItem>
 
                     <WalletItem onClick={()=>{connectWallet('near')}} backgroundImage="linear-gradient(229.83deg, rgb(222 238 255) -258.34%, rgb(246 246 246 / 18%) 100.95%)">
                         <NearIcon boxSize={7} mx={2}/>
-                        <Flex direction="column" alignItems="center" width="100%">
-                            <Text fontSize="xl" color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with NEAR</Text>
-                            <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in using your NEAR Web Wallet.</Text>
+                        <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
+                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with NEAR</Text>
+                            <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in using your NEAR Web Wallet.</Text>
                         </Flex>
                     </WalletItem>
 
                     <WalletItem onClick={()=>{connectWallet('flow')}} backgroundImage="linear-gradient(229.83deg, rgb(0 239 139) -258.34%, rgb(0 239 139 / 34%) 100.95%)">
                         <FlowIcon boxSize={9} mx={2}/>
-                        <Flex direction="column" alignItems="center" width="100%">
-                            <Text fontSize="xl" color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with Flow</Text>
-                            <Text fontSize="md" color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Flow Blockchain powered by Blocto.</Text>
+                        <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
+                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with Flow</Text>
+                            <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Flow Blockchain powered by Blocto.</Text>
                         </Flex>
                     </WalletItem>
 
@@ -157,7 +157,7 @@ const DashboardShell = ({title, active, children}) => {
                         {isPortisLoading === true ? (
                             <Spinner size="lg" py={1} my={1}/>
                         ) : (
-                            <Text fontSize="xl" color={colorMode === "light"? "black": "white"} fontWeight={400}>Just use an Email Address</Text>
+                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={400}>Just use an Email Address</Text>
                         )}
                    </WalletItem>
 
@@ -189,7 +189,7 @@ const DashboardShell = ({title, active, children}) => {
                     alignItems="space-between"
                     background={colorMode === "light" ? "#ececec30" : "#15151930"}
                 >
-                    <Flex direction="column" alignItems="center">
+                    <Flex direction="column" alignItems={{base:"left", md:"center"}} >
                         <Link href="/dashboard" passHref={true}>
                             <Flex height="75px" w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                                 <Text fontSize  ="2xl">

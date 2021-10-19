@@ -149,10 +149,13 @@ export const Web3ContextProvider = ({children}) => {
           }
         }
         else {
-          setProvider(ethersProvider);
-          setConnectedChain("ethereum");
-          updatePrettyName(tempaddress);
-          setSignerAddress(tempaddress);
+          let token = await updateAuthToken(tempaddress, "ethereum", ethersProvider);
+          if (token !== false){
+            setProvider(ethersProvider);
+            setConnectedChain("ethereum");
+            updatePrettyName(tempaddress);
+            setSignerAddress(tempaddress);
+          }
         }
 
       } catch(e) {
