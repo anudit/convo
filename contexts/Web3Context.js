@@ -7,7 +7,7 @@ import fetcher from "@/utils/fetcher";
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
 import { checkUnstoppableDomains } from '@/lib/identity';
 import * as fcl from "@onflow/fcl";
-import { WalletConnection, connect, keyStores, KeyPairEd25519 } from 'near-api-js';
+import { WalletConnection, connect, keyStores } from 'near-api-js';
 import { useRouter } from 'next/router';
 
 export const Web3Context = React.createContext(undefined);
@@ -223,6 +223,21 @@ export const Web3ContextProvider = ({children}) => {
         );
       }
     }
+    else if (choice === "solana") {
+      const resp = await window.solana.connect();
+      if (Boolean(resp.publicKey.toString()) === true ){
+        let sigResp = await updateAuthToken(resp.publicKey.toString(), "solana", window.solana);
+        if (Boolean(sigResp) === true){
+          setProvider(window.solana);
+          setConnectedChain("solana");
+          setSignerAddress(resp.publicKey.toString());
+        }
+        else {
+          alert(sigResp.message);
+        }
+      }
+
+    }
     else {
       console.log('Invalid Choice.')
     }
@@ -339,9 +354,22 @@ export const Web3ContextProvider = ({children}) => {
       });
 
     }
+    else if (chainName === "solana") {
+      const encodedMessage = new TextEncoder().encode(data);
+      const { publicKey, signature } = await tempProvider.signMessage(encodedMessage, "utf8");
+
+      res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+        signerAddress: publicKey.toString(),
+        signature: Buffer.from(signature).toString('hex'),
+        timestamp,
+        chain: "solana"
+      });
+
+    }
 
     if (res.success === true ) {
       cookies.set('CONVO_SESSION', res['message'], { expires: 1, secure: true });
+      console.log('valid session setup.')
       return res['message'];
     }
     else {

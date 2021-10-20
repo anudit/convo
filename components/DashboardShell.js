@@ -6,7 +6,7 @@ import { Wrap, WrapItem } from "@chakra-ui/react"
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon } from '@/public/icons';
+import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon } from '@/public/icons';
 import { InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
 import { isAddress } from 'ethers/lib/utils';
 import { isBlockchainAddress } from '@/utils/stringUtils';
@@ -100,18 +100,16 @@ const DashboardShell = ({title, active, children}) => {
                 <Heading as="h3" fontSize={{base: "20px", md:"40px"}} align="center">
                     Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/images/gradient.webp')" backgroundSize="cover">Blockchain Wallet</Text>
                 </Heading>
-                <br/>
 
-                <Text cursor="pointer" color={colorMode === 'light' ? "#2d81ff": "#2d81ff"} onClick={onOpen}>
+                <Text mt={1} mb={2} cursor="pointer" color={colorMode === 'light' ? "#2d81ff": "#2d81ff"} onClick={onOpen}>
                     What is a wallet?
                 </Text>
-                <br/>
                 <Flex w="100%" alignItems="center" direction="column" justifyContent="center">
                     <WalletItem onClick={()=>{connectWallet('injected')}} backgroundImage="linear-gradient(229.83deg, rgb(205 131 59) -258.34%, rgb(205 189 178 / 18%) 100.95%)">
                         <Flex
                             fontSize="xs"
                             px={2} py={1}
-                            marginTop={{base: "-100px", md:"-80px"}} marginLeft={{base: "170px", md:"370px"}}
+                            marginTop={{base: "-65px", md:"-80px"}} marginLeft={{base: "170px", md:"370px"}}
                             color={colorMode === 'light' ? "white": "black"}
                             background={colorMode === 'light' ? "black": "white"}
                             width="100px"
@@ -125,23 +123,23 @@ const DashboardShell = ({title, active, children}) => {
                         <MetaMaskIcon boxSize={9} mx={2} />
                         <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
                             <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with MetaMask</Text>
-                            <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>One of the most Secure and Flexible Wallets.</Text>
+                            <Text display={{base:"none", md:"inline-flex"}} fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>One of the most Secure and Flexible Wallets.</Text>
                         </Flex>
                     </WalletItem>
 
-                   <WalletItem onClick={()=>{connectWallet('walletconnect')}} backgroundImage="linear-gradient(229.83deg, rgb(59 153 252) -258.34%, rgb(82 153 231 / 18%) 100.95%)">
-                        <WalletConnectIcon boxSize={10} mx={2} />
+                   <WalletItem onClick={()=>{connectWallet('walletconnect')}} backgroundImage="linear-gradient(229.83deg, rgb(59 153 252) -258.34%, rgb(82 153 231 / 18%) 100.95%)" >
+                        <WalletConnectIcon boxSize={9} mx={2} />
                         <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
                             <Text fontSize={{base:"sm", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with WalletConnect</Text>
-                            <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Rainbow, Argent and others.</Text>
+                            <Text display={{base:"none", md:"inline-flex"}} fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Rainbow, Argent and others.</Text>
                         </Flex>
                     </WalletItem>
 
                     <WalletItem onClick={()=>{connectWallet('near')}} backgroundImage="linear-gradient(229.83deg, rgb(222 238 255) -258.34%, rgb(246 246 246 / 18%) 100.95%)">
-                        <NearIcon boxSize={7} mx={2}/>
+                        <NearIcon boxSize={7} mx={3}/>
                         <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
                             <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with NEAR</Text>
-                            <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in using your NEAR Web Wallet Account.</Text>
+                            <Text display={{base:"none", md:"inline-flex"}} fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in using your NEAR Web Wallet Account.</Text>
                         </Flex>
                     </WalletItem>
 
@@ -149,11 +147,19 @@ const DashboardShell = ({title, active, children}) => {
                         <FlowIcon boxSize={9} mx={2}/>
                         <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
                             <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with Flow</Text>
-                            <Text fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Flow Blockchain powered by Blocto.</Text>
+                            <Text display={{base:"none", md:"inline-flex"}} fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Flow Blockchain powered by Blocto.</Text>
                         </Flex>
                     </WalletItem>
 
-                    <WalletItem onClick={()=>{connectWallet('portis')}}>
+                    <WalletItem onClick={()=>{connectWallet('solana')}} backgroundImage="linear-gradient(215deg, rgb(197 30 255 / 37%) 0%, rgb(37 218 179 / 17%) 100%);">
+                        <SolanaIcon boxSize={8} mx={2}/>
+                        <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
+                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with Solana</Text>
+                            <Text display={{base:"none", md:"inline-flex"}} fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Solana powered by Phantom Wallet.</Text>
+                        </Flex>
+                    </WalletItem>
+
+                    <WalletItem onClick={()=>{connectWallet('portis')}} minHeight="40px" py={0}>
                         {isPortisLoading === true ? (
                             <Spinner size="lg" py={1} my={1}/>
                         ) : (
@@ -428,26 +434,23 @@ export default DashboardShell;
 
 
 const WalletItem = (props) => {
-    const { colorMode } = useColorMode();
     return (
         <Flex
             w={{base:"80vw", md:"500px"}}
             my={2}
             px={2}
-            py={4}
-            borderWidth={2}
-            borderColor="transparent"
+            py={Object.keys(props).includes('py') === true? props.py : 5}
             direction="row"
             borderRadius={16}
             cursor="pointer"
             _hover={{
-                borderWidth: 2,
-                borderColor: colorMode === 'light' ? "blackAlpha.800": "gray.500",
+                transform:"scale(1.05)"
             }}
             justifyContent="center"
             alignItems="center"
             backgroundImage={Boolean(props?.backgroundImage) === true? props.backgroundImage : ""}
             onClick={props.onClick}
+            minH={Boolean(props?.minHeight) === true? props.minHeight : "68px"}
         >
             {props.children}
         </Flex>
@@ -457,5 +460,7 @@ const WalletItem = (props) => {
 WalletItem.propTypes = {
     children:PropTypes.any,
     backgroundImage: PropTypes.string,
+    minHeight: PropTypes.string,
+    py: PropTypes.number,
     onClick: PropTypes.func.isRequired
 }

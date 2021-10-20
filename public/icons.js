@@ -328,7 +328,7 @@ export const PoapIcon = createIcon({
 
 export const WalletConnectIcon = createIcon({
     displayName: 'WalletConnectIcon',
-    viewBox: '0 0 300 185',
+    viewBox: '-0.25 0 300.5 184.25',
     path: (
         <g>
             <path fill="#3B99FC" d="M61 36c49-48 129-48 178 0l5 6c3 2 3 6 0 9l-20 19c-1 2-3 2-4 0l-8-8a89 89 0 00-124 0l-8 9h-5L55 51c-2-2-2-6 0-8l6-7zm219 41l18 18c3 2 3 6 0 8l-81 79c-2 3-6 3-9 0l-57-56h-2l-57 56c-3 3-7 3-9 0L2 103c-3-2-3-6 0-8l18-18c2-2 6-2 9 0l57 56a2 2 0 002 0l58-56a6 6 0 018 0l58 56h2l57-56c3-2 7-2 9 0z"/>
@@ -580,5 +580,29 @@ export const IndiaFlag = createIcon({
                 <use width="100%" height="100%" transform="rotate(-120)" xlinkHref="#d"/>
             </g>
         </>
+    )
+});
+
+export const SolanaIcon = createIcon({
+    displayName: 'SolanaIcon',
+    viewBox: '0 0 397.7 311.7',
+    path: (
+        <g>
+            <linearGradient id="a" gradientUnits="userSpaceOnUse" x1="360.9" y1="351.5" x2="141.2" y2="-69.3" gradientTransform="matrix(1 0 0 -1 0 314)">
+                <stop offset="0" style={{stopColor : "#00ffa3"}}/>
+                <stop offset="1" style={{stopColor : "#dc1fff"}}/>
+            </linearGradient>
+            <path d="M65 238c2-2 5-4 9-4h317c6 0 9 7 5 11l-63 63c-2 2-6 4-9 4H7c-6 0-9-7-5-11l63-63z" style={{fill:"url(#a)"}}/>
+            <linearGradient id="b" gradientUnits="userSpaceOnUse" x1="264.8" y1="401.6" x2="45.2" y2="-19.1" gradientTransform="matrix(1 0 0 -1 0 314)">
+                <stop offset="0" style={{stopColor : "#00ffa3"}}/>
+                <stop offset="1" style={{stopColor : "#dc1fff"}}/>
+            </linearGradient>
+            <path d="M65 4c2-3 5-4 9-4h317c6 0 9 7 5 11l-63 63c-2 2-6 4-9 4H7c-6 0-9-7-5-12L65 5z" style={{fill:"url(#b)"}}/>
+            <linearGradient id="c" gradientUnits="userSpaceOnUse" x1="312.5" y1="376.7" x2="92.9" y2="-44.1" gradientTransform="matrix(1 0 0 -1 0 314)">
+                <stop offset="0" style={{stopColor : "#00ffa3"}}/>
+                <stop offset="1" style={{stopColor : "#dc1fff"}}/>
+            </linearGradient>
+            <path d="M333 120c-2-2-6-4-9-4H7c-6 0-9 7-5 11l63 63c2 2 5 4 9 4h317c6 0 9-7 5-11l-63-63z" style={{fill:"url(#c)"}}/>
+        </g>
     )
 });

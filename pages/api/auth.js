@@ -4,6 +4,7 @@ import nacl from 'tweetnacl';
 const { Crypto } = require("@peculiar/webcrypto");
 import * as fcl from "@onflow/fcl";
 import { seal, defaults } from "@hapi/iron";
+const { PublicKey } = require('@solana/web3.js')
 
 import withApikey from "@/middlewares/withApikey";
 
@@ -17,6 +18,14 @@ async function validateNearSignature(data, signature, signerAddress){
   const hash = new Uint8Array(hashed);
   return nacl.sign.detached.verify(hash, sig, sigAdd);
 }
+
+async function validateSolanaSignature(data, signature, signerAddress){
+  const tokenMessage = new TextEncoder().encode(data);
+  let sig = Uint8Array.from(Buffer.from(signature, 'hex'));
+  let sigAdd = new PublicKey(signerAddress).toBytes()
+  return nacl.sign.detached.verify(tokenMessage, sig, sigAdd);
+}
+
 
 const handler = async(req, res) => {
 
@@ -160,6 +169,56 @@ const handler = async(req, res) => {
 
           let token = jwt.sign(
               {user: req.body.signerAddress, chain: "flow"},
+              process.env.JWT_SECRET,
+              { expiresIn: "1d" }
+          );
+          token = await seal(token, process.env.JWT_SECRET, defaults);
+
+          return res.status(200).json({
+              'success': true,
+              'message': token
+          });
+
+        }
+        else {
+          return res.status(400).json({
+            'success':false,
+            'message': "Recovered address from signature doesn't match signerAddress"
+          });
+        }
+
+      }
+      else {
+        return res.status(400).json({
+            'success':false,
+            'message': 'signerAddress or signature or timestamp is missing/invalid.'
+        });
+      }
+
+    }
+    else if(chain  === 'solana') {
+
+      if (
+        Object.keys(req.body).includes('signature') &&
+        Object.keys(req.body).includes('signerAddress') &&
+        Object.keys(req.body).includes('timestamp')
+      ){
+
+        let currentTimestamp = Date.now();
+
+        if (currentTimestamp - req.body.timestamp > 24*60*60*1000){ // stale signature request
+          return res.status(400).json({
+            'success':false,
+            'message': 'Request timestamp too old.'
+          });
+        }
+
+        let data = `I allow this site to access my data on The Convo Space using the account ${req.body.signerAddress}. Timestamp:${req.body.timestamp}`;
+        let recoverResult = await validateSolanaSignature(data, req.body.signature, req.body.signerAddress);
+        if(recoverResult === true){
+
+          let token = jwt.sign(
+              {user: req.body.accountId, chain: "solana"},
               process.env.JWT_SECRET,
               { expiresIn: "1d" }
           );
