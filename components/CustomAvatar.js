@@ -40,7 +40,6 @@ const CustomAvatar = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
-
     if (Boolean(verified) === false || Boolean(verified) == 0) {
         return (<Avatar
             background="#ffffff00"

@@ -112,6 +112,12 @@ export const addressToChainName = (address) => {
     else if(address.slice(address.length-5, address.length) === ".near" || address.slice(address.length-8, address.length) === ".testnet"){
         return "near";
     }
+    else if(address.length === 18 && address.slice(0, 2) === "0x"){
+        return "flow";
+    }
+    else if(/^[A-HJ-NP-Za-km-z1-9]*$/.test(address)){
+        return "solana";
+    }
     else {
         return "ethereum";
     }

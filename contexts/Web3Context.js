@@ -15,8 +15,8 @@ export const Web3Context = React.createContext(undefined);
 export const Web3ContextProvider = ({children}) => {
 
   const router = useRouter();
-  path: '/'
   const cookies = Cookies.withAttributes({
+    path: '/'
   })
   const [web3Modal, setWeb3Modal] = useState(undefined);
   const [provider, setProvider] = useState(undefined);

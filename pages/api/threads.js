@@ -115,6 +115,7 @@ const handler = async(req, res) => {
 
           if (
             Object.keys(req.body).includes('title') === true && req.body?.title.trim() !== ""
+            && Object.keys(req.body).includes('description') === true && req.body?.description.trim() !== ""
             && Object.keys(req.body).includes('isReadPublic') === true && typeof (req.body.isReadPublic) === 'boolean'
             && Object.keys(req.body).includes('isWritePublic') === true && typeof (req.body.isWritePublic) === 'boolean'
             && Object.keys(req.body).includes('members') === true
@@ -163,6 +164,7 @@ const handler = async(req, res) => {
               createdOn,
               "creator": req.body.signerAddress,
               "title": req.body.title,
+              "description": req.body.description,
               "url": url,
               "isReadPublic": req.body.isReadPublic == 'true' ? true : false,
               "isWritePublic": req.body.isWritePublic == 'true' ? true : false,
