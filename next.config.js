@@ -5,9 +5,6 @@ const { PHASE_DEVELOPMENT_SERVER } = require('next/constants')
 module.exports = (phase) => {
 
   let baseConfig = {
-    experimental: {
-      optimizeCss:true
-    },
     reactStrictMode: true,
     webpack: (config, { isServer }) => {
       if (!isServer) {
@@ -29,6 +26,9 @@ module.exports = (phase) => {
       dest: 'public',
       runtimeCaching,
       maximumFileSizeToCacheInBytes: 10000000
+    },
+    experimental: {
+      optimizeCss:true
     },
     target: "experimental-serverless-trace",
     poweredByHeader: false

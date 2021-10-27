@@ -1,14 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Tooltip, chakra, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag  } from "@chakra-ui/react";
-import { Wrap, WrapItem } from "@chakra-ui/react"
+import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Tooltip, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag  } from "@chakra-ui/react";
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, PortisIcon, WalletConnectIcon, ArgentIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon } from '@/public/icons';
+import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, CeloIcon, OKExIcon } from '@/public/icons';
 import { InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
-import { isAddress } from 'ethers/lib/utils';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 
 const PageShell = ({title, children}) => {
@@ -46,6 +44,7 @@ const DashboardShell = ({title, active, children}) => {
     const { connectWallet, signerAddress, disconnectWallet, isPortisLoading, connectedChain } = useContext(Web3Context);
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [walletInfo, setWalletInfo] = useState('');
 
     // Not logged in
     if (signerAddress === ""){
@@ -91,88 +90,109 @@ const DashboardShell = ({title, active, children}) => {
             <Flex
                 direction="column"
                 align="center"
-                justifyContent="center"
+                justifyContent="space-around"
                 maxW="1600px"
                 w={{ base: "95%", md: "90%", lg: "90%"}}
                 m="0 auto"
                 mt={2}
+                h="70vh"
             >
-                <Heading as="h3" fontSize={{base: "20px", md:"40px"}} align="center">
-                    Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/images/gradient.webp')" backgroundSize="cover">Blockchain Wallet</Text>
-                </Heading>
+                <Flex direction="column" alignItems="center">
+                    <Heading as="h3" fontSize={{base: "20px", md:"40px"}} align="center">
+                        Let&apos;s start by connecting your <Text bgClip="text" backgroundImage="url('/images/gradient.webp')" backgroundSize="cover">Blockchain Wallet</Text>
+                    </Heading>
 
-                <Text mt={1} mb={2} cursor="pointer" color={colorMode === 'light' ? "#2d81ff": "#2d81ff"} onClick={onOpen}>
-                    What is a wallet?
-                </Text>
-                <Flex w="100%" alignItems="center" direction="column" justifyContent="center">
-                    <WalletItem onClick={()=>{connectWallet('injected')}} backgroundImage="linear-gradient(229.83deg, rgb(205 131 59) -258.34%, rgb(205 189 178 / 18%) 100.95%)">
-                        <Flex
-                            fontSize="xs"
-                            px={2} py={1}
-                            marginTop={{base: "-65px", md:"-80px"}} marginLeft={{base: "170px", md:"370px"}}
-                            color={colorMode === 'light' ? "white": "black"}
-                            background={colorMode === 'light' ? "black": "white"}
-                            width="100px"
-                            borderRadius="100px"
-                            align="center"
-                            direction="column"
-                            position="fixed"
-                        >
-                            Most Popular
-                        </Flex>
-                        <MetaMaskIcon boxSize={9} mx={2} />
-                        <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
-                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with MetaMask</Text>
-                            <Text display={{base:"none", md:"inline-flex"}} fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>One of the most Secure and Flexible Wallets.</Text>
-                        </Flex>
-                    </WalletItem>
-
-                   <WalletItem onClick={()=>{connectWallet('walletconnect')}} backgroundImage="linear-gradient(229.83deg, rgb(59 153 252) -258.34%, rgb(82 153 231 / 18%) 100.95%)" >
-                        <WalletConnectIcon boxSize={9} mx={2} />
-                        <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
-                            <Text fontSize={{base:"sm", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with WalletConnect</Text>
-                            <Text display={{base:"none", md:"inline-flex"}} fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Rainbow, Argent and others.</Text>
-                        </Flex>
-                    </WalletItem>
-
-                    <WalletItem onClick={()=>{connectWallet('near')}} backgroundImage="linear-gradient(229.83deg, rgb(222 238 255) -258.34%, rgb(246 246 246 / 18%) 100.95%)">
-                        <NearIcon boxSize={7} mx={3}/>
-                        <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
-                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with NEAR</Text>
-                            <Text display={{base:"none", md:"inline-flex"}} fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in using your NEAR Web Wallet Account.</Text>
-                        </Flex>
-                    </WalletItem>
-
-                    <WalletItem onClick={()=>{connectWallet('flow')}} backgroundImage="linear-gradient(229.83deg, rgb(0 239 139) -258.34%, rgb(0 239 139 / 34%) 100.95%)">
-                        <FlowIcon boxSize={9} mx={2}/>
-                        <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
-                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with Flow</Text>
-                            <Text display={{base:"none", md:"inline-flex"}} fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Flow Blockchain powered by Blocto.</Text>
-                        </Flex>
-                    </WalletItem>
-
-                    <WalletItem onClick={()=>{connectWallet('solana')}} backgroundImage="linear-gradient(215deg, rgb(197 30 255 / 37%) 0%, rgb(37 218 179 / 17%) 100%);">
-                        <SolanaIcon boxSize={8} mx={2}/>
-                        <Flex direction="column" alignItems={{base:"left", md:"center"}}  width="100%">
-                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={800}>Sign-in with Solana</Text>
-                            <Text display={{base:"none", md:"inline-flex"}} fontSize={{base:"sm", md:"md"}}  color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"}>Sign-in with Solana powered by Phantom Wallet.</Text>
-                        </Flex>
-                    </WalletItem>
-
-                    <WalletItem onClick={()=>{connectWallet('portis')}} minHeight="40px" py={0}>
-                        {isPortisLoading === true ? (
-                            <Spinner size="lg" py={1} my={1}/>
-                        ) : (
-                            <Text fontSize={{base:"md", md:"xl"}} color={colorMode === "light"? "black": "white"} fontWeight={400}>Just use an Email Address</Text>
-                        )}
-                   </WalletItem>
-
+                    <Text mt={1} mb={2} cursor="pointer" color={colorMode === 'light' ? "#2d81ff": "#2d81ff"} onClick={onOpen}>
+                        What is a wallet?
+                    </Text>
                 </Flex>
-                <br/>
-                <Text  w={{base:"80vw", md:"500px"}} color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"} align="center">
-                <InfoIcon mr={1}/> We do not own your private keys and cannot access your funds without your confirmation.
+
+                <Flex my={{base:4, md:16}} justifyContent="center" display="flex" w="100%" direction="column" alignItems="center">
+                    {walletInfo === "" ? (
+                        <Text align="center" mt={1} mb={2} color={colorMode === 'light' ? "black": "white"} fontSize="md">
+                            By connecting your wallet you agree to the <Link href="/privacy-policy" color="#4e60f7">Privacy Policy</Link>
+                        </Text>
+                        ) : (
+                            <Text align="center" mt={1} mb={2} color={colorMode === 'light' ? "black": "white"} fontSize="md">
+                                {walletInfo}
+                            </Text>
+                        )
+                    }
+                    <Wrap mt={10} mb={6} width={{base:"100%", md:"80%"}}>
+                        <WalletItem
+                            onClick={()=>{connectWallet('injected')}}
+                            backgroundImage="linear-gradient(229.83deg, rgb(205 131 59) -258.34%, rgb(205 189 178 / 18%) 100.95%)"
+                            title="MetaMask"
+                            icon={ <MetaMaskIcon boxSize={9} mx={2} /> }
+                            onMouseEnter={()=>{setWalletInfo('One of the most Secure and Flexible Wallets.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                        />
+
+                        <WalletItem
+                            onClick={()=>{connectWallet('walletconnect')}}
+                            backgroundImage="linear-gradient(229.83deg, rgb(59 153 252) -258.34%, rgb(82 153 231 / 18%) 100.95%)"
+                            title="WalletConnect"
+                            icon={ <WalletConnectIcon boxSize={9} mx={2} /> }
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with Rainbow, Argent and others.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                        />
+
+                        <WalletItem
+                            onClick={()=>{connectWallet('near')}}
+                            backgroundImage="linear-gradient(229.83deg, rgb(222 238 255) -258.34%, rgb(246 246 246 / 18%) 100.95%)"
+                            title="NEAR"
+                            icon={<NearIcon boxSize={7} mx={3}/>}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in using your NEAR Web Wallet Account.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                        />
+
+                        <WalletItem
+                            onClick={()=>{connectWallet('flow')}}
+                            backgroundImage="linear-gradient(229.83deg, rgb(0 239 139) -258.34%, rgb(0 239 139 / 34%) 100.95%)"
+                            title="Flow"
+                            icon={<FlowIcon boxSize={7} mx={2}/>}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with Flow Blockchain powered by Blocto.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                        />
+
+                        <WalletItem
+                            onClick={()=>{connectWallet('solana')}}
+                            backgroundImage="linear-gradient(215deg, rgb(197 30 255 / 37%) 0%, rgb(37 218 179 / 17%) 100%);"
+                            title="Solana"
+                            icon={<SolanaIcon boxSize={8} mx={2}/>}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with Solana powered by Phantom Wallet.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                        />
+
+                        <WalletItem
+                            onClick={()=>{alert('Coming Soon')}}
+                            backgroundImage="linear-gradient(215deg, rgb(197 30 255 / 37%) 0%, rgb(37 218 179 / 17%) 100%);"
+                            title="OKEx Defi Hub"
+                            icon={<OKExIcon boxSize={8} mx={2}/>}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with OKEx DeFi Hub, Coming Soon.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                            disabled={true}
+                        />
+
+                        <WalletItem
+                            onClick={()=>{alert('Coming Soon')}}
+                            backgroundImage="linear-gradient(215deg, rgb(197 30 255 / 37%) 0%, rgb(37 218 179 / 17%) 100%);"
+                            title="Celo"
+                            icon={<CeloIcon boxSize={8} mx={2}/>}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with Celo Blockchain, Coming Soon.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                            disabled={true}
+                        />
+
+                    </Wrap>
+                    <Text cursor="pointer" onClick={()=>{connectWallet('portis')}} align="center" fontSize="sm" color={colorMode === "light"? "black": "white"}>
+                        {isPortisLoading === true ? (<Spinner size="md"/>) : "Just use an Email Address" }
+                    </Text>
+                </Flex>
+
+                <Text  w={{base:"100%", md:"500px"}} color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"} align="center">
+                    <InfoIcon mr={1}/> We do not own your private keys and cannot access your funds without your confirmation.
                 </Text>
-                <br/>
             </Flex>
         </PageShell>
         )
@@ -435,32 +455,39 @@ export default DashboardShell;
 
 const WalletItem = (props) => {
     return (
-        <Flex
-            w={{base:"80vw", md:"500px"}}
-            my={2}
-            px={2}
-            py={Object.keys(props).includes('py') === true? props.py : 5}
-            direction="row"
-            borderRadius={16}
-            cursor="pointer"
-            _hover={{
-                transform:"scale(1.05)"
-            }}
-            justifyContent="center"
-            alignItems="center"
-            backgroundImage={Boolean(props?.backgroundImage) === true? props.backgroundImage : ""}
-            onClick={props.onClick}
-            minH={Boolean(props?.minHeight) === true? props.minHeight : "68px"}
-        >
-            {props.children}
-        </Flex>
-
+        <WrapItem>
+            <Flex direction="column" alignItems="center">
+                <Flex
+                    h="80px"
+                    w="80px"
+                    mx={2}
+                    p={2}
+                    borderRadius={100}
+                    cursor="pointer"
+                    _hover={{
+                        transform:"scale(1.05)"
+                    }}
+                    justifyContent="center"
+                    alignItems="center"
+                    backgroundImage={Boolean(props?.backgroundImage) === true? props.backgroundImage : ""}
+                    onClick={props.onClick}
+                    onMouseEnter={props.onMouseEnter}
+                    onMouseLeave={props.onMouseLeave}
+                    filter={props?.disabled === true ? "grayscale(1)":""}
+                >
+                    {props?.icon}
+                </Flex>
+                <Text fontSize="11px" mt={2}>
+                    {props?.title}
+                </Text>
+            </Flex>
+        </WrapItem>
     )
 }
-WalletItem.propTypes = {
-    children:PropTypes.any,
-    backgroundImage: PropTypes.string,
-    minHeight: PropTypes.string,
-    py: PropTypes.number,
-    onClick: PropTypes.func.isRequired
-}
+// WalletItem.propTypes = {
+//     children:PropTypes.any,
+//     backgroundImage: PropTypes.string,
+//     minHeight: PropTypes.string,
+//     py: PropTypes.number,
+//     onClick: PropTypes.func.isRequired
+// }

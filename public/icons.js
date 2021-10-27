@@ -539,14 +539,12 @@ export const BridgeIcon = createIcon({
 
 export const FlowIcon = createIcon({
     displayName: 'FlowIcon',
-    viewBox: '0 0 256 256',
+    viewBox: '20.03 21 58.97 58.97 ',
     path: (
-        <g transform="scale(2.56)">
-            <circle fill="#00ef8b" cx="50" cy="50" r="50"/>
+        <g>
             <path fill="#fff" d="M58 42h14v14H58z"/>
             <path fill="#fff" d="M44 62c0 3-3 5-6 5s-5-2-5-5 3-6 5-6h6V42h-6a19 19 0 1 0 20 20v-6H44v6z"/>
             <path fill="#fff" d="M63 35h16V21H63c-11 0-19 9-19 19v2h14v-2c0-2 2-5 5-5z"/>
-            <path fill="#16ff99" d="M58 42H44v14h14z"/>
         </g>
     )
 });
@@ -603,6 +601,36 @@ export const SolanaIcon = createIcon({
                 <stop offset="1" style={{stopColor : "#dc1fff"}}/>
             </linearGradient>
             <path d="M333 120c-2-2-6-4-9-4H7c-6 0-9 7-5 11l63 63c2 2 5 4 9 4h317c6 0 9-7 5-11l-63-63z" style={{fill:"url(#c)"}}/>
+        </g>
+    )
+});
+
+export const OKExIcon = createIcon({
+    displayName: 'OKExIcon',
+    viewBox: '0 0 1000 1000',
+    path: (
+        <g>
+            <path d="M451 452a200 200 0 0 0 95 0c18-72 74-128 146-146a200 200 0 1 0-388 0c73 18 129 74 147 146z" fill="#88bdf3"/>
+            <path d="M546 548a200 200 0 0 0-95 0c-18 72-74 128-147 146a200 200 0 1 0 388 0c-72-18-128-74-146-146z" fill="#3075ee"/>
+            <path d="M740 300c-16 0-32 2-48 6-17 72-74 129-146 146a200 200 0 0 0 0 96c72 17 129 74 146 146a200 200 0 1 0 48-394z" fill="#5795f1"/>
+            <path d="M451 548a200 200 0 0 0 0-96c-72-17-129-74-147-146a200 200 0 1 0 0 388c18-72 75-129 147-146z" fill="#205fec"/>
+            <path d="M546 452c72-17 129-74 146-146-72 18-128 74-146 146z" fill="#3170f1"/>
+            <path d="M546 548c18 72 74 128 146 146-17-72-74-129-146-146z" fill="#164bea"/>
+            <path d="M451 452c-18-72-74-128-147-146 18 72 75 129 147 146z" fill="#134bef"/>
+            <path d="M451 548c-72 17-129 74-147 146 73-18 129-74 147-146z" fill="#0932e8"/>
+        </g>
+    )
+});
+
+
+export const CeloIcon = createIcon({
+    displayName: 'CeloIcon',
+    viewBox: '0 0 950 950',
+    path: (
+        <g>
+            <path d="M375 850a275 275 0 1 0 0-550 275 275 0 0 0 0 550zm0 100a375 375 0 1 1 0-750 375 375 0 0 1 0 750z" fill="#fbcc5c"/>
+            <path d="M575 650a275 275 0 1 0 0-550 275 275 0 0 0 0 550zm0 100a375 375 0 1 1 0-750 375 375 0 0 1 0 750z" fill="#35d07f"/>
+            <path d="M587 750c26-31 45-68 55-108 39-10 76-29 108-55-1 46-11 91-29 134-42 18-88 28-134 29zM308 308c-39 10-76 29-108 55 1-46 11-91 29-134 43-18 88-27 134-29-26 32-45 68-55 108z" fill="#5ea33b"/>
         </g>
     )
 });
