@@ -1,36 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { Wrap, WrapItem, Tag, Tooltip, Text, Flex, useClipboard, useColorModeValue, Heading } from "@chakra-ui/react";
+import { Wrap, WrapItem, Tag, Text, Flex, useColorModeValue, Heading } from "@chakra-ui/react";
 import PropTypes from 'prop-types';
 
-import { Web3Context } from '@/contexts/Web3Context';
-import { truncateAddress } from "@/utils/stringUtils";
 import DashboardShell from '@/components/DashboardShell';
-import CustomAvatar from '@/components/CustomAvatar';
 
 const Dashboard = () => {
 
-    const web3Context = useContext(Web3Context);
-    const { signerAddress, prettyName } = web3Context;
-
-    const { hasCopied, onCopy } = useClipboard(signerAddress);
-
     return (
-        <DashboardShell active="dashboard" title="Dashboard">
+        <DashboardShell active="home" title="Dashboard">
             <Flex direction="column" w="100%" align="center" justifyContent="start" alignItems="center" mt={2}>
-                <CustomAvatar address={signerAddress} badgesize="1em"  mr={2} size="2xl" ensName={prettyName} />
-                <Heading  mt={2} as="h3" size="lg" color={useColorModeValue("blackAlpha.800", "gray.400")} align="center">
-                    Hey
-                        <Tooltip placement="top" hasArrow label={hasCopied? "Copied Address" : "Click to Copy Address"} aria-label="Copy Address">
-                            <Text onClick={onCopy} display="inline-flex" px={2} cursor="pointer"  _hover={{
-                                bgClip:"text",
-                                backgroundImage:"url('/images/gradient.webp')",
-                                backgroundSize:"cover"
-                            }}>
-                                {prettyName == "" ? truncateAddress(signerAddress, 3): prettyName},
-                            </Text>
-                        </Tooltip>
-                    Welcome to your Space.
+
+                <Heading size="xl" my={4} color={useColorModeValue("black", "white")} as="h2" align="center">
+                    Welcome to your Convo Space
                 </Heading>
 
                 <Flex direction="column" w={{base:"90%"}} mt={2}>

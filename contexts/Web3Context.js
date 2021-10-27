@@ -21,6 +21,7 @@ export const Web3ContextProvider = ({children}) => {
   const [web3Modal, setWeb3Modal] = useState(undefined);
   const [provider, setProvider] = useState(undefined);
   const [connectedChain, setConnectedChain] = useState("");
+  const [connectedWallet, setConnectedWallet] = useState("");
   const [signerAddress, setSignerAddress] = useState("");
   const [prettyName, setPrettyName] = useState("");
   const [isPortisLoading, setIsPortisLoading] = useState(false);
@@ -44,7 +45,10 @@ export const Web3ContextProvider = ({children}) => {
 
   useEffect(() => {
     if (router.query?.account_id != undefined) {
-      connectWallet("near");
+      console.log('Got NEAR res for', router.query?.account_id);
+      setTimeout(()=>{
+        connectWallet("near");
+      }, 3000);
     }
   }, [router.query]);
 
@@ -139,6 +143,7 @@ export const Web3ContextProvider = ({children}) => {
               setConnectedChain("ethereum");
               updatePrettyName(tempaddress);
               setSignerAddress(tempaddress);
+              setConnectedWallet(choice)
             }
           }
           else {
@@ -146,6 +151,7 @@ export const Web3ContextProvider = ({children}) => {
             setConnectedChain("ethereum");
             updatePrettyName(tempaddress);
             setSignerAddress(tempaddress);
+            setConnectedWallet(choice)
           }
         }
         else {
@@ -155,6 +161,7 @@ export const Web3ContextProvider = ({children}) => {
             setConnectedChain("ethereum");
             updatePrettyName(tempaddress);
             setSignerAddress(tempaddress);
+            setConnectedWallet(choice)
           }
         }
 
@@ -183,6 +190,7 @@ export const Web3ContextProvider = ({children}) => {
         setProvider(fcl);
         setConnectedChain("flow");
         setSignerAddress(userData.addr);
+        setConnectedWallet(choice);
 
       }
       catch(e) {
@@ -213,6 +221,7 @@ export const Web3ContextProvider = ({children}) => {
         setProvider(wallet);
         setConnectedChain("near");
         setSignerAddress(accountId);
+        setConnectedWallet(choice);
       }
       else {
         let resp = await wallet.requestSignIn(
@@ -231,6 +240,7 @@ export const Web3ContextProvider = ({children}) => {
           setProvider(window.solana);
           setConnectedChain("solana");
           setSignerAddress(resp.publicKey.toString());
+          setConnectedWallet(choice);
         }
         else {
           alert(sigResp.message);
@@ -248,6 +258,7 @@ export const Web3ContextProvider = ({children}) => {
     web3Modal?.clearCachedProvider();
     setProvider(undefined);
     setConnectedChain("");
+    setConnectedWallet("");
     setSignerAddress("");
     setPrettyName("");
     setIsPortisLoading(false);
@@ -287,9 +298,6 @@ export const Web3ContextProvider = ({children}) => {
 
     if (chainName === "ethereum") {
       let signature = "";
-
-      console.log('here1', tempProvider)
-
       // let ethProvider = await web3Modal.requestProvider();
       let isSafeApp = await web3Modal.isSafeApp();
 
@@ -389,7 +397,8 @@ export const Web3ContextProvider = ({children}) => {
       prettyName,
       getAuthToken,
       web3Modal,
-      isPortisLoading
+      isPortisLoading,
+      connectedWallet
     }}>
         {children}
     </Web3Context.Provider>

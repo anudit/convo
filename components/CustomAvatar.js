@@ -24,7 +24,7 @@ const CustomAvatar = (props) => {
             });
         }
         // const resolver = await provider.getResolver("ricmoo.eth");
-    }, [props]);
+    }, [address]);
 
     useEffect(() => {
         if (Boolean(props?.ensName) === true ){

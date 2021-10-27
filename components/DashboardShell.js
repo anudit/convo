@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Tooltip, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag  } from "@chakra-ui/react";
+import { useClipboard, Menu, MenuButton, MenuList, MenuItem, Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag  } from "@chakra-ui/react";
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, CeloIcon, OKExIcon } from '@/public/icons';
-import { InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
-import { isBlockchainAddress } from '@/utils/stringUtils';
+import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, CeloIcon, OKExIcon, HomeIcon } from '@/public/icons';
+import { ChevronDownIcon, CopyIcon, InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
+import { isBlockchainAddress, truncateAddress } from '@/utils/stringUtils';
 
 const PageShell = ({title, children}) => {
 
@@ -41,10 +41,11 @@ PageShell.propTypes = {
 
 const DashboardShell = ({title, active, children}) => {
 
-    const { connectWallet, signerAddress, disconnectWallet, isPortisLoading, connectedChain } = useContext(Web3Context);
+    const { prettyName, connectedWallet, connectWallet, signerAddress, disconnectWallet, isPortisLoading, connectedChain } = useContext(Web3Context);
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [walletInfo, setWalletInfo] = useState('');
+    const { hasCopied, onCopy } = useClipboard(signerAddress)
 
     // Not logged in
     if (signerAddress === ""){
@@ -191,13 +192,13 @@ const DashboardShell = ({title, active, children}) => {
                 </Flex>
 
                 <Text  w={{base:"100%", md:"500px"}} color={colorMode === 'light' ? "#4c4c4c": "whiteAlpha.700"} align="center">
-                    <InfoIcon mr={1}/> We do not own your private keys and cannot access your funds without your confirmation.
+                    <InfoIcon mr={2}/> We do not own your private keys and cannot access your funds without your confirmation.
                 </Text>
             </Flex>
         </PageShell>
         )
     }
-    else if (isBlockchainAddress(signerAddress)){
+    else if (isBlockchainAddress(signerAddress)){ //Logged in
         return (
             <PageShell title={`${title} | The Convo Space`}>
                 <Flex
@@ -220,6 +221,27 @@ const DashboardShell = ({title, active, children}) => {
                             <Flex height="75px" w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                                 <Text fontSize  ="2xl">
                                     <TheConvoSpaceIcon />
+                                </Text>
+                            </Flex>
+                        </Link>
+                        <Link href="/dashboard" passHref={true}>
+                            <Flex
+                                m={1}
+                                h={{base: "50px", md:"50px"}}
+                                w="90%"
+                                fontWeight={400}
+                                cursor="pointer"
+                                direction="row"
+                                align="left"
+                                justifyContent="flex-start"
+                                paddingLeft="20px"
+                                alignItems="center"
+                                backgroundColor={active === "home" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
+                            >
+                                <HomeIcon mr={4}/>
+                                <Text display={{base:"none", md:"block"}} fontSize="sm">
+                                    Home
                                 </Text>
                             </Flex>
                         </Link>
@@ -389,7 +411,7 @@ const DashboardShell = ({title, active, children}) => {
                 </Flex>
                 <Flex
                     direction="column"
-                    w={{base:"calc(100% - 64px)", md:"calc(100% - 200px)"}}
+                    w={{base:"calc(100% - 63px)", md:"calc(100% - 200px)"}}
                     minH="100vh"
                     position="relative"
                     left={{base:"64px", md:"200px"}}
@@ -397,7 +419,7 @@ const DashboardShell = ({title, active, children}) => {
                     <Flex
                         as="nav"
                         align="center"
-                        w={{base:"calc(100% - 64px)", md:"calc(100% - 200px)"}}
+                        w={{base:"calc(100% - 63px)", md:"calc(100% - 200px)"}}
                         p={5}
                         display="flex"
                         position="fixed"
@@ -412,9 +434,38 @@ const DashboardShell = ({title, active, children}) => {
                         <Text>
                             {title}
                         </Text>
-                        <Tooltip hasArrow label="Disconnect Wallet" aria-label="Disconnect Wallet" placement="left">
-                            <DisconnectIcon onClick={disconnectWallet} cursor="pointer"/>
-                        </Tooltip>
+                        <Menu>
+                            <MenuButton
+                                px={4}
+                                py={2}
+                                transition="all 0.2s"
+                                borderRadius="md"
+                                borderWidth="1px"
+                                fontSize="sm"
+                                _hover={{ bg: "gray.400" }}
+                                _expanded={{ bg: "blue.400" }}
+                                _focus={{ boxShadow: "outline" }}
+                            >
+                                {connectedWallet === "" ? (<MetaMaskIcon mr={2}/>) : (<></>) }
+                                {connectedWallet === "injected" ? (<MetaMaskIcon mr={2}/>) : (<></>) }
+                                {connectedWallet === "walletconnect" ? (<WalletConnectIcon mr={2}/>) : (<></>) }
+                                {connectedWallet === "solana" ? (<SolanaIcon mr={2}/>) : (<></>) }
+                                {connectedWallet === "flow" ? (<FlowIcon mr={2}/>) : (<></>) }
+                                {connectedWallet === "near" ? (<NearIcon mr={2}/>) : (<></>) }
+                                {connectedWallet === "celo" ? (<CeloIcon mr={2}/>) : (<></>) }
+                                {connectedWallet === "okex" ? (<OKExIcon mr={2}/>) : (<></>) }
+                                {prettyName == "" ? truncateAddress(signerAddress, 3): prettyName}
+                                <ChevronDownIcon ml={2}/>
+                            </MenuButton>
+                            <MenuList>
+                                <MenuItem icon={<CopyIcon />} onClick={onCopy} >
+                                    {hasCopied === true? "Copied": "Copy Address"}
+                                </MenuItem>
+                                <MenuItem icon={<DisconnectIcon />} onClick={disconnectWallet} >
+                                    Disconnect Wallet
+                                </MenuItem>
+                            </MenuList>
+                        </Menu>
                     </Flex>
                     <Flex
                         mt="75px"
@@ -484,10 +535,12 @@ const WalletItem = (props) => {
         </WrapItem>
     )
 }
-// WalletItem.propTypes = {
-//     children:PropTypes.any,
-//     backgroundImage: PropTypes.string,
-//     minHeight: PropTypes.string,
-//     py: PropTypes.number,
-//     onClick: PropTypes.func.isRequired
-// }
+WalletItem.propTypes = {
+    icon: PropTypes.object,
+    title: PropTypes.string,
+    disabled: PropTypes.bool,
+    backgroundImage: PropTypes.string,
+    onMouseEnter: PropTypes.func.isRequired,
+    onMouseLeave: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired
+}

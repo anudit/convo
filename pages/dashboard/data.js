@@ -26,7 +26,7 @@ const contracts = {
     "startBlock": 7294090
 };
 
-const IdentitySection = () => {
+const DataSection = () => {
 
   const web3Context = useContext(Web3Context);
   const { signerAddress, connectedChain } = web3Context;
@@ -50,7 +50,7 @@ const IdentitySection = () => {
 
 
   return (
-    <DashboardShell active="data" title="Identity">
+    <DashboardShell active="data" title="Data">
         <Flex direction="column" w="100%">
             <Heading as="h4" size="md" mb={4}>
               Administration
@@ -75,7 +75,7 @@ const IdentitySection = () => {
 
 }
 
-export default IdentitySection;
+export default DataSection;
 
 const DataTokenView = () => {
 

@@ -6,6 +6,9 @@ module.exports = (phase) => {
 
   let baseConfig = {
     reactStrictMode: true,
+    experimental: {
+      esmExternals: false
+    },
     webpack: (config, { isServer }) => {
       if (!isServer) {
         config.resolve.fallback.fs = false;
@@ -28,7 +31,8 @@ module.exports = (phase) => {
       maximumFileSizeToCacheInBytes: 10000000
     },
     experimental: {
-      optimizeCss:true
+      esmExternals: false,
+      optimizeCss: true
     },
     target: "experimental-serverless-trace",
     poweredByHeader: false
