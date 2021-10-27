@@ -186,11 +186,16 @@ export const Web3ContextProvider = ({children}) => {
 
         let userData = await fcl.authenticate();
 
-        await updateAuthToken(userData.addr, "flow", fcl);
-        setProvider(fcl);
-        setConnectedChain("flow");
-        setSignerAddress(userData.addr);
-        setConnectedWallet(choice);
+        let sigResp = await updateAuthToken(userData.addr, "flow", fcl);
+        if (Boolean(sigResp) === true){
+          setProvider(fcl);
+          setConnectedChain("flow");
+          setSignerAddress(userData.addr);
+          setConnectedWallet(choice);
+        }
+        else {
+          // alert('Sig denied');
+        }
 
       }
       catch(e) {
@@ -233,24 +238,161 @@ export const Web3ContextProvider = ({children}) => {
       }
     }
     else if (choice === "solana") {
-      const resp = await window.solana.connect();
-      if (Boolean(resp.publicKey.toString()) === true ){
-        let sigResp = await updateAuthToken(resp.publicKey.toString(), "solana", window.solana);
-        if (Boolean(sigResp) === true){
-          setProvider(window.solana);
-          setConnectedChain("solana");
-          setSignerAddress(resp.publicKey.toString());
-          setConnectedWallet(choice);
+      if (typeof window.okexchain !== 'undefined') {
+        const resp = await window.solana.connect();
+        if (Boolean(resp.publicKey.toString()) === true ){
+          let sigResp = await updateAuthToken(resp.publicKey.toString(), "solana", window.solana);
+          if (Boolean(sigResp) === true){
+            setProvider(window.solana);
+            setConnectedChain("solana");
+            setSignerAddress(resp.publicKey.toString());
+            setConnectedWallet(choice);
+          }
+          else {
+            alert(sigResp.message);
+          }
         }
-        else {
-          alert(sigResp.message);
-        }
+      }
+      else {
+        alert('Phantom Wallet not found.')
       }
 
     }
-    else {
-      console.log('Invalid Choice.')
+    else if (choice === "celo"){
+
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0xAEF3' }],
+          });
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            try {
+              await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                  chainName: "Celo (Alfajores Testnet)",
+                  chainId: '0xAEF3',
+                  rpcUrls: ['https://alfajores-forno.celo-testnet.org'],
+                  blockExplorerUrls: ["https://alfajores-blockscout.celo-testnet.org"],
+                  nativeCurrency: {
+                    decimals : 18,
+                    symbol : "CELO"
+                  }
+                }],
+              });
+
+              const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+
+              setProvider(ethersProvider);
+              let tempsigner = ethersProvider.getSigner();
+              let tempaddress = await tempsigner.getAddress();
+
+              // if there was a previous session, try and validate that first.
+              if (Boolean(cookies.get('CONVO_SESSION')) === true) {
+                let tokenRes = await fetcher(
+                  '/api/validateAuth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', "POST", {
+                    signerAddress: tempaddress,
+                    token: cookies.get('CONVO_SESSION')
+                  }
+                );
+                // if previous session is invalid then request a new auth token.
+                if (tokenRes['success'] === false) {
+                  let token = await updateAuthToken(tempaddress, "ethereum", ethersProvider);
+                  if (token !== false){
+                    setProvider(ethersProvider);
+                    setConnectedChain("ethereum");
+                    updatePrettyName(tempaddress);
+                    setSignerAddress(tempaddress);
+                    setConnectedWallet(choice)
+                  }
+                }
+                else {
+                  setProvider(ethersProvider);
+                  setConnectedChain("ethereum");
+                  updatePrettyName(tempaddress);
+                  setSignerAddress(tempaddress);
+                  setConnectedWallet(choice)
+                }
+              }
+              else {
+                let token = await updateAuthToken(tempaddress, "ethereum", ethersProvider);
+                if (token !== false){
+                  setProvider(ethersProvider);
+                  setConnectedChain("ethereum");
+                  updatePrettyName(tempaddress);
+                  setSignerAddress(tempaddress);
+                  setConnectedWallet(choice)
+                }
+              }
+
+            } catch (addError) {
+              alert('Please Switch to Celo (Alfajores Testnet).')
+            }
+          }
+          // handle other "switch" errors
+        }
+
+      }
+      else {
+        alert('Metamask Wallet not found.')
+      }
     }
+    else if (choice === "okex"){
+
+      if (typeof window.okexchain !== 'undefined') {
+
+        const ethersProvider = new ethers.providers.Web3Provider(window.okexchain);
+
+        setProvider(ethersProvider);
+        let tempsigner = ethersProvider.getSigner();
+        let tempaddress = await tempsigner.getAddress();
+
+        // if there was a previous session, try and validate that first.
+        if (Boolean(cookies.get('CONVO_SESSION')) === true) {
+          let tokenRes = await fetcher(
+            '/api/validateAuth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', "POST", {
+              signerAddress: tempaddress,
+              token: cookies.get('CONVO_SESSION')
+            }
+          );
+          // if previous session is invalid then request a new auth token.
+          if (tokenRes['success'] === false) {
+            let token = await updateAuthToken(tempaddress, "ethereum", ethersProvider);
+            if (token !== false){
+              setProvider(ethersProvider);
+              setConnectedChain("ethereum");
+              updatePrettyName(tempaddress);
+              setSignerAddress(tempaddress);
+              setConnectedWallet(choice)
+            }
+          }
+          else {
+            setProvider(ethersProvider);
+            setConnectedChain("ethereum");
+            updatePrettyName(tempaddress);
+            setSignerAddress(tempaddress);
+            setConnectedWallet(choice)
+          }
+        }
+        else {
+          let token = await updateAuthToken(tempaddress, "ethereum", ethersProvider);
+          if (token !== false){
+            setProvider(ethersProvider);
+            setConnectedChain("ethereum");
+            updatePrettyName(tempaddress);
+            setSignerAddress(tempaddress);
+            setConnectedWallet(choice)
+          }
+        }
+
+      }
+      else {
+        alert('OKEx DeFi Hub Wallet not found.')
+      }
+    }
+
   }
 
   function disconnectWallet() {

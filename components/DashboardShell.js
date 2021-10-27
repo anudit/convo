@@ -158,7 +158,7 @@ const DashboardShell = ({title, active, children}) => {
 
                         <WalletItem
                             onClick={()=>{connectWallet('solana')}}
-                            backgroundImage="linear-gradient(215deg, rgb(197 30 255 / 37%) 0%, rgb(37 218 179 / 17%) 100%);"
+                            backgroundImage="linear-gradient(215deg, rgb(111 29 140) 0%, rgb(53 174 145 / 33%) 100%);"
                             title="Solana"
                             icon={<SolanaIcon boxSize={8} mx={2}/>}
                             onMouseEnter={()=>{setWalletInfo('Sign-in with Solana powered by Phantom Wallet.')}}
@@ -166,23 +166,21 @@ const DashboardShell = ({title, active, children}) => {
                         />
 
                         <WalletItem
-                            onClick={()=>{alert('Coming Soon')}}
-                            backgroundImage="linear-gradient(215deg, rgb(197 30 255 / 37%) 0%, rgb(37 218 179 / 17%) 100%);"
-                            title="OKEx Defi Hub"
-                            icon={<OKExIcon boxSize={8} mx={2}/>}
-                            onMouseEnter={()=>{setWalletInfo('Sign-in with OKEx DeFi Hub, Coming Soon.')}}
+                            onClick={()=>{connectWallet('celo')}}
+                            backgroundImage="linear-gradient(215deg, rgb(251 204 92 / 66%) 0%, rgb(53 208 127 / 59%) 100%);"
+                            title="Celo"
+                            icon={<CeloIcon boxSize={8} mx={2}/>}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with Celo Blockchain.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
-                            disabled={true}
                         />
 
                         <WalletItem
-                            onClick={()=>{alert('Coming Soon')}}
-                            backgroundImage="linear-gradient(215deg, rgb(197 30 255 / 37%) 0%, rgb(37 218 179 / 17%) 100%);"
-                            title="Celo"
-                            icon={<CeloIcon boxSize={8} mx={2}/>}
-                            onMouseEnter={()=>{setWalletInfo('Sign-in with Celo Blockchain, Coming Soon.')}}
+                            onClick={()=>{connectWallet('okex')}}
+                            backgroundImage="linear-gradient(228deg, rgb(32 95 236 / 44%) 0%, rgb(136 189 243 / 60%) 100%);"
+                            title="OKEx Defi Hub"
+                            icon={<OKExIcon boxSize={8} mx={2}/>}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with OKEx DeFi Hub.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
-                            disabled={true}
                         />
 
                     </Wrap>
@@ -458,11 +456,43 @@ const DashboardShell = ({title, active, children}) => {
                                 <ChevronDownIcon ml={2}/>
                             </MenuButton>
                             <MenuList>
+                                <MenuItem icon={<ExternalIcon />} onClick={()=>{
+                                    let link = "";
+                                    switch(connectedWallet){
+                                        case '':
+                                            link = `https://etherscan.io/address/${signerAddress}`;
+                                            break;
+                                        case 'injected':
+                                            link = `https://etherscan.io/address/${signerAddress}`;
+                                            break;
+                                        case 'walletconnect':
+                                            link = `https://etherscan.io/address/${signerAddress}`;
+                                            break;
+                                        case 'solana':
+                                            link = `https://explorer.solana.com/address/${signerAddress}`;
+                                            break;
+                                        case 'flow':
+                                            link = `https://testnet.flowscan.org/account/${signerAddress}`;
+                                            break;
+                                        case 'near':
+                                            link = `https://explorer.testnet.near.org/accounts/${signerAddress}`;
+                                            break;
+                                        case 'celo':
+                                            link = `https://alfajores-blockscout.celo-testnet.org/address/${signerAddress}`;
+                                            break;
+                                        case 'okex':
+                                            link = `https://www.oklink.com/okexchain/address/${signerAddress}`;
+                                            break;
+                                    }
+                                    window.open(link, '_blank').focus();
+                                }} >
+                                    Explorer
+                                </MenuItem>
                                 <MenuItem icon={<CopyIcon />} onClick={onCopy} >
                                     {hasCopied === true? "Copied": "Copy Address"}
                                 </MenuItem>
                                 <MenuItem icon={<DisconnectIcon />} onClick={disconnectWallet} >
-                                    Disconnect Wallet
+                                    Disconnect
                                 </MenuItem>
                             </MenuList>
                         </Menu>

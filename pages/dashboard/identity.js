@@ -300,11 +300,22 @@ const IdxCard = () => {
       }
     }
 
+    let env = process.env.NEXT_PUBLIC_VERCEL_ENV;
+    let network;
+    if (env === "production"){
+      console.log('using ceramic mainnet');
+      network = networks.mainnet;
+    }
+    else {
+      console.log('using ceramic clay testnet');
+      network = networks.clay;
+    }
+
     let tp = await web3Modal.connect();
 
     const selfidInstance = await SelfID.authenticate({
       authProvider: new EthereumAuthProvider(tp, signerAddress),
-      ...networks.clay
+      ...network
     })
 
     setSelfId(selfidInstance);
