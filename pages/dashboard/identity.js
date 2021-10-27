@@ -8,12 +8,7 @@ import QRCode from "react-qr-code";
 import { isAddress } from 'ethers/lib/utils';
 import PropTypes from 'prop-types';
 
-import Ceramic from '@ceramicnetwork/http-client';
-import { IDX } from '@ceramicstudio/idx';
-import { ThreeIdConnect,  EthereumAuthProvider } from '@3id/connect';
-import { DID } from 'dids';
-import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver';
-import KeyDidResolver from 'key-did-resolver';
+import { EthereumAuthProvider, SelfID } from '@self.id/web'
 
 import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
@@ -283,87 +278,60 @@ const IdxCard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [identities, setIdentities] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [idx, setIdx] = useState(null);
+  const [selfId, setSelfId] = useState(null);
   const [addresses, setAddresses] = useState(null);
   const addIdentityRef = useRef();
   const toast = useToast();
 
   useEffect(() => {
     provider.listAccounts().then(setAddresses);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [provider]);
 
-  async function getIdx(){
+  async function getSelfId(){
 
     let networks = {
-      'mainnet': {
-        "ceramic": 'https://c11-a-ceramic.3boxlabs.com/',
-        "connect": 'https://app.3idconnect.org',
-        "management": 'https://app.3idconnect.org/management/index.html',
+      mainnet: {
+        ceramic: 'https://c11-a-ceramic.3boxlabs.com/',
+        connectNetwork: 'mainnet'
       },
-      'clay': {
-        "ceramic": 'https://ceramic-clay.3boxlabs.com',
-        "connect": 'https://app-clay.3idconnect.org',
-        "management": 'https://app-clay.3idconnect.org/management/index.html',
+      clay: {
+        ceramic: 'https://ceramic-clay.3boxlabs.com',
+        connectNetwork: 'testnet-clay'
       }
     }
 
-    let env = process.env.NEXT_PUBLIC_VERCEL_ENV;
-    let network;
-    if (env === "production"){
-      console.log('using ceramic mainnet');
-      network = networks['mainnet'];
-    }
-    else {
-      console.log('using ceramic clay testnet');
-      network = networks['clay'];
-    }
-
-    const ceramic = new Ceramic(network.ceramic);
-    const keyDidResolver = KeyDidResolver.getResolver();
-    const threeIdResolver = ThreeIdResolver.getResolver(ceramic)
-    const resolverRegistry = {
-      ...threeIdResolver,
-      ...keyDidResolver,
-    };
     let tp = await web3Modal.connect();
-    const threeIdConnect = new ThreeIdConnect(network.connect, network.management);
-    const authProvider = new EthereumAuthProvider(tp, signerAddress);
-    await threeIdConnect.connect(authProvider);
-    const threeIdProvider = threeIdConnect.getDidProvider();
 
-    const did = new DID({
-      provider: threeIdProvider,
-      resolver: resolverRegistry,
-    });
-    await did.authenticate();
-    await ceramic.setDID(did);
-    let idxInstance = new IDX({ ceramic });
-    setIdx(idxInstance);
-    return idxInstance;
+    const selfidInstance = await SelfID.authenticate({
+      authProvider: new EthereumAuthProvider(tp, signerAddress),
+      ...networks.clay
+    })
+
+    setSelfId(selfidInstance);
+    return selfidInstance;
   }
 
   async function getIdentities(){
 
-    // Read-only Gateway Code for future reference.
-    // const ceramic = new Ceramic('https://gateway.ceramic.network')
-    // const idx = new IDX({ ceramic });
-    // console.log('here',`${getAddress(signerAddress)}@eip155:1` );
-    // let results = await idx.get('cryptoAccounts', `${getAddress(signerAddress)}@eip155:1`);
-
     setIsLoading(true);
+    try {
 
-    if (Boolean(identities) === false) {
+      if (Boolean(identities) === false) {
 
-      let idx = await getIdx();
+        let selfidInstance = await getSelfId();
+        let results = await selfidInstance.get('cryptoAccounts');
+        console.log(results);
+        setIdentities(results);
+        onOpen();
+      }
+      else {
+        onOpen();
+      }
 
-      let results = await idx.get('cryptoAccounts', `${signerAddress}@eip155:1`);
-      setIdentities(results);
-      console.log(results);
-
+    } catch (error) {
+      console.log(error);
     }
 
-    onOpen();
     setIsLoading(false);
   }
 
@@ -374,9 +342,8 @@ const IdxCard = () => {
     delete newIdentities[id];
     console.log("newids", newIdentities);
     setIdentities(newIdentities);
-    let result = await idx.set('cryptoAccounts', newIdentities);
+    let result = await selfId.set('cryptoAccounts', newIdentities);
     console.log(result);
-    onClose();
   }
 
   async function addIdentity(){
