@@ -56,8 +56,6 @@ const getData = async () =>{
     let snapshot_bridge = await threadClient.find(threadId, 'bridge', {});
     let redis_data = await getRedisData();
 
-    console.log(redis_data);
-
     return {
         snapshot_comments,
         snapshot_threads,
