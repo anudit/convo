@@ -1,4 +1,4 @@
-import { getAllUniswapSybilData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData } from "@/lib/identity";
+import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData } from "@/lib/identity";
 import { getClient } from "@/lib/thread-db";
 import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
@@ -31,7 +31,8 @@ async function calculateScore(address) {
         getCoinviseData(address),
         getZoraData(address), // * ethPrice
         getAllGitcoinData(),
-        getCoordinapeData(address)
+        getCoordinapeData(address),
+        getCeloData(address)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -87,7 +88,8 @@ async function calculateScore(address) {
         'gitcoin': {
             "funder": results[19]?.value?.includes(getAddress(address)),
         },
-        'coordinape':  results[20]?.value
+        'coordinape':  results[20]?.value,
+        'celo':  results[21]?.value
     };
 
     if(results[0].value === true){ // poh
@@ -125,6 +127,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[20]?.value.teammates) === true){ // coordinape
         score += results[20]?.value.teammates;
+    }
+    if(Boolean(results[21]?.value.attestations) === true){ // celo
+        score += results[21]?.value.attestations;
     }
 
     // Coinvise

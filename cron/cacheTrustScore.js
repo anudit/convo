@@ -158,6 +158,25 @@ async function getMirrorData(address = ""){
     return jsonData['data']['addressInfo']['hasOnboarded'];
 }
 
+async function getCeloData(address = ""){
+
+    let filter = {
+        address: '0xdC553892cdeeeD9f575aa0FBA099e5847fd88D20',
+        topics: [
+            ethers.utils.id("AttestationCompleted(bytes32,address,address)"),
+            null,
+            ethers.utils.hexZeroPad(address, 32)
+        ],
+        fromBlock: 3040
+    };
+    let provider = new ethers.providers.JsonRpcProvider('https://forno.celo.org');
+    let data = await provider.getLogs(filter);
+
+    return {
+        attestations: Boolean(data?.length) === true ? data.length : 0
+    }
+}
+
 async function getCoinviseData(address = ""){
 
     async function getPoolData(tokenAddress = ""){
@@ -640,7 +659,8 @@ async function calculateScore(address) {
         getMirrorData(address),
         getCoinviseData(address),
         getZoraData(address), // * ethPrice
-        getCoordinapeData(address)
+        getCoordinapeData(address),
+        getCeloData(address)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -701,7 +721,8 @@ async function calculateScore(address) {
             "funder":gitcoinData.includes(getAddress(address)),
         },
         'uniswapSybil': uniswapData.includes(getAddress(address)),
-        'coordinape': results[17]?.value
+        'coordinape': results[17]?.value,
+        'celo':  results[18]?.value
     };
 
     if(results[0].value === true){ // poh
@@ -742,6 +763,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[17]?.value?.teammates) === true){ // coordinape
         score += results[17]?.value?.teammates ;
+    }
+    if(Boolean(results[18]?.value.attestations) === true){ // celo
+        score += results[18]?.value.attestations;
     }
 
     let coinviseScore = (
@@ -786,10 +810,25 @@ const getDocs = async (threadClient) =>{
     return snapshot_cached;
 }
 
+function getArraySample(arr, sample_size, return_indexes = false) {
+    if(sample_size > arr.length) return false;
+    const sample_idxs = [];
+    const randomIndex = () => Math.floor(Math.random() * arr.length);
+    while(sample_size > sample_idxs.length){
+        let idx = randomIndex();
+        while(sample_idxs.includes(idx)) idx = randomIndex();
+        sample_idxs.push(idx);
+    }
+    sample_idxs.sort((a, b) => a > b ? 1 : -1);
+    if(return_indexes) return sample_idxs;
+    return sample_idxs.map(i => arr[i]);
+}
+
 const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
+    addresses = getArraySample(addresses, 10000);
 
     uniswapData = await getAllUniswapSybilData();
     gitcoinData = await getAllGitcoinData();
@@ -884,11 +923,11 @@ const cacheTrustScoresManual = async (addresses = []) => {
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
         console.log(data);
-        await threadClient.save(threadId, 'cachedTrustScores', [{
-            '_id': getAddress(addresses[index]),
-            ...data
-        }]);
-        console.log(`🟢 Cached ${index}`);
+        // await threadClient.save(threadId, 'cachedTrustScores', [{
+        //     '_id': getAddress(addresses[index]),
+        //     ...data
+        // }]);
+        // console.log(`🟢 Cached ${index}`);
     }
 }
 
@@ -922,4 +961,4 @@ cacheTrustScores().then(()=>{
 // updateSchema();
 // cacheTrustScoresManual(["0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8df737904ab678B99717EF553b4eFdA6E3f94589","0x0015A00724E5FDC51aE2648231B1405F5b79597b"]);
 
-// cacheTrustScoresManual(["0x8df737904ab678B99717EF553b4eFdA6E3f94589"])
+// cacheTrustScoresManual(["0x3Cb886eF7fF6be9569a87B3cA61144F3f20c0776"])

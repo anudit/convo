@@ -290,7 +290,6 @@ export const Web3ContextProvider = ({children}) => {
               alert('Please Switch to Celo (Alfajores Testnet).')
             }
           }
-          // handle other "switch" errors
         }
       }
       else {
