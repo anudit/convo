@@ -36,6 +36,8 @@ import unstoppable from '../../public/images/unstoppable.webp';
 import zora from '../../public/images/zora.webp';
 import gitcoin from '../../public/images/gitcoin.webp';
 import coordinape from '../../public/images/coordinape.webp';
+import celo from '../../public/images/celo.webp';
+import polygon from '../../public/images/polygon.webp';
 
 const IdentitySection = () => {
 
@@ -100,7 +102,13 @@ const IdentitySection = () => {
                     <BrightIdCard />
                   </WrapItem>
                   <WrapItem>
+                    <CeloCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
                     <GitcoinCard trustScoreData={trustScoreData}/>
+                  </WrapItem>
+                  <WrapItem>
+                    <PolygonCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <DeepdaoCard trustScoreData={trustScoreData} />
@@ -806,7 +814,7 @@ const RabbitholeCard = ({trustScoreData}) => {
     return (
       <IdentityCard image_url={rabbitholeimage}>
         {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData.rabbithole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Explorer on RabbitHole</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData.rabbitHole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Level {trustScoreData?.rabbitHole}</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -835,3 +843,25 @@ const CoordinapeCard = ({trustScoreData}) => {
   );
 };
 CoordinapeCard.propTypes = propTypes
+
+const CeloCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={celo}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.celo?.attestations) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://celo.org/">Verify on Celo</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+CeloCard.propTypes = propTypes
+
+const PolygonCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={polygon}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.polygon?.Score100) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://awesomepolygon.com/dapps/">Explore on Polygon</chakra.p></>) : (<><Text mr={1}>Polygon Score {trustScoreData?.polygon?.Score100}</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+PolygonCard.propTypes = propTypes

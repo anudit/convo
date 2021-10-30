@@ -7,9 +7,8 @@ const { ethers } = require("ethers");
 const fs = require('fs');
 const path = require('path');
 
-const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE } = process.env;
+const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG } = process.env;
 
-let DEBUG = false;
 let GLOBAL_MATIC_PRICE = 0;
 let GLOBAL_ETH_PRICE = 0;
 let CHUNK_SIZE = 1;
@@ -18,6 +17,29 @@ let gitcoinData;
 
 let erroredAddresses = [];
 const threadId = ThreadID.fromString(TEXTILE_THREADID);
+
+const timeit = async (callback, params = []) => {
+
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const randomId = (length = 20) => {
+        let result = "";
+        const charactersLength = characters.length;
+        for ( let i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        return result;
+    }
+
+    let id=randomId(4);
+    if (callback.name ==='fetcher'){
+        id+=params[0]
+    }
+    if (DEBUG == 'true'){console.time(id+"-"+callback.name);}
+    let resp = await callback.apply(this, params);
+    if (DEBUG == 'true'){console.timeEnd(id+"-"+callback.name);}
+    return resp;
+}
 
 const getClient = async () =>{
 
@@ -169,7 +191,7 @@ async function getCeloData(address = ""){
         ],
         fromBlock: 3040
     };
-    let provider = new ethers.providers.JsonRpcProvider('https://forno.celo.org');
+    let provider = new ethers.providers.JsonRpcProvider('https://rc1-forno.celo-testnet.org');
     let data = await provider.getLogs(filter);
 
     return {
@@ -486,6 +508,29 @@ async function getRaribleData(address = "") {
 
 }
 
+async function getPolygonData(address = "") {
+
+    let response = await fetch(`https://analytics.polygon.technology/score/user-latest?address=${address}`, {
+        "headers": {
+        "accept": "*/*",
+        "content-type": "application/json",
+        },
+        "method": "POST"
+    });
+
+    let json = await response.json();
+
+    if (json.length > 0){
+        return json[0]
+    }
+    else {
+        return {
+            Score100: 0
+        }
+    }
+
+}
+
 async function getZoraData(address){
 
     let response = await fetch("https://indexer-prod-mainnet.zora.co/v1/graphql", {
@@ -638,37 +683,34 @@ async function calculateScore(address) {
 
     let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
 
-    let startDate;
-    if (DEBUG === true){ startDate = new Date(); }
+    if (DEBUG == 'true'){ console.time('totalQueryTime') }
 
     let promiseArray = [
-        checkPoH(address, tp),
-        fetcher(`https://app.brightid.org/node/v5/verifications/Convo/${address.toLowerCase()}`, "GET", {}),
-        fetcher(`https://api.poap.xyz/actions/scan/${address}`, "GET", {}),
-        tp.lookupAddress(address),
-        fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
-        fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
-        checkUnstoppableDomains(address),
-        getDeepDaoData(address),
-        fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}),
-        getFoundationData(address), // * ethPrice
-        getSuperrareData(address),
-        getRaribleData(address), // * ethPrice
-        getKnownOriginData(address), // * ethPrice
-        getAsyncartData(address), // * ethPrice
-        getMirrorData(address),
-        getCoinviseData(address),
-        getZoraData(address), // * ethPrice
-        getCoordinapeData(address),
-        getCeloData(address)
+        timeit(checkPoH, [address, tp]),
+        timeit(fetcher, [`https://app.brightid.org/node/v5/verifications/Convo/${address.toLowerCase()}`, "GET", {}]),
+        timeit(fetcher, [`https://api.poap.xyz/actions/scan/${address}`, "GET", {}]),
+        timeit(tp.lookupAddress, [address]),
+        timeit(fetcher, [`https://api.idena.io/api/Address/${address}`, "GET", {}]),
+        timeit(fetcher, [`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}]),
+        timeit(checkUnstoppableDomains, [address]),
+        timeit(getDeepDaoData, [address]),
+        timeit(fetcher, [`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}]),
+        timeit(getFoundationData, [address]), // * ethPrice
+        timeit(getSuperrareData, [address]),
+        timeit(getRaribleData, [address]), // * ethPrice
+        timeit(getKnownOriginData, [address]), // * ethPrice
+        timeit(getAsyncartData, [address]), // * ethPrice
+        timeit(getMirrorData, [address]),
+        timeit(getCoinviseData, [address]),
+        timeit(getZoraData, [address]), // * ethPrice
+        timeit(getCoordinapeData, [address]),
+        timeit(getCeloData, [address]),
+        timeit(getPolygonData, [address])
     ];
 
     let results = await Promise.allSettled(promiseArray);
 
-    if (DEBUG === true){
-        let endDate = new Date();
-        console.log('results', (endDate.getTime() - startDate.getTime()) / 1000, 's')
-    }
+    if (DEBUG == 'true'){console.timeEnd('totalQueryTime')}
 
     let score = 0;
     let retData = {
@@ -722,7 +764,8 @@ async function calculateScore(address) {
         },
         'uniswapSybil': uniswapData.includes(getAddress(address)),
         'coordinape': results[17]?.value,
-        'celo':  results[18]?.value
+        'celo':  results[18]?.value,
+        'polygon':  results[19]?.value
     };
 
     if(results[0].value === true){ // poh
@@ -766,6 +809,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[18]?.value.attestations) === true){ // celo
         score += results[18]?.value.attestations;
+    }
+    if(Boolean(results[19]?.value.Score100) === true){ // polygonscore
+        score += parseInt(results[19]?.value.Score100);
     }
 
     let coinviseScore = (
@@ -869,7 +915,7 @@ const cacheTrustScores = async () => {
         let td = (endDate.getTime() - startDate.getTime()) / 1000;
         times.push(td/Math.min(addresses.length-index, CHUNK_SIZE));
 
-        if(index % 20 === 0) {
+        if(DEBUG == 'true' || index % 20 === 0) {
             console.log(`🟢 Cached Chunk#${parseInt(index/CHUNK_SIZE)} | Avg Time: ${parseFloat(avg(times)).toFixed(3)}s`);
         }
     }
@@ -904,7 +950,7 @@ const validateSchema = async () =>{
 }
 
 const cacheTrustScoresManual = async (addresses = []) => {
-    DEBUG=true;
+
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 

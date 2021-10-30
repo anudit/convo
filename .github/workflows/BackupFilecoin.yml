@@ -1,8 +1,5 @@
 name: "Backup to Filecoin"
 on:
-  push:
-    branches:
-      - main
   schedule:
     - cron: "0 0,8,16 * * *" # Every 8 hours.
 
