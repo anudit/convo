@@ -1,6 +1,4 @@
 var crypto = require('crypto');
-const qs = require('qs')
-
 const SLACK_VERIFICATION_TOKEN = process.env.SLACK_VERIFICATION_TOKEN
 
 export const verifyHeaders = ({ timestamp, rawBody, signature }) => {
@@ -25,7 +23,8 @@ const withSlackInteraction = (next) => async (req, res ) => {
     return res.status(401).json("Unauthorized.")
   }
 
-  let rawBody = qs.stringify(req.body,{ format:'RFC1738' })
+  let qqs = new URLSearchParams(req.body);
+  let rawBody = qqs.toString();
 
   const isVerified = verifyHeaders({ timestamp,rawBody, signature })
 

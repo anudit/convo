@@ -45,12 +45,32 @@ export const Web3ContextProvider = ({children}) => {
   }
 
   useEffect(() => {
-    if (router.query?.account_id != undefined) {
+    if (router.query?.account_id != undefined && signerAddress === "") {
       console.log('Got NEAR res for', router.query?.account_id);
-      setTimeout(()=>{
-        connectWallet("near");
-      }, 3000);
+
+      const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+
+      const config = {
+          networkId: "testnet",
+          keyStore,
+          nodeUrl: "https://rpc.testnet.near.org",
+          walletUrl: "https://wallet.testnet.near.org",
+          helperUrl: "https://helper.testnet.near.org",
+          explorerUrl: "https://explorer.testnet.near.org",
+      };
+      connect(config).then(async (near)=>{
+        let wallet = new WalletConnection(near);
+        console.log('wallet.isSignedIn?', wallet.isSignedIn())
+        let accountId = wallet.getAccountId();
+
+        await updateAuthToken(accountId, "near", wallet);
+        setProvider(wallet);
+        setConnectedChain("near");
+        setSignerAddress(accountId);
+        setConnectedWallet('near');
+      });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
 
   useEffect(() => {
@@ -99,6 +119,7 @@ export const Web3ContextProvider = ({children}) => {
 
         let modalProvider;
         let isSafeApp = await web3Modal.isSafeApp();
+        console.log('safe detected',isSafeApp );
         if (isSafeApp === true) {
           modalProvider = await web3Modal.getProvider();
           let resp = await modalProvider.connect();
@@ -230,7 +251,7 @@ export const Web3ContextProvider = ({children}) => {
         setConnectedWallet(choice);
       }
       else {
-        let resp = await wallet.requestSignIn(
+        await wallet.requestSignIn(
           "example-contract.testnet",
           "The Convo Space",
           window.location.href,
@@ -448,11 +469,11 @@ export const Web3ContextProvider = ({children}) => {
       let signature = "";
       let isSafeApp = await web3Modal.isSafeApp();
 
-      let ethProvider = await web3Modal.getProvider();
-      console.log('isSafeApp', isSafeApp, ethProvider);
 
-      tempProvider = new ethers.providers.Web3Provider(ethProvider);
       if (isSafeApp === true) {
+        let ethProvider = await web3Modal.getProvider();
+        tempProvider = new ethers.providers.Web3Provider(ethProvider);
+        console.log('isSafeApp', isSafeApp, ethProvider);
         // const appsSdk = new SafeAppsSDK();
         // const safe = await appsSdk.safe.getInfo();
         // console.log(safe, appsSdk.safe);
@@ -474,6 +495,7 @@ export const Web3ContextProvider = ({children}) => {
         });
       }
       else {
+
         signature = await tempProvider.send(
           'personal_sign',
           [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]

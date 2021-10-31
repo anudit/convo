@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { isAddress, verifyMessage, getAddress } from 'ethers/lib/utils';
 import nacl from 'tweetnacl';
-const { Crypto } = require("@peculiar/webcrypto");
 import * as fcl from "@onflow/fcl";
 import { seal, defaults } from "@hapi/iron";
 import { PublicKey } from '@solana/web3.js'
+const { createHash } = require('crypto');
 
 import withApikey from "@/middlewares/withApikey";
 
@@ -13,10 +13,8 @@ async function validateNearSignature(data, signature, signerAddress){
 
   let sig = Uint8Array.from(Buffer.from(signature, 'hex'));
   let sigAdd = Uint8Array.from(Buffer.from(signerAddress, 'hex'));
-  const webcrypto = new Crypto();
-  const hashed = await webcrypto.subtle.digest('SHA-256', tokenMessage);
-  const hash = new Uint8Array(hashed);
-  return nacl.sign.detached.verify(hash, sig, sigAdd);
+  const hmac = Uint8Array.from(createHash('sha256').update(Buffer.from(tokenMessage)).digest());
+  return nacl.sign.detached.verify(hmac, sig, sigAdd);
 }
 
 async function validateSolanaSignature(data, signature, signerAddress){
