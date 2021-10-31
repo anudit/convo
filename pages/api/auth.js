@@ -4,7 +4,7 @@ import nacl from 'tweetnacl';
 const { Crypto } = require("@peculiar/webcrypto");
 import * as fcl from "@onflow/fcl";
 import { seal, defaults } from "@hapi/iron";
-const { PublicKey } = require('@solana/web3.js')
+import { PublicKey } from '@solana/web3.js'
 
 import withApikey from "@/middlewares/withApikey";
 

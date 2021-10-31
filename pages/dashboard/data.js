@@ -10,11 +10,11 @@ import { Web3Context } from '@/contexts/Web3Context';
 import { OceanProtocolIcon, ExternalIcon  } from '@/public/icons';
 import { isAddress } from 'ethers/lib/utils';
 
-const { Ocean, DataTokens, ConfigHelper } = require("@oceanprotocol/lib");
+import { Ocean, DataTokens, ConfigHelper } from "@oceanprotocol/lib";
 const { factoryABI } = require("@oceanprotocol/contracts/artifacts/DTFactory.json");
 const { datatokensABI } = require("@oceanprotocol/contracts/artifacts/DataTokenTemplate.json");
-const defaultConfig = new ConfigHelper().getConfig("rinkeby", "1e7969225b2f4eefb3ae792aabf1cc17");
 
+const defaultConfig = new ConfigHelper().getConfig("rinkeby", "1e7969225b2f4eefb3ae792aabf1cc17");
 const contracts = {
     "DTFactory": "0x3fd7A00106038Fb5c802c6d63fa7147Fe429E83a",
     "BFactory": "0x53eDF9289B0898e1652Ce009AACf8D25fA9A42F8",
@@ -155,7 +155,7 @@ const DataTokenView = () => {
             const dataset = {
                 main: {
                     type: "dataset",
-                    name: `Convo data of ${prettyName != "" ? prettyName : signerAddress}`,
+                    name: `theconvo.space data of ${prettyName != "" ? prettyName : signerAddress}`,
                     dateCreated: new Date(Date.now()).toISOString().split(".")[0] + "Z",
                     author: `${prettyName != "" ? prettyName : signerAddress}`,
                     datePublished: d.toISOString(),

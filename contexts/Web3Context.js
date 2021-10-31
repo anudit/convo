@@ -9,6 +9,7 @@ import { checkUnstoppableDomains } from '@/lib/identity';
 import * as fcl from "@onflow/fcl";
 import { WalletConnection, connect, keyStores } from 'near-api-js';
 import { useRouter } from 'next/router';
+// import SafeAppsSDK from '@gnosis.pm/safe-apps-sdk';
 
 export const Web3Context = React.createContext(undefined);
 
@@ -445,41 +446,45 @@ export const Web3ContextProvider = ({children}) => {
 
     if (chainName === "ethereum") {
       let signature = "";
-      // let ethProvider = await web3Modal.requestProvider();
       let isSafeApp = await web3Modal.isSafeApp();
 
-      console.log('isSafeApp', isSafeApp);
+      let ethProvider = await web3Modal.getProvider();
+      console.log('isSafeApp', isSafeApp, ethProvider);
 
-      // tempProvider = new ethers.providers.Web3Provider(ethProvider);
+      tempProvider = new ethers.providers.Web3Provider(ethProvider);
       if (isSafeApp === true) {
-        console.log('creating safe sig');
-        signature = await tempProvider.send(
+        // const appsSdk = new SafeAppsSDK();
+        // const safe = await appsSdk.safe.getInfo();
+        // console.log(safe, appsSdk.safe);
+
+        signature = await ethProvider.request(
           {
             method: 'personal_sign',
             params:[ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
-          },
-          (error, result) => {
-            console.log('safe sig', error, result);
-            if (error || result.error) {
-              console.log(error)
-            }
-            return result.result.substring(2);
           }
         );
+        // const messageHash = appsSdk.safe.calculateMessageHash(data);
+        // const messageIsSigned = await appsSdk.safe.isMessageSigned(messageHash);
+        // console.log(messageIsSigned);
+        res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+          signerAddress,
+          signature,
+          timestamp,
+          chain: "ethereum"
+        });
       }
       else {
         signature = await tempProvider.send(
           'personal_sign',
           [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
         );
+        res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+          signerAddress,
+          signature,
+          timestamp,
+          chain: "ethereum"
+        });
       }
-
-      res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
-        signerAddress,
-        signature,
-        timestamp,
-        chain: "ethereum"
-      });
 
     }
     else if (chainName === "near"){

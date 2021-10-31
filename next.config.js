@@ -8,33 +8,46 @@ module.exports = (phase) => {
     reactStrictMode: true,
     experimental: {
       esmExternals: false
-    },
-    webpack: (config, { isServer }) => {
-      if (!isServer) {
-        config.resolve.fallback.fs = false;
-        config.resolve.fallback.net = false;
-        config.resolve.fallback.tls = false;
-      }
-      return config;
     }
   }
 
   if (phase === PHASE_DEVELOPMENT_SERVER) {
-    return {...baseConfig}
+    return {
+      ...baseConfig,
+      webpack: (config, { isServer }) => {
+        if (!isServer) {
+          config.resolve.fallback.fs = false;
+          config.resolve.fallback.net = false;
+          config.resolve.fallback.tls = false;
+        }
+        return config;
+      }
+    }
+  }
+  else {
+    return withPWA({
+      ...baseConfig,
+      webpack: (config, { isServer }) => {
+        if (!isServer) {
+          config.resolve.fallback.fs = false;
+          config.resolve.fallback.net = false;
+          config.resolve.fallback.tls = false;
+        }
+        config.mode= 'production';
+        return config;
+      },
+      pwa: {
+        dest: 'public',
+        runtimeCaching,
+        maximumFileSizeToCacheInBytes: 10000000
+      },
+      experimental: {
+        esmExternals: false,
+        optimizeCss: true
+      },
+      target: "experimental-serverless-trace",
+      poweredByHeader: false
+    })
   }
 
-  return withPWA({
-    ...baseConfig,
-    pwa: {
-      dest: 'public',
-      runtimeCaching,
-      maximumFileSizeToCacheInBytes: 10000000
-    },
-    experimental: {
-      esmExternals: false,
-      optimizeCss: true
-    },
-    target: "experimental-serverless-trace",
-    poweredByHeader: false
-  })
 }
