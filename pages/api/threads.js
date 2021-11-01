@@ -139,6 +139,7 @@ const handler = async(req, res) => {
             let members = req.body.members.filter(e=>{
               return isBlockchainAddress(e) === true;
             })
+            members.push(req.body.signerAddress);
             members = Array.from(new Set(members));
             let membersCleaned = {}
             members.forEach((e)=>{
@@ -148,6 +149,7 @@ const handler = async(req, res) => {
             let moderators = req.body.members.filter(e=>{
               return isBlockchainAddress(e) === true;
             })
+            moderators.push(req.body.signerAddress);
             moderators = Array.from(new Set(moderators));
             let moderatorsCleaned = {}
             moderators.forEach((e)=>{
