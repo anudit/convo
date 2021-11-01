@@ -1,7 +1,9 @@
 name: "Cache Trust Scores"
 on:
+  push:
+    branches: [ main ]
   schedule:
-    - cron: "0 0 * * *" # Every day.
+    - cron: "0 0,12 * * *" # Every day.
 
 jobs:
   convo_crons:
