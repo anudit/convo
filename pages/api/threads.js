@@ -18,7 +18,8 @@ const handler = async(req, res) => {
 
       // No key filter params returns Incomplete req.
       if (Boolean(req.query?.threadId) === false &&
-      Boolean(req.query?.creator) === false
+      Boolean(req.query?.creator) === false &&
+      Boolean(req.query?.member) === false
       ){
         return res.status(400).json({
           'success': false,
