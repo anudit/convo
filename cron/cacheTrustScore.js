@@ -182,20 +182,29 @@ async function getMirrorData(address = ""){
 
 async function getCeloData(address = ""){
 
-    let filter = {
-        address: '0xdC553892cdeeeD9f575aa0FBA099e5847fd88D20',
-        topics: [
-            ethers.utils.id("AttestationCompleted(bytes32,address,address)"),
-            null,
-            ethers.utils.hexZeroPad(address, 32)
-        ],
-        fromBlock: 3040
-    };
-    let provider = new ethers.providers.JsonRpcProvider('https://rc1-forno.celo-testnet.org');
-    let data = await provider.getLogs(filter);
+    try {
 
-    return {
-        attestations: Boolean(data?.length) === true ? data.length : 0
+        let filter = {
+            address: '0xdC553892cdeeeD9f575aa0FBA099e5847fd88D20',
+            topics: [
+                ethers.utils.id("AttestationCompleted(bytes32,address,address)"),
+                null,
+                ethers.utils.hexZeroPad(address, 32)
+            ],
+            fromBlock: 3040
+        };
+        let provider = new ethers.providers.JsonRpcProvider('https://forno.celo.org');
+        let data = await provider.getLogs(filter);
+
+        let respData = {
+            attestations: Boolean(data?.length) === true ? data.length : 0
+        }
+        return respData;
+
+    } catch (error) {
+        return {
+            attestations: 0
+        }
     }
 }
 
@@ -510,24 +519,32 @@ async function getRaribleData(address = "") {
 
 async function getPolygonData(address = "") {
 
-    let response = await fetch(`https://analytics.polygon.technology/score/user-latest?address=${address}`, {
-        "headers": {
-        "accept": "*/*",
-        "content-type": "application/json",
-        },
-        "method": "POST"
-    });
+    try {
+        let response = await fetch(`https://analytics.polygon.technology/score/user-latest?address=${address}`, {
+            "headers": {
+            "accept": "*/*",
+            "content-type": "application/json",
+            },
+            "method": "POST"
+        });
 
-    let json = await response.json();
+        let json = await response.json();
 
-    if (json.length > 0){
-        return json[0]
-    }
-    else {
+        if (json.length > 0){
+            return json[0]
+        }
+        else {
+            return {
+                Score100: 0
+            }
+        }
+
+    } catch (error) {
         return {
             Score100: 0
-        }
+        };
     }
+
 
 }
 
@@ -965,16 +982,16 @@ const cacheTrustScoresManual = async (addresses = []) => {
 
     console.log(`GLOBAL_MATIC_PRICE:${GLOBAL_MATIC_PRICE}$`,`GLOBAL_ETH_PRICE:${GLOBAL_ETH_PRICE}$`);
 
-
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
         console.log(data);
-        // await threadClient.save(threadId, 'cachedTrustScores', [{
-        //     '_id': getAddress(addresses[index]),
-        //     ...data
-        // }]);
-        // console.log(`🟢 Cached ${index}`);
+        await threadClient.save(threadId, 'cachedTrustScores', [{
+            '_id': getAddress(addresses[index]),
+            ...data
+        }]);
+        console.log(`🟢 Cached ${index}`);
     }
+
 }
 
 const updateSchema = async (addresses = []) => {
@@ -1007,4 +1024,4 @@ cacheTrustScores().then(()=>{
 // updateSchema();
 // cacheTrustScoresManual(["0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8df737904ab678B99717EF553b4eFdA6E3f94589","0x0015A00724E5FDC51aE2648231B1405F5b79597b"]);
 
-// cacheTrustScoresManual(["0x3Cb886eF7fF6be9569a87B3cA61144F3f20c0776"])
+// cacheTrustScoresManual(['0x8df737904ab678B99717EF553b4eFdA6E3f94589'])
