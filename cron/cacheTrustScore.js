@@ -182,30 +182,34 @@ async function getMirrorData(address = ""){
 
 async function getCeloData(address = ""){
 
-    try {
+    var graphql = JSON.stringify({
+        query: "{\r\n	attestationsCompleteds (where: {id: \""+address.toLowerCase()+"\"}) {\r\n        id\r\n        count\r\n    }\r\n}",
+        variables: {}
+    })
+    var requestOptions = {
+        method: 'POST',
+        headers: {
+            "accept": "*/*",
+            "content-type": "application/json",
+        },
+        body: graphql,
+        redirect: 'follow'
+    };
 
-        let filter = {
-            address: '0xdC553892cdeeeD9f575aa0FBA099e5847fd88D20',
-            topics: [
-                ethers.utils.id("AttestationCompleted(bytes32,address,address)"),
-                null,
-                ethers.utils.hexZeroPad(address, 32)
-            ],
-            fromBlock: 3040
+    let data = await fetch("https://api.thegraph.com/subgraphs/id/QmWDxPtNrngVfeMjXCCKvWVuof7DbJQv1thAbnz4MDV6Xc", requestOptions);
+    let response = await data.json();
+
+    if (response['data']['attestationsCompleteds'].length > 0){
+        return {
+            attestations: response['data']['attestationsCompleteds'][0]['count']
         };
-        let provider = new ethers.providers.JsonRpcProvider('https://forno.celo.org');
-        let data = await provider.getLogs(filter);
-
-        let respData = {
-            attestations: Boolean(data?.length) === true ? data.length : 0
-        }
-        return respData;
-
-    } catch (error) {
+    }
+    else {
         return {
             attestations: 0
-        }
+        };
     }
+
 }
 
 async function getCoinviseData(address = ""){
@@ -891,7 +895,7 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 5000);
+    addresses = getArraySample(addresses, 6000);
 
     uniswapData = await getAllUniswapSybilData();
     gitcoinData = await getAllGitcoinData();
@@ -985,11 +989,11 @@ const cacheTrustScoresManual = async (addresses = []) => {
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
         console.log(data);
-        await threadClient.save(threadId, 'cachedTrustScores', [{
-            '_id': getAddress(addresses[index]),
-            ...data
-        }]);
-        console.log(`🟢 Cached ${index}`);
+        // await threadClient.save(threadId, 'cachedTrustScores', [{
+        //     '_id': getAddress(addresses[index]),
+        //     ...data
+        // }]);
+        // console.log(`🟢 Cached ${index}`);
     }
 
 }
@@ -1024,4 +1028,4 @@ cacheTrustScores().then(()=>{
 // updateSchema();
 // cacheTrustScoresManual(["0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8df737904ab678B99717EF553b4eFdA6E3f94589","0x0015A00724E5FDC51aE2648231B1405F5b79597b"]);
 
-// cacheTrustScoresManual(['0x8df737904ab678B99717EF553b4eFdA6E3f94589'])
+// cacheTrustScoresManual(['0x0002b30adf86bff6536b70874091994528b066b3'])
