@@ -201,7 +201,7 @@ async function getCeloData(address = ""){
 
     if (response['data']['attestationsCompleteds'].length > 0){
         return {
-            attestations: response['data']['attestationsCompleteds'][0]['count']
+            attestations: parseInt(response['data']['attestationsCompleteds'][0]['count'])
         };
     }
     else {
