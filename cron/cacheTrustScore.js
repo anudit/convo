@@ -233,8 +233,12 @@ async function getCoinviseData(address = ""){
         fetch(`https://coinvise-prod.herokuapp.com/token?userAddress=${address}&production=true`).then(async (data)=>{return data.json()}),
         fetch(`https://www.coinvise.co/api/nft?chain=137&address=${address}`).then(async (data)=>{return data.json()}),
         fetch(`https://coinvise-prod.herokuapp.com/sends?size=1000`).then(async (data)=>{return data.json()}),
+        fetch(`https://coinvise-prod.herokuapp.com/user?slug=${address}`).then(async (data)=>{return data.json()}),
     ];
     let data = await Promise.allSettled(promiseArray);
+
+    let followers = Boolean(data[3].value?.user) === true ? data[3].value?.user?.followers : 0;
+    let following = Boolean(data[3].value?.user) === true ? data[3].value?.user?.following : 0;
 
     let promiseArray2 =[];
     if (data[0]?.value?.length > 0) {
@@ -291,7 +295,9 @@ async function getCoinviseData(address = ""){
         totalCountSold,
         totalAmountSold,
         multisendCount,
-        airdropCount
+        airdropCount,
+        following,
+        followers
     };
 }
 
@@ -778,7 +784,9 @@ async function calculateScore(address) {
             'totalPoolTvl': results[15]?.value?.totalPoolTvl,
             'totalPoolCount': results[15]?.value?.totalPoolCount,
             'multisendCount': results[15]?.value?.multisendCount,
-            'airdropCount': results[15]?.value?.airdropCount
+            'airdropCount': results[15]?.value?.airdropCount,
+            'following': results[15]?.value?.following,
+            'followers': results[15]?.value?.followers
         },
         'gitcoin': {
             "funder":gitcoinData.includes(getAddress(address)),
@@ -895,7 +903,7 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 6000);
+    addresses = getArraySample(addresses, 8000);
 
     uniswapData = await getAllUniswapSybilData();
     gitcoinData = await getAllGitcoinData();
@@ -972,6 +980,7 @@ const validateSchema = async () =>{
 
 const cacheTrustScoresManual = async (addresses = []) => {
 
+    addresses = addresses.slice(0, addresses.length)
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
@@ -988,12 +997,12 @@ const cacheTrustScoresManual = async (addresses = []) => {
 
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
-        console.log(data);
-        // await threadClient.save(threadId, 'cachedTrustScores', [{
-        //     '_id': getAddress(addresses[index]),
-        //     ...data
-        // }]);
-        // console.log(`🟢 Cached ${index}`);
+        // console.log(data);
+        await threadClient.save(threadId, 'cachedTrustScores', [{
+            '_id': getAddress(addresses[index]),
+            ...data
+        }]);
+        console.log(`🟢 Cached ${index}`, data.score);
     }
 
 }
@@ -1027,5 +1036,3 @@ cacheTrustScores().then(()=>{
 // validateSchema();
 // updateSchema();
 // cacheTrustScoresManual(["0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8df737904ab678B99717EF553b4eFdA6E3f94589","0x0015A00724E5FDC51aE2648231B1405F5b79597b"]);
-
-// cacheTrustScoresManual(['0x0002b30adf86bff6536b70874091994528b066b3'])

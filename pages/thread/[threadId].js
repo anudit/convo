@@ -57,7 +57,7 @@ function makeThumbnailImage(title, creator, creation_time){
 
 function processText(data){
     try {
-        return cleanAdd(decodeURIComponent(data));
+        return cleanAdd(data);
     } catch (error) {
         console.log(error);
         return data;

@@ -11288,10 +11288,10 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framer-motion@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-5.0.1.tgz#e63c504b175780ba658d7f944007ec36d9ef61c9"
-  integrity sha512-Bye1pAXTfp7uh9Ih2H4vyInbS7uXclPvy18G+h8y8DauQx1vtkblPyGSlaoDNGlrfmw6SCVsjSYWDF2SzI68YA==
+framer-motion@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-5.0.2.tgz#968ac1815eab9ac9b6ae4b83010f88d023376b98"
+  integrity sha512-9noBJ3CxSE8MCe0Dj0MqCXBnPFjaOMyx4q6zqV3CWqvsPZSUxsyUaF6Ds3FhFOAABQFesFYCX968Wf48Lalztw==
   dependencies:
     framesync "6.0.1"
     hey-listen "^1.0.8"
@@ -15380,10 +15380,10 @@ next-pwa@^5.4.0:
     workbox-webpack-plugin "^6.3.0"
     workbox-window "^6.3.0"
 
-next-sitemap@^1.6.199:
-  version "1.6.199"
-  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-1.6.199.tgz#f23ab634e025f12e5509bd25777edcda6dff351e"
-  integrity sha512-huxW+CnWaOj7FapN4y8CAIqjZbSG+ukmx29bqNW/cOuRioEquXXw76zd/ZQ8n2tqldHUtoCs5UJHxBx09iAKHQ==
+next-sitemap@^1.6.203:
+  version "1.6.203"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-1.6.203.tgz#bfa2e67fea2bab1efed60cda743e7f98dc00bb46"
+  integrity sha512-WigcoqIUNbXQa2GnwOiCOydGx/XHCS4kRtIPNEsc8DGX2XvJtbAJKRxcidZZ2KihTAtwwCu1XQ4Hbof4mJbvLg==
   dependencies:
     "@corex/deepmerge" "^2.6.34"
     matcher "^4.0.0"
