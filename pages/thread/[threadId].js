@@ -31,7 +31,7 @@ export async function getStaticProps(context) {
     return {
         props: {
             initialComments: results[0],
-            thread: results[1]
+            thread: results[1][0]
         },
         revalidate: 1
     }

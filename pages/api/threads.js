@@ -126,10 +126,10 @@ const handler = async(req, res) => {
 
             let createdOn = new Date();
             let threadId = Boolean(req.body?.threadId) === true ? req.body.threadId : randomId(26);
-            let url = Boolean(req.body?.url) === true ? req.body.url : "https://theconvo.space/";
+            let url = Boolean(req.body?.url) === true ? decodeURIComponent(req.body.url) : "https://theconvo.space/";
 
-            let oldThreadData = await getThread(req.body?.threadId);
-            if (oldThreadData.length >= 0){
+            let oldThreadData = await getThread(threadId);
+            if (oldThreadData.length > 0){
               return res.status(400).json({
                 success: false,
                 'error':'Thread already exists.'
@@ -166,8 +166,8 @@ const handler = async(req, res) => {
               "_id": threadId,
               createdOn,
               "creator": req.body.signerAddress,
-              "title": req.body.title,
-              "description": req.body.description,
+              "title": decodeURIComponent(req.body.title),
+              "description": decodeURIComponent(req.body.description),
               "url": url,
               "isReadPublic": req.body.isReadPublic == 'true' ? true : false,
               "isWritePublic": req.body.isWritePublic == 'true' ? true : false,
@@ -176,6 +176,7 @@ const handler = async(req, res) => {
               "keywords": keywordsCleaned,
               "metadata": Boolean(req.body?.metadata) === true ? req.body.metadata : {}
             };
+
             let newId = await createThread(threadData);
 
             return res.status(200).json({
