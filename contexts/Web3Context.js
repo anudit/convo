@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router';
 import { ethers } from "ethers";
 import Portis from "@portis/web3";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import Cookies from "js-cookie";
-import fetcher from "@/utils/fetcher";
 import { SafeAppWeb3Modal as Web3Modal } from '@gnosis.pm/safe-apps-web3modal';
-import { checkUnstoppableDomains } from '@/lib/identity';
+import SafeAppsSDK from '@gnosis.pm/safe-apps-sdk';
+import Cookies from "js-cookie";
 import * as fcl from "@onflow/fcl";
 import { WalletConnection, connect, keyStores } from 'near-api-js';
-import { useRouter } from 'next/router';
-// import SafeAppsSDK from '@gnosis.pm/safe-apps-sdk';
+import PropTypes from 'prop-types';
+
+import { checkUnstoppableDomains } from '@/lib/identity';
+import fetcher from "@/utils/fetcher";
 
 export const Web3Context = React.createContext(undefined);
 
@@ -472,6 +474,10 @@ export const Web3ContextProvider = ({children}) => {
 
       if (isSafeApp === true) {
         let ethProvider = await web3Modal.getProvider();
+        const appsSdk = new SafeAppsSDK();
+
+        // const safe = await appsSdk.safe.getInfo();
+
         tempProvider = new ethers.providers.Web3Provider(ethProvider);
         console.log('isSafeApp', isSafeApp, ethProvider);
         // const appsSdk = new SafeAppsSDK();
@@ -484,15 +490,19 @@ export const Web3ContextProvider = ({children}) => {
             params:[ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
           }
         );
-        // const messageHash = appsSdk.safe.calculateMessageHash(data);
-        // const messageIsSigned = await appsSdk.safe.isMessageSigned(messageHash);
-        // console.log(messageIsSigned);
-        res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
-          signerAddress,
-          signature,
-          timestamp,
-          chain: "ethereum"
-        });
+
+        setTimeout(async ()=>{
+
+          const messageHash = appsSdk.safe.calculateMessageHash(data);
+          const messageIsSigned = await appsSdk.safe.isMessageSigned(data);
+          console.log(messageHash, messageIsSigned);
+          res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+            signerAddress,
+            signature,
+            timestamp,
+            chain: "ethereum"
+          });
+        }, 10000)
       }
       else {
 
@@ -578,4 +588,8 @@ export const Web3ContextProvider = ({children}) => {
     </Web3Context.Provider>
   )
 
+}
+
+Web3ContextProvider.propTypes = {
+  children: PropTypes.element
 }

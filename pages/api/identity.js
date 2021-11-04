@@ -54,15 +54,26 @@ async function calculateScore(address) {
         'mirror': results[16].value,
         'foundation': {
             'totalCountSold': results[11]?.value?.totalCountSold,
-            'totalAmountSold': results[11]?.value?.totalAmountSold * results[10]?.value
+            'totalAmountSold': results[11]?.value?.totalAmountSold * results[10]?.value,
+            'followerCount': results[11]?.value?.followerCount,
+            'followingCount': results[11]?.value?.followingCount
         },
         'superrare': {
             'totalCountSold': results[12]?.value?.totalCountSold,
-            'totalAmountSold': results[12]?.value?.totalAmountSold
+            'totalAmountSold': results[12]?.value?.totalAmountSold,
+            'following': results[12]?.value?.following,
+            'followers': results[12]?.value?.followers
         },
         'rarible': {
             'totalCountSold': results[13]?.value?.totalCountSold,
-            'totalAmountSold': results[13]?.value?.totalAmountSold * results[10]?.value
+            'totalAmountSold': results[13]?.value?.totalAmountSold * results[10]?.value,
+            'ownershipsWithStock': results[13]?.value?.ownershipsWithStock,
+            'itemsCreated': results[13]?.value?.itemsCreated,
+            'ownerships': results[13]?.value?.ownerships,
+            'hides': results[13]?.value?.hides,
+            'followers': results[13]?.value?.followers,
+            'followings': results[13]?.value?.followings,
+            'likes': results[13]?.value?.likes
         },
         'knownorigin': {
             'totalCountSold': results[14]?.value?.totalCountSold,

@@ -81,16 +81,17 @@ const fetcher = async (url, method="GET", bodyData = {}, ISDEBUG = false) => {
     if (method === "GET"){
         res = await fetch(url, {
             method: "GET",
-            headers: Headers({ 'Content-Type': 'application/json' }),
+            headers: Headers({'Content-Type': 'application/json' }),
             credentials: "same-origin",
+            redirect: 'follow'
         });
     }
     else if (method === "POST" || method === "DELETE") {
         res = await fetch(url, {
             method,
-            headers: Headers({ 'Content-Type': 'application/json' }),
-            credentials: "same-origin",
-            body: JSON.stringify(bodyData)
+            headers: Headers({ "Accept": "application/json", 'Content-Type': 'application/json' }),
+            body: JSON.stringify(bodyData),
+            redirect: 'follow'
         });
     }
 
@@ -407,17 +408,21 @@ async function getFoundationData(address = "") {
 
     let body = "{\"query\":\"query getMintedArtworks($publicKey: String!) {\\n  artworks: nfts(\\n    where: {creator: $publicKey, owner_not: \\\"0x0000000000000000000000000000000000000000\\\"}\\n    orderBy: dateMinted\\n    orderDirection: desc\\n  ) {\\n    ...NftFragment\\n  }\\n}\\n\\nfragment NftFragment on Nft {\\n  ...NftBaseFragment\\n  ...NftOwnershipFragment\\n  nftHistory(orderBy: date, orderDirection: desc, first: 5) {\\n    event\\n  }\\n  mostRecentActiveAuction {\\n    ...AuctionFragment\\n    highestBid {\\n      ...BidFragment\\n    }\\n  }\\n}\\n\\nfragment NftBaseFragment on Nft {\\n  id\\n  tokenId\\n  dateMinted\\n}\\n\\nfragment NftOwnershipFragment on Nft {\\n  ownedOrListedBy {\\n    id\\n  }\\n  creator {\\n    id\\n  }\\n}\\n\\nfragment AuctionFragment on NftMarketAuction {\\n  id\\n  auctionId\\n  duration\\n  status\\n  reservePriceInETH\\n  seller {\\n    id\\n  }\\n  dateEnding\\n  dateStarted\\n  dateCreated\\n  transactionHashCreated\\n}\\n\\nfragment BidFragment on NftMarketBid {\\n  amountInETH\\n  status\\n  datePlaced\\n  bidder {\\n    id\\n  }\\n}\\n\",\"variables\":{\"moderationStatuses\":[\"ACTIVE\"],\"publicKey\":\""+address.toLocaleLowerCase()+"\"}}";
 
-    let response = await fetch("https://subgraph.fndsubgraph.com/", {
-      "headers": {
-        "accept": "*/*",
-        "content-type": "application/json",
-      },
-      "method": "POST",
-      body
+    let req1 = fetcher("https://subgraph.fndsubgraph.com/", "POST", JSON.parse(body) );
+
+    let req2 = fetcher("https://hasura2.foundation.app/v1/graphql", "POST", {
+        "query":"query getHasuraUserFollowState( $publicKey: String!) {\n  followerCount: follow_aggregate(\n    where: {followedUser: {_eq: $publicKey}, isFollowing: {_eq: true}}\n  ) {\n    aggregate {\n      count\n    }\n  }\n  followingCount: follow_aggregate(\n    where: {user: {_eq: $publicKey}, isFollowing: {_eq: true}}\n  ) {\n    aggregate {\n      count\n    }\n  }\n  mutualFollowCount: follow_aggregate(\n    where: {isFollowing: {_eq: true}, _and: [{followedUser: {_eq: $publicKey}}, {userByFollowingUser: {follows: { isFollowing: {_eq: true}}}}]}\n  ) {\n    aggregate {\n      count\n    }\n  }\n  follows: follow(\n    where: {followedUser: {_eq: $publicKey}, isFollowing: {_eq: true}}\n  ) {\n    ...HasuraFollowFragment\n  }\n}\n\nfragment HasuraFollowFragment on follow {\n  id\n  createdAt\n  updatedAt\n  user\n  followedUser\n  isFollowing\n}\n",
+        "variables":{
+            "publicKey": address
+        },
+        "operationName":"getHasuraUserFollowState"
     });
 
-    let jsonData = await response.json();
-    let artworks = jsonData['data']['artworks'];
+    let jsonData = await Promise.allSettled([req1, req2]);
+
+    let artworks = jsonData[0].value['data']['artworks'];
+    let metadata = jsonData[1].value['data'];
+
     let totalCountSold = artworks.length;
 
     let totalAmountSold = 0;
@@ -431,7 +436,9 @@ async function getFoundationData(address = "") {
     }
     return {
         totalCountSold,
-        totalAmountSold
+        totalAmountSold,
+        followerCount: metadata.followerCount.aggregate.count,
+        followingCount: metadata.followingCount.aggregate.count
     }
 
 }
@@ -465,7 +472,17 @@ async function getSuperrareData(address = "") {
       "body": JSON.stringify(body),
     })
     let jsonData = await response.json();
+
     let artworks = jsonData['result']['collectibles'];
+
+    let followers = 0;
+    let following = 0;
+    if(artworks.length > 0){
+        let metadata = await fetch(`https://superrare.com/api/v2/user?username=${artworks[0].creator.username}`).then(async (data)=>{return data.json()});
+        followers = metadata.result.followers.totalCount;
+        following = metadata.result.following.totalCount;
+    }
+
     let totalCountSold = jsonData['result']['totalCount'];
 
     let totalAmountSold = 0;
@@ -484,34 +501,45 @@ async function getSuperrareData(address = "") {
 
     return {
         totalCountSold,
-        totalAmountSold
+        totalAmountSold,
+        followers,
+        following,
     }
 
 }
 
 async function getRaribleData(address = "") {
 
-    let body = {
-        "filter": {
+    var requestOptions = {
+        method: 'POST',
+        headers: {
+            "accept": "*/*",
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({
+            "filter": {
             "@type": "by_creator",
             "creator": address
-        }
+            }
+        }),
+        redirect: 'follow'
     };
 
-    let response = await fetch("https://api-mainnet.rarible.com/marketplace/api/v4/items", {
-      "headers": {
-        "accept": "*/*",
-        "content-type": "application/json",
-      },
-      "method": "POST",
-      "body": JSON.stringify(body),
-    })
-    let artworks = await response.json();
+    let promiseArray = [
+        fetch("https://api-mainnet.rarible.com/marketplace/api/v4/items", requestOptions).then(res => res.text()),
+        fetcher(`https://api-mainnet.rarible.com/marketplace/api/v4/profiles/${address}/meta`)
+    ]
+
+    let resp = await Promise.allSettled(promiseArray);
+
+    let artworks = JSON.parse(resp[0].value);
+    let metadata = 'code' in resp[1].value ? {} : resp[1].value;
+    // console.log(artworks, metadata);
+
     let totalCountSold = artworks.length;
 
     let totalAmountSold = 0;
     for (let index = 0; index < artworks.length; index++) {
-        // console.log(artworks[index]['ownership']);
         if(artworks[index]['ownership']?.status === 'FIXED_PRICE'){
             totalAmountSold += artworks[index]['ownership']['priceEth'];
         }
@@ -522,7 +550,8 @@ async function getRaribleData(address = "") {
 
     return {
         totalCountSold,
-        totalAmountSold
+        totalAmountSold,
+        ...metadata
     }
 
 }
@@ -754,15 +783,26 @@ async function calculateScore(address) {
         'mirror': results[14].value,
         'foundation': {
             'totalCountSold': results[9]?.value?.totalCountSold,
-            'totalAmountSold': results[9]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
+            'totalAmountSold': results[9]?.value?.totalAmountSold * GLOBAL_ETH_PRICE,
+            'followers': results[9]?.value?.followerCount,
+            'following': results[9]?.value?.followingCount
         },
         'superrare': {
             'totalCountSold': results[10]?.value?.totalCountSold,
-            'totalAmountSold': results[10]?.value?.totalAmountSold
+            'totalAmountSold': results[10]?.value?.totalAmountSold,
+            'following': results[10]?.value?.following,
+            'followers': results[10]?.value?.followers
         },
         'rarible': {
             'totalCountSold': results[11]?.value?.totalCountSold,
-            'totalAmountSold': results[11]?.value?.totalAmountSold * GLOBAL_ETH_PRICE
+            'totalAmountSold': results[11]?.value?.totalAmountSold * GLOBAL_ETH_PRICE,
+            'ownershipsWithStock': results[11]?.value?.ownershipsWithStock,
+            'itemsCreated': results[11]?.value?.itemsCreated,
+            'ownerships': results[11]?.value?.ownerships,
+            'hides': results[11]?.value?.hides,
+            'followers': results[11]?.value?.followers,
+            'following': results[11]?.value?.followings,
+            'likes': results[11]?.value?.likes
         },
         'knownorigin': {
             'totalCountSold': results[12]?.value?.totalCountSold,
@@ -903,7 +943,7 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 8000);
+    addresses = getArraySample(addresses, 12000);
 
     uniswapData = await getAllUniswapSybilData();
     gitcoinData = await getAllGitcoinData();
@@ -998,10 +1038,10 @@ const cacheTrustScoresManual = async (addresses = []) => {
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
         // console.log(data);
-        await threadClient.save(threadId, 'cachedTrustScores', [{
-            '_id': getAddress(addresses[index]),
-            ...data
-        }]);
+        // await threadClient.save(threadId, 'cachedTrustScores', [{
+        //     '_id': getAddress(addresses[index]),
+        //     ...data
+        // }]);
         console.log(`🟢 Cached ${index}`, data.score);
     }
 
@@ -1035,4 +1075,4 @@ cacheTrustScores().then(()=>{
 
 // validateSchema();
 // updateSchema();
-// cacheTrustScoresManual(["0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20", "0x8df737904ab678B99717EF553b4eFdA6E3f94589","0x0015A00724E5FDC51aE2648231B1405F5b79597b"]);
+// cacheTrustScoresManual(["0xD665afb9A4019a8c482352aaa862567257Ed62CF", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"]);
