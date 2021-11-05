@@ -38,6 +38,7 @@ import gitcoin from '../../public/images/gitcoin.webp';
 import coordinape from '../../public/images/coordinape.webp';
 import celo from '../../public/images/celo.webp';
 import polygon from '../../public/images/polygon.webp';
+import showtime from '../../public/images/showtime.webp';
 
 const IdentitySection = () => {
 
@@ -133,6 +134,9 @@ const IdentitySection = () => {
                   </WrapItem>
                   <WrapItem>
                     <MirrorCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
+                    <ShowtimeCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <RaribleCard trustScoreData={trustScoreData} />
@@ -618,7 +622,7 @@ const CoinviseCard = ({trustScoreData}) => {
     <IdentityCard image_url={coinvise}>
       {
         trustScoreData === null ? "Loading" :
-        trustScoreData?.coinvise?.totalCountSold === 0 ? (
+        Boolean(trustScoreData?.coinvise?.totalCountSold) === false ? (
             <chakra.p size="xs" as="a" target="_blank" href="https://coinvise.co/">
               Create on Coinvise
             </chakra.p>
@@ -865,3 +869,14 @@ const PolygonCard = ({trustScoreData}) => {
   );
 };
 PolygonCard.propTypes = propTypes
+
+const ShowtimeCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={showtime}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.showtime?.followers) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://showtime.io/">Create on Showtime</chakra.p></>) : (<><Text mr={1}>Creator on Showtime</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+ShowtimeCard.propTypes = propTypes

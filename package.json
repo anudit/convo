@@ -40,7 +40,7 @@
     "critters": "^0.0.14",
     "dotenv": "^10.0.0",
     "ethers": "^5.5.1",
-    "framer-motion": "^5.2.0",
+    "framer-motion": "^5.2.1",
     "ioredis": "^4.28.0",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
