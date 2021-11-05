@@ -7,7 +7,7 @@ const { ethers } = require("ethers");
 const fs = require('fs');
 const path = require('path');
 
-const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG } = process.env;
+const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID } = process.env;
 
 let GLOBAL_MATIC_PRICE = 0;
 let GLOBAL_ETH_PRICE = 0;
@@ -667,6 +667,14 @@ async function getAllUniswapSybilData(){
 
 }
 
+async function getShowtimeData(address = ""){
+
+    let req = await fetch(`https://cnvsec.vercel.app/api/get?id=${CNVSEC_ID}&slug=1b8c&address=${address}`);
+    let data = await req.json();
+    return data;
+
+}
+
 async function getAllGitcoinData(){
     let promise = new Promise((res, rej) => {
         fs.readFile(path.resolve(__dirname, 'all.json'), 'utf8', async function (err, fileData) {
@@ -761,7 +769,8 @@ async function calculateScore(address) {
         timeit(getZoraData, [address]), // * ethPrice
         timeit(getCoordinapeData, [address]),
         timeit(getCeloData, [address]),
-        timeit(getPolygonData, [address])
+        timeit(getPolygonData, [address]),
+        timeit(getShowtimeData, [address])
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -834,7 +843,8 @@ async function calculateScore(address) {
         'uniswapSybil': uniswapData.includes(getAddress(address)),
         'coordinape': results[17]?.value,
         'celo':  results[18]?.value,
-        'polygon':  results[19]?.value
+        'polygon':  results[19]?.value,
+        'showtime':  results[20]?.value
     };
 
     if(results[0].value === true){ // poh
@@ -881,6 +891,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[19]?.value.Score100) === true){ // polygonscore
         score += parseInt(results[19]?.value.Score100);
+    }
+    if(Boolean(results[20]?.value?.verified) === true){ // showtime
+        score += 10;
     }
 
     let coinviseScore = (
@@ -943,7 +956,7 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 12000);
+    addresses = getArraySample(addresses, 13000);
 
     uniswapData = await getAllUniswapSybilData();
     gitcoinData = await getAllGitcoinData();
@@ -1037,7 +1050,7 @@ const cacheTrustScoresManual = async (addresses = []) => {
 
     for (let index = 0; index < addresses.length; index++) {
         let data = await getTrustScore(addresses[index]);
-        // console.log(data);
+        console.log(data);
         // await threadClient.save(threadId, 'cachedTrustScores', [{
         //     '_id': getAddress(addresses[index]),
         //     ...data
@@ -1069,10 +1082,10 @@ const updateSchema = async (addresses = []) => {
     // }
 }
 
-cacheTrustScores().then(()=>{
-    console.log("✅ Cached all trust Scores");
-});
+// cacheTrustScores().then(()=>{
+//     console.log("✅ Cached all trust Scores");
+// });
 
 // validateSchema();
 // updateSchema();
-// cacheTrustScoresManual(["0xD665afb9A4019a8c482352aaa862567257Ed62CF", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"]);
+cacheTrustScoresManual(["0x12c74bd8ed1f02f9d9a6f160dd8a1574c1b2fa50", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"]);

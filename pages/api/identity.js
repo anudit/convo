@@ -1,4 +1,4 @@
-import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData } from "@/lib/identity";
+import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData } from "@/lib/identity";
 import { getClient } from "@/lib/thread-db";
 import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
@@ -33,7 +33,8 @@ async function calculateScore(address) {
         getAllGitcoinData(),
         getCoordinapeData(address),
         getCeloData(address),
-        getPolygonData(address)
+        getPolygonData(address),
+        getShowtimeData(address)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -102,7 +103,8 @@ async function calculateScore(address) {
         },
         'coordinape':  results[20]?.value,
         'celo':  results[21]?.value,
-        'polygon':  results[22]?.value
+        'polygon':  results[22]?.value,
+        'showtime':  results[23]?.value
     };
 
     if(results[0].value === true){ // poh
@@ -147,7 +149,9 @@ async function calculateScore(address) {
     if(Boolean(results[22]?.value.Score100) === true){ // polygon
         score += parseInt(results[22]?.value.Score100);
     }
-
+    if(Boolean(results[23]?.value?.verified) === true){ // showtime
+        score += 10;
+    }
 
     // Coinvise
     let coinviseScore = (
