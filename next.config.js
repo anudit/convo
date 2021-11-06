@@ -20,6 +20,7 @@ module.exports = (phase) => {
           config.resolve.fallback.net = false;
           config.resolve.fallback.tls = false;
         }
+        config.mode = 'development'
         return config;
       }
     }
@@ -33,6 +34,7 @@ module.exports = (phase) => {
           config.resolve.fallback.net = false;
           config.resolve.fallback.tls = false;
         }
+        config.mode = 'production'
         return config;
       },
       pwa: {

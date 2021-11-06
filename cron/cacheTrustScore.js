@@ -1082,10 +1082,10 @@ const updateSchema = async (addresses = []) => {
     // }
 }
 
-// cacheTrustScores().then(()=>{
-//     console.log("✅ Cached all trust Scores");
-// });
+cacheTrustScores().then(()=>{
+    console.log("✅ Cached all trust Scores");
+});
 
 // validateSchema();
 // updateSchema();
-cacheTrustScoresManual(["0x12c74bd8ed1f02f9d9a6f160dd8a1574c1b2fa50", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"]);
+// cacheTrustScoresManual(["0x12c74bd8ed1f02f9d9a6f160dd8a1574c1b2fa50", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"]);

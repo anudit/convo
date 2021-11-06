@@ -219,7 +219,7 @@ const CommentsSection = (props) => {
 
     if (Boolean(comments) === false){
         return (
-            <DashboardShell active="messages" title="Your Conversations">
+            <DashboardShell active="messages" title="Your Messages">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
