@@ -13,7 +13,7 @@ import { EthereumAuthProvider, SelfID } from '@self.id/web'
 import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context';
-import { VerifiedIcon } from '@/public/icons';
+import { ReloadIcon, VerifiedIcon } from '@/public/icons';
 import { prettifyNumber, truncateAddress } from '@/utils/stringUtils';
 
 import brightid from '../../public/images/brightid.webp';
@@ -46,6 +46,7 @@ const IdentitySection = () => {
   const { signerAddress } = web3Context;
   const [trustScoreData, setTrustScoreData] = useState(null);
   const [trustScore, setTrustScore] = useState(0);
+  const [trustScoreLoading, setTrustScoreLoading] = useState(false);
 
   useEffect(() => {
     if (isAddress(signerAddress) === true){
@@ -57,14 +58,22 @@ const IdentitySection = () => {
     }
   }, [signerAddress]);
 
+
+  async function refreshScore(){
+    setTrustScoreLoading(true);
+    let data = await fetcher(`/api/identity?address=${signerAddress}&noCache=true&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET", {});
+    setTrustScore(data?.score);
+    setTrustScoreLoading(false);
+  }
+
     return (
       <DashboardShell active="identity" title="Identity">
           <Flex direction="column">
             <Flex direction="column" align="center">
               <Flex
-                direction="column"
+                direction="row"
                 w={{base:"100%"}}
-                maxW="500px"
+                maxW="600px"
                 m={4}
                 padding={8}
                 color={useColorModeValue("black", "white")}
@@ -78,6 +87,7 @@ const IdentitySection = () => {
                 cursor="pointer"
                 justifyContent="center"
                 textAlign="center"
+                alignItems="center"
               >
                 <Heading
                   bgClip="text"
@@ -86,6 +96,8 @@ const IdentitySection = () => {
                 >
                   Your Trust Score is {trustScore}
                 </Heading>
+
+                <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={refreshScore} disabled={trustScoreLoading}/>
               </Flex>
             </Flex>
             <Flex direction={{base:"column", md: "row"}}>
