@@ -3821,10 +3821,10 @@
     utility-types "^3.10.0"
     zustand "^3.5.13"
 
-"@react-three/fiber@^7.0.17":
-  version "7.0.17"
-  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-7.0.17.tgz#2addf9a312b46f74d11596caa452557aab340762"
-  integrity sha512-RUnRoGKvlr7Bqd1lOywJabdGLIBiDc5jLpEsCFJwyvZoViYqwsIQKrBhwx56Y5FdlUlwY8y2ZdcQRNlHGBZXjA==
+"@react-three/fiber@^7.0.18":
+  version "7.0.18"
+  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-7.0.18.tgz#11fdb7401b982c0807951e508eae287fab6ac4a2"
+  integrity sha512-mhEeai8zUsKncRzTL10a4IPbqYImzY+MA+uMbjmF6TcfIXzG0BAqBgfAwd5TGxIQhMor292hk38wGHBFeLpzFA==
   dependencies:
     "@babel/runtime" "^7.13.10"
     react-merge-refs "^1.1.0"

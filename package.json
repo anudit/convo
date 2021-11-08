@@ -31,7 +31,7 @@
     "@onflow/fcl": "^0.0.77",
     "@portis/web3": "^4.0.6",
     "@react-three/drei": "^7.20.0",
-    "@react-three/fiber": "^7.0.17",
+    "@react-three/fiber": "^7.0.18",
     "@self.id/web": "^0.1.0",
     "@solana/web3.js": "^1.30.2",
     "@textile/hub": "^6.3.1",

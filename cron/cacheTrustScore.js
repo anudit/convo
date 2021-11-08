@@ -197,18 +197,27 @@ async function getCeloData(address = ""){
         redirect: 'follow'
     };
 
-    let data = await fetch("https://api.thegraph.com/subgraphs/id/QmWDxPtNrngVfeMjXCCKvWVuof7DbJQv1thAbnz4MDV6Xc", requestOptions);
-    let response = await data.json();
+    try {
 
-    if (response['data']['attestationsCompleteds'].length > 0){
-        return {
-            attestations: parseInt(response['data']['attestationsCompleteds'][0]['count'])
-        };
-    }
-    else {
+        let data = await fetch("https://api.thegraph.com/subgraphs/id/QmWDxPtNrngVfeMjXCCKvWVuof7DbJQv1thAbnz4MDV6Xc", requestOptions);
+        let response = await data.json();
+
+        if (response['data']['attestationsCompleteds'].length > 0){
+            return {
+                attestations: parseInt(response['data']['attestationsCompleteds'][0]['count'])
+            };
+        }
+        else {
+            return {
+                attestations: 0
+            };
+        }
+
+    } catch (error) {
+        console.log('getCeloData', error);
         return {
             attestations: 0
-        };
+        }
     }
 
 }

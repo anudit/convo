@@ -124,7 +124,7 @@ const handler = async(req, res) => {
             && Object.keys(req.body).includes('keywords') === true
           ){
 
-            let createdOn = new Date();
+            let createdOn = Date.now();
             let threadId = Boolean(req.body?.threadId) === true ? req.body.threadId : randomId(26);
             let url = Boolean(req.body?.url) === true ? decodeURIComponent(req.body.url) : "https://theconvo.space/";
 
