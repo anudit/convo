@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
-    "@babel/runtime": "^7.16.0",
-    "@chakra-ui/icons": "^1.0.17",
-    "@chakra-ui/react": "^1.6.12",
-    "@chakra-ui/system": "^1.7.6",
+    "@babel/runtime": "^7.16.3",
+    "@chakra-ui/icons": "^1.1.0",
+    "@chakra-ui/react": "^1.7.0",
+    "@chakra-ui/system": "^1.8.0",
     "@dicebear/avatars": "^4.10.0",
     "@dicebear/micah": "^4.10.0",
     "@emotion/react": "^11.5.0",
@@ -30,8 +30,8 @@
     "@oceanprotocol/lib": "^0.19.2",
     "@onflow/fcl": "^0.0.77",
     "@portis/web3": "^4.0.6",
-    "@react-three/drei": "^7.20.0",
-    "@react-three/fiber": "^7.0.18",
+    "@react-three/drei": "^7.20.5",
+    "@react-three/fiber": "^7.0.19",
     "@self.id/web": "^0.1.0",
     "@solana/web3.js": "^1.30.2",
     "@textile/hub": "^6.3.1",
@@ -40,7 +40,7 @@
     "critters": "^0.0.14",
     "dotenv": "^10.0.0",
     "ethers": "^5.5.1",
-    "framer-motion": "^5.2.1",
+    "framer-motion": "^5.3.0",
     "ioredis": "^4.28.0",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
@@ -48,8 +48,8 @@
     "near-cli": "^2.2.0",
     "next": "^12.0.3",
     "next-pwa": "^5.4.0",
-    "nft.storage": "^3.3.0",
-    "node-fetch": "^3.0.0",
+    "nft.storage": "^3.4.0",
+    "node-fetch": "^3.1.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-data-table-component": "^7.4.5",
@@ -66,14 +66,14 @@
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.4",
-    "webpack": "^5.62.1"
+    "webpack": "^5.64.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.0.3",
     "eslint": "<8.0.0",
     "eslint-config-next": "^12.0.3",
-    "eslint-plugin-react": "^7.26.1",
-    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-react": "^7.27.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "next-sitemap": "^1.6.203"
   }
 }

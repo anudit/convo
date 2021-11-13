@@ -18,6 +18,15 @@ const getClient = async () =>{
 
 }
 
+const prettyDate = (timestamp) => {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const dt = new Date(parseInt(timestamp));
+    const d = dt.getDate();
+    const month = monthNames[dt.getMonth()];
+    const y = dt.getFullYear();
+    return `${d}/${month}/${y}`;
+}
+
 async function getRedisData() {
 
     let promise = new Promise((res) => {
@@ -80,7 +89,7 @@ async function pinToPinata(hash) {
         body: JSON.stringify({
             hashToPin: hash,
             pinataMetadata: {
-                name: `Backup-${Date.now()}`,
+                name: `Backup-${prettyDate(Date.now())}`,
             }
         })
     });
@@ -113,5 +122,7 @@ getData().then((data)=>{
         console.log("✅ Backed up Data to NFT.Storage");
         await pinToPinata(ipfsHash);
         console.log("✅ Replicated Backup to Pinata");
+        await pinToInfura(ipfsHash);
+        console.log("✅ Replicated Backup to Infura");
     });
 })
