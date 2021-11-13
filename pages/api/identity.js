@@ -184,7 +184,33 @@ async function setCache(address, scoreData) {
     }]);
 }
 
+async function ensToAddress(ensAddress){
+    try {
+
+        let resp = await fetch("https://api.thegraph.com/subgraphs/name/ensdomains/ens", {
+            "headers": {
+                "accept": "*/*",
+                "content-type": "application/json",
+            },
+            "body": "{\"query\":\"{\\n  domains(where:{name:\\\""+ensAddress+"\\\"}) {\\n    resolvedAddress {\\n      id\\n    }\\n  }\\n}\\n\",\"variables\":null}",
+            "method": "POST",
+        }).then((r)=>{return r.json()});
+
+        if (Boolean(resp['data']["domains"]["resolvedAddress"]) === true){
+            return false;
+        }
+        else {
+            return getAddress(resp['data']["domains"]["resolvedAddress"])
+        }
+
+    } catch (error) {
+        return false;
+    }
+}
+
 const handler = async(req, res) => {
+
+    res.setHeader('Cache-Control', 'max-age=86400');
 
     try {
 
@@ -194,15 +220,14 @@ const handler = async(req, res) => {
             validatedAddress = req.query.address;
         }
         else if (Object.keys(req.query).includes('address') === true && req.query.address.toString().slice(req.query.address.length-4,req.query.address.length) === '.eth' ){
-            let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
-            let ensReq  = await tp.resolveName(req.query.address);
+            let ensReq  = await ensToAddress(req.query.address);
             if (Boolean(ensReq) === true){
                 validatedAddress = ensReq;
             }
             else {
                 return res.status(401).json({
                     'success': false,
-                    'error': 'Invalid Address.'
+                    'error': 'Invalid ENS Address.'
                 });
             }
         }
@@ -241,6 +266,13 @@ const handler = async(req, res) => {
 
             }
         }
+        else {
+            return res.status(401).json({
+                'success': false,
+                'error': 'Invalid Address Computed.'
+            });
+        }
+
 
     } catch (error) {
         console.error(error);
