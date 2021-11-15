@@ -4,6 +4,7 @@ const Headers = (...args) => import('node-fetch').then(({Headers}) => new Header
 const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
+const { Context } = require('@textile/context');
 const fs = require('fs');
 const path = require('path');
 
@@ -43,11 +44,12 @@ const timeit = async (callback, params = []) => {
 
 const getClient = async () =>{
 
-    const identity = PrivateKey.fromString(TEXTILE_PK);
     const client = await Client.withKeyInfo({
         key: TEXTILE_HUB_KEY_DEV,
         debug: true
     })
+
+    const identity = PrivateKey.fromString(TEXTILE_PK);
     await client.getToken(identity);
     return client;
 }
@@ -133,6 +135,21 @@ async function checkPoH(address, provider) {
     let result = await pohContract.isRegistered(address);
     return result;
 
+}
+
+async function getCyberconnectData(address){
+    let data = await fetch("https://api.cybertino.io/connect/", {
+    "headers": {
+        "accept": "*/*",
+        "content-type": "application/json",
+    },
+    "body": "{\"operationName\":null,\"variables\":{},\"query\":\"{\\n  identity(address: \\\""+address.toLowerCase()+"\\\") {\\n    displayName\\n    address\\n    followingCount\\n    followerCount\\n    social {\\n      twitter\\n    }\\n  }\\n}\\n\"}",
+    "method": "POST",
+    "mode": "cors",
+    "credentials": "omit"
+    }).then(r=>{return r.json()});
+
+    return data['data']['identity'];
 }
 
 async function getCoordinapeData(address) {
@@ -779,7 +796,8 @@ async function calculateScore(address) {
         timeit(getCoordinapeData, [address]),
         timeit(getCeloData, [address]),
         timeit(getPolygonData, [address]),
-        timeit(getShowtimeData, [address])
+        timeit(getShowtimeData, [address]),
+        timeit(getCyberconnectData, [address])
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -853,7 +871,8 @@ async function calculateScore(address) {
         'coordinape': results[17]?.value,
         'celo':  results[18]?.value,
         'polygon':  results[19]?.value,
-        'showtime':  results[20]?.value
+        'showtime':  results[20]?.value,
+        'cyberconnect':  results[21]?.value
     };
 
     if(results[0].value === true){ // poh

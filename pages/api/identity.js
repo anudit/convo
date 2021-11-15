@@ -1,4 +1,4 @@
-import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData } from "@/lib/identity";
+import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData } from "@/lib/identity";
 import { getClient } from "@/lib/thread-db";
 import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
@@ -34,7 +34,8 @@ async function calculateScore(address) {
         getCoordinapeData(address),
         getCeloData(address),
         getPolygonData(address),
-        getShowtimeData(address)
+        getShowtimeData(address),
+        getCyberconnectData(address)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -104,7 +105,8 @@ async function calculateScore(address) {
         'coordinape':  results[20]?.value,
         'celo':  results[21]?.value,
         'polygon':  results[22]?.value,
-        'showtime':  results[23]?.value
+        'showtime':  results[23]?.value,
+        'cyberconnect':  results[24]?.value
     };
 
     if(results[0].value === true){ // poh
