@@ -39,6 +39,7 @@ import coordinape from '../../public/images/coordinape.webp';
 import celo from '../../public/images/celo.webp';
 import polygon from '../../public/images/polygon.webp';
 import showtime from '../../public/images/showtime.webp';
+import cyberconnect from '../../public/images/cyberconnect.webp';
 
 const IdentitySection = () => {
 
@@ -143,6 +144,9 @@ const IdentitySection = () => {
                   </WrapItem>
                   <WrapItem>
                     <IdenaCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
+                    <CyberconnectCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <MirrorCard trustScoreData={trustScoreData} />
@@ -892,3 +896,14 @@ const ShowtimeCard = ({trustScoreData}) => {
   );
 };
 ShowtimeCard.propTypes = propTypes
+
+const CyberconnectCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={cyberconnect}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.cyberconnect?.followingCount) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.cyberconnect.me/">Connect on Cyberconnect</chakra.p></>) : (<><Text mr={1}>Connected on Cyberconnect</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+CyberconnectCard.propTypes = propTypes
