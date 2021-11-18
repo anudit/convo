@@ -40,6 +40,7 @@ import celo from '../../public/images/celo.webp';
 import polygon from '../../public/images/polygon.webp';
 import showtime from '../../public/images/showtime.webp';
 import cyberconnect from '../../public/images/cyberconnect.webp';
+import rss3 from '../../public/images/rss3.webp';
 
 const IdentitySection = () => {
 
@@ -98,7 +99,7 @@ const IdentitySection = () => {
                   Your Trust Score is {trustScore}
                 </Heading>
 
-                <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={refreshScore} disabled={trustScoreLoading}/>
+                <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={refreshScore} disabled={trustScoreLoading} title="Re-Index Score"/>
               </Flex>
             </Flex>
             <Flex direction={{base:"column", md: "row"}}>
@@ -147,6 +148,9 @@ const IdentitySection = () => {
                   </WrapItem>
                   <WrapItem>
                     <CyberconnectCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
+                    <Rss3Card trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <MirrorCard trustScoreData={trustScoreData} />
@@ -907,3 +911,14 @@ const CyberconnectCard = ({trustScoreData}) => {
   );
 };
 CyberconnectCard.propTypes = propTypes
+
+const Rss3Card = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={rss3}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.rss3?.profile) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://rss3.bio/">Create on RSS3</chakra.p></>) : (<><Text mr={1}>Connected on RSS3</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+Rss3Card.propTypes = propTypes

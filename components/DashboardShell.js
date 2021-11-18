@@ -349,28 +349,46 @@ const DashboardShell = ({title, active, children}) => {
                                 </Text>
                             </Flex>
                         </Link>
-                        <Link href="https://varta.theconvo.space/" passHref={true} isExternal>
-                            <Flex
-                                m={1}
-                                h={{base: "50px", md:"50px"}}
-                                w="90%"
-                                fontWeight={400}
-                                cursor="pointer"
-                                direction="row"
-                                align="left"
-                                justifyContent="flex-start"
-                                paddingLeft="20px"
-                                alignItems="center"
-                                backgroundColor={active === "bridge" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
-                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
-                            >
-                                <QuestionIcon mr={4}/>
-                                <Text display={{base:"none", md:"block"}} fontSize="sm" >
-                                    Varta
-                                    <Tag size="sm" ml={2}>soon</Tag>
-                                </Text>
-                            </Flex>
-                        </Link>
+                        <Flex
+                            m={1}
+                            h={{base: "50px", md:"50px"}}
+                            w="90%"
+                            fontWeight={400}
+                            cursor="pointer"
+                            direction="row"
+                            align="left"
+                            justifyContent="flex-start"
+                            paddingLeft="20px"
+                            alignItems="center"
+                            backgroundColor={active === "bridge" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                            _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
+                        >
+                            <QuestionIcon mr={4}/>
+                            <Text display={{base:"none", md:"block"}} fontSize="sm" >
+                                Varta
+                                <Tag size="sm" ml={2}>soon</Tag>
+                            </Text>
+                        </Flex>
+                        <Flex
+                            m={1}
+                            h={{base: "50px", md:"50px"}}
+                            w="90%"
+                            fontWeight={400}
+                            cursor="pointer"
+                            direction="row"
+                            align="left"
+                            justifyContent="flex-start"
+                            paddingLeft="20px"
+                            alignItems="center"
+                            backgroundColor={active === "bridge" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
+                            _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
+                        >
+                            <QuestionIcon mr={4}/>
+                            <Text display={{base:"none", md:"block"}} fontSize="sm" >
+                                Omnid
+                                <Tag size="sm" ml={2}>soon</Tag>
+                            </Text>
+                        </Flex>
                     </Flex>
                     <Flex direction={{base:"column", md:"row"}} justifyContent="space-around">
                         <Flex onClick={toggleColorMode} h={{base: "50px", md:"50px"}} w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
