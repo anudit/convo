@@ -33,7 +33,18 @@ const CustomAvatar = (props) => {
                 let pfp = await resolver?.getText('avatar');
                 if(Boolean(pfp) === true){
                     console.log(pfp);
-                    setCustomPfp(pfp);
+                    if (pfp.slice(0, 5) === "ar://") {
+                        setCustomPfp("https://arweave.net/"+pfp.slice(5));
+                    }
+                    else if (pfp.slice(0, 7) === "ipfs://") {
+                        setCustomPfp("https://gateway.ipfs.io/ipfs/"+pfp.slice(7));
+                    }
+                    else if (pfp.slice(0, 7) === "ipns://") {
+                        setCustomPfp("https://gateway.ipfs.io/ipns/"+pfp.slice(7));
+                    }
+                    else {
+                        setCustomPfp(pfp)
+                    }
                 }
             });
         }
