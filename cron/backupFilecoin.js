@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '.env.local' })
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const { NFTStorage, Blob } = require("nft.storage");
-const { Client, PrivateKey, ThreadID} = require('@textile/hub');
+const { Client, PrivateKey, ThreadID, Where} = require('@textile/hub');
 const Redis = require("ioredis");
 
 const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET, REDIS_CONNECTION} = process.env;
@@ -55,15 +55,48 @@ async function getRedisData() {
 
 }
 
+const getAllTrustScoreData = async (threadClient) => {
+
+    const querySize = 60000;
+
+    let completeData = [];
+    let snapshot = [];
+    let skip = 0;
+
+    do {
+
+        const query = new Where(`a`).eq(true).limitTo(querySize).skipNum(skip);
+        query.ands = [];
+        const threadId = ThreadID.fromString(TEXTILE_THREADID);
+        snapshot = await threadClient.find(threadId, 'cachedTrustScores', query);
+        completeData = completeData.concat(snapshot);
+        skip+=querySize;
+        console.log('cachedTrustScores.got:', snapshot.length);
+
+    } while (snapshot.length > 0);
+
+    console.log('cachedTrustScores.length:', completeData.length);
+
+    return completeData;
+
+}
+
 const getData = async () =>{
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
+
     let snapshot_comments = await threadClient.find(threadId, 'comments', {});
+    console.log("🟡 snapshot.comments");
     let snapshot_threads = await threadClient.find(threadId, 'threads', {});
+    console.log("🟡 snapshot.threads");
     let snapshot_subscribers = await threadClient.find(threadId, 'subscribers', {});
-    let snapshot_cachedTrustScores = await threadClient.find(threadId, 'cachedTrustScores', {});
+    console.log("🟡 snapshot.subscribers");
+    let snapshot_cachedTrustScores = await getAllTrustScoreData(threadClient);
+    console.log("🟡 snapshot.cachedTrustScores");
     let snapshot_bridge = await threadClient.find(threadId, 'bridge', {});
+    console.log("🟡 snapshot.bridge");
     let redis_data = await getRedisData();
+    console.log("🟡 snapshot.data");
 
     return {
         snapshot_comments,
@@ -77,7 +110,31 @@ const getData = async () =>{
 
 async function pinToPinata(hash) {
 
-    const response = await fetch(`https://api.pinata.cloud/pinning/pinByHash`, {
+    const pinlist = await fetch(`https://api.pinata.cloud/data/pinList?status=all&pageLimit=1000`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            "pinata_api_key": PINATA_API_KEY,
+            "pinata_secret_api_key": PINATA_API_SECRET
+        }
+    }).then(res=>{return res.json()});
+
+    // Unpin Old Backups, keeping 2 latest ones.
+    for (let index = 2; index < pinlist['rows'].length; index++) {
+        const hash = pinlist['rows'][index].ipfs_pin_hash;
+        console.log(`Unpinning ${index+1}/${pinlist['rows'].length}`);
+        await fetch(`https://api.pinata.cloud/pinning/unpin/${hash}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                "pinata_api_key": PINATA_API_KEY,
+                "pinata_secret_api_key": PINATA_API_SECRET
+            }
+        });
+    }
+
+    // Pin Latest Backup
+    await fetch(`https://api.pinata.cloud/pinning/pinByHash`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -93,8 +150,6 @@ async function pinToPinata(hash) {
             }
         })
     });
-    let json = await response.json();
-    return json;
 
 }
 
@@ -110,6 +165,7 @@ async function pinToInfura(hash) {
         body: JSON.stringify({})
     });
     let json = await response.json();
+
     return json;
 
 }
