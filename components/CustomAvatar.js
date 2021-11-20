@@ -32,7 +32,7 @@ const CustomAvatar = (props) => {
             tp.getResolver(props.ensName).then(async (resolver) => {
                 let pfp = await resolver?.getText('avatar');
                 if(Boolean(pfp) === true){
-                    console.log(pfp);
+                    console.log('pfp',pfp);
                     if (pfp.slice(0, 5) === "ar://") {
                         setCustomPfp("https://arweave.net/"+pfp.slice(5));
                     }
@@ -45,6 +45,9 @@ const CustomAvatar = (props) => {
                     else {
                         setCustomPfp(pfp)
                     }
+                }
+                else {
+                    setCustomPfp(false);
                 }
             });
         }

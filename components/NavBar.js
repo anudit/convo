@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Link, Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue, Text, ButtonGroup, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
-import { CloseIcon,HamburgerIcon, MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { CloseIcon,HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { Web3Context } from '@/contexts/Web3Context';
 
-import { TheConvoSpaceIcon, DisconnectIcon, EthereumIcon } from "@/public/icons";
-import { truncateAddress } from "@/utils/stringUtils";
-import CustomAvatar from "./CustomAvatar";
+import { TheConvoSpaceIcon } from "@/public/icons";
+import SignedInMenu from "./SignedInMenu";
 
 export const NavBar = (props) => {
   const [display, toggleMenu] = useState('none');
@@ -196,31 +195,16 @@ const NavLinks = () => {
             <ButtonGroup size="sm" isAttached fontSize="lg">
                 {
                     signerAddress == "" ?
-                    (<Button fontWeight="100" onClick={()=>{connectWallet()}} colorScheme="twitter"><EthereumIcon mr={1}/> Sign-In</Button>)
-                    :
-                    (
-                    <Menu placement="bottom-start">
-                        <MenuButton fontWeight="100" as={Button} rightIcon={<ChevronDownIcon />}  colorScheme="twitter">
-                            {prettyName == "" ? "Wallet" : prettyName}
-                        </MenuButton>
-                        <MenuList width="fit-content">
-                            <MenuItem fontWeight="100" >
-                                <CustomAvatar address={signerAddress}  mr={2} size="xs" ensName={prettyName}/>
-                                {truncateAddress(signerAddress)}
-                            </MenuItem>
-                            <MenuItem fontWeight="100" icon={<DisconnectIcon mx="4px" />} onClick={disconnectWallet}>Disconnect</MenuItem>
-                        </MenuList>
-                    </Menu>
-                    )
+                    (<Button fontWeight="100" size="md" onClick={()=>{connectWallet()}}>Connect Wallet</Button>)
+                    : (<SignedInMenu/>)
                 }
                 <Tooltip hasArrow label={useColorModeValue("Switch to Dark Mode", "Switch to Light Mode")} aria-label="A tooltip">
                     <IconButton
                         icon={useColorModeValue(<MoonIcon/>, <SunIcon/>)}
                         onClick={toggleColorMode}
-                        size="sm"
+                        size="md"
                         rounded="md"
                         aria-label="Toggle Theme"
-                        colorScheme="twitter"
                     />
                 </Tooltip>
             </ButtonGroup>

@@ -44,8 +44,7 @@ import rss3 from '../../public/images/rss3.webp';
 
 const IdentitySection = () => {
 
-  const web3Context = useContext(Web3Context)
-  const { signerAddress } = web3Context;
+  const { signerAddress } = useContext(Web3Context);
   const [trustScoreData, setTrustScoreData] = useState(null);
   const [trustScore, setTrustScore] = useState(0);
   const [trustScoreLoading, setTrustScoreLoading] = useState(false);

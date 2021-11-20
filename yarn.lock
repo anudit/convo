@@ -3822,10 +3822,10 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
-"@react-three/drei@^7.22.1":
-  version "7.22.1"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.22.1.tgz#fc891666dd34fe3ecd6d8087a57bca3750655ae8"
-  integrity sha512-oPcu67OT+IkC7J5VVmfQ6A+x0Yop0IOSQiQxWC0dYEfbaRIC5SOoIv7+uaA2NSZGYzAt9wHA9oxAZy1Tnhetkg==
+"@react-three/drei@^7.22.4":
+  version "7.22.4"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-7.22.4.tgz#d3eb30fb1fa866ae0738b6825b0fdda435966e92"
+  integrity sha512-tV0/MPM2z9uKIKrODdCzvEre0OooSFilvWk6RRZ1ifhkPDaw7ShDkf31YrohVGv4e5U8Ao6ufLFOpYBhUKv1HA==
   dependencies:
     "@babel/runtime" "^7.11.2"
     detect-gpu "^3.1.25"
@@ -10027,10 +10027,10 @@ eslint-plugin-react@^7.23.1:
     semver "^6.3.0"
     string.prototype.matchall "^4.0.5"
 
-eslint-plugin-react@^7.27.0:
-  version "7.27.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.27.0.tgz#f952c76517a3915b81c7788b220b2b4c96703124"
-  integrity sha512-0Ut+CkzpppgFtoIhdzi2LpdpxxBvgFf99eFqWxJnUrO7mMe0eOiNpou6rvNYeVVV6lWZvTah0BFne7k5xHjARg==
+eslint-plugin-react@^7.27.1:
+  version "7.27.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.27.1.tgz#469202442506616f77a854d91babaae1ec174b45"
+  integrity sha512-meyunDjMMYeWr/4EBLTV1op3iSG3mjT/pz5gti38UzfM4OPpNc2m0t2xvKCOMU5D6FSdd34BIMFOvQbW+i8GAA==
   dependencies:
     array-includes "^3.1.4"
     array.prototype.flatmap "^1.2.5"
@@ -11404,10 +11404,10 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framer-motion@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-5.3.0.tgz#22956eebab7a14032b3467a76822b946f8ff9bd0"
-  integrity sha512-b3AIRy5lvJ4Fo2ZJ3nNRl7U8qF+uVG4VGY/Gi+fwLVxSqxkkX1hLuXV67uXxn+ideGUs0wRj+X7DzQEfvQsmaw==
+framer-motion@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-5.3.1.tgz#5588f904f16b20a617f112ee2b10573e7392c488"
+  integrity sha512-wBqW2eAoIxGcp6zhIPlzHq9b6FqWG3Xir6ovgg/HZgbKajGLfcfYRsQU6qri0U53Qov5QZwb7CkfMjl0UIxL4A==
   dependencies:
     framesync "6.0.1"
     hey-listen "^1.0.8"
@@ -15871,10 +15871,10 @@ next@^12.0.4:
     "@next/swc-win32-ia32-msvc" "12.0.4"
     "@next/swc-win32-x64-msvc" "12.0.4"
 
-nft.storage@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/nft.storage/-/nft.storage-4.0.0.tgz#f9815b9643192a9b55f3490158e383902f00a0b6"
-  integrity sha512-Oxg12YFxZsnlgfNPblfAQ+hfKQOlX1mKz3atE7Tb2HcNmljEvnYY6WLibIpRnVqtej+15jQveO9zdWcuk+zphw==
+nft.storage@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/nft.storage/-/nft.storage-4.0.1.tgz#967e3f8cbec6d675472fd22e42c37a0c0d2f288b"
+  integrity sha512-1VGseEN7ALz+/sGUFXPSYQFpvycNDTLZkZxrmBeBK5dKebw2CcVKbpHH9CNM4PaPwLRegKuioWKC8fQQg404cQ==
   dependencies:
     "@ipld/car" "^3.1.20"
     "@web-std/blob" "^2.1.2"
