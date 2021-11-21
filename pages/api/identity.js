@@ -19,7 +19,7 @@ async function calculateScore(address) {
         checkUnstoppableDomains(address),
         getAllUniswapSybilData(),
         getDeepDaoData(address),
-        fetcher(`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}),
+        fetcher(`https://iqs5wfdv79.execute-api.us-east-1.amazonaws.com/prod/task_progress?address=${address.toLowerCase()}`, "GET", {}),
         getEthPrice(),
         getFoundationData(address), // * ethPrice
         getSuperrareData(address),

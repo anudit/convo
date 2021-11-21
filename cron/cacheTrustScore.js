@@ -843,7 +843,7 @@ async function calculateScore(address) {
         timeit(fetcher, [`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}]),
         timeit(checkUnstoppableDomains, [address]),
         timeit(getDeepDaoData, [address]),
-        timeit(fetcher, [`https://0pdqa8vvt6.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address}`, "GET", {}]),
+        timeit(fetcher, [`https://iqs5wfdv79.execute-api.us-east-1.amazonaws.com/prod/task_progress?address=${address.toLowerCase()}`, "GET", {}]),
         timeit(getFoundationData, [address]), // * ethPrice
         timeit(getSuperrareData, [address]),
         timeit(getRaribleData, [address]), // * ethPrice
@@ -1034,7 +1034,7 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 2000);
+    addresses = getArraySample(addresses, 5000);
     console.log('addresses.length', addresses.length);
 
     uniswapData = await getAllUniswapSybilData();
