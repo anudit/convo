@@ -1,14 +1,15 @@
 require('dotenv').config({ path: '.env.local' })
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const Headers = (...args) => import('node-fetch').then(({Headers}) => new Headers(...args));
-const { Client, PrivateKey, ThreadID } = require('@textile/hub');
+const { Client, PrivateKey, ThreadID, Where } = require('@textile/hub');
+const { Context } = require('@textile/context');
 const { getAddress, isAddress, formatEther } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
-const { Context } = require('@textile/context');
 const fs = require('fs');
 const path = require('path');
+const { MongoClient } = require('mongodb');
 
-const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID } = process.env;
+const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID, MONGODB_URI } = process.env;
 
 let GLOBAL_MATIC_PRICE = 0;
 let GLOBAL_ETH_PRICE = 0;
@@ -54,24 +55,63 @@ const getClient = async () =>{
     return client;
 }
 
+// Mass query ThreadDb : Deprecated
+const getAllTrustScoreAddresses = async (threadClient) => {
+
+    const querySize = 60000;
+
+    let completeData = [];
+    let snapshot = [];
+    let skip = 0;
+
+    do {
+
+        const query = new Where(`a`).eq(true).limitTo(querySize).skipNum(skip);
+        query.ands = [];
+        const threadId = ThreadID.fromString(TEXTILE_THREADID);
+        let snapshot_data = await threadClient.find(threadId, 'cachedTrustScores', query);
+        snapshot = snapshot_data.map(e=>{return e._id});
+        completeData = completeData.concat(snapshot);
+        skip+=querySize;
+        console.log('got:', snapshot.length);
+
+    } while (snapshot.length > 0);
+
+    return completeData;
+
+}
+
 const getAddresses = async (threadClient) =>{
 
-    let snapshot_comments = await threadClient.find(threadId, 'comments', {});
-    let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
+    let promise = new Promise((res, rej) => {
 
-    let arr = snapshot_comments.map((e)=>{
+        MongoClient.connect(MONGODB_URI, async function(err, client) {
+            if(err) throw err;
+            let db = client.db('convo');
+            let coll = db.collection('cachedTrustScores');
+
+            const cursor = await coll.distinct("_id", {});
+            console.log('cursor.length', cursor.length);
+            res(cursor);
+
+            client.close();
+
+        });
+
+    });
+    let snapshot_trustscores = await promise;
+
+    let snapshot_comments = await threadClient.find(threadId, 'comments', {});
+    snapshot_comments = snapshot_comments.map((e)=>{
         return e.author;
     })
-
-    arr = arr.filter((e)=>{
+    snapshot_comments = snapshot_comments.filter((e)=>{
         return isAddress(e)===true;
     })
 
-    let arr2 = snapshot_cached.map((e)=>{
-        return e._id;
-    })
-    arr = arr.concat(arr2)
+    let arr = snapshot_trustscores.concat(snapshot_comments);
     return Array.from(new Set(arr));
+
 }
 
 const fetcher = async (url, method="GET", bodyData = {}, ISDEBUG = false) => {
@@ -143,7 +183,7 @@ async function getCyberconnectData(address){
         "accept": "*/*",
         "content-type": "application/json",
     },
-    "body": "{\"operationName\":null,\"variables\":{},\"query\":\"{\\n  identity(address: \\\""+address.toLowerCase()+"\\\") {\\n    displayName\\n    address\\n    followingCount\\n    followerCount\\n    social {\\n      twitter\\n    }\\n  }\\n}\\n\"}",
+    "body": "{\"operationName\":null,\"variables\":{},\"query\":\"{\\n  identity(address: \\\""+address.toLowerCase()+"\\\") {\\n    displayName\\n    followingCount\\n    followerCount\\n    social {\\n      twitter\\n    }\\n  }\\n}\\n\"}",
     "method": "POST",
     "mode": "cors",
     "credentials": "omit"
@@ -196,6 +236,25 @@ async function getMirrorData(address = ""){
 
     let jsonData = await data.json();
     return jsonData['data']['addressInfo']['hasOnboarded'];
+}
+
+async function getRss3Data(address = ""){
+    let data = await fetch(`https://hub.pass3.me/${address}`, {
+        "headers": {
+            "accept": "*/*",
+            "content-type": "application/json",
+        }
+    });
+
+    let jsonData = await data.json();
+
+    return {
+        profile : Boolean(jsonData['profile']) === true ? jsonData['profile']: {},
+        backlinks : Boolean(jsonData['@backlinks']) === true ? jsonData['@backlinks']: [],
+        accounts:  Boolean(jsonData['accounts']) === true ? jsonData['accounts']: [],
+        links:  Boolean(jsonData['links']) === true ? jsonData['links']: [],
+    };
+
 }
 
 async function getCeloData(address = ""){
@@ -797,7 +856,8 @@ async function calculateScore(address) {
         timeit(getCeloData, [address]),
         timeit(getPolygonData, [address]),
         timeit(getShowtimeData, [address]),
-        timeit(getCyberconnectData, [address])
+        timeit(getCyberconnectData, [address]),
+        timeit(getRss3Data, [address])
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -872,7 +932,8 @@ async function calculateScore(address) {
         'celo':  results[18]?.value,
         'polygon':  results[19]?.value,
         'showtime':  results[20]?.value,
-        'cyberconnect':  results[21]?.value
+        'cyberconnect':  results[21]?.value,
+        'rss3': results[22]?.value,
     };
 
     if(results[0].value === true){ // poh
@@ -955,17 +1016,6 @@ const getTrustScore = async (address) => {
     }
 }
 
-const getDocs = async (threadClient) =>{
-
-    let snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
-
-    snapshot_cached = snapshot_cached.filter((e)=>{
-        return isAddress(e._id) === true;
-    })
-
-    return snapshot_cached;
-}
-
 function getArraySample(arr, sample_size, return_indexes = false) {
     if(sample_size > arr.length) return false;
     const sample_idxs = [];
@@ -984,7 +1034,8 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 7000);
+    addresses = getArraySample(addresses, 2000);
+    console.log('addresses.length', addresses.length);
 
     uniswapData = await getAllUniswapSybilData();
     gitcoinData = await getAllGitcoinData();
@@ -998,6 +1049,10 @@ const cacheTrustScores = async () => {
     console.log(`GLOBAL_MATIC_PRICE:${GLOBAL_MATIC_PRICE}$`,`GLOBAL_ETH_PRICE:${GLOBAL_ETH_PRICE}$`);
 
     let times = [];
+    const client = await MongoClient.connect(MONGODB_URI);
+    console.log('🟢 DB Connected');
+    let db = client.db('convo');
+    let coll = db.collection('cachedTrustScores');
 
     for (let index = 0; index < addresses.length; index+=CHUNK_SIZE) {
         let startDate = new Date();
@@ -1009,17 +1064,17 @@ const cacheTrustScores = async () => {
 
         let update = await Promise.allSettled(promiseArray);
 
-        let docs = []
         for (let i=0;i<update.length;i++) {
-            docs.push({
-                '_id': getAddress(addresses[index+i]),
+            let newDoc = {
+                _id: getAddress(addresses[index+i]),
                 ...update[i].value
-            });
+            }
+            await coll.updateOne(
+                { _id : getAddress(addresses[index+i])},
+                { $set: newDoc },
+                { upsert: true }
+            )
         }
-
-        // console.log(docs);
-        // console.log('Storing ', docs.length, docs[0]?.score);
-        await threadClient.save(threadId, 'cachedTrustScores', docs);
 
         let endDate = new Date();
         let td = (endDate.getTime() - startDate.getTime()) / 1000;
@@ -1028,40 +1083,18 @@ const cacheTrustScores = async () => {
         if(DEBUG == 'true' || index % 20 === 0) {
             console.log(`🟢 Cached Chunk#${parseInt(index/CHUNK_SIZE)} | Avg Time: ${parseFloat(avg(times)).toFixed(3)}s`);
         }
+
     }
+    client.close();
+
     console.log(`⚠️ erroredAddresses ${erroredAddresses}`);
 
 }
 
-const validateSchema = async () =>{
-    const threadClient = await getClient();
-    const threadId = ThreadID.fromString(TEXTILE_THREADID);
-    const snapshot_cached = await threadClient.find(threadId, 'cachedTrustScores', {});
-
-    let arr = snapshot_cached.filter((e)=>{
-        return Object.keys(e).includes('score') === false;
-    })
-
-    arr = arr.map((e)=>{
-        return e._id;
-    })
-
-    console.log('validateSchema', arr.length);
-
-    arr = snapshot_cached.filter((e)=>{
-        return Object.keys(e?.coinvise).includes('tokensCreated') === false;
-    })
-
-    arr = arr.map((e)=>{
-        return e._id;
-    })
-
-    console.log('validateSchema2', arr.length);
-}
 
 const cacheTrustScoresManual = async (addresses = []) => {
 
-    // addresses = addresses.slice(1063, addresses.length)
+    // addresses = addresses.slice(15263, addresses.length)
     const threadClient = await getClient();
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
@@ -1076,44 +1109,40 @@ const cacheTrustScoresManual = async (addresses = []) => {
 
     console.log(`GLOBAL_MATIC_PRICE:${GLOBAL_MATIC_PRICE}$`,`GLOBAL_ETH_PRICE:${GLOBAL_ETH_PRICE}$`);
 
-    for (let index = 0; index < addresses.length; index++) {
-        let data = await getTrustScore(addresses[index]);
-        console.log(data);
-        await threadClient.save(threadId, 'cachedTrustScores', [{
-            '_id': getAddress(addresses[index]),
-            ...data
-        }]);
-        console.log(`🟢 Cached ${index}`, data.score);
-    }
+    MongoClient.connect(MONGODB_URI, async function(err, client) {
+        if(err) throw err;
+        let db = client.db('convo');
+
+        for (let index = 39589; index < addresses.length; index++) {
+            let data = await getTrustScore(addresses[index]);
+            // console.log(data);
+            // await threadClient.save(threadId, 'cachedTrustScores', [{
+            //     '_id': getAddress(addresses[index]),
+            //     ...data
+            // }]);
+
+            await db.collection('cachedTrustScores').insertOne({
+                '_id': getAddress(addresses[index]),
+                ...data
+            });
+
+            console.log(`🟢 Cached ${index}`, data.score);
+        }
+
+        client.close();
+    });
 
 }
 
-const updateSchema = async (addresses = []) => {
-
-    const threadClient = await getClient();
-    const threadId = ThreadID.fromString(TEXTILE_THREADID);
-
-    let snapshot_cached = await threadClient.find(threadId, 'comments', {});
-    console.log(snapshot_cached.length);
-    // console.log(snapshot_cached[0]);
-    let donot = snapshot_cached.filter(e=>{return e.replyTo != ""});
-
-    console.log(donot.length)
-    // for (let index = 0; index < donot.length; index++) {
-
-    //     let docs = [{
-    //         ...donot[index],
-    //         'replyTo':""
-    //     }]
-    //     await threadClient.save(threadId, 'comments', docs);
-    //     console.log(index)
-    // }
+const cacheAddsFromFile = async(fileName = "") => {
+    var adds = JSON.parse(fs.readFileSync(path.resolve(__dirname, fileName), 'utf8'));
+    await cacheTrustScoresManual(adds);
 }
 
 cacheTrustScores().then(()=>{
     console.log("✅ Cached all trust Scores");
 });
 
-// validateSchema();
-// updateSchema();
-// cacheTrustScoresManual(["0x12c74bd8ed1f02f9d9a6f160dd8a1574c1b2fa50", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"]);
+// cacheAddsFromFile();
+
+// cacheTrustScoresManual(["0x0000000000000000000000000900000000000000"])

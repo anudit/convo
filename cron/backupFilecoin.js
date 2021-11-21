@@ -153,21 +153,43 @@ async function pinToPinata(hash) {
 
 }
 
+// async function pinToSlate(hash) {
+//     try {
+//         const url = 'https://uploads.slate.host/api/v2/public/upload-by-cid';
+//         const response = await fetch(url, {
+//           method: 'POST',
+//           headers: { 'Content-Type': "application/json", Authorization: SLATE_API_KEY },
+//           body: JSON.stringify({
+//             data: {
+//               cid: hash,
+//               filename: `Backup-${prettyDate(Date.now())}`,
+//             },
+//           }),
+//         });
+
+//     }
+//     catch (error) {
+//         console.log('pinToSlate.error', error);
+//     }
+// }
+
 async function pinToInfura(hash) {
+    try {
 
-    const response = await fetch(`https://ipfs.infura.io:5001/api/v0/pin/add?arg=${hash}`, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        redirect: 'follow',
-        body: JSON.stringify({})
-    });
-    let json = await response.json();
+        const response = await fetch(`https://ipfs.infura.io:5001/api/v0/pin/add?hash=${hash}&pin=true`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            redirect: 'follow',
+            body: JSON.stringify({})
+        });
+        let json = await response.json();
 
-    return json;
-
+        return json;
+    }
+    catch (error) {
+        console.log('pinToInfura.error', error);
+    }
 }
 
 const client = new NFTStorage({ token: NFTSTORAGE_KEY })

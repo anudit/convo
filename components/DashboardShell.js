@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useClipboard, Menu, MenuButton, MenuList, MenuItem, Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag  } from "@chakra-ui/react";
+import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag  } from "@chakra-ui/react";
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { GithubIcon, TheConvoSpaceIcon, DisconnectIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, CeloIcon, OKExIcon, HomeIcon } from '@/public/icons';
-import { ChevronDownIcon, CopyIcon, InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
-import { isBlockchainAddress, truncateAddress } from '@/utils/stringUtils';
+import { GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, CeloIcon, OKExIcon, HomeIcon } from '@/public/icons';
+import { InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
+import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
 
 const PageShell = ({title, children}) => {
@@ -42,11 +42,10 @@ PageShell.propTypes = {
 
 const DashboardShell = ({title, active, children}) => {
 
-    const { prettyName, connectedWallet, connectWallet, signerAddress, disconnectWallet, isPortisLoading, connectedChain } = useContext(Web3Context);
+    const { connectWallet, signerAddress, isPortisLoading, connectedChain } = useContext(Web3Context);
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [walletInfo, setWalletInfo] = useState('');
-    const { hasCopied, onCopy } = useClipboard(signerAddress)
 
     // Not logged in
     if (signerAddress === ""){

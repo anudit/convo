@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link, Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue, Text, ButtonGroup, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { Link, Tooltip, Flex, Stack, IconButton, useColorMode, useColorModeValue, Text, ButtonGroup, Button} from "@chakra-ui/react";
 import { CloseIcon,HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { Web3Context } from '@/contexts/Web3Context';
 
@@ -170,7 +170,7 @@ const NavLinks = () => {
     const { toggleColorMode } = useColorMode();
 
     const web3Context = useContext(Web3Context)
-    const {connectWallet, disconnectWallet, signerAddress, prettyName} = web3Context;
+    const {connectWallet, signerAddress} = web3Context;
 
     return (
         <>
