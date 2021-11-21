@@ -1,7 +1,9 @@
 name: "Cache Trust Scores"
 on:
+  push:
+    branches: [ main ]
   schedule:
-    - cron: "0 0,12 * * *" # Every day.
+    - cron: "0 0,12 * * *" # Every 12 hrs.
 
 jobs:
   convo_crons:
@@ -26,5 +28,6 @@ jobs:
         TEXTILE_PK: ${{ secrets.TEXTILE_PK }}
         TEXTILE_HUB_KEY_DEV: ${{ secrets.TEXTILE_HUB_KEY_DEV }}
         PK_ORACLE: ${{ secrets.PK_ORACLE }}
+        CNVSEC_ID: ${{ secrets.CNVSEC_ID }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
       run: node ./cron/cacheTrustScore.js
-

@@ -1,5 +1,7 @@
 name: "Backup to Filecoin"
 on:
+  push:
+    branches: [ main ]
   schedule:
     - cron: "0 0,8,16 * * *" # Every 8 hours.
 
@@ -29,4 +31,5 @@ jobs:
         PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
         PINATA_API_SECRET: ${{ secrets.PINATA_API_SECRET }}
         REDIS_CONNECTION: ${{ secrets.REDIS_CONNECTION }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
       run: node ./cron/backupFilecoin.js

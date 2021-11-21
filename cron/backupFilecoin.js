@@ -1,10 +1,12 @@
 require('dotenv').config({ path: '.env.local' })
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const { NFTStorage, Blob } = require("nft.storage");
-const { Client, PrivateKey, ThreadID, Where} = require('@textile/hub');
+const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const Redis = require("ioredis");
+const { MongoClient } = require('mongodb');
 
-const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET, REDIS_CONNECTION} = process.env;
+
+const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, MONGODB_URI, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET, REDIS_CONNECTION} = process.env;
 
 const getClient = async () =>{
 
@@ -55,27 +57,12 @@ async function getRedisData() {
 
 }
 
-const getAllTrustScoreData = async (threadClient) => {
+const getAllTrustScoreData = async () => {
 
-    const querySize = 60000;
-
-    let completeData = [];
-    let snapshot = [];
-    let skip = 0;
-
-    do {
-
-        const query = new Where(`a`).eq(true).limitTo(querySize).skipNum(skip);
-        query.ands = [];
-        const threadId = ThreadID.fromString(TEXTILE_THREADID);
-        snapshot = await threadClient.find(threadId, 'cachedTrustScores', query);
-        completeData = completeData.concat(snapshot);
-        skip+=querySize;
-        console.log('cachedTrustScores.got:', snapshot.length);
-
-    } while (snapshot.length > 0);
-
-    console.log('cachedTrustScores.length:', completeData.length);
+    const client = await MongoClient.connect(MONGODB_URI);
+    let db = client.db('convo');
+    let coll = db.collection('cachedTrustScores');
+    let completeData = await coll.find().toArray();
 
     return completeData;
 
@@ -91,7 +78,7 @@ const getData = async () =>{
     console.log("🟡 snapshot.threads");
     let snapshot_subscribers = await threadClient.find(threadId, 'subscribers', {});
     console.log("🟡 snapshot.subscribers");
-    let snapshot_cachedTrustScores = await getAllTrustScoreData(threadClient);
+    let snapshot_cachedTrustScores = await getAllTrustScoreData();
     console.log("🟡 snapshot.cachedTrustScores");
     let snapshot_bridge = await threadClient.find(threadId, 'bridge', {});
     console.log("🟡 snapshot.bridge");
@@ -110,7 +97,7 @@ const getData = async () =>{
 
 async function pinToPinata(hash) {
 
-    const pinlist = await fetch(`https://api.pinata.cloud/data/pinList?status=all&pageLimit=1000`, {
+    const pinlist = await fetch(`https://api.pinata.cloud/data/pinList?status=pinned&pageLimit=1000`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -176,7 +163,7 @@ async function pinToPinata(hash) {
 async function pinToInfura(hash) {
     try {
 
-        const response = await fetch(`https://ipfs.infura.io:5001/api/v0/pin/add?hash=${hash}&pin=true`, {
+        const response = await fetch(`https://ipfs.infura.io:5001/api/v0/pin/add?hash=${hash}&arg=${hash}&pin=true`, {
             method: 'POST',
             mode: 'cors',
             headers: { 'Content-Type': 'application/json' },

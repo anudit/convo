@@ -345,7 +345,7 @@ const DashboardShell = ({title, active, children}) => {
                             >
                                 <BridgeIcon mr={3} boxSize="20px"/>
                                 <Text display={{base:"none", md:"block"}} fontSize="sm">
-                                    Bridge <ExternalIcon ml={2}/>
+                                    Bridge <Tag size="sm" ml={2}>βeta</Tag>
                                 </Text>
                             </Flex>
                         </Link>
