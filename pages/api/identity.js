@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
 import withApikey from "@/middlewares/withApikey";
-import { MongoClient } from 'mongodb';
+const mongoClientPromise = require('@/lib/mongo-db');
 
 async function calculateScore(address) {
 
@@ -249,7 +249,8 @@ const handler = async(req, res) => {
 
         if (validatedAddress !== ""){
 
-            const client = await MongoClient.connect(process.env.MONGODB_URI);
+            const client = await mongoClientPromise;
+
             if (req.query?.noCache == 'true') {
                 let scoreData = await calculateScore(validatedAddress);
                 if (scoreData?.score > 0){

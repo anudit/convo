@@ -19,6 +19,7 @@ module.exports = (phase) => {
           config.resolve.fallback.fs = false;
           config.resolve.fallback.net = false;
           config.resolve.fallback.tls = false;
+          config.resolve.fallback.dns = false;
         }
         config.mode = 'development'
         return config;
@@ -33,6 +34,7 @@ module.exports = (phase) => {
           config.resolve.fallback.fs = false;
           config.resolve.fallback.net = false;
           config.resolve.fallback.tls = false;
+          config.resolve.fallback.dns = false;
         }
         config.mode = 'production'
         return config;
@@ -46,7 +48,6 @@ module.exports = (phase) => {
         esmExternals: false,
         optimizeCss: true
       },
-      target: "experimental-serverless-trace",
       poweredByHeader: false
     })
   }
