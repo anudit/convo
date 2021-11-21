@@ -261,7 +261,7 @@ const handler = async(req, res) => {
             else {
 
                 let coll = client.db('convo').collection('cachedTrustScores');
-                let cachedTrustScore = await coll.findOne({_id: validatedAddress}).toArray();
+                let cachedTrustScore = await coll.findOne({_id: validatedAddress});
 
                 // cache-hit
                 if (Boolean(cachedTrustScore) === true) {
