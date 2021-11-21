@@ -3,23 +3,18 @@ import { Text, Flex, Heading, Box } from "@chakra-ui/react";
 import PropTypes from 'prop-types';
 
 import PageShell from "@/components/PageShell";
-import { getCommentsCount, getThreadsCount, getUniqueUsersCount } from '@/lib/thread-db';
+import { getStats } from '@/lib/thread-db';
 
 export async function getStaticProps() {
 
-    let promiseArray = [
-        getCommentsCount(),
-        getThreadsCount(),
-        getUniqueUsersCount()
-    ]
-    let results = await Promise.all(promiseArray);
+    let results = await getStats();
 
     return {
         props: {
             statistics: {
-                commentsCount: results[0],
-                threadsCount: results[1],
-                uniqueUsersCount: results[2]
+                commentsCount: results.comments,
+                threadsCount: results.threads,
+                uniqueUsersCount: results.uniqueUsers
             }
         },
         revalidate: 1

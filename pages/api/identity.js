@@ -1,10 +1,9 @@
 import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data } from "@/lib/identity";
-import { getClient } from "@/lib/thread-db";
-import { Where , ThreadID} from '@textile/hub';
 import { ethers } from "ethers";
 import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
 import withApikey from "@/middlewares/withApikey";
+import { MongoClient } from 'mongodb';
 
 async function calculateScore(address) {
 
@@ -178,14 +177,20 @@ async function calculateScore(address) {
     return final;
 }
 
-async function setCache(address, scoreData) {
+async function setCache(client, address, scoreData) {
 
-    let threadClient = await getClient();
-    const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-    await threadClient.save(threadId, 'cachedTrustScores', [{
-        '_id': getAddress(address),
+    let coll = client.db('convo').collection('cachedTrustScores');
+
+    let newDoc = {
+        _id: getAddress(address),
         ...scoreData
-    }]);
+    }
+    await coll.updateOne(
+        { _id : getAddress(address)},
+        { $set: newDoc },
+        { upsert: true }
+    )
+
 }
 
 async function ensToAddress(ensAddress){
@@ -244,27 +249,31 @@ const handler = async(req, res) => {
 
         if (validatedAddress !== ""){
 
+            const client = await MongoClient.connect(process.env.MONGODB_URI);
             if (req.query?.noCache == 'true') {
                 let scoreData = await calculateScore(validatedAddress);
-                setCache(getAddress(validatedAddress), scoreData);
+                if (scoreData?.score > 0){
+                    setCache(client, getAddress(validatedAddress), scoreData);
+                }
                 return res.status(200).json(scoreData);
             }
             else {
-                let threadClient = await getClient();
-                const threadId = ThreadID.fromString(process.env.TEXTILE_THREADID);
-                const query = new Where('_id').eq(getAddress(validatedAddress));
-                let cachedTrustScore = await threadClient.find(threadId, 'cachedTrustScores', query);
+
+                let coll = client.db('convo').collection('cachedTrustScores');
+                let cachedTrustScore = await coll.findOne({_id: validatedAddress}).toArray();
 
                 // cache-hit
-                if (cachedTrustScore.length > 0) {
+                if (Boolean(cachedTrustScore) === true) {
                     return res.status(200).json({
-                        ...cachedTrustScore[0]
+                        ...cachedTrustScore
                     });
                 }
                 // cache-miss
                 else {
                     let scoreData = await calculateScore(validatedAddress);
-                    setCache(validatedAddress, scoreData);
+                    if (scoreData?.score > 0){
+                        setCache(client, getAddress(validatedAddress), scoreData);
+                    }
                     return res.status(200).json(scoreData);
                 }
 
