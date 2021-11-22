@@ -288,6 +288,23 @@ async function getCyberconnectData(address){
     return data['data']['identity'];
 }
 
+async function getAge(address){
+    let data = await fetch("https://api.covalenthq.com/v1/1/address/"+address+"/transactions_v2/?key=ckey_docs&block-signed-at-asc=true&page-number=0&page-size=1").then(r=>{return r.json()});
+
+    if (data['data']['items'].length > 0){
+
+        let past = new Date(data['data']['items'][0]['block_signed_at']);
+        let now = new Date();
+        let days = parseInt(parseInt((now - past)/1000)/(3600*24));
+        return days;
+
+    }
+    else {
+        return 0
+    }
+
+}
+
 async function getCoordinapeData(address) {
     let response = await fetch(`https://coordinape.me/api/profile/${address}`, {
         "headers": {
@@ -955,6 +972,7 @@ async function calculateScore(address) {
         timeit(getCyberconnectData, [address]),
         timeit(getRss3Data, [address]),
         timeit(getAaveData, [address, tp]),
+        timeit(getAge, [address]),
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -1032,6 +1050,7 @@ async function calculateScore(address) {
         'cyberconnect':  results[21]?.value,
         'rss3': results[22]?.value,
         'aave': results[23]?.value,
+        'age': results[24]?.value,
     };
 
     if(results[0].value === true){ // poh
@@ -1132,7 +1151,7 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 10000);
+    addresses = getArraySample(addresses, 15000);
     console.log('addresses.length', addresses.length);
 
     uniswapData = await getAllUniswapSybilData();
