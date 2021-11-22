@@ -177,6 +177,102 @@ async function checkPoH(address, provider) {
 
 }
 
+async function getAaveData(address, providerEth) {
+
+    const providerMatic = new ethers.providers.JsonRpcProvider("https://polygon-rpc.com/");
+    const providerAvalanche = new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc');
+    const lendingPoolAbi = [{
+        "inputs":[
+           {
+              "internalType":"address",
+              "name":"user",
+              "type":"address"
+           }
+        ],
+        "name":"getUserAccountData",
+        "outputs":[
+           {
+              "internalType":"uint256",
+              "name":"totalCollateralETH",
+              "type":"uint256"
+           },
+           {
+              "internalType":"uint256",
+              "name":"totalDebtETH",
+              "type":"uint256"
+           },
+           {
+              "internalType":"uint256",
+              "name":"availableBorrowsETH",
+              "type":"uint256"
+           },
+           {
+              "internalType":"uint256",
+              "name":"currentLiquidationThreshold",
+              "type":"uint256"
+           },
+           {
+              "internalType":"uint256",
+              "name":"ltv",
+              "type":"uint256"
+           },
+           {
+              "internalType":"uint256",
+              "name":"healthFactor",
+              "type":"uint256"
+           }
+        ],
+        "stateMutability":"view",
+        "type":"function"
+    }]
+
+    let mainMarketAddress = new ethers.Contract("0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9", lendingPoolAbi, providerEth);
+    let ammMarketAddress = new ethers.Contract("0x7937d4799803fbbe595ed57278bc4ca21f3bffcb", lendingPoolAbi, providerEth);
+    let polygonMarketAddress = new ethers.Contract("0x8dff5e27ea6b7ac08ebfdf9eb090f32ee9a30fcf", lendingPoolAbi, providerMatic);
+    let avalancheMarketAddress = new ethers.Contract("0x4F01AeD16D97E3aB5ab2B501154DC9bb0F1A5A2C", lendingPoolAbi, providerAvalanche);
+
+    let promiseArray = [
+        mainMarketAddress.getUserAccountData(address),
+        ammMarketAddress.getUserAccountData(address),
+        polygonMarketAddress.getUserAccountData(address),
+        avalancheMarketAddress.getUserAccountData(address)
+    ];
+
+    let resp = await Promise.allSettled(promiseArray);
+    let totalHf = 0;
+    let data = []
+    for (let index = 0; index < resp.length; index++) {
+        const e = resp[index];
+        let hf = parseInt(e.value.healthFactor) / (10**18);
+        let isValidHf = hf < 10000 ? true : false;
+        if (isValidHf === true){
+            totalHf += hf;
+            data.push({
+                totalCollateralETH: ethers.utils.formatEther(e.value.totalCollateralETH),
+                totalDebtETH: ethers.utils.formatEther(e.value.totalDebtETH),
+                availableBorrowsETH: ethers.utils.formatEther(e.value.availableBorrowsETH),
+                currentLiquidationThreshold: ethers.utils.formatEther(e.value.currentLiquidationThreshold),
+                ltv: ethers.utils.formatEther(e.value.ltv),
+                healthFactor: hf
+            });
+        }
+        else {
+            data.push({
+                healthFactor: false
+            });
+        }
+    }
+
+    let dataResp = {
+        totalHf,
+        mainMarket: data[0],
+        ammMarket: data[1],
+        polygonMarket: data[2],
+        avalancheMarket: data[3],
+    };
+    return dataResp;
+}
+
 async function getCyberconnectData(address){
     let data = await fetch("https://api.cybertino.io/connect/", {
     "headers": {
@@ -857,7 +953,8 @@ async function calculateScore(address) {
         timeit(getPolygonData, [address]),
         timeit(getShowtimeData, [address]),
         timeit(getCyberconnectData, [address]),
-        timeit(getRss3Data, [address])
+        timeit(getRss3Data, [address]),
+        timeit(getAaveData, [address, tp]),
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -934,6 +1031,7 @@ async function calculateScore(address) {
         'showtime':  results[20]?.value,
         'cyberconnect':  results[21]?.value,
         'rss3': results[22]?.value,
+        'aave': results[23]?.value,
     };
 
     if(results[0].value === true){ // poh
@@ -1034,17 +1132,15 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 5000);
+    addresses = getArraySample(addresses, 10000);
     console.log('addresses.length', addresses.length);
 
     uniswapData = await getAllUniswapSybilData();
     gitcoinData = await getAllGitcoinData();
 
-    let matic_price_data = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}) ;
-    GLOBAL_MATIC_PRICE = parseFloat(matic_price_data[0].price);
-
-    let eth_price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
+    let eth_price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH,MATIC&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
     GLOBAL_ETH_PRICE = eth_price_data['data']['items'][0]['quote_rate'];
+    GLOBAL_MATIC_PRICE = eth_price_data['data']['items'][1]['quote_rate'];
 
     console.log(`GLOBAL_MATIC_PRICE:${GLOBAL_MATIC_PRICE}$`,`GLOBAL_ETH_PRICE:${GLOBAL_ETH_PRICE}$`);
 
@@ -1101,11 +1197,9 @@ const cacheTrustScoresManual = async (addresses = []) => {
     uniswapData = await getAllUniswapSybilData();
     gitcoinData = await getAllGitcoinData();
 
-    let matic_price_data = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=d6c838c7a5c87880a3228bb913edb32a0e4f2167&ids=MATIC&interval=1d&convert=USD&per-page=100&page=1%27`).then(async (data)=>{return data.json()}) ;
-    GLOBAL_MATIC_PRICE = parseFloat(matic_price_data[0].price);
-
-    let eth_price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
+    let eth_price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH,MATIC&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
     GLOBAL_ETH_PRICE = eth_price_data['data']['items'][0]['quote_rate'];
+    GLOBAL_MATIC_PRICE = eth_price_data['data']['items'][1]['quote_rate'];
 
     console.log(`GLOBAL_MATIC_PRICE:${GLOBAL_MATIC_PRICE}$`,`GLOBAL_ETH_PRICE:${GLOBAL_ETH_PRICE}$`);
 
@@ -1113,18 +1207,19 @@ const cacheTrustScoresManual = async (addresses = []) => {
         if(err) throw err;
         let db = client.db('convo');
 
-        for (let index = 39589; index < addresses.length; index++) {
+        for (let index = 0; index < addresses.length; index++) {
             let data = await getTrustScore(addresses[index]);
-            // console.log(data);
+
+            console.log(data);
             // await threadClient.save(threadId, 'cachedTrustScores', [{
             //     '_id': getAddress(addresses[index]),
             //     ...data
             // }]);
 
-            await db.collection('cachedTrustScores').insertOne({
-                '_id': getAddress(addresses[index]),
-                ...data
-            });
+            // await db.collection('cachedTrustScores').insertOne({
+            //     '_id': getAddress(addresses[index]),
+            //     ...data
+            // });
 
             console.log(`🟢 Cached ${index}`, data.score);
         }
@@ -1138,11 +1233,10 @@ const cacheAddsFromFile = async(fileName = "") => {
     var adds = JSON.parse(fs.readFileSync(path.resolve(__dirname, fileName), 'utf8'));
     await cacheTrustScoresManual(adds);
 }
+// cacheAddsFromFile();
 
 cacheTrustScores().then(()=>{
     console.log("✅ Cached all trust Scores");
 });
 
-// cacheAddsFromFile();
-
-// cacheTrustScoresManual(["0x0000000000000000000000000900000000000000"])
+// cacheTrustScoresManual([""])

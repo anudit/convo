@@ -1,4 +1,4 @@
-import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data } from "@/lib/identity";
+import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData } from "@/lib/identity";
 import { ethers } from "ethers";
 import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
@@ -35,7 +35,8 @@ async function calculateScore(address) {
         getPolygonData(address),
         getShowtimeData(address),
         getCyberconnectData(address),
-        getRss3Data(address)
+        getRss3Data(address),
+        getAaveData(address, tp)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -74,7 +75,7 @@ async function calculateScore(address) {
             'ownerships': results[13]?.value?.ownerships,
             'hides': results[13]?.value?.hides,
             'followers': results[13]?.value?.followers,
-            'followings': results[13]?.value?.followings,
+            'following': results[13]?.value?.followings,
             'likes': results[13]?.value?.likes
         },
         'knownorigin': {
@@ -107,7 +108,8 @@ async function calculateScore(address) {
         'polygon':  results[22]?.value,
         'showtime':  results[23]?.value,
         'cyberconnect':  results[24]?.value,
-        'rss3':  results[25]?.value
+        'rss3':  results[25]?.value,
+        'aave':  results[26]?.value,
     };
 
     if(results[0].value === true){ // poh
@@ -131,7 +133,7 @@ async function calculateScore(address) {
     if(Boolean(results[6].value) === true){ // unstoppable domains
         score += 10;
     }
-    if(results[7].value?.length > 0){ // uniswap sybil
+    if(results[7].value?.includes(getAddress(address)) === true){ // uniswap sybil
         score += 10;
     }
     if( Boolean(results[8].value?.totalDaos) === true && parseInt(results[8].value.totalDaos)> 0){ // deepdao

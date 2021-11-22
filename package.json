@@ -51,7 +51,7 @@
     "near-api-js": "^0.43.1",
     "near-cli": "^2.2.0",
     "next": "^12.0.4",
-    "next-pwa": "^5.4.0",
+    "next-pwa": "^5.4.1",
     "nft.storage": "^4.0.1",
     "node-fetch": "^3.1.0",
     "prop-types": "^15.7.2",

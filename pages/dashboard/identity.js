@@ -41,6 +41,7 @@ import polygon from '../../public/images/polygon.webp';
 import showtime from '../../public/images/showtime.webp';
 import cyberconnect from '../../public/images/cyberconnect.webp';
 import rss3 from '../../public/images/rss3.webp';
+import aave from '../../public/images/aave.webp';
 
 const IdentitySection = () => {
 
@@ -63,7 +64,9 @@ const IdentitySection = () => {
   async function refreshScore(){
     setTrustScoreLoading(true);
     let data = await fetcher(`/api/identity?address=${signerAddress}&noCache=true&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET", {});
+    console.log(data);
     setTrustScore(data?.score);
+    setTrustScoreData(data);
     setTrustScoreLoading(false);
   }
 
@@ -123,6 +126,9 @@ const IdentitySection = () => {
                   </WrapItem>
                   <WrapItem>
                     <PolygonCard trustScoreData={trustScoreData} />
+                  </WrapItem>
+                  <WrapItem>
+                    <AaveCard trustScoreData={trustScoreData} />
                   </WrapItem>
                   <WrapItem>
                     <DeepdaoCard trustScoreData={trustScoreData} />
@@ -888,6 +894,18 @@ const PolygonCard = ({trustScoreData}) => {
   );
 };
 PolygonCard.propTypes = propTypes
+
+const AaveCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={aave}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.aave?.totalHf) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.aave.com/">Explore Aave</chakra.p></>) : (<><Text mr={1}>Health Factor {parseFloat(trustScoreData?.aave?.totalHf).toFixed(2)}</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+AaveCard.propTypes = propTypes
+
 
 const ShowtimeCard = ({trustScoreData}) => {
   return (
