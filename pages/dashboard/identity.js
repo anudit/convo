@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import Image from 'next/image';
 import { useToast, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, IconButton, Select, Spinner, Image as ChakraImage } from "@chakra-ui/react";
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalFooter, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
-import { AddIcon, DeleteIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon, ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons';
 import useSWR from 'swr';
 import QRCode from "react-qr-code";
 import { isAddress } from 'ethers/lib/utils';
@@ -42,6 +42,7 @@ import showtime from '../../public/images/showtime.webp';
 import cyberconnect from '../../public/images/cyberconnect.webp';
 import rss3 from '../../public/images/rss3.webp';
 import aave from '../../public/images/aave.webp';
+import context from '../../public/images/context.webp';
 
 const IdentitySection = () => {
 
@@ -49,6 +50,8 @@ const IdentitySection = () => {
   const [trustScoreData, setTrustScoreData] = useState(null);
   const [trustScore, setTrustScore] = useState(0);
   const [trustScoreLoading, setTrustScoreLoading] = useState(false);
+
+  const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
     if (isAddress(signerAddress) === true){
@@ -75,11 +78,12 @@ const IdentitySection = () => {
           <Flex direction="column">
             <Flex direction="column" align="center">
               <Flex
-                direction="row"
+                direction="column"
                 w={{base:"100%"}}
                 maxW="600px"
                 m={4}
-                padding={8}
+                px={8}
+                py={8}
                 color={useColorModeValue("black", "white")}
                 backgroundColor={useColorModeValue("#ececec30", "#3c3c3c30")}
                 borderColor={useColorModeValue("gray.200", "#121212")}
@@ -93,97 +97,112 @@ const IdentitySection = () => {
                 textAlign="center"
                 alignItems="center"
               >
-                <Heading
-                  bgClip="text"
-                  backgroundImage="url('/images/gradient.webp')"
-                  backgroundSize="cover"
-                >
-                  Your Trust Score is {trustScore}
-                </Heading>
+                <Flex flexDirection="row" alignItems="center">
+                  <Heading
+                    bgClip="text"
+                    backgroundImage="url('/images/gradient.webp')"
+                    backgroundSize="cover"
+                  >
+                    Your Trust Score is {trustScore}
+                  </Heading>
 
-                <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={refreshScore} disabled={trustScoreLoading} title="Re-Index Score"/>
+                  <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={refreshScore} disabled={trustScoreLoading} title="Re-Index Score"/>
+                </Flex>
+                <Flex flexDirection="row" mt={4}>
+                  <InputGroup>
+                    <Input placeholder="Search" onChange={(e)=>{
+                      setSearchString(e.currentTarget.value)
+                    }} />
+                    <InputRightElement>
+                      <SearchIcon/>
+                    </InputRightElement>
+                  </InputGroup>
+                </Flex>
               </Flex>
             </Flex>
             <Flex direction={{base:"column", md: "row"}}>
               <Wrap>
-                  <WrapItem>
-                    <SybilCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <IdxCard />
-                  </WrapItem>
-                  <WrapItem>
-                    <PoHCard trustScoreData={trustScoreData}/>
-                  </WrapItem>
-                  <WrapItem>
-                    <BrightIdCard />
-                  </WrapItem>
-                  <WrapItem>
-                    <CeloCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <GitcoinCard trustScoreData={trustScoreData}/>
-                  </WrapItem>
-                  <WrapItem>
-                    <PolygonCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
+                  <Item searchString={searchString} tags={['aave','finance', 'defi']}>
                     <AaveCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <DeepdaoCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <BoardroomCard setTrustScore={setTrustScore}/>
-                  </WrapItem>
-                  <WrapItem>
-                    <RabbitholeCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <CoordinapeCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <ENSCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <UdCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <IdenaCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <CyberconnectCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <Rss3Card trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <MirrorCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <ShowtimeCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <RaribleCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <SuperrareCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <FoundationCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
+                  </Item>
+                  <Item searchString={searchString} tags={['art','nft', 'async']}>
                     <AsyncartCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <KnownoriginCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
-                    <ZoraCard trustScoreData={trustScoreData} />
-                  </WrapItem>
-                  <WrapItem>
+                  </Item>
+                  <Item searchString={searchString} tags={['governance','boardroom', 'dao']}>
+                    <BoardroomCard setTrustScore={setTrustScore}/>
+                  </Item>
+                  <Item searchString={searchString} tags={['identity', 'bright', 'id']}>
+                    <BrightIdCard />
+                  </Item>
+                  <Item searchString={searchString} tags={['celo', 'verified','attestations']}>
+                    <CeloCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['art','nft', 'coinvise', 'creator']}>
                     <CoinviseCard trustScoreData={trustScoreData} />
-                  </WrapItem>
+                  </Item>
+                  <Item searchString={searchString} tags={['nft', 'context']}>
+                    <ContextCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['governance','dao', 'coordinape']}>
+                    <CoordinapeCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['connect','cyberconnect', 'social']}>
+                    <CyberconnectCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['dao','governanace', 'deep', 'deepdao']}>
+                    <DeepdaoCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['ens','ethereum name service']}>
+                    <ENSCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['nft','art','foundation']}>
+                    <FoundationCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['gitcoin', 'open source', 'funding']}>
+                    <GitcoinCard trustScoreData={trustScoreData}/>
+                  </Item>
+                  <Item searchString={searchString} tags={['id', 'identity', 'idena', 'proof of person']}>
+                    <IdenaCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['idx', 'identity', 'ceramic', 'self.id']}>
+                    <IdxCard />
+                  </Item>
+                  <Item searchString={searchString} tags={['nft', 'art', 'knownorigin']}>
+                    <KnownoriginCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['mirror', 'writing']}>
+                    <MirrorCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['polygon', 'id', 'blockchain']}>
+                    <PolygonCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['identity', 'proof of humanity']}>
+                    <PoHCard trustScoreData={trustScoreData}/>
+                  </Item>
+                  <Item searchString={searchString} tags={['play to earn', 'rabbithole']}>
+                    <RabbitholeCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['nft', 'art', 'rarible']}>
+                    <RaribleCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['rss3', 'identity']}>
+                    <Rss3Card trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['nft', 'art', 'showtime']}>
+                    <ShowtimeCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['nft', 'art', 'superrare']}>
+                    <SuperrareCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['uniswap', 'dao', 'governance', 'sybil']}>
+                    <SybilCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['unstoppable domains']}>
+                    <UdCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['nft', 'art', 'zora']}>
+                    <ZoraCard trustScoreData={trustScoreData} />
+                  </Item>
                   {/* <PoapSection mt={2}/> */}
               </Wrap>
             </Flex>
@@ -939,3 +958,28 @@ const Rss3Card = ({trustScoreData}) => {
   );
 };
 Rss3Card.propTypes = propTypes
+
+const ContextCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={context}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.context?.folowers) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://context.app/">Follow on Context</chakra.p></>) : (<><Text mr={1}>Connected on Context</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+ContextCard.propTypes = propTypes
+
+
+const Item = ({children, searchString = "", tags = []}) => {
+  return (
+      <WrapItem display={searchString === "" || tags.some(tag => tag.includes(searchString.toLowerCase())) === true ? "flex" : "none"}>
+        {children}
+      </WrapItem>
+  );
+};
+Item.propTypes = {
+  tags: PropTypes.array,
+  searchString: PropTypes.string,
+  children: PropTypes.node
+}

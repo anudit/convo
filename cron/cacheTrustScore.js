@@ -305,6 +305,16 @@ async function getAge(address){
 
 }
 
+async function getContextData(address){
+    let data = await fetch("https://context.app/api/profile/"+address).then(r=>{return r.json()});
+
+    return {
+        "followerCount": data.followerCount,
+        "followingCount": data.followingCount
+    };
+
+}
+
 async function getCoordinapeData(address) {
     let response = await fetch(`https://coordinape.me/api/profile/${address}`, {
         "headers": {
@@ -973,6 +983,7 @@ async function calculateScore(address) {
         timeit(getRss3Data, [address]),
         timeit(getAaveData, [address, tp]),
         timeit(getAge, [address]),
+        timeit(getContextData, [address]),
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -1051,6 +1062,7 @@ async function calculateScore(address) {
         'rss3': results[22]?.value,
         'aave': results[23]?.value,
         'age': results[24]?.value,
+        'context': results[25]?.value,
     };
 
     if(results[0].value === true){ // poh
@@ -1258,4 +1270,4 @@ cacheTrustScores().then(()=>{
     console.log("✅ Cached all trust Scores");
 });
 
-// cacheTrustScoresManual([""])
+// cacheTrustScoresManual(["0x1f98407aab862cddef78ed252d6f557aa5b0f00d", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"])

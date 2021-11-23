@@ -1,4 +1,4 @@
-import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData } from "@/lib/identity";
+import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData, getContextData } from "@/lib/identity";
 import { ethers } from "ethers";
 import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
@@ -36,7 +36,8 @@ async function calculateScore(address) {
         getShowtimeData(address),
         getCyberconnectData(address),
         getRss3Data(address),
-        getAaveData(address, tp)
+        getAaveData(address, tp),
+        getContextData(address)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -109,7 +110,8 @@ async function calculateScore(address) {
         'showtime':  results[23]?.value,
         'cyberconnect':  results[24]?.value,
         'rss3':  results[25]?.value,
-        'aave':  results[26]?.value
+        'aave':  results[26]?.value,
+        'context':  results[27]?.value
     };
 
     if(results[0].value === true){ // poh
