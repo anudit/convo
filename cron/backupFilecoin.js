@@ -5,7 +5,6 @@ const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const Redis = require("ioredis");
 const { MongoClient } = require('mongodb');
 
-
 const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, MONGODB_URI, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET, REDIS_CONNECTION} = process.env;
 
 const getClient = async () =>{
@@ -83,7 +82,7 @@ const getData = async () =>{
     let snapshot_bridge = await threadClient.find(threadId, 'bridge', {});
     console.log("🟡 snapshot.bridge");
     let redis_data = await getRedisData();
-    console.log("🟡 snapshot.data");
+    console.log("🟡 snapshot.redis_data");
 
     return {
         snapshot_comments,
@@ -106,7 +105,7 @@ async function pinToPinata(hash) {
         }
     }).then(res=>{return res.json()});
 
-    // Unpin Old Backups, keeping 2 latest ones.
+    // Unpin Old Backups, keeping 3 latest ones.
     for (let index = 2; index < pinlist['rows'].length; index++) {
         const hash = pinlist['rows'][index].ipfs_pin_hash;
         console.log(`Unpinning ${index+1}/${pinlist['rows'].length}`);
@@ -176,6 +175,7 @@ async function pinToInfura(hash) {
     }
     catch (error) {
         console.log('pinToInfura.error', error);
+        return "";
     }
 }
 
@@ -189,5 +189,6 @@ getData().then((data)=>{
         console.log("✅ Replicated Backup to Pinata");
         await pinToInfura(ipfsHash);
         console.log("✅ Replicated Backup to Infura");
+        process.exit(0);
     });
 })
