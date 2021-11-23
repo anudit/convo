@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { Link, Alert, AlertIcon, useToast, Button,InputGroup, Input,InputRightElement, InputLeftElement, Code, Flex, Text, useClipboard } from "@chakra-ui/react";
+import { Link, Alert, AlertIcon, useToast, Button,InputGroup, Input,InputRightElement, InputLeftElement, Flex, Text, useClipboard } from "@chakra-ui/react";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import Cookies from "js-cookie";
 
