@@ -152,7 +152,7 @@ const IdentitySection = () => {
                   <Item searchString={searchString} tags={['dao','governanace', 'deep', 'deepdao']}>
                     <DeepdaoCard trustScoreData={trustScoreData} />
                   </Item>
-                  <Item searchString={searchString} tags={['ens','ethereum name service']}>
+                  <Item searchString={searchString} tags={['ens','ethereum name service', 'domains']}>
                     <ENSCard trustScoreData={trustScoreData} />
                   </Item>
                   <Item searchString={searchString} tags={['nft','art','foundation']}>

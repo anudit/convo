@@ -95,7 +95,6 @@ const DeveloperSection = () => {
 
                 <Alert status="info" display="flex" flexDirection="column" width="100%" alignItems="flex-start">
                     <AlertIcon />
-                    <p>Your Early-Access API Key : <Code fontSize={18}>CONVO</Code> (deprecated). Get a new key below.</p>
                     <p>Each Account is Limited to 10 Keys.<br/></p>
                     <p>Each Account is Limited to 1M Requests Monthly.<br/></p>
                     <p><Link href="https://docs.theconvo.space/#support" isExternal >Please contact our Team if you need any help.</Link></p>

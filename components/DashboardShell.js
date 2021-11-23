@@ -412,7 +412,7 @@ const DashboardShell = ({title, active, children}) => {
                                 borderRadius="100px"
                             />
                         </Flex>
-                        <Flex as="a" href="https://gihtub.com/anudit/convo" target="_blank" h={{base: "50px", md:"50px"}} w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
+                        <Flex as="a" href="https://github.com/anudit/convo" target="_blank" h={{base: "50px", md:"50px"}} w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
                             <IconButton
                                 colorScheme={colorMode === 'light' ? "blackAlpha": "gray" }
                                 aria-label="Github"
