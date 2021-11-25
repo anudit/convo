@@ -111,7 +111,8 @@ async function calculateScore(address) {
         'cyberconnect':  results[24]?.value,
         'rss3':  results[25]?.value,
         'aave':  results[26]?.value,
-        'context':  results[27]?.value
+        'context':  results[27]?.value,
+        'arcx':  results[28]?.value
     };
 
     if(results[0].value === true){ // poh
@@ -158,6 +159,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[23]?.value?.verified) === true){ // showtime
         score += 10;
+    }
+    if(Boolean(results[28]?.value?.totalScore) === true){ // arcx
+        score += results[28]?.value?.totalScore;
     }
 
     // Coinvise

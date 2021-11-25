@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { MongoClient } = require('mongodb');
 
-const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID, MONGODB_URI } = process.env;
+const { ETHERSCAN_API_KEY, TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID, MONGODB_URI } = process.env;
 
 let GLOBAL_MATIC_PRICE = 0;
 let GLOBAL_ETH_PRICE = 0;
@@ -289,18 +289,36 @@ async function getCyberconnectData(address){
 }
 
 async function getAge(address){
-    let data = await fetch("https://api.covalenthq.com/v1/1/address/"+address+"/transactions_v2/?key=ckey_docs&block-signed-at-asc=true&page-number=0&page-size=1").then(r=>{return r.json()});
+    let data = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${ETHERSCAN_API_KEY}`).then(r=>{return r.json()});
 
-    if (data['data']['items'].length > 0){
-
-        let past = new Date(data['data']['items'][0]['block_signed_at']);
+    if (data['result'].length > 0){
+        let past = new Date(parseInt(data['result'][0].timeStamp)*1000);
         let now = new Date();
         let days = parseInt(parseInt((now - past)/1000)/(3600*24));
         return days;
-
     }
     else {
         return 0
+    }
+}
+
+async function getArcxData(address){
+    let data = await fetch("https://api.arcx.money/reputation/"+address).then(r=>{return r.json()});
+
+    let totalScore = 0;
+    let details = {};
+
+    for (let index = 0; index < data.length; index++) {
+        const scoreData = data[index];
+        if (scoreData['score'] !== null){
+            let sc = ((scoreData['score'] / (scoreData['metadata']['maxValue'] - scoreData['metadata']['minValue'])) * 10);
+            totalScore += sc;
+            details[scoreData['metadata']['name']] = sc;
+        }
+    }
+    return {
+        totalScore,
+        details
     }
 
 }
@@ -984,6 +1002,7 @@ async function calculateScore(address) {
         timeit(getAaveData, [address, tp]),
         timeit(getAge, [address]),
         timeit(getContextData, [address]),
+        timeit(getArcxData, [address])
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -1063,6 +1082,7 @@ async function calculateScore(address) {
         'aave': results[23]?.value,
         'age': results[24]?.value,
         'context': results[25]?.value,
+        'arcx': results[26]?.arcx,
     };
 
     if(results[0].value === true){ // poh
@@ -1112,6 +1132,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[20]?.value?.verified) === true){ // showtime
         score += 10;
+    }
+    if(Boolean(results[26]?.value?.totalScore) === true){ // showtime
+        score += results[26]?.value?.totalScore;
     }
 
     let coinviseScore = (
