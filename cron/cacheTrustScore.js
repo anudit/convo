@@ -383,7 +383,7 @@ async function getBoardroomData(address) {
         const doc = data['data'][index];
         if (doc?.proposalInfo?.currentState === 'executed'){
             totalVotes+=1;
-            if (doc.protocol in daos ===false ){
+            if (daos.includes(doc.protocol) === false ){
                 daos.push(doc.protocol);
             }
             votes.push({
@@ -449,7 +449,7 @@ async function getRabbitholeData(address = ""){
     let taskList = Object.keys(jsonData['taskData']['taskProgress']);
     let tasksCompleted = [];
 
-    for (let index = 0; index < taskList; index++) {
+    for (let index = 0; index < taskList.length; index++) {
         const taskData = jsonData['taskData']['taskProgress'][taskList[index]];
         if (taskData['points'] === taskData['progress']){
             tasksCompleted.push(taskList[index])
@@ -457,7 +457,7 @@ async function getRabbitholeData(address = ""){
     }
 
     return {
-        level : parseInt(jsonData.taskData?.level) - 1,
+        level : parseInt(jsonData.taskData?.level),
         tasksCompleted
     };
 
@@ -1256,7 +1256,7 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 7000);
+    addresses = getArraySample(addresses, 8000);
     console.log('addresses.length', addresses.length);
 
     uniswapData = await getAllUniswapSybilData();
@@ -1323,7 +1323,11 @@ const cacheTrustScoresManual = async (addresses = []) => {
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
 
     uniswapData = await getAllUniswapSybilData();
+    console.log('🟢 getAllUniswapSybilData')
     gitcoinData = await getAllGitcoinData();
+    console.log('🟢 getAllGitcoinData')
+    arcxData = await getAllArcxData();
+    console.log('🟢 getAllArcxData')
 
     let eth_price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH,MATIC&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
     GLOBAL_ETH_PRICE = eth_price_data['data']['items'][0]['quote_rate'];
@@ -1363,8 +1367,8 @@ const cacheAddsFromFile = async(fileName = "") => {
 }
 // cacheAddsFromFile();
 
-cacheTrustScores().then(()=>{
-    console.log("✅ Cached all trust Scores");
-});
+// cacheTrustScores().then(()=>{
+//     console.log("✅ Cached all trust Scores");
+// });
 
-// cacheTrustScoresManual(["0x1f98407aab862cddef78ed252d6f557aa5b0f00d", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"])
+cacheTrustScoresManual(["0xd26a3f686d43f2a62ba9eae2ff77e9f516d945b9", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"])

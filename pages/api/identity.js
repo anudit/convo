@@ -1,4 +1,4 @@
-import { getBoardroomData, getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData, getContextData, getAge, getRabbitholeData } from "@/lib/identity";
+import { getBoardroomData, getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData, getContextData, getAge, getRabbitholeData, getArcxData } from "@/lib/identity";
 import { ethers } from "ethers";
 import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
@@ -38,6 +38,7 @@ async function calculateScore(address) {
         getRss3Data(address),
         getAaveData(address, tp),
         getContextData(address),
+        getArcxData(address),
         getAge(address),
         getBoardroomData(address)
     ];
