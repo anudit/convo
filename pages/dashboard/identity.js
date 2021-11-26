@@ -43,6 +43,7 @@ import cyberconnect from '../../public/images/cyberconnect.webp';
 import rss3 from '../../public/images/rss3.webp';
 import aave from '../../public/images/aave.webp';
 import context from '../../public/images/context.webp';
+import arcx from '../../public/images/arcx.webp';
 
 const IdentitySection = () => {
 
@@ -125,11 +126,14 @@ const IdentitySection = () => {
                   <Item searchString={searchString} tags={['aave','finance', 'defi']}>
                     <AaveCard trustScoreData={trustScoreData} />
                   </Item>
+                  <Item searchString={searchString} tags={['defi','finance', 'arcx']}>
+                    <ArcxCard trustScoreData={trustScoreData} />
+                  </Item>
                   <Item searchString={searchString} tags={['art','nft', 'async']}>
                     <AsyncartCard trustScoreData={trustScoreData} />
                   </Item>
                   <Item searchString={searchString} tags={['governance','boardroom', 'dao']}>
-                    <BoardroomCard setTrustScore={setTrustScore}/>
+                    <BoardroomCard trustScoreData={trustScoreData} />
                   </Item>
                   <Item searchString={searchString} tags={['identity', 'bright', 'id']}>
                     <BrightIdCard />
@@ -216,45 +220,6 @@ const IdentitySection = () => {
 }
 
 export default IdentitySection;
-
-
-
-const BoardroomCard = ({setTrustScore}) => {
-
-  const web3Context = useContext(Web3Context);
-  const { signerAddress } = web3Context;
-
-  const [br, setBr] = useState(null);
-  useEffect(() => {
-
-    fetch(`https://api.boardroom.info/v1/voters/${signerAddress}/votes`)
-    .then(response => response.json())
-    .then((data)=>{
-      let count = 0;
-      for (let index = 0; index < data['data'].length; index++) {
-        const doc = data['data'][index];
-        if (doc?.proposalInfo?.currentState === 'executed'){
-          count+=1;
-        }
-      }
-      setBr(count);
-      if (br === null){
-        setTrustScore((e)=>{return e+count})
-      }
-    });
-  });
-
-    return (
-      <IdentityCard image_url={boardroom}>
-        {
-          br === null ? "Loading" : Boolean(br) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://boardroom.info/">Govern on Boardroom</chakra.p></>) : (<><Text mr={1}>Boardroom</Text><VerifiedIcon color="blue.400"/></>)
-        }
-      </IdentityCard>
-    );
-};
-BoardroomCard.propTypes = {
-  setTrustScore: PropTypes.func
-}
 
 const BrightIdCard = () => {
 
@@ -650,6 +615,18 @@ const MirrorCard = ({trustScoreData}) => {
 };
 MirrorCard.propTypes = propTypes
 
+const BoardroomCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url={boardroom}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.boardroom?.totalVotes) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://boardroom.info/">Govern on Boardroom</chakra.p></>) : (<><Text mr={1}>Boardroom</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+BoardroomCard.propTypes = propTypes
+
 const ENSCard = ({trustScoreData}) => {
   return (
     <IdentityCard image_url={ens}>
@@ -862,7 +839,7 @@ const RabbitholeCard = ({trustScoreData}) => {
     return (
       <IdentityCard image_url={rabbitholeimage}>
         {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData.rabbitHole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Level {trustScoreData?.rabbitHole}</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData.rabbitHole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Level {trustScoreData?.rabbitHole.level}</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -969,6 +946,18 @@ const ContextCard = ({trustScoreData}) => {
   );
 };
 ContextCard.propTypes = propTypes
+
+const ArcxCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={arcx}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.arcx?.totalScore) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://arcx.money/">Get your Passport</chakra.p></>) : (<><Text mr={1}>Connected on ArcX</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+ArcxCard.propTypes = propTypes
+
 
 
 const Item = ({children, searchString = "", tags = []}) => {

@@ -349,6 +349,19 @@ async function getContextData(address){
 
 }
 
+async function addressToEns(address, provider){
+
+    let resp = await provider.lookupAddress(address);
+
+    if (resp === null){
+        return false;
+    }
+    else {
+        return resp;
+    }
+
+}
+
 async function getCoordinapeData(address) {
     let response = await fetch(`https://coordinape.me/api/profile/${address}`, {
         "headers": {
@@ -996,14 +1009,12 @@ async function getAllGitcoinData(){
 }
 
 async function getDeepDaoData(address){
-    var requestOptions = {
-        method: 'GET',
-        headers: Headers({ "x-api-key": "LfYMTHGu6J7oTEXT1JDkZ+SrbSD5ETfaXguV0mL44rMowgRsClZwaENG3LHBHv7rFeDJrQnOvEmxcLVZvNqVFA==" }),
-        redirect: 'follow'
-    };
 
-    let data = await fetch(`https://api.deepdao.io/v0.1/participation-score/address/${address}`, requestOptions)
-    let json = await data.json();
+    let json = await fetch(`https://api.deepdao.io/v0.1/participation-score/address/${address}`, {
+        method: 'GET',
+        headers: { "x-api-key": "LfYMTHGu6J7oTEXT1JDkZ+SrbSD5ETfaXguV0mL44rMowgRsClZwaENG3LHBHv7rFeDJrQnOvEmxcLVZvNqVFA==" },
+        redirect: 'follow'
+    }).then(r=>{return r.json()});
 
     let resp = {
         "score": 0,
@@ -1044,7 +1055,7 @@ async function calculateScore(address) {
         timeit(checkPoH, [address, tp]),
         timeit(fetcher, [`https://app.brightid.org/node/v5/verifications/Convo/${address.toLowerCase()}`, "GET", {}]),
         timeit(fetcher, [`https://api.poap.xyz/actions/scan/${address}`, "GET", {}]),
-        timeit(tp.lookupAddress, [address]),
+        timeit(addressToEns, [address, tp]),
         timeit(fetcher, [`https://api.idena.io/api/Address/${address}`, "GET", {}]),
         timeit(fetcher, [`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}]),
         timeit(checkUnstoppableDomains, [address]),
@@ -1177,7 +1188,7 @@ async function calculateScore(address) {
         score += parseInt(results[7].value?.score);
     }
     if(parseInt(results[8].value?.level) > 0){ // rabbithole
-        score += parseInt(results[8].value?.level);
+        score += (parseInt(results[8].value?.level)-1);
     }
     if(results[14].value === true){ // mirror
         score += 10;

@@ -1,4 +1,4 @@
-import { getBoardroomData, getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData, getContextData, getAge, getRabbitholeData, getArcxData } from "@/lib/identity";
+import { getBoardroomData, getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData, getContextData, getAge, getRabbitholeData, getArcxData, addressToEns } from "@/lib/identity";
 import { ethers } from "ethers";
 import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
@@ -13,7 +13,7 @@ async function calculateScore(address) {
         checkPoH(address, tp),
         fetcher(`https://app.brightid.org/node/v5/verifications/Convo/${address.toLowerCase()}`, "GET", {}),
         fetcher(`https://api.poap.xyz/actions/scan/${address}`, "GET", {}),
-        tp.lookupAddress(address),
+        addressToEns(address, tp),
         fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
@@ -148,7 +148,7 @@ async function calculateScore(address) {
         score += parseInt(results[8].value.totalDaos);
     }
     if(parseInt(results[9].value?.level) > 0){ // rabbithole
-        score += parseInt(results[9].value?.level);
+        score += (parseInt(results[9].value?.level)-1);
     }
     if(results[16].value === true){ // mirror
         score += 10;
@@ -221,11 +221,11 @@ async function ensToAddress(ensAddress){
             "method": "POST",
         }).then((r)=>{return r.json()});
 
-        if (Boolean(resp['data']["domains"]["resolvedAddress"]) === true){
+        if (Boolean(resp['data']["domains"][0]["resolvedAddress"]) === false){
             return false;
         }
         else {
-            return getAddress(resp['data']["domains"]["resolvedAddress"])
+            return getAddress(resp['data']["domains"][0]["resolvedAddress"]['id'])
         }
 
     } catch (error) {
