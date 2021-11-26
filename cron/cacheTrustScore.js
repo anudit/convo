@@ -16,6 +16,7 @@ let GLOBAL_ETH_PRICE = 0;
 let CHUNK_SIZE = 1;
 let uniswapData;
 let gitcoinData;
+let arcxData;
 
 let erroredAddresses = [];
 const threadId = ThreadID.fromString(TEXTILE_THREADID);
@@ -303,25 +304,40 @@ async function getAge(address){
 }
 
 async function getArcxData(address){
-    let data = await fetch("https://api.arcx.money/reputation/"+address).then(r=>{return r.json()});
 
-    let totalScore = 0;
-    let details = {};
+    if (address in arcxData){
+        let data = await fetch("https://api.arcx.money/reputation/"+address).then(r=>{return r.json()});
 
-    for (let index = 0; index < data.length; index++) {
-        const scoreData = data[index];
-        if (scoreData['score'] !== null){
-            let sc = ((scoreData['score'] / (scoreData['metadata']['maxValue'] - scoreData['metadata']['minValue'])) * 10);
-            totalScore += sc;
-            details[scoreData['metadata']['name']] = sc;
+        let totalScore = 0;
+        let details = {};
+
+        for (let index = 0; index < data.length; index++) {
+            const scoreData = data[index];
+            if (scoreData['score'] !== null){
+                let sc = ((scoreData['score'] / (scoreData['metadata']['maxValue'] - scoreData['metadata']['minValue'])) * 10);
+                totalScore += sc;
+                details[scoreData['metadata']['name']] = sc;
+            }
+        }
+        return {
+            totalScore,
+            details
         }
     }
-    return {
-        totalScore,
-        details
+    else {
+        return {
+            totalScore: 0,
+            details : {}
+        }
     }
-
 }
+
+async function getAllArcxData(){
+    let data = await fetch("https://api.arcx.money/reputation").then(r=>{return r.json()});
+    return data;
+}
+
+
 
 async function getContextData(address){
     let data = await fetch("https://context.app/api/profile/"+address).then(r=>{return r.json()});
@@ -353,6 +369,35 @@ async function getCoordinapeData(address) {
 
     return {
         teammates
+    }
+}
+
+async function getBoardroomData(address) {
+    let response = await fetch(`https://api.boardroom.info/v1/voters/${address}/votes`);
+    let data = await response.json();
+
+    let totalVotes = 0;
+    let daos = [];
+    let votes = [];
+    for (let index = 0; index < data['data'].length; index++) {
+        const doc = data['data'][index];
+        if (doc?.proposalInfo?.currentState === 'executed'){
+            totalVotes+=1;
+            if (doc.protocol in daos ===false ){
+                daos.push(doc.protocol);
+            }
+            votes.push({
+                dao: doc.protocol,
+                vote: doc.proposalInfo.choices[doc.choice],
+                proposalLink: `https://app.boardroom.info/compound/proposal/${doc.proposalRefId}`
+            })
+        }
+    }
+
+    return {
+        totalVotes,
+        daos,
+        votes
     }
 }
 
@@ -394,6 +439,26 @@ async function getRss3Data(address = ""){
         backlinks : Boolean(jsonData['@backlinks']) === true ? jsonData['@backlinks']: [],
         accounts:  Boolean(jsonData['accounts']) === true ? jsonData['accounts']: [],
         links:  Boolean(jsonData['links']) === true ? jsonData['links']: [],
+    };
+
+}
+
+async function getRabbitholeData(address = ""){
+    let data = await fetch(`https://iqs5wfdv79.execute-api.us-east-1.amazonaws.com/prod/task_progress?address=${address.toLowerCase()}`);
+    let jsonData = await data.json();
+    let taskList = Object.keys(jsonData['taskData']['taskProgress']);
+    let tasksCompleted = [];
+
+    for (let index = 0; index < taskList; index++) {
+        const taskData = jsonData['taskData']['taskProgress'][taskList[index]];
+        if (taskData['points'] === taskData['progress']){
+            tasksCompleted.push(taskList[index])
+        }
+    }
+
+    return {
+        level : parseInt(jsonData.taskData?.level) - 1,
+        tasksCompleted
     };
 
 }
@@ -984,7 +1049,7 @@ async function calculateScore(address) {
         timeit(fetcher, [`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}]),
         timeit(checkUnstoppableDomains, [address]),
         timeit(getDeepDaoData, [address]),
-        timeit(fetcher, [`https://iqs5wfdv79.execute-api.us-east-1.amazonaws.com/prod/task_progress?address=${address.toLowerCase()}`, "GET", {}]),
+        timeit(getRabbitholeData, [address]),
         timeit(getFoundationData, [address]), // * ethPrice
         timeit(getSuperrareData, [address]),
         timeit(getRaribleData, [address]), // * ethPrice
@@ -1002,7 +1067,8 @@ async function calculateScore(address) {
         timeit(getAaveData, [address, tp]),
         timeit(getAge, [address]),
         timeit(getContextData, [address]),
-        timeit(getArcxData, [address])
+        timeit(getArcxData, [address]),
+        timeit(getBoardroomData, [address])
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -1020,7 +1086,7 @@ async function calculateScore(address) {
         'cryptoScamDb': Boolean(results[5].value?.success),
         'unstoppableDomains': Boolean(results[6].value) === true ? results[6].value : false,
         'deepdao': results[7].value,
-        'rabbitHole': parseInt(results[8].value?.taskData?.level) - 1,
+        'rabbitHole': results[8].value,
         'mirror': results[14].value,
         'foundation': {
             'totalCountSold': results[9]?.value?.totalCountSold,
@@ -1082,7 +1148,8 @@ async function calculateScore(address) {
         'aave': results[23]?.value,
         'age': results[24]?.value,
         'context': results[25]?.value,
-        'arcx': results[26]?.arcx,
+        'arcx': results[26]?.value,
+        'boardroom': results[27]?.value,
     };
 
     if(results[0].value === true){ // poh
@@ -1109,8 +1176,8 @@ async function calculateScore(address) {
     if(Boolean(parseInt(results[7].value?.score)) === true){ // deepdao
         score += parseInt(results[7].value?.score);
     }
-    if(parseInt(results[8].value?.taskData?.level)> 0){ // rabbithole
-        score += parseInt(results[8].value?.taskData?.level) - 1;
+    if(parseInt(results[8].value?.level) > 0){ // rabbithole
+        score += parseInt(results[8].value?.level);
     }
     if(results[14].value === true){ // mirror
         score += 10;
@@ -1135,6 +1202,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[26]?.value?.totalScore) === true){ // showtime
         score += results[26]?.value?.totalScore;
+    }
+    if(Boolean(results[27]?.value?.totalVotes) === true){ // boardroom
+        score += results[27]?.value?.totalVotes;
     }
 
     let coinviseScore = (
@@ -1190,7 +1260,11 @@ const cacheTrustScores = async () => {
     console.log('addresses.length', addresses.length);
 
     uniswapData = await getAllUniswapSybilData();
+    console.log('🟢 getAllUniswapSybilData')
     gitcoinData = await getAllGitcoinData();
+    console.log('🟢 getAllGitcoinData')
+    arcxData = await getAllArcxData();
+    console.log('🟢 getAllArcxData')
 
     let eth_price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH,MATIC&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
     GLOBAL_ETH_PRICE = eth_price_data['data']['items'][0]['quote_rate'];

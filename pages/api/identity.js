@@ -1,4 +1,4 @@
-import { getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData, getContextData } from "@/lib/identity";
+import { getBoardroomData, getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData, getContextData, getAge, getRabbitholeData } from "@/lib/identity";
 import { ethers } from "ethers";
 import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
@@ -19,7 +19,7 @@ async function calculateScore(address) {
         checkUnstoppableDomains(address),
         getAllUniswapSybilData(),
         getDeepDaoData(address),
-        fetcher(`https://iqs5wfdv79.execute-api.us-east-1.amazonaws.com/prod/task_progress?address=${address.toLowerCase()}`, "GET", {}),
+        getRabbitholeData(address),
         getEthPrice(),
         getFoundationData(address), // * ethPrice
         getSuperrareData(address),
@@ -37,7 +37,9 @@ async function calculateScore(address) {
         getCyberconnectData(address),
         getRss3Data(address),
         getAaveData(address, tp),
-        getContextData(address)
+        getContextData(address),
+        getAge(address),
+        getBoardroomData(address)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -54,7 +56,7 @@ async function calculateScore(address) {
         'unstoppableDomains': Boolean(results[6].value) === true ? results[6].value : false,
         'uniswapSybil': results[7].value?.includes(getAddress(address)),
         'deepdao': Boolean(results[8].value?.totalDaos) === true? parseInt(results[8].value?.totalDaos) : 0,
-        'rabbitHole': parseInt(results[9].value?.taskData?.level) - 1,
+        'rabbitHole': results[9].value,
         'mirror': results[16].value,
         'foundation': {
             'totalCountSold': results[11]?.value?.totalCountSold,
@@ -112,7 +114,9 @@ async function calculateScore(address) {
         'rss3':  results[25]?.value,
         'aave':  results[26]?.value,
         'context':  results[27]?.value,
-        'arcx':  results[28]?.value
+        'arcx':  results[28]?.value,
+        'age':  results[29]?.value,
+        'boardroom':  results[30]?.value
     };
 
     if(results[0].value === true){ // poh
@@ -142,8 +146,8 @@ async function calculateScore(address) {
     if( Boolean(results[8].value?.totalDaos) === true && parseInt(results[8].value.totalDaos)> 0){ // deepdao
         score += parseInt(results[8].value.totalDaos);
     }
-    if(parseInt(results[9].value?.taskData?.level)> 0){ // rabbithole
-        score += parseInt(results[9].value?.taskData?.level) - 1;
+    if(parseInt(results[9].value?.level) > 0){ // rabbithole
+        score += parseInt(results[9].value?.level);
     }
     if(results[16].value === true){ // mirror
         score += 10;
@@ -162,6 +166,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[28]?.value?.totalScore) === true){ // arcx
         score += results[28]?.value?.totalScore;
+    }
+    if(Boolean(results[30]?.value?.totalVotes) === true){ // boardroom
+        score += results[30]?.value?.totalVotes;
     }
 
     // Coinvise

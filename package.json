@@ -11,7 +11,8 @@
     "export": "next export",
     "tunnel": "lt --port 3000 --subdomain convo",
     "sync": "node sync.js",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cron:cache": "node ./cron/cacheTrustScore.js"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -23,14 +24,14 @@
     "@dicebear/micah": "^4.10.1",
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
-    "@gnosis.pm/safe-apps-sdk": "^6.0.0",
-    "@gnosis.pm/safe-apps-web3modal": "^5.0.0",
+    "@gnosis.pm/safe-apps-sdk": "^6.1.0",
+    "@gnosis.pm/safe-apps-web3modal": "^6.0.0",
     "@hapi/iron": "^6.0.0",
     "@oceanprotocol/contracts": "^0.6.9",
     "@oceanprotocol/lib": "^0.19.2",
     "@onflow/fcl": "^0.0.77",
     "@portis/web3": "^4.0.6",
-    "@react-three/drei": "^7.22.7",
+    "@react-three/drei": "^7.22.9",
     "@react-three/fiber": "^7.0.19",
     "@self.id/web": "^0.2.0",
     "@solana/web3.js": "^1.31.0",
@@ -38,7 +39,7 @@
     "@walletconnect/web3-provider": "^1.6.6",
     "ably": "^1.2.15",
     "bson-ext": "^4.0.2",
-    "critters": "^0.0.14",
+    "critters": "^0.0.15",
     "dotenv": "^10.0.0",
     "ethers": "^5.5.1",
     "framer-motion": "^5.3.3",
@@ -66,12 +67,12 @@
     "styled-components": "^5.3.3",
     "swr": "^1.0.1",
     "telegraf": "^4.4.2",
-    "three": "^0.134.0",
+    "three": "^0.135.0",
     "tweetnacl": "^1.0.3",
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.4",
-    "webpack": "^5.64.3"
+    "webpack": "^5.64.4"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.0.4",

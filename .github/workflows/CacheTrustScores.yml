@@ -31,4 +31,4 @@ jobs:
         CNVSEC_ID: ${{ secrets.CNVSEC_ID }}
         MONGODB_URI: ${{ secrets.MONGODB_URI }}
         ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
-      run: node ./cron/cacheTrustScore.js
+      run: yarn cron:cache
