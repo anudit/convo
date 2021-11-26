@@ -1367,8 +1367,8 @@ const cacheAddsFromFile = async(fileName = "") => {
 }
 // cacheAddsFromFile();
 
-// cacheTrustScores().then(()=>{
-//     console.log("✅ Cached all trust Scores");
-// });
+cacheTrustScores().then(()=>{
+    console.log("✅ Cached all trust Scores");
+});
 
-cacheTrustScoresManual(["0xd26a3f686d43f2a62ba9eae2ff77e9f516d945b9", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"])
+// cacheTrustScoresManual(["0xd26a3f686d43f2a62ba9eae2ff77e9f516d945b9", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"])
