@@ -43,7 +43,6 @@ import rss3 from '../../public/images/rss3.webp';
 import aave from '../../public/images/aave.webp';
 import context from '../../public/images/context.webp';
 import arcx from '../../public/images/arcx.webp';
-import { Contract } from 'near-api-js';
 import { ethers } from 'ethers';
 
 const IdentitySection = () => {
