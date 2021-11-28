@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Image from 'next/image';
-import { useToast, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, IconButton, Select, Spinner, Image as ChakraImage } from "@chakra-ui/react";
-import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalFooter, ModalHeader, ModalBody, ModalCloseButton} from "@chakra-ui/react"
+import { FormControl, FormLabel, useDisclosure, Modal, ModalOverlay, ModalContent, ModalFooter, ModalHeader, ModalBody, ModalCloseButton, useToast, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, IconButton, Select, Spinner, Image as ChakraImage } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon, ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons';
 import useSWR from 'swr';
 import QRCode from "react-qr-code";
@@ -44,15 +43,19 @@ import rss3 from '../../public/images/rss3.webp';
 import aave from '../../public/images/aave.webp';
 import context from '../../public/images/context.webp';
 import arcx from '../../public/images/arcx.webp';
+import { Contract } from 'near-api-js';
+import { ethers } from 'ethers';
 
 const IdentitySection = () => {
 
-  const { signerAddress } = useContext(Web3Context);
+  const { web3Modal, signerAddress } = useContext(Web3Context);
   const [trustScoreData, setTrustScoreData] = useState(null);
   const [trustScore, setTrustScore] = useState(0);
   const [trustScoreLoading, setTrustScoreLoading] = useState(false);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchString, setSearchString] = useState("");
+  const etchingRef = useRef();
+  const skinRef = useRef();
 
   useEffect(() => {
     if (isAddress(signerAddress) === true){
@@ -74,9 +77,96 @@ const IdentitySection = () => {
     setTrustScoreLoading(false);
   }
 
+  async function mintId(){
+    const p = await web3Modal.connect();
+    const chainId = await p.request({ method: 'eth_chainId' });
+
+    let contractABI = [{
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_for",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_etching",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_skinIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "createId",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }];
+    let contractAddress = "0xCe439983CDB28864F1d65C27379D8b3ef92192b4";
+
+    if (parseInt(chainId) !== 80001 ){
+      alert('Please switch to Mumbai Testnet!')
+    }
+    else {
+      let omnid = new ethers.Contract(contractAddress, contractABI, p);
+      let result = await omnid.createId(signerAddress, ethers.utils.formatBytes32String(etchingRef.current.value), parseInt(skinRef.current.value));
+      console.log(result);
+    }
+
+  }
+
+  async function switchToMumbai(){
+    const p = await web3Modal.connect();
+    try {
+      await p.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: "0x"+(80001).toString(16) }],
+      });
+    } catch (switchError) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (switchError.code === 4902) {
+        try {
+          await p.request({
+            method: 'wallet_addEthereumChain',
+            params: [{ chainId: "0x"+(80001).toString(16), rpcUrl: 'https://rpc-mumbai.matic.today'}],
+          });
+        } catch (addError) {
+          // handle "add" error
+        }
+      }
+    }
+  }
+
     return (
       <DashboardShell active="identity" title="Identity">
           <Flex direction="column">
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Create an ID (Mumbai Testnet)</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <FormControl>
+                    <FormLabel>Etching</FormLabel>
+                    <Input ref={etchingRef} placeholder="Elon Tusk" />
+                  </FormControl>
+
+                  <FormControl mt={4}>
+                    <FormLabel>Skin</FormLabel>
+                    <Input ref={skinRef} type="number" placeholder="0" />
+                  </FormControl>
+                </ModalBody>
+
+                <ModalFooter>
+                  <Button mr={3} onClick={switchToMumbai}>
+                    Switch to Mumbai
+                  </Button>
+                  <Button colorScheme="blue" onClick={mintId}>Mint It</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
             <Flex direction="column" align="center">
               <Flex
                 direction="column"
@@ -109,7 +199,7 @@ const IdentitySection = () => {
 
                   <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={refreshScore} disabled={trustScoreLoading} title="Re-Index Score"/>
                 </Flex>
-                <Flex flexDirection="row" mt={4}>
+                <Flex flexDirection="row" mt={4} alignItems="center">
                   <InputGroup>
                     <Input placeholder="Search" onChange={(e)=>{
                       setSearchString(e.currentTarget.value)
@@ -118,6 +208,9 @@ const IdentitySection = () => {
                       <SearchIcon/>
                     </InputRightElement>
                   </InputGroup>
+                  <Button size="md" onClick={onOpen} ml={2}>
+                    Mint it
+                  </Button>
                 </Flex>
               </Flex>
             </Flex>

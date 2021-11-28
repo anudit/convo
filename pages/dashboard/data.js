@@ -14,16 +14,16 @@ import { Ocean, DataTokens, ConfigHelper } from "@oceanprotocol/lib";
 const { factoryABI } = require("@oceanprotocol/contracts/artifacts/DTFactory.json");
 const { datatokensABI } = require("@oceanprotocol/contracts/artifacts/DataTokenTemplate.json");
 
-const defaultConfig = new ConfigHelper().getConfig("rinkeby", "1e7969225b2f4eefb3ae792aabf1cc17");
+const defaultConfig = new ConfigHelper().getConfig("mumbai", "1e7969225b2f4eefb3ae792aabf1cc17");
 const contracts = {
-    "DTFactory": "0x3fd7A00106038Fb5c802c6d63fa7147Fe429E83a",
-    "BFactory": "0x53eDF9289B0898e1652Ce009AACf8D25fA9A42F8",
-    "FixedRateExchange": "0xeD1DfC5F3a589CfC4E8B91C1fbfC18FC6699Fbde",
-    "Metadata": "0xFD8a7b6297153397B7eb4356C47dbd381d58bFF4",
-    "Ocean": "0x8967BCF84170c91B0d24D4302C2376283b0B3a07",
-    "Dispenser": "0x623744Cd25Ed553d3b4722667697F926cf99658B",
-    "chainId": 4,
-    "startBlock": 7294090
+    "DTFactory": "0x4E6058dC00e90C0DCA47A5d0D3346F409939A5ab",
+    "BFactory": "0x159924ca0F47D6F704B97E29099b89e518A17B5E",
+    "FixedRateExchange": "0xc313e19146Fc9a04470689C9d41a4D3054693531",
+    "Metadata": "0x98679D582AB3398C03D3308dEB9c7AeC50B52ded",
+    "Dispenser": "0x1d535147a97bd87c8443125376E6671B60556E07",
+    "Ocean": "0xd8992Ed72C445c35Cb4A2be468568Ed1079357c8",
+    "chainId": 80001,
+    "startBlock": 14791845
 };
 
 const DataSection = () => {
@@ -65,7 +65,7 @@ const DataSection = () => {
             </Flex>
             <Flex display={connectedChain === "ethereum" ? "flex" : "none"} flexDirection="column">
                 <Heading as="h4" size="md" my={4}>
-                    Data Tokens (🚧 Rinkeby Testnet)
+                    Data Tokens (🚧 Mumbai Testnet)
                 </Heading>
                 <DataTokenView/>
             </Flex>
@@ -141,8 +141,8 @@ const DataTokenView = () => {
         const p = await web3Modal.connect();
         const chainId = await p.request({ method: 'eth_chainId' });
 
-        if (parseInt(chainId) !== 4 ){
-            alert('Please switch to Rinkeby Testnet!')
+        if (parseInt(chainId) !== 80001 ){
+            alert('Please switch to Mumbai Testnet!')
         }
         else {
 
