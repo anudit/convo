@@ -368,6 +368,92 @@ export const Web3ContextProvider = ({children}) => {
       }
 
     }
+    else if (choice === "cosmos"){
+
+      let providerSet = false;
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x'+(9000).toString(16) }],
+          });
+          providerSet = true;
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            try {
+              await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                  chainName: "Cosmos (Evmos Testnet)",
+                  chainId: '0x'+(9000).toString(16),
+                  rpcUrls: ['https://ethereum.rpc.evmos.dev'],
+                  blockExplorerUrls: ["https://evm.evmos.org"],
+                  nativeCurrency: {
+                    decimals : 18,
+                    symbol : "PHOTON"
+                  }
+                }],
+              });
+              providerSet = true;
+
+            } catch (addError) {
+              alert('Please Switch to Cosmos (Evmos Testnet)');
+            }
+          }
+        }
+      }
+      else {
+        alert('Metamask Wallet not found.')
+      }
+
+
+      if (providerSet === true){
+        const ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+
+        setProvider(ethersProvider);
+        let tempsigner = ethersProvider.getSigner();
+        let tempaddress = await tempsigner.getAddress();
+
+        // if there was a previous session, try and validate that first.
+        if (Boolean(cookies.get('CONVO_SESSION')) === true) {
+          let tokenRes = await fetcher(
+            '/api/validateAuth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', "POST", {
+              signerAddress: tempaddress,
+              token: cookies.get('CONVO_SESSION')
+            }
+          );
+          // if previous session is invalid then request a new auth token.
+          if (tokenRes['success'] === false) {
+            let token = await updateAuthToken(tempaddress, "ethereum", ethersProvider);
+            if (token !== false){
+              setProvider(ethersProvider);
+              setConnectedChain("ethereum");
+              updatePrettyName(tempaddress);
+              setSignerAddress(tempaddress);
+              setConnectedWallet(choice)
+            }
+          }
+          else {
+            setProvider(ethersProvider);
+            setConnectedChain("ethereum");
+            updatePrettyName(tempaddress);
+            setSignerAddress(tempaddress);
+            setConnectedWallet(choice)
+          }
+        }
+        else {
+          let token = await updateAuthToken(tempaddress, "ethereum", ethersProvider);
+          if (token !== false){
+            setProvider(ethersProvider);
+            setConnectedChain("ethereum");
+            updatePrettyName(tempaddress);
+            setSignerAddress(tempaddress);
+            setConnectedWallet(choice)
+          }
+        }
+      }
+
+    }
     else if (choice === "okex"){
 
       if (typeof window.okexchain !== 'undefined') {

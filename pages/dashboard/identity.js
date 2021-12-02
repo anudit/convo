@@ -218,6 +218,9 @@ const IdentitySection = () => {
                   <Item searchString={searchString} tags={['aave','finance', 'defi']}>
                     <AaveCard trustScoreData={trustScoreData} />
                   </Item>
+                  <Item searchString={searchString} tags={['age','ethereum']}>
+                    <AgeCard trustScoreData={trustScoreData} />
+                  </Item>
                   <Item searchString={searchString} tags={['defi','finance', 'arcx']}>
                     <ArcxCard trustScoreData={trustScoreData} />
                   </Item>
@@ -901,6 +904,57 @@ const PoHCard = ({trustScoreData}) => {
   );
 };
 PoHCard.propTypes = propTypes
+
+
+const AgeCard = ({trustScoreData}) => {
+
+  const { colorMode } = useColorMode();
+  let age = trustScoreData?.age;
+
+  return (
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        w="xs"
+        mx="auto"
+        m={1}
+      >
+        <Flex direction="column" align="center" backgroundColor="#000" width="288px" height="162px" className="br-10" alignItems="center" justifyContent="center">
+          <Flex direction="row" justifyContent="space-between" w="70%">
+            <Flex align="center" direction="column" display={age>365 ? "flex" : "none"}>
+              <Heading fontSize="60px" mb={0}>{parseInt(age/365)}</Heading>
+              <Text mt={0}>Yr{age>730 ? "s" : ""}</Text>
+            </Flex>
+            <Flex align="center" direction="column" display={(age - (parseInt(age/365)*365))>0 ? "flex" : "none"}>
+              <Heading fontSize="60px" mb={0}>{age - (parseInt(age/365)*365)}</Heading>
+              <Text mt={0}>Day{age>0 ? "s" : ""}</Text>
+            </Flex>
+          </Flex>
+        </Flex>
+
+        <Box
+          w={{ base: 56, md: 64 }}
+          bg={colorMode === "light" ? "white" : "gray.800"}
+          mt={-6}
+          shadow="lg"
+          rounded="lg"
+          overflow="hidden"
+        >
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            py={2}
+            px={3}
+            backdropFilter="blur(300px) opacity(1)"
+          >
+            Age
+          </Flex>
+        </Box>
+      </Flex>
+  );
+}
+AgeCard.propTypes = propTypes
 
 const UdCard = ({trustScoreData}) => {
 

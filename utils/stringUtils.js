@@ -42,7 +42,10 @@ export const cleanAdd = (message) => {
 };
 
 export const truncateAddress = (address, len=4) => {
-    if(addressToChainName(address) === "ethereum") {
+    if (Boolean(address) === false){
+        return ""
+    }
+    else if(addressToChainName(address) === "ethereum") {
         return address.slice(0, 2+len) + "..." + address.slice(-len);
     }
     else if (addressToChainName(address) === "near"){
@@ -106,7 +109,10 @@ export const prettifyNumber = (num, digits=2) => {
 }
 
 export const addressToChainName = (address) => {
-    if(isAddress(address) === true){
+    if (Boolean(address) === false){
+        return "ethereum"
+    }
+    else if(isAddress(address) === true){
         return "ethereum";
     }
     else if(address.slice(address.length-5, address.length) === ".near" || address.slice(address.length-8, address.length) === ".testnet"){

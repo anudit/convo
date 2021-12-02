@@ -5,7 +5,7 @@ import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, He
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, CeloIcon, OKExIcon, HomeIcon } from '@/public/icons';
+import { GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, CeloIcon, OKExIcon, HomeIcon, CosmosIcon } from '@/public/icons';
 import { InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
@@ -119,7 +119,7 @@ const DashboardShell = ({title, active, children}) => {
                             </Text>
                         )
                     }
-                    <Wrap mt={10} mb={6} width={{base:"100%", md:"80%"}}>
+                    <Wrap mt={10} width={{base:"100%", md:"80%"}}>
                         <WalletItem
                             onClick={()=>{connectWallet('injected')}}
                             backgroundImage="linear-gradient(229.83deg, rgb(205 131 59) -258.34%, rgb(205 189 178 / 18%) 100.95%)"
@@ -156,12 +156,24 @@ const DashboardShell = ({title, active, children}) => {
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 
+                    </Wrap>
+                    <Wrap mt={4} mb={6} width={{base:"100%", md:"80%"}}>
+
                         <WalletItem
                             onClick={()=>{connectWallet('solana')}}
                             backgroundImage="linear-gradient(215deg, rgb(111 29 140) 0%, rgb(53 174 145 / 33%) 100%);"
                             title="Solana"
                             icon={<SolanaIcon boxSize={8} mx={2}/>}
                             onMouseEnter={()=>{setWalletInfo('Sign-in with Solana powered by Phantom Wallet.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                        />
+
+                        <WalletItem
+                            onClick={()=>{connectWallet('cosmos')}}
+                            backgroundImage="linear-gradient(215deg, rgb(27 30 54) 0%, rgb(111 115 144) 100%);"
+                            title="Cosmos"
+                            icon={<CosmosIcon boxSize={8} mx={2} style={{transform:"scale(1.5)"}}/>}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with Cosmos Blockchain using Evmos.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 
