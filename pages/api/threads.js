@@ -1,5 +1,5 @@
 import validateAuth from "@/lib/validateAuth";
-import { createThread, deleteThreadAndComments, getThread, getThreads, updateThread } from "@/lib/thread-db";
+import { createThread, deleteThreadAndComments, getThread, getThreads, updateAddressToThreadIds, updateThread } from "@/lib/thread-db";
 import { Where } from "@textile/hub";
 import withApikey from "@/middlewares/withApikey";
 import { isBlockchainAddress, randomId } from "@/utils/stringUtils";
@@ -18,8 +18,8 @@ const handler = async(req, res) => {
 
       // No key filter params returns Incomplete req.
       if (Boolean(req.query?.threadId) === false &&
-      Boolean(req.query?.creator) === false &&
-      Boolean(req.query?.member) === false
+        Boolean(req.query?.creator) === false &&
+        Boolean(req.query?.member) === false
       ){
         return res.status(400).json({
           'success': false,
@@ -60,30 +60,30 @@ const handler = async(req, res) => {
         }
       }
 
-      if (Boolean(req.query?.member) === true){
+      if (Boolean(req.query?.keyword1) === true){
         if (query === undefined) {
-          query = new Where(`members.${req.query.member}`).eq(true);
+          query = new Where(`keyword1`).eq(req.query.keyword1);
         }
         else {
-          query = query.and(`members.${req.query.member}`).eq(true);
+          query = query.and(`keyword1`).eq(req.query.keyword1);
         }
       }
 
-      if (Boolean(req.query?.moderators) === true){
+      if (Boolean(req.query?.keyword2) === true){
         if (query === undefined) {
-          query = new Where(`moderators.${req.query.moderator}`).eq(true);
+          query = new Where(`keyword2`).eq(req.query.keyword2);
         }
         else {
-          query = query.and(`moderators.${req.query.moderator}`).eq(true);
+          query = query.and(`keyword2`).eq(req.query.keyword2);
         }
       }
 
-      if (Boolean(req.query?.keyword) === true){
+      if (Boolean(req.query?.keyword3) === true){
         if (query === undefined) {
-          query = new Where(`keywords.${req.query.keyword}`).eq(true);
+          query = new Where(`keyword3`).eq(req.query.keyword3);
         }
         else {
-          query = query.and(`keywords.${req.query.keyword}`).eq(true);
+          query = query.and(`keyword3`).eq(req.query.keyword3);
         }
       }
 
@@ -139,28 +139,14 @@ const handler = async(req, res) => {
             let members = req.body.members.filter(e=>{
               return isBlockchainAddress(e) === true;
             })
-            members.push(req.body.signerAddress);
             members = Array.from(new Set(members));
-            let membersCleaned = {}
-            members.forEach((e)=>{
-              membersCleaned[e]=true;
-            })
 
             let moderators = req.body.members.filter(e=>{
               return isBlockchainAddress(e) === true;
             })
-            moderators.push(req.body.signerAddress);
             moderators = Array.from(new Set(moderators));
-            let moderatorsCleaned = {}
-            moderators.forEach((e)=>{
-              moderatorsCleaned[e]=true;
-            })
 
-            let keywordsCleaned = {}
             let keywords = Array.from(new Set(req.body.keywords));
-            keywords.forEach((e)=>{
-              keywordsCleaned[e]=true;
-            });
 
             let threadData = {
               "_id": threadId,
@@ -171,13 +157,24 @@ const handler = async(req, res) => {
               "url": url,
               "isReadPublic": req.body.isReadPublic == 'true' ? true : false,
               "isWritePublic": req.body.isWritePublic == 'true' ? true : false,
-              "members": membersCleaned,
-              "moderators": moderatorsCleaned,
-              "keywords": keywordsCleaned,
+              "members": members,
+              "moderators": moderators,
+              "keyword1": keywords[0],
+              "keyword2": keywords[1],
+              "keyword3": keywords[2],
               "metadata": Boolean(req.body?.metadata) === true ? req.body.metadata : {}
             };
 
             let newId = await createThread(threadData);
+
+            let promiseArray = moderators.map((add)=>{
+              return updateAddressToThreadIds(add, newId, true, true);
+            })
+            await Promise.allSettled(promiseArray);
+            let promiseArray2 = members.filter(e=>moderators.includes(e)===false).map((add)=>{
+              return updateAddressToThreadIds(add, newId, true, false);
+            })
+            await Promise.allSettled(promiseArray2);
 
             return res.status(200).json({
               success: true,
@@ -209,7 +206,7 @@ const handler = async(req, res) => {
             }
 
             // Check if the signerAddress is part of the Thread.
-            if (threadData.members[req.body.signerAddress] === false && threadData.moderators[req.body.signerAddress] === true && threadData.creator === true) {
+            if (threadData.members.includes(req.body.signerAddress) === true || threadData.moderators.includes(req.body.signerAddress) === true) {
               return res.status(400).json({
                 success: false,
                 'error':'signerAddress not a part of the Thread'
@@ -221,16 +218,16 @@ const handler = async(req, res) => {
               return isBlockchainAddress(e) === true;
             })
             newMembers = Array.from(new Set(newMembers));
-            let newMembersCleaned = {}
-            newMembers.forEach((e)=>{
-              newMembersCleaned[e]=true;
-            })
 
             // Locally update the members
-            threadData.members = Object.assign({}, threadData.members, newMembersCleaned);
+            threadData.members = threadData.members.concat(newMembers);
 
             // save the updated members
             await updateThread(threadData);
+            let promiseArray2 = newMembers.map((add)=>{
+              return updateAddressToThreadIds(add, threadData._id, true, false);
+            })
+            await Promise.allSettled(promiseArray2);
 
             return res.status(200).json({
               success: true
@@ -259,25 +256,25 @@ const handler = async(req, res) => {
               });
             }
 
-            // Check if the signerAddress is a moderator or an admin
-            if (threadData.moderators[req.body.signerAddress] === false && threadData.creator === false) {
+            // Check if the signerAddress is a moderator.
+            if (threadData.moderators.includes(req.body.signerAddress) === false) {
               return res.status(400).json({
                 success: false,
                 'error':'signerAddress not a Moderator or Admin of the Thread.'
               });
             }
 
-            // Sanitize and validate memebers to remove
+            // Sanitize and validate members to remove
             let members = req.body.members.filter(e=>{
               return isBlockchainAddress(e) === true;
             });
             members = Array.from(new Set(members));
 
-            // Locally update the members
-            members.forEach((e)=>{
-              console.log('removing',members);
-              delete threadData.members[e];
+            threadData.members = threadData.members.filter(e=>members.includes(e)===false);
+            let promiseArray2 = members.map((add)=>{
+              return updateAddressToThreadIds(add, threadData._id, false, false);
             })
+            await Promise.allSettled(promiseArray2);
 
             // save the updated members list
             await updateThread(threadData);
@@ -309,8 +306,8 @@ const handler = async(req, res) => {
               });
             }
 
-            // Check if the signerAddress is an admin.
-            if (threadData.creator === false) {
+            // Check if the signerAddress is a mod.
+            if (threadData.moderators.includes(req.body.signerAddress) === true) {
               return res.status(400).json({
                 success: false,
                 'error':'signerAddress not an Admin of the Thread.'
@@ -322,16 +319,16 @@ const handler = async(req, res) => {
               return isBlockchainAddress(e) === true;
             })
             newModerators = Array.from(new Set(newModerators));
-            let newModeratorsCleaned = {}
-            newModerators.forEach((e)=>{
-              newModeratorsCleaned[e]=true;
-            })
 
             // Locally update the moderators
-            threadData.moderators = Object.assign({}, threadData.moderators, newModeratorsCleaned);
+            threadData.moderators = threadData.members.concat(newModerators);
 
-            // save the updated moderators
+            // save the updated members
             await updateThread(threadData);
+            let promiseArray2 = newModerators.map((add)=>{
+              return updateAddressToThreadIds(add, threadData._id, true, true);
+            })
+            await Promise.allSettled(promiseArray2);
 
             return res.status(200).json({
               success: true
@@ -360,8 +357,8 @@ const handler = async(req, res) => {
               });
             }
 
-            // Check if the signerAddress is an admin.
-            if (threadData.creator === false) {
+            // Check if the signerAddress is a mod.
+            if (threadData.moderators.includes(req.body.signerAddress) === true) {
               return res.status(400).json({
                 success: false,
                 'error':'signerAddress not an Admin of the Thread.'
@@ -375,9 +372,11 @@ const handler = async(req, res) => {
             moderators = Array.from(new Set(moderators));
 
             // Locally update the members
-            moderators.forEach((e)=>{
-              delete threadData.moderators[e];
+            threadData.moderators = threadData.moderators.filter(e=>moderators.includes(e)===false);
+            let promiseArray2 = moderators.map((add)=>{
+              return updateAddressToThreadIds(add, threadData._id, true, false);
             })
+            await Promise.allSettled(promiseArray2);
 
             // save the updated moderators
             await updateThread(threadData);
@@ -409,12 +408,11 @@ const handler = async(req, res) => {
               });
             }
 
-
-            // Check if the signerAddress is an admin or a moderators.
-            if (threadData.moderators[req.body.signerAddress] === false && threadData.creator === false) {
+            // Check if the signerAddress is a moderators.
+            if (threadData.moderators.includes(req.body.signerAddress) === true) {
               return res.status(400).json({
                 success: false,
-                'error':'signerAddress not an Admin or a Moderator of the Thread.'
+                'error':'signerAddress not a Moderator of the Thread.'
               });
             }
 
@@ -451,11 +449,11 @@ const handler = async(req, res) => {
               });
             }
 
-            // Check if the signerAddress is an admin or a moderators.
-            if (threadData.moderators[req.body.signerAddress] === false && threadData.creator === false) {
+            // Check if the signerAddress is a moderators.
+            if (threadData.moderators.includes(req.body.signerAddress) === true) {
               return res.status(400).json({
                 success: false,
-                'error':'signerAddress not an Admin or a Moderator of the Thread.'
+                'error':'signerAddress not a Moderator of the Thread.'
               });
             }
 
@@ -489,11 +487,11 @@ const handler = async(req, res) => {
               });
             }
 
-            // Check if the signerAddress is an admin.
-            if (threadData.creator === false) {
+            // Check if the signerAddress is a moderators.
+            if (threadData.moderators.includes(req.body.signerAddress) === true) {
               return res.status(400).json({
                 success: false,
-                'error':'signerAddress not an Admin or a Moderator of the Thread.'
+                'error':'signerAddress not a Moderator of the Thread.'
               });
             }
 
@@ -527,11 +525,11 @@ const handler = async(req, res) => {
               });
             }
 
-            // Check if the signerAddress is an admin.
-            if (threadData.creator === false) {
+            // Check if the signerAddress is a moderators.
+            if (threadData.moderators.includes(req.body.signerAddress) === true) {
               return res.status(400).json({
                 success: false,
-                'error':'signerAddress not an Admin or a Moderator of the Thread.'
+                'error':'signerAddress not a Moderator of the Thread.'
               });
             }
 
@@ -586,11 +584,11 @@ const handler = async(req, res) => {
             });
           }
 
-          // Check if the signerAddress is an admin.
-          if (threadData.creator === false) {
+          // Check if the signerAddress is a moderators.
+          if (threadData.moderators.includes(req.body.signerAddress) === true) {
             return res.status(400).json({
               success: false,
-              'error':'signerAddress not an Admin of the Thread.'
+              'error':'signerAddress not a Moderator of the Thread.'
             });
           }
 

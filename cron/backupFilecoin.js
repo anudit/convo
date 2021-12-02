@@ -75,8 +75,8 @@ const getData = async () =>{
     console.log("🟡 snapshot.comments");
     let snapshot_threads = await threadClient.find(threadId, 'threads', {});
     console.log("🟡 snapshot.threads");
-    let snapshot_subscribers = await threadClient.find(threadId, 'subscribers', {});
-    console.log("🟡 snapshot.subscribers");
+    let snapshot_addressToThreadIds = await threadClient.find(threadId, 'addressToThreadIds', {});
+    console.log("🟡 snapshot.addressToThreadIds");
     let snapshot_cachedTrustScores = await getAllTrustScoreData();
     console.log("🟡 snapshot.cachedTrustScores");
     let snapshot_bridge = await threadClient.find(threadId, 'bridge', {});
@@ -87,7 +87,7 @@ const getData = async () =>{
     return {
         snapshot_comments,
         snapshot_threads,
-        snapshot_subscribers,
+        snapshot_addressToThreadIds,
         snapshot_cachedTrustScores,
         snapshot_bridge,
         redis_data
@@ -105,7 +105,7 @@ async function pinToPinata(hash) {
         }
     }).then(res=>{return res.json()});
 
-    // Unpin Old Backups, keeping 3 latest ones.
+    // Unpin Old Backups, keeping 2 latest ones.
     for (let index = 2; index < pinlist['rows'].length; index++) {
         const hash = pinlist['rows'][index].ipfs_pin_hash;
         console.log(`Unpinning ${index+1}/${pinlist['rows'].length}`);

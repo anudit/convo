@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { Tooltip, useColorModeValue, Flex, Divider, Text, Stack } from "@chakra-ui/react";
 
-import SubscribeCard from '@/components/SubscribeCard';
 import { DiscordIcon, GithubIcon, IndiaFlag, TheConvoSpaceIcon, TwitterIcon } from '@/public/icons';
 
 const Footer = () => {
@@ -14,8 +13,6 @@ const Footer = () => {
             direction="column"
             align="center"
         >
-
-            <SubscribeCard/>
 
             <Flex
                 w={{ base: "95%", md: "60%"}}

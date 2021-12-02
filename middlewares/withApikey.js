@@ -33,20 +33,28 @@ const withApikey = (next) => async (req, res) => {
             return res.status(200).end();
         }
 
-        if (Object.keys(req.query).includes('apikey') === false){
+        let user_apikey = "";
+
+        if (Object.keys(req.query).includes('apikey') === true){
+            user_apikey = req.query.apikey;
+        }
+        else if(Object.keys(req.headers).includes('x-api-key') === true) {
+            user_apikey = req.headers['x-api-key'];
+        }
+        else {
             return res.status(401).json({
                 'success':false,
                 'error': 'No API key, please refer to the integration docs at https://docs.theconvo.space/ to see how to get and use a new API key.'
             });
         }
 
-        if (req.query.apikey == 'CONVO' ){
+        // Deprecated
+        if (user_apikey == 'CONVO'){
             return await next(req, res);
         }
 
-
-        const CAP = 1000000;
-        let data = await getRedisData(client, req.query.apikey);
+        const CAP = 10000000; //10M
+        let data = await getRedisData(client, user_apikey);
 
         let dt = new Date();
         let date = String(dt.getMonth()+1).padStart('2','0') + String(parseInt(dt.getFullYear())).slice(2);
@@ -58,7 +66,7 @@ const withApikey = (next) => async (req, res) => {
                 return res.status(429).end("Rate limit exceeded")
             }
             else {
-                client.incr(`${req.query.apikey}-usage-${date}`)
+                client.incr(`${user_apikey}-usage-${date}`)
                 res.setHeader('X-Rate-Limit-Limit', CAP)
                 res.setHeader('X-Rate-Limit-Remaining', CAP - parseInt(data[1][1]) -1 )
                 return await next(req, res);
