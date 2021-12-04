@@ -2,7 +2,7 @@ import React, { useClipboard, MenuItem, MenuList, Menu, MenuButton } from "@chak
 import { ChevronDownIcon, CopyIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
 import { Web3Context } from "@/contexts/Web3Context";
-import { CeloIcon, DisconnectIcon, ExternalIcon, FlowIcon, MetaMaskIcon, NearIcon, OKExIcon, SolanaIcon, WalletConnectIcon } from "@/public/icons";
+import { CeloIcon, DisconnectIcon, ExternalIcon, FlowIcon, FreetonIcon, MetaMaskIcon, NearIcon, OKExIcon, SolanaIcon, WalletConnectIcon } from "@/public/icons";
 import { truncateAddress } from "@/utils/stringUtils";
 
 const SignedInMenu = () => {
@@ -31,6 +31,7 @@ const SignedInMenu = () => {
                 {connectedWallet === "near" ? (<NearIcon mr={2}/>) : (<></>) }
                 {connectedWallet === "celo" ? (<CeloIcon mr={2}/>) : (<></>) }
                 {connectedWallet === "okex" ? (<OKExIcon mr={2}/>) : (<></>) }
+                {connectedWallet === "freeton" ? (<FreetonIcon mr={2}/>) : (<></>) }
                 {prettyName == "" ? truncateAddress(signerAddress, 3): prettyName}
                 <ChevronDownIcon ml={2}/>
             </MenuButton>
@@ -61,6 +62,9 @@ const SignedInMenu = () => {
                             break;
                         case 'okex':
                             link = `https://www.oklink.com/okexchain/address/${signerAddress}`;
+                            break;
+                        case 'freeton':
+                            link = `https://net.ton.live/accounts/accountDetails?id=${signerAddress}`;
                             break;
                     }
                     window.open(link, '_blank').focus();

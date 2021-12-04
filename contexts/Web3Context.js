@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 import * as fcl from "@onflow/fcl";
 import { WalletConnection, connect, keyStores } from 'near-api-js';
 import PropTypes from 'prop-types';
+import freeton from '@/lib/freeton/src/index';
 
 import { checkUnstoppableDomains } from '@/lib/identity';
 import fetcher from "@/utils/fetcher";
@@ -507,6 +508,39 @@ export const Web3ContextProvider = ({children}) => {
         alert('OKEx DeFi Hub Wallet not found.')
       }
     }
+    else if (choice === "freeton") {
+
+      if (typeof window.freeton !== 'undefined') {
+
+        let ft = new freeton.providers.ExtensionProvider( window.freeton );
+        let wall = await (await ft.getSigner()).getWallet();
+
+        if (Boolean(wall) === true){
+          console.log('signedin');
+
+          let token = await updateAuthToken(wall.address, "freeton", ft);
+          if (token !== false){
+            setProvider(ft);
+            setConnectedChain("freeton");
+            setSignerAddress(wall.address);
+            setConnectedWallet(choice);
+          }
+          else {
+            alert('Login Failed');
+          }
+        }
+        else {
+          //
+        }
+
+      }
+      else {
+        alert('ExtraTon Wallet not found.')
+      }
+    }
+    else {
+      alert('Invalid choice:', choice);
+    }
 
   }
 
@@ -641,6 +675,17 @@ export const Web3ContextProvider = ({children}) => {
         signature: Buffer.from(signature).toString('hex'),
         timestamp,
         chain: "solana"
+      });
+
+    }
+    else if (chainName === "freeton") {
+      let {signed} = await tempProvider.sign(data);
+      console.log(signed, data, signerAddress, timestamp);
+      res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+        signerAddress: signerAddress,
+        signature: signed,
+        timestamp,
+        chain: "freeton"
       });
 
     }

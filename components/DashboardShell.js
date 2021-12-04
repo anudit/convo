@@ -5,7 +5,7 @@ import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, He
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, CeloIcon, OKExIcon, HomeIcon, CosmosIcon } from '@/public/icons';
+import { GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, CeloIcon, OKExIcon, HomeIcon, CosmosIcon, FreetonIcon } from '@/public/icons';
 import { InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
@@ -155,10 +155,6 @@ const DashboardShell = ({title, active, children}) => {
                             onMouseEnter={()=>{setWalletInfo('Sign-in with Flow Blockchain powered by Blocto.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
-
-                    </Wrap>
-                    <Wrap mt={4} mb={6} width={{base:"100%", md:"80%"}}>
-
                         <WalletItem
                             onClick={()=>{connectWallet('solana')}}
                             backgroundImage="linear-gradient(215deg, rgb(111 29 140) 0%, rgb(53 174 145 / 33%) 100%);"
@@ -168,12 +164,24 @@ const DashboardShell = ({title, active, children}) => {
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 
+                    </Wrap>
+                    <Wrap mt={4} mb={6} width={{base:"100%", md:"80%"}}>
+
                         <WalletItem
                             onClick={()=>{connectWallet('cosmos')}}
                             backgroundImage="linear-gradient(215deg, rgb(27 30 54) 0%, rgb(111 115 144) 100%);"
                             title="Cosmos"
                             icon={<CosmosIcon boxSize={8} mx={2} style={{transform:"scale(1.5)"}}/>}
                             onMouseEnter={()=>{setWalletInfo('Sign-in with Cosmos Blockchain using Evmos.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                        />
+
+                        <WalletItem
+                            onClick={()=>{connectWallet('freeton')}}
+                            backgroundImage="linear-gradient(228deg, rgb(32 95 236 / 44%) 0%, rgb(136 189 243 / 60%) 100%);"
+                            title="FreeTON"
+                            icon={<FreetonIcon boxSize={8} mx={2} transform="scale(1.2)"/>}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with FreeTON Blockchain powered by Extraton Wallet.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 
