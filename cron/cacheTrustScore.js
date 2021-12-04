@@ -305,30 +305,22 @@ async function getAge(address){
 
 async function getArcxData(address){
 
-    if (address in arcxData){
-        let data = await fetch("https://api.arcx.money/reputation/"+address).then(r=>{return r.json()});
+    let data = await fetch("https://api.arcx.money/scores/"+address).then(r=>{return r.json()});
 
-        let totalScore = 0;
-        let details = {};
+    let totalScore = 0;
+    let details = {};
 
-        for (let index = 0; index < data.length; index++) {
-            const scoreData = data[index];
-            if (scoreData['score'] !== null){
-                let sc = ((scoreData['score'] / (scoreData['metadata']['maxValue'] - scoreData['metadata']['minValue'])) * 10);
-                totalScore += sc;
-                details[scoreData['metadata']['name']] = sc;
-            }
-        }
-        return {
-            totalScore,
-            details
+    for (let index = 0; index < data.length; index++) {
+        const scoreData = data[index];
+        if (scoreData['score'] !== null){
+            let sc = ((scoreData['score'] / (scoreData['metadata']['maxValue'] - scoreData['metadata']['minValue'])) * 10);
+            totalScore += sc;
+            details[scoreData['metadata']['name']] = sc;
         }
     }
-    else {
-        return {
-            totalScore: 0,
-            details : {}
-        }
+    return {
+        totalScore,
+        details
     }
 }
 
@@ -1274,8 +1266,8 @@ const cacheTrustScores = async () => {
     console.log('🟢 getAllUniswapSybilData')
     gitcoinData = await getAllGitcoinData();
     console.log('🟢 getAllGitcoinData')
-    arcxData = await getAllArcxData();
-    console.log('🟢 getAllArcxData')
+    // arcxData = await getAllArcxData();
+    // console.log('🟢 getAllArcxData')
 
     let eth_price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH,MATIC&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
     GLOBAL_ETH_PRICE = eth_price_data['data']['items'][0]['quote_rate'];
