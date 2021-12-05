@@ -305,23 +305,28 @@ async function getAge(address){
 
 async function getArcxData(address){
 
-    let data = await fetch("https://api.arcx.money/scores/"+address).then(r=>{return r.json()});
-
-    let totalScore = 0;
-    let details = {};
-
-    for (let index = 0; index < data.length; index++) {
-        const scoreData = data[index];
-        if (scoreData['score'] !== null){
-            let sc = ((scoreData['score'] / (scoreData['metadata']['maxValue'] - scoreData['metadata']['minValue'])) * 10);
-            totalScore += sc;
-            details[scoreData['metadata']['name']] = sc;
-        }
-    }
     return {
-        totalScore,
-        details
+        totalScore: 0,
+        details: {}
     }
+
+    // let data = await fetch("https://api.arcx.money/scores/"+address).then(r=>{return r.json()});
+
+    // let totalScore = 0;
+    // let details = {};
+
+    // for (let index = 0; index < data.length; index++) {
+    //     const scoreData = data[index];
+    //     if (scoreData['score'] !== null){
+    //         let sc = ((scoreData['score'] / (scoreData['metadata']['maxValue'] - scoreData['metadata']['minValue'])) * 10);
+    //         totalScore += sc;
+    //         details[scoreData['metadata']['name']] = sc;
+    //     }
+    // }
+    // return {
+    //     totalScore,
+    //     details
+    // }
 }
 
 async function getAllArcxData(){
@@ -1259,7 +1264,7 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 9000);
+    addresses = getArraySample(addresses, 10000);
     console.log('addresses.length', addresses.length);
 
     uniswapData = await getAllUniswapSybilData();
