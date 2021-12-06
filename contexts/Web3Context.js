@@ -263,7 +263,7 @@ export const Web3ContextProvider = ({children}) => {
       }
     }
     else if (choice === "solana") {
-      if (typeof window.okexchain !== 'undefined') {
+      if (typeof window.solana !== 'undefined') {
         const resp = await window.solana.connect();
         if (Boolean(resp.publicKey.toString()) === true ){
           let sigResp = await updateAuthToken(resp.publicKey.toString(), "solana", window.solana);
@@ -271,7 +271,6 @@ export const Web3ContextProvider = ({children}) => {
             setProvider(window.solana);
             setConnectedChain("solana");
             setSignerAddress(resp.publicKey.toString());
-            setConnectedWallet(choice);
           }
           else {
             alert(sigResp.message);
@@ -279,7 +278,7 @@ export const Web3ContextProvider = ({children}) => {
         }
       }
       else {
-        alert('Phantom Wallet not found.')
+        alert('Get Phantom Wallet.')
       }
 
     }
