@@ -5,8 +5,7 @@ const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const Redis = require("ioredis");
 const { MongoClient } = require('mongodb');
 const { ethers } = require('ethers');
-const { create, globSource } = require('ipfs-http-client');
-
+const { create } = require('ipfs-http-client');
 
 const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, MONGODB_URI, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET, REDIS_CONNECTION} = process.env;
 
@@ -97,6 +96,7 @@ const getData = async () =>{
     };
 }
 
+// Gateway : https://gateway.pinata.cloud/ipfs/<hash>
 async function pinToPinata(hash) {
 
     const pinlist = await fetch(`https://api.pinata.cloud/data/pinList?status=pinned&pageLimit=1000`, {
@@ -162,6 +162,7 @@ async function pinToPinata(hash) {
 //     }
 // }
 
+// Gateway : https://crustipfs.xyz/ipfs/<hash>
 async function pinToCrust(hash) {
     try {
 
@@ -185,6 +186,7 @@ async function pinToCrust(hash) {
     }
 }
 
+// Gateway : https://<hash>.ipfs.infura-ipfs.io/
 async function pinToInfura(hash) {
     try {
 
@@ -205,6 +207,7 @@ async function pinToInfura(hash) {
     }
 }
 
+// Gateway : https://<hash>.ipfs.dweb.link/
 const client = new NFTStorage({ token: NFTSTORAGE_KEY })
 console.log("🔃 Backing up data to NFT.Storage")
 getData().then((data)=>{
