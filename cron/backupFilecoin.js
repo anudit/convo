@@ -4,6 +4,9 @@ const { NFTStorage, Blob } = require("nft.storage");
 const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const Redis = require("ioredis");
 const { MongoClient } = require('mongodb');
+const { ethers } = require('ethers');
+const { create, globSource } = require('ipfs-http-client');
+
 
 const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, MONGODB_URI, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET, REDIS_CONNECTION} = process.env;
 
@@ -159,6 +162,29 @@ async function pinToPinata(hash) {
 //     }
 // }
 
+async function pinToCrust(hash) {
+    try {
+
+        const pair = ethers.Wallet.createRandom();
+        const sig = await pair.signMessage(pair.address);
+        const authHeaderRaw = `eth-${pair.address}:${sig}`;
+        const authHeader = Buffer.from(authHeaderRaw).toString('base64');
+
+        const ipfs = create({
+            url: 'https://crustipfs.xyz',
+            headers: {
+                authorization: `Basic ${authHeader}`
+            }
+        });
+
+        const res = await ipfs.pin.add(hash)
+        return res;
+    }
+    catch (error) {
+        console.log('pinToCrust.error', error);
+    }
+}
+
 async function pinToInfura(hash) {
     try {
 
@@ -189,6 +215,8 @@ getData().then((data)=>{
         console.log("✅ Replicated Backup to Pinata");
         await pinToInfura(ipfsHash);
         console.log("✅ Replicated Backup to Infura");
+        await pinToCrust(ipfsHash);
+        console.log("✅ Replicated Backup to Crust Network");
         process.exit(0);
     });
 })

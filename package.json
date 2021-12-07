@@ -12,7 +12,8 @@
     "tunnel": "lt --port 3000 --subdomain convo",
     "sync": "node sync.js",
     "lint": "next lint",
-    "cron:cache": "node ./cron/cacheTrustScore.js"
+    "cron:cache": "node ./cron/cacheTrustScore.js",
+    "cron:backup": "node ./cron/backupFilecoin.js"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -80,6 +81,7 @@
     "eslint-config-next": "^12.0.7",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "ipfs-http-client": "^54.0.2",
     "next-sitemap": "^1.6.203"
   }
 }
