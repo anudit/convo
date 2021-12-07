@@ -2,7 +2,7 @@ import React, { useClipboard, MenuItem, MenuList, Menu, MenuButton } from "@chak
 import { ChevronDownIcon, CopyIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
 import { Web3Context } from "@/contexts/Web3Context";
-import { CeloIcon, DisconnectIcon, ExternalIcon, FlowIcon, FreetonIcon, MetaMaskIcon, NearIcon, OKExIcon, SolanaIcon, WalletConnectIcon } from "@/public/icons";
+import { CosmosIcon, CeloIcon, DisconnectIcon, ExternalIcon, FlowIcon, FreetonIcon, MetaMaskIcon, NearIcon, OKExIcon, SolanaIcon, WalletConnectIcon } from "@/public/icons";
 import { truncateAddress } from "@/utils/stringUtils";
 
 const SignedInMenu = () => {
@@ -32,6 +32,7 @@ const SignedInMenu = () => {
                 {connectedWallet === "celo" ? (<CeloIcon mr={2}/>) : (<></>) }
                 {connectedWallet === "okex" ? (<OKExIcon mr={2}/>) : (<></>) }
                 {connectedWallet === "freeton" ? (<FreetonIcon mr={2}/>) : (<></>) }
+                {connectedWallet === "cosmos" ? (<CosmosIcon mr={2}/>) : (<></>) }
                 {prettyName == "" ? truncateAddress(signerAddress, 3): prettyName}
                 <ChevronDownIcon ml={2}/>
             </MenuButton>
