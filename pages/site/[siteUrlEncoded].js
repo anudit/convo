@@ -10,13 +10,13 @@ import PropTypes from 'prop-types';
 
 import { ThreadView } from '@/components/ThreadView';
 import NavBar from '@/components/NavBar';
-import { getThreadsByUrl, getAllThreads } from "@/lib/thread-db";
-import { toB64, fromB64 } from '@/utils/stringUtils';
+import { getThreadsByUrl /*,getAllThreads*/ } from "@/lib/thread-db";
+import { /*toB64,*/ fromB64 } from '@/utils/stringUtils';
 import { createThread } from "@/lib/thread-db";
 import { Web3Context } from '@/contexts/Web3Context'
 import { CustomButton } from '@/components/CustomButtons';
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
 
     const siteUrlEncoded = context.params.siteUrlEncoded;
     const siteUrl = fromB64(siteUrlEncoded);
@@ -27,22 +27,22 @@ export async function getStaticProps(context) {
             initialThreads: threads,
             link: siteUrl
         },
-        revalidate: 1
+        // revalidate: 1,
     }
 }
 
-export async function getStaticPaths() {
-    const threads = await getAllThreads();
-    const paths = threads.map((thread) => ({
-        params: {
-            siteUrlEncoded: toB64(thread.url.toString())
-        }
-    }))
-    return {
-        paths,
-        fallback: true
-    };
-}
+// export async function getStaticPaths() {
+//     const threads = await getAllThreads();
+//     const paths = threads.map((thread) => ({
+//         params: {
+//             siteUrlEncoded: toB64(thread.url.toString())
+//         }
+//     }))
+//     return {
+//         paths,
+//         fallback: true
+//     };
+// }
 
 const Hero = ({children}) => {
 

@@ -1264,7 +1264,7 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 10000);
+    addresses = getArraySample(addresses, 12000);
     console.log('addresses.length', addresses.length);
 
     uniswapData = await getAllUniswapSybilData();

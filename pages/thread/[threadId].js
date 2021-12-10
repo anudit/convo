@@ -11,13 +11,13 @@ import PropTypes from 'prop-types';
 
 import PageShell from '@/components/PageShell';
 import { ReplyIcon, ThreeDotMenuIcon, CodeIcon } from '@/public/icons';
-import { getAllThreads, getComments, getThread } from "@/lib/thread-db";
+import { /*getAllThreads,*/ getComments, getThread } from "@/lib/thread-db";
 import timeAgo from '@/utils/timeAgo';
 import { toB64, cleanAdd, truncateAddress, prettyTime } from '@/utils/stringUtils';
 import { Web3Context } from '@/contexts/Web3Context';
 import CustomAvatar from '@/components/CustomAvatar';
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
     const threadId = context.params.threadId;
     const query = new Where('tid').eq(threadId);
 
@@ -33,22 +33,22 @@ export async function getStaticProps(context) {
             initialComments: results[0],
             thread: results[1][0]
         },
-        revalidate: 1
+        // revalidate: 1
     }
 }
 
-export async function getStaticPaths() {
-    const threads = await getAllThreads();
-    const paths = threads.map((thread) => ({
-        params: {
-            threadId: thread._id.toString()
-        }
-    }))
-    return {
-        paths,
-        fallback: true
-    };
-}
+// export async function getStaticPaths() {
+//     const threads = await getAllThreads();
+//     const paths = threads.map((thread) => ({
+//         params: {
+//             threadId: thread._id.toString()
+//         }
+//     }))
+//     return {
+//         paths,
+//         fallback: true
+//     };
+// }
 
 function makeThumbnailImage(title, creator, creation_time){
     const imagelink = `https://image.theconvo.space/api/image?title=${title}&author=${truncateAddress(creator)}&creation_time=${encodeURIComponent(creation_time)}`;
