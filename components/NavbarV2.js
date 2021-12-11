@@ -61,8 +61,8 @@ const NavBar = () => {
                 Dashboard
             </Link>
 
-            <Text fontWeight="800" fontSize="30px" display={{base:"none", md:"inline"}}>
-              Convo
+            <Text fontWeight="800" fontSize="25px" display={{base:"none", md:"inline"}}>
+              Convo Space
             </Text>
 
             <Link rel="noreferrer" target="_blank" href="https://docs.theconvo.space" aria-label="Docs"

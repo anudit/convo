@@ -930,6 +930,10 @@ const AgeCard = ({trustScoreData}) => {
               <Heading fontSize="60px" mb={0}>{age - (parseInt(age/365)*365)}</Heading>
               <Text mt={0}>Day{age>0 ? "s" : ""}</Text>
             </Flex>
+            <Flex align="center" direction="column" display={age === 0 ? "flex" : "none"}>
+              <Heading fontSize="60px" mb={0}>0</Heading>
+              <Text mt={0}>Days</Text>
+            </Flex>
           </Flex>
         </Flex>
 
