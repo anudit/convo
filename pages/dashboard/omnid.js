@@ -103,7 +103,7 @@ const IdentitySection = () => {
       "stateMutability": "nonpayable",
       "type": "function"
     }];
-    let contractAddress = "0xCe439983CDB28864F1d65C27379D8b3ef92192b4";
+    let contractAddress = "0xF66D5443b4e881c41A16eCd9Ba72C715A413929b";
 
     if (parseInt(chainId) !== 80001 ){
       alert('Please switch to Mumbai Testnet!')
@@ -139,7 +139,7 @@ const IdentitySection = () => {
   }
 
     return (
-      <DashboardShell active="identity" title="Identity">
+      <DashboardShell active="identity" title="Omnid">
           <Flex direction="column">
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />

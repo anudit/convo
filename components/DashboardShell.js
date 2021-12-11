@@ -284,7 +284,7 @@ const DashboardShell = ({title, active, children}) => {
                                 </Text>
                             </Flex>
                         </Link>
-                        <Link href="/dashboard/identity" passHref={true} >
+                        <Link href="/dashboard/omnid" passHref={true} >
                             <Flex
                                 display={connectedChain === "ethereum" ? "flex" : "none"}
                                 m={1}
@@ -302,7 +302,7 @@ const DashboardShell = ({title, active, children}) => {
                             >
                                 <IdentityIcon mr={4}/>
                                 <Text display={{base:"none", md:"block"}} fontSize="sm">
-                                    Identity
+                                    Omnid
                                 </Text>
                             </Flex>
                         </Link>
@@ -386,26 +386,6 @@ const DashboardShell = ({title, active, children}) => {
                             <QuestionIcon mr={4}/>
                             <Text display={{base:"none", md:"block"}} fontSize="sm" >
                                 Varta
-                                <Tag size="sm" ml={2}>soon</Tag>
-                            </Text>
-                        </Flex>
-                        <Flex
-                            m={1}
-                            h={{base: "50px", md:"50px"}}
-                            w="90%"
-                            fontWeight={400}
-                            cursor="pointer"
-                            direction="row"
-                            align="left"
-                            justifyContent="flex-start"
-                            paddingLeft="20px"
-                            alignItems="center"
-                            backgroundColor={active === "bridge" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
-                            _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
-                        >
-                            <QuestionIcon mr={4}/>
-                            <Text display={{base:"none", md:"block"}} fontSize="sm" >
-                                Omnid
                                 <Tag size="sm" ml={2}>soon</Tag>
                             </Text>
                         </Flex>

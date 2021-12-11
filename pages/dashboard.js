@@ -54,7 +54,7 @@ const Dashboard = () => {
                             title="My Identities"
                             emoji="🆔"
                             text="Manage your Decentralized Identities and Trust Score."
-                            link="/dashboard/identity"
+                            link="/dashboard/omnid"
                             tags={['IDX', 'PoH', 'BrightID', 'ENS', 'Idena']}
                         />
                         <SimpleCard

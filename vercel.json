@@ -83,5 +83,12 @@
           }
         ]
       }
+    ],
+    "redirects": [
+      {
+        "source": "/dashboard/identity",
+        "destination": "/dashboard/omnid",
+        "permanent": true
+      }
     ]
 }
