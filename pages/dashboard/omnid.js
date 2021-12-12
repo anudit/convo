@@ -139,7 +139,16 @@ const IdentitySection = () => {
   }
 
     return (
-      <DashboardShell active="identity" title="Omnid">
+      <DashboardShell active="identity" title="Omnid" searchbox={
+        <InputGroup w="50%" maxWidth="500px" display={{base:'none', md:'flex'}}>
+          <Input placeholder="Search" onChange={(e)=>{
+            setSearchString(e.currentTarget.value)
+          }} />
+          <InputRightElement>
+            <SearchIcon/>
+          </InputRightElement>
+        </InputGroup>
+      }>
           <Flex direction="column">
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
@@ -199,14 +208,7 @@ const IdentitySection = () => {
                   <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={refreshScore} disabled={trustScoreLoading} title="Re-Index Score"/>
                 </Flex>
                 <Flex flexDirection="row" mt={4} alignItems="center">
-                  <InputGroup>
-                    <Input placeholder="Search" onChange={(e)=>{
-                      setSearchString(e.currentTarget.value)
-                    }} />
-                    <InputRightElement>
-                      <SearchIcon/>
-                    </InputRightElement>
-                  </InputGroup>
+
                   <Button size="md" onClick={onOpen} ml={2}>
                     Mint it
                   </Button>
@@ -272,7 +274,7 @@ const IdentitySection = () => {
                   <Item searchString={searchString} tags={['mirror', 'writing']}>
                     <MirrorCard trustScoreData={trustScoreData} />
                   </Item>
-                  <Item searchString={searchString} tags={['polygon', 'id', 'blockchain']}>
+                  <Item searchString={searchString} tags={['polygon', 'id', 'blockchain', 'defi']}>
                     <PolygonCard trustScoreData={trustScoreData} />
                   </Item>
                   <Item searchString={searchString} tags={['identity', 'proof of humanity']}>

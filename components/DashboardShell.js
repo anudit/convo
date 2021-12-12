@@ -40,7 +40,7 @@ PageShell.propTypes = {
     children:PropTypes.array
 }
 
-const DashboardShell = ({title, active, children}) => {
+const DashboardShell = ({title, active, children, searchbox}) => {
 
     const { connectWallet, signerAddress, isPortisLoading, connectedChain } = useContext(Web3Context);
     const { colorMode, toggleColorMode } = useColorMode();
@@ -450,6 +450,7 @@ const DashboardShell = ({title, active, children}) => {
                         <Text>
                             {title}
                         </Text>
+                        { Boolean(searchbox) === true ? (searchbox) : (<></>)}
                         <SignedInMenu/>
                     </Flex>
                     <Flex
@@ -483,7 +484,8 @@ const DashboardShell = ({title, active, children}) => {
 DashboardShell.propTypes = {
     title:PropTypes.string,
     active: PropTypes.string,
-    children:PropTypes.element
+    searchbox: PropTypes.element,
+    children: PropTypes.element
 }
 
 export default DashboardShell;

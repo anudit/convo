@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {InputRightElement, InputGroup, Input, Button, useToast, useClipboard, Spinner, Flex, useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
+import {InputRightElement, InputGroup, Input, useToast, useClipboard, Spinner, Flex, useColorMode, IconButton, Tooltip } from "@chakra-ui/react";
 import useSWR from 'swr';
-import { CheckIcon, DeleteIcon} from "@chakra-ui/icons"
+import { CheckIcon, DeleteIcon, SearchIcon} from "@chakra-ui/icons"
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
@@ -183,43 +183,16 @@ const CommentsSection = (props) => {
     }, [comments]);
 
     const [filterText, setFilterText] = useState('');
-	const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+	const [resetPaginationToggle,] = useState(false);
 	const filteredItems = formattedComments.filter(
 		item => item.text.toLowerCase().includes(filterText.toLowerCase()) || item.url.toLowerCase().includes(filterText.toLowerCase()),
 	);
-
-    const subHeaderComponentMemo = React.useMemo(() => {
-		const handleClear = () => {
-			if (filterText) {
-				setResetPaginationToggle(!resetPaginationToggle);
-				setFilterText('');
-			}
-		};
-
-		return (
-            <InputGroup size="md">
-                <Input
-                    id="search"
-                    type="text"
-                    placeholder="Filter By Message or Website"
-                    aria-label="Search Input"
-                    value={filterText}
-                    onChange={e => setFilterText(e.target.value)}
-                />
-                <InputRightElement width="4.5rem">
-                    <Button type="button" size="sm" onClick={handleClear}>
-                        Clear
-                    </Button>
-                </InputRightElement>
-            </InputGroup>
-		);
-	}, [filterText, resetPaginationToggle]);
 
     // Comments are loading
 
     if (Boolean(comments) === false){
         return (
-            <DashboardShell active="messages" title="Your Messages">
+            <DashboardShell active="messages" title="Messages">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
@@ -241,7 +214,7 @@ const CommentsSection = (props) => {
     // Does not have any comments to show.
     else if (comments && comments.length < 1 ){
         return (
-            <DashboardShell active="messages" title="Your Messages">
+            <DashboardShell active="messages" title="Messages">
                 <Flex
                     direction="column"
                     align={props?.align ? props.align : "center"}
@@ -256,7 +229,21 @@ const CommentsSection = (props) => {
     }
     else if (Boolean(comments) === true && comments.length >= 1) {
         return (
-            <DashboardShell active="messages" title="Your Messages">
+            <DashboardShell active="messages" title="Messages"  searchbox={
+                <InputGroup w="50%" maxWidth="500px" display={{base:'none', md:'flex'}}>
+                    <Input
+                        id="search"
+                        type="text"
+                        placeholder="Filter By Message or Website"
+                        aria-label="Search Input"
+                        value={filterText}
+                        onChange={e => setFilterText(e.target.value)}
+                    />
+                    <InputRightElement>
+                        <SearchIcon/>
+                    </InputRightElement>
+                </InputGroup>
+            }>
                 <Flex flexDirection="column">
                     <DataTable
                         data={filteredItems}
@@ -266,8 +253,8 @@ const CommentsSection = (props) => {
                         highlightOnHover
                         responsive
                         pagination
-                        subHeader
-                        subHeaderComponent={subHeaderComponentMemo}
+                        // subHeader
+                        // subHeaderComponent={subHeaderComponentMemo}
                         onColumnOrderChange={cols => console.log(cols)}
                     />
                 </Flex>
