@@ -346,15 +346,38 @@ async function getContextData(address){
 
 }
 
-async function addressToEns(address, provider){
+async function addressToEns(address){
 
-    let resp = await provider.lookupAddress(address);
+    // let resp = await provider.lookupAddress(address);
+    // if (resp === null){ return false; }
+    // else { return resp; }
 
-    if (resp === null){
+    let data = await fetch("https://api.thegraph.com/subgraphs/name/ensdomains/ens", {
+        "headers": {
+            "accept": "*/*",
+            "content-type": "application/json",
+        },
+        "referrer": "https://thegraph.com/",
+        "referrerPolicy": "strict-origin-when-cross-origin",
+        "body": "{\"query\":\"{\\n  domains (where: {resolvedAddress: \\\""+address.toLowerCase()+"\\\"}){\\n    name\\n  }\\n}\\n\",\"variables\":null}",
+        "method": "POST",
+        "mode": "cors",
+        "credentials": "omit"
+    });
+
+    let resp = await data.json();
+    if (resp['data']['domains'].length === 0){
         return false;
     }
     else {
-        return resp;
+        let finalDomain = false;
+        for (let index = 0; index < resp['data']['domains'].length; index++) {
+            const domain = resp['data']['domains'][index];
+            if (domain.name.split('.').length == 2){
+                finalDomain = domain.name;
+            }
+        }
+        return finalDomain;
     }
 
 }
@@ -526,16 +549,17 @@ async function getCoinviseData(address = ""){
     async function getPoolData(tokenAddress = ""){
 
         let data = await fetch("https://api.thegraph.com/subgraphs/name/benesjan/uniswap-v3-subgraph", {
-        "headers": {
-            "accept": "*/*",
-            "content-type": "application/json",
-        },
-        "referrer": "https://thegraph.com/",
-        "body": "{\"query\":\"{\\n  pools (where : {token0: \\\""+tokenAddress+"\\\"}) {\\n    id\\n    totalValueLockedUSD\\n    token0 {\\n      id\\n    }\\n    token1 {\\n      id\\n    }\\n  }\\n}\\n\",\"variables\":null}",
-        "method": "POST"
+            "headers": {
+                "accept": "*/*",
+                "content-type": "application/json",
+            },
+            "referrer": "https://thegraph.com/",
+            "body": "{\"query\":\"{\\n  pools (where : {token0: \\\""+tokenAddress+"\\\"}) {\\n    id\\n    totalValueLockedUSD\\n    token0 {\\n      id\\n    }\\n    token1 {\\n      id\\n    }\\n  }\\n}\\n\",\"variables\":null}",
+            "method": "POST"
         });
         let response = await data.json();
         return response['data']['pools'];
+
     }
 
     let promiseArray = [
@@ -1059,7 +1083,7 @@ async function calculateScore(address) {
         timeit(checkPoH, [address, tp]),
         timeit(fetcher, [`https://app.brightid.org/node/v5/verifications/Convo/${address.toLowerCase()}`, "GET", {}]),
         timeit(fetcher, [`https://api.poap.xyz/actions/scan/${address}`, "GET", {}]),
-        timeit(addressToEns, [address, tp]),
+        timeit(addressToEns, [address]),
         timeit(fetcher, [`https://api.idena.io/api/Address/${address}`, "GET", {}]),
         timeit(fetcher, [`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}]),
         timeit(checkUnstoppableDomains, [address]),
@@ -1341,8 +1365,8 @@ const cacheTrustScoresManual = async (addresses = []) => {
     console.log('🟢 getAllUniswapSybilData')
     gitcoinData = await getAllGitcoinData();
     console.log('🟢 getAllGitcoinData')
-    arcxData = await getAllArcxData();
-    console.log('🟢 getAllArcxData')
+    // arcxData = await getAllArcxData();
+    // console.log('🟢 getAllArcxData')
 
     let eth_price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH,MATIC&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
     GLOBAL_ETH_PRICE = eth_price_data['data']['items'][0]['quote_rate'];
@@ -1376,14 +1400,14 @@ const cacheTrustScoresManual = async (addresses = []) => {
 
 }
 
-const cacheAddsFromFile = async(fileName = "") => {
-    var adds = JSON.parse(fs.readFileSync(path.resolve(__dirname, fileName), 'utf8'));
-    await cacheTrustScoresManual(adds);
-}
+// const cacheAddsFromFile = async(fileName = "") => {
+//     var adds = JSON.parse(fs.readFileSync(path.resolve(__dirname, fileName), 'utf8'));
+//     await cacheTrustScoresManual(adds);
+// }
 // cacheAddsFromFile();
 
 cacheTrustScores().then(()=>{
     console.log("✅ Cached all trust Scores");
 });
 
-// cacheTrustScoresManual(["0xd26a3f686d43f2a62ba9eae2ff77e9f516d945b9", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"])
+// cacheTrustScoresManual(["0x2bD5d2e3d5852AD9960638083cb7c9F493E7A597", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"])

@@ -13,7 +13,7 @@ async function calculateScore(address) {
         checkPoH(address, tp),
         fetcher(`https://app.brightid.org/node/v5/verifications/Convo/${address.toLowerCase()}`, "GET", {}),
         fetcher(`https://api.poap.xyz/actions/scan/${address}`, "GET", {}),
-        addressToEns(address, tp),
+        addressToEns(address),
         fetcher(`https://api.idena.io/api/Address/${address}`, "GET", {}),
         fetcher(`https://api.cryptoscamdb.org/v1/check/${address}`, "GET", {}),
         checkUnstoppableDomains(address),
