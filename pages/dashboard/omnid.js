@@ -13,7 +13,7 @@ import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context';
 import { ReloadIcon, VerifiedIcon } from '@/public/icons';
-import { prettifyNumber, truncateAddress } from '@/utils/stringUtils';
+import { ensToAddress, prettifyNumber, truncateAddress } from '@/utils/stringUtils';
 
 import brightid from '../../public/images/brightid.webp';
 import asyncart from '../../public/images/asyncart.webp';
@@ -53,23 +53,25 @@ const IdentitySection = () => {
   const [trustScoreLoading, setTrustScoreLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchString, setSearchString] = useState("");
+  const [extString, setExtString] = useState("Your");
   const etchingRef = useRef();
   const skinRef = useRef();
 
   useEffect(() => {
     if (isAddress(signerAddress) === true){
-      fetcher(`/api/identity?address=${signerAddress}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET", {}).then((data)=>{
-        setTrustScore((e)=>{return e+data?.score});
-        setTrustScoreData(data);
-        console.log(data);
-      });
+      refreshScore(signerAddress);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signerAddress]);
 
 
-  async function refreshScore(){
+  async function refreshScore(address = ""){
+    console.log('loading score for',address === "" ? signerAddress : address)
+    if (address === signerAddress){
+      setExtString('Your')
+    }
     setTrustScoreLoading(true);
-    let data = await fetcher(`/api/identity?address=${signerAddress}&noCache=true&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET", {});
+    let data = await fetcher(`/api/identity?address=${address === "" ? signerAddress : address}&noCache=true&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET", {});
     console.log(data);
     setTrustScore(data?.score);
     setTrustScoreData(data);
@@ -141,8 +143,24 @@ const IdentitySection = () => {
     return (
       <DashboardShell active="identity" title="Omnid" searchbox={
         <InputGroup w="50%" maxWidth="500px" display={{base:'none', md:'flex'}}>
-          <Input placeholder="Search" onChange={(e)=>{
-            setSearchString(e.currentTarget.value)
+          <Input placeholder="Search" onChange={async (e)=>{
+            const searchVal = e.currentTarget.value;
+            if (isAddress(searchVal) === true){
+              setSearchString('')
+              setExtString(truncateAddress(searchVal) + "'s")
+              await refreshScore(searchVal)
+            }
+            else if(searchVal.endsWith('.eth') === true){
+              let address = await ensToAddress(searchVal);
+              if (Boolean(address) != false){
+                setSearchString('')
+                setExtString(searchVal + "'s")
+                await refreshScore(address)
+              }
+            }
+            else{
+              setSearchString(e.currentTarget.value)
+            }
           }} />
           <InputRightElement>
             <SearchIcon/>
@@ -202,10 +220,10 @@ const IdentitySection = () => {
                     backgroundImage="url('/images/gradient.webp')"
                     backgroundSize="cover"
                   >
-                    Your Trust Score is {trustScore}
+                    {extString} Trust Score is {trustScore}
                   </Heading>
 
-                  <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={refreshScore} disabled={trustScoreLoading} title="Re-Index Score"/>
+                  <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={()=>{refreshScore()}} disabled={trustScoreLoading} title="Re-Index Score"/>
                 </Flex>
                 <Flex flexDirection="row" mt={4} alignItems="center">
 
@@ -308,7 +326,7 @@ const IdentitySection = () => {
               </Wrap>
             </Flex>
             <Flex my={2} direction={{base:"column", md: "row"}} justifyContent="center" overflow="hidden">
-              <PoapSection mt={2}/>
+              <PoapSection mt={2} trustScoreData={trustScoreData}/>
             </Flex>
           </Flex>
       </DashboardShell>
@@ -560,18 +578,20 @@ const IdxCard = () => {
   );
 };
 
-const PoapSection = () => {
+const PoapSection = ({trustScoreData}) => {
 
-  const web3Context = useContext(Web3Context);
-  const { signerAddress } = web3Context;
   const [poaps, setPoaps] = useState(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [poapDetails, setPoapDetails] = useState(null);
 
   useEffect(() => {
-    fetcher(`https://api.poap.xyz/actions/scan/${signerAddress}`, "GET", {}).then(setPoaps);
-  }, [signerAddress]);
+    updatePoaps(trustScoreData?.cyberconnect?.address);
+  }, [trustScoreData]);
+
+  async function updatePoaps(address){
+    fetcher(`https://api.poap.xyz/actions/scan/${address}`, "GET", {}).then(setPoaps);
+  }
 
   function showDetails(id) {
     setPoapDetails({
@@ -631,6 +651,9 @@ const PoapSection = () => {
     )
   }
 };
+PoapSection.propTypes = {
+  trustScoreData: PropTypes.object,
+}
 
 const IdentityCard = (props) => {
 
@@ -885,7 +908,7 @@ const AsyncartCard = ({trustScoreData}) => {
             ) : (
               <>
                 <Text mr={1}>
-                  {trustScoreData.asyncart.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.asyncart.totalAmountSold)}
+                  {trustScoreData?.asyncart?.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.asyncart.totalAmountSold)}
                 </Text>
                 <VerifiedIcon color="blue.400"/>
               </>
@@ -1070,7 +1093,7 @@ const CyberconnectCard = ({trustScoreData}) => {
   return (
     <IdentityCard image_url={cyberconnect}>
       {
-        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.cyberconnect?.followingCount) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.cyberconnect.me/">Connect on Cyberconnect</chakra.p></>) : (<><Text mr={1}>Connected on Cyberconnect</Text><VerifiedIcon color="blue.400"/></>)
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.cyberconnect?.followingCount) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.cyberconnect.me/">Connect on Cyberconnect</chakra.p></>) : (<><Text mr={1}>Profile on Cyberconnect</Text><VerifiedIcon color="blue.400"/></>)
       }
     </IdentityCard>
   );
@@ -1092,7 +1115,7 @@ const ContextCard = ({trustScoreData}) => {
   return (
     <IdentityCard image_url={context}>
       {
-        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.context?.folowers) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://context.app/">Follow on Context</chakra.p></>) : (<><Text mr={1}>Connected on Context</Text><VerifiedIcon color="blue.400"/></>)
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.context?.followerCount) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://context.app/">Follow on Context</chakra.p></>) : (<><Text mr={1}>Connected on Context</Text><VerifiedIcon color="blue.400"/></>)
       }
     </IdentityCard>
   );

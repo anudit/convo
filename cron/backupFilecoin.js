@@ -7,7 +7,7 @@ const { MongoClient } = require('mongodb');
 const { ethers } = require('ethers');
 const { create } = require('ipfs-http-client');
 
-const { TEXTILE_PK, TEXTILE_HUB_KEY_DEV, MONGODB_URI, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET, REDIS_CONNECTION} = process.env;
+const { CHAINSAFE_STORAGE_API_KEY, TEXTILE_PK, TEXTILE_HUB_KEY_DEV, MONGODB_URI, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET, REDIS_CONNECTION} = process.env;
 
 const getClient = async () =>{
 
@@ -207,19 +207,85 @@ async function pinToInfura(hash) {
     }
 }
 
+// async function uploadToChainsafe(jsonObj) {
+//     try {
+
+//         console.log(Object.keys(jsonObj))
+//         var form = new FormData();
+//         const blob = new Blob([jsonObj], {
+//             type: "application/json"
+//         });
+
+//         form.append("file", blob, `Backup-${prettyDate(Date.now())}`);
+//         form.append("path", "/");
+//         form.append("replication", "1");
+//         console.log(form);
+
+//         var requestOptions = {
+//             method: 'POST',
+//             headers: {
+//                 "Authorization": `Bearer ${CHAINSAFE_STORAGE_API_KEY}`,
+//                 "Content-Type": `multipart/form-data; boundary=${form.getBoundary()}`,
+//                 "Accept": "application/json"
+//             },
+//             body: form,
+//         };
+
+//         let uploadReq = await fetch("https://api.chainsafe.io/api/v1/bucket/85ba9d07-535f-4659-98ed-1948b115e161/upload", requestOptions);
+//         let res = await uploadReq.text();
+//         console.log('res', res)
+//         return res;
+//     }
+//     catch (error) {
+//         console.log('uploadToChainsafe.error', error);
+//         return "";
+//     }
+// }
+
+async function pinToChainsafe(hash) {
+    try {
+
+        var raw = JSON.stringify({
+            "cid": hash,
+            "name": `Backup-${prettyDate(Date.now())}`,
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: {
+                "Authorization": `Bearer ${CHAINSAFE_STORAGE_API_KEY}`,
+                "Content-Type": "application/json"
+            },
+            body: raw,
+            redirect: 'follow'
+        };
+
+        let data = await fetch("https://api.chainsafe.io/api/v1/pins", requestOptions);
+        let resp = await data.json();
+
+        return resp;
+    }
+    catch (error) {
+        console.log('pinToChainsafe.error', error);
+        return "";
+    }
+}
+
 // Gateway : https://<hash>.ipfs.dweb.link/
 const client = new NFTStorage({ token: NFTSTORAGE_KEY })
 console.log("🔃 Backing up data to NFT.Storage")
-getData().then((data)=>{
+
+getData().then(async (data)=>{
     const content = new Blob([JSON.stringify(data)]);
-    client.storeBlob(content).then(async (ipfsHash)=>{
-        console.log("✅ Backed up Data to NFT.Storage");
-        await pinToPinata(ipfsHash);
-        console.log("✅ Replicated Backup to Pinata");
-        await pinToInfura(ipfsHash);
-        console.log("✅ Replicated Backup to Infura");
-        await pinToCrust(ipfsHash);
-        console.log("✅ Replicated Backup to Crust Network");
-        process.exit(0);
-    });
+    let ipfsHash = await client.storeBlob(content);
+    console.log("✅ Backed up Data to NFT.Storage");
+    await pinToPinata(ipfsHash);
+    console.log("✅ Replicated Backup to Pinata");
+    await pinToInfura(ipfsHash);
+    console.log("✅ Replicated Backup to Infura");
+    await pinToCrust(ipfsHash);
+    console.log("✅ Replicated Backup to Crust Network");
+    await pinToChainsafe(ipfsHash);
+    console.log("✅ Replicated Backup to Chainsafe Storage");
+    process.exit(0);
 })

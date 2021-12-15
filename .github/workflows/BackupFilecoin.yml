@@ -30,4 +30,5 @@ jobs:
         PINATA_API_SECRET: ${{ secrets.PINATA_API_SECRET }}
         REDIS_CONNECTION: ${{ secrets.REDIS_CONNECTION }}
         MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        CHAINSAFE_STORAGE_API_KEY: ${{ secrets.CHAINSAFE_STORAGE_API_KEY }}
       run: node ./cron/backupFilecoin.js
