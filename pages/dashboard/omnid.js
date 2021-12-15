@@ -43,6 +43,7 @@ import rss3 from '../../public/images/rss3.webp';
 import aave from '../../public/images/aave.webp';
 import context from '../../public/images/context.webp';
 import arcx from '../../public/images/arcx.webp';
+import metagame from '../../public/images/metagame.webp';
 import { ethers } from 'ethers';
 
 const IdentitySection = () => {
@@ -288,6 +289,9 @@ const IdentitySection = () => {
                   </Item>
                   <Item searchString={searchString} tags={['nft', 'art', 'knownorigin']}>
                     <KnownoriginCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['dao','metagame']}>
+                    <MetagameCard trustScoreData={trustScoreData} />
                   </Item>
                   <Item searchString={searchString} tags={['mirror', 'writing']}>
                     <MirrorCard trustScoreData={trustScoreData} />
@@ -586,12 +590,8 @@ const PoapSection = ({trustScoreData}) => {
   const [poapDetails, setPoapDetails] = useState(null);
 
   useEffect(() => {
-    updatePoaps(trustScoreData?.cyberconnect?.address);
+    fetcher(`https://api.poap.xyz/actions/scan/${trustScoreData?.cyberconnect?.address}`, "GET", {}).then(setPoaps);
   }, [trustScoreData]);
-
-  async function updatePoaps(address){
-    fetcher(`https://api.poap.xyz/actions/scan/${address}`, "GET", {}).then(setPoaps);
-  }
 
   function showDetails(id) {
     setPoapDetails({
@@ -722,6 +722,18 @@ const DeepdaoCard = ({trustScoreData}) => {
     );
 };
 DeepdaoCard.propTypes = propTypes
+
+const MetagameCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url={metagame}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.metagame?.rank) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://metagame.wtf/">Explore on Metagame</chakra.p></>) : (<><Text mr={1}>{trustScoreData?.metagame?.rank}</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+MetagameCard.propTypes = propTypes
 
 const MirrorCard = ({trustScoreData}) => {
 

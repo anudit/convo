@@ -544,6 +544,28 @@ async function getCeloData(address = ""){
 
 }
 
+async function getMetagameData(address) {
+    let response = await fetch("https://hasura-7s6e.onrender.com/v1/graphql", {
+        "headers": {
+          "accept": "*/*",
+          "accept-language": "en-US,en;q=0.9",
+          "content-type": "application/json",
+        },
+        "body": "{\"query\":\"{\\n  player(where:{ ethereum_address: {_eq: \\\""+address.toLowerCase()+"\\\"}}){\\n    box_profile {\\n      name\\n      job\\n      location\\n      website\\n      emoji\\n      coverImageURL\\n    }\\n  \\ttotal_xp\\n    username\\n    season_xp\\n    role\\n    rank\\n    \\n  }\\n}\",\"variables\":null,\"operationName\":null}",
+        "method": "POST",
+        "mode": "cors",
+        "credentials": "omit"
+    });
+    let data = await response.json();
+
+    if (data['data']['player'].length > 0){
+        return data['data']['player'][0]
+    }
+    else {
+        return {};
+    }
+}
+
 async function getCoinviseData(address = ""){
 
     async function getPoolData(tokenAddress = ""){
@@ -1107,7 +1129,8 @@ async function calculateScore(address) {
         timeit(getAge, [address]),
         timeit(getContextData, [address]),
         timeit(getArcxData, [address]),
-        timeit(getBoardroomData, [address])
+        timeit(getBoardroomData, [address]),
+        timeit(getMetagameData, [address])
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -1189,6 +1212,7 @@ async function calculateScore(address) {
         'context': results[25]?.value,
         'arcx': results[26]?.value,
         'boardroom': results[27]?.value,
+        'metagame': results[28]?.value,
     };
 
     if(results[0].value === true){ // poh
@@ -1244,6 +1268,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[27]?.value?.totalVotes) === true){ // boardroom
         score += results[27]?.value?.totalVotes;
+    }
+    if(Boolean(results[28]?.value?.metagame) === true){ // metagame
+        score += (results[28]?.value?.metagame?.season_xp)**0.5;
     }
 
     let coinviseScore = (
@@ -1406,8 +1433,8 @@ const cacheTrustScoresManual = async (addresses = []) => {
 // }
 // cacheAddsFromFile();
 
-cacheTrustScores().then(()=>{
-    console.log("✅ Cached all trust Scores");
-});
+// cacheTrustScores().then(()=>{
+//     console.log("✅ Cached all trust Scores");
+// });
 
-// cacheTrustScoresManual(["0x2bD5d2e3d5852AD9960638083cb7c9F493E7A597", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"])
+cacheTrustScoresManual(["0xB53b0255895c4F9E3a185E484e5B674bCCfbc076", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"])
