@@ -22,12 +22,12 @@ import coinvise from '../../public/images/coinvise.webp';
 import deepdao from '../../public/images/deepdao.webp';
 import ens from '../../public/images/ens.webp';
 import foundation from '../../public/images/foundation.webp';
-import idenaimage from '../../public/images/idena.webp';
-import idximage from '../../public/images/idx.webp';
+import idena from '../../public/images/idena.webp';
+import idx from '../../public/images/idx.webp';
 import knownorigin from '../../public/images/knownorigin.webp';
 import mirror from '../../public/images/mirror.webp';
-import pohimage from '../../public/images/poh.webp';
-import rabbitholeimage from '../../public/images/rabbithole.webp';
+import poh from '../../public/images/poh.webp';
+import rabbithole from '../../public/images/rabbithole.webp';
 import rarible from '../../public/images/rarible.webp';
 import superrare from '../../public/images/superrare.webp';
 import sybil from '../../public/images/sybil.webp';
@@ -513,7 +513,7 @@ const IdxCard = () => {
   }
 
   return (
-    <IdentityCard image_url={idximage}>
+    <IdentityCard image_url={idx}>
       {
         isLoading === true ? (
           <Spinner size="md" />
@@ -933,7 +933,7 @@ AsyncartCard.propTypes = propTypes
 
 const PoHCard = ({trustScoreData}) => {
   return (
-    <IdentityCard image_url={pohimage}>
+    <IdentityCard image_url={poh}>
       {
           trustScoreData === null ? "Loading" : Boolean(trustScoreData.poh) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
       }
@@ -1012,7 +1012,7 @@ UdCard.propTypes = propTypes
 const IdenaCard = ({trustScoreData}) => {
 
     return (
-      <IdentityCard image_url={idenaimage}>
+      <IdentityCard image_url={idena}>
         {
          trustScoreData === null ? "Loading" : Boolean(trustScoreData.idena) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.idena.io/">Verify on Idena</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
@@ -1024,7 +1024,7 @@ IdenaCard.propTypes = propTypes
 const RabbitholeCard = ({trustScoreData}) => {
 
     return (
-      <IdentityCard image_url={rabbitholeimage}>
+      <IdentityCard image_url={rabbithole}>
         {
           trustScoreData === null ? "Loading" : Boolean(trustScoreData.rabbitHole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Level {trustScoreData?.rabbitHole.level}</Text><VerifiedIcon color="blue.400"/></>)
         }

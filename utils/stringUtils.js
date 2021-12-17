@@ -84,6 +84,17 @@ export const prettyTime = (timestamp) => {
 
 }
 
+export const prettyTimeMin = (timestamp) => {
+
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    const dt = new Date(parseInt(timestamp));
+    const d = dt.getDate();
+    const month = monthNames[dt.getMonth()];
+    return `${month} ${d}`;
+
+}
+
 export const prettyTimeParse = (obj) => {
     return prettyTime(new Date(obj).getTime())
 }

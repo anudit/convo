@@ -5,7 +5,7 @@ import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, He
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, CeloIcon, OKExIcon, HomeIcon, CosmosIcon, FreetonIcon } from '@/public/icons';
+import { GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, OKExIcon, HomeIcon, CosmosIcon, FreetonIcon } from '@/public/icons';
 import { InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
@@ -68,6 +68,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                                 py={2}
                                 px={4}
                                 cursor="pointer"
+                                fontWeight={400}
                             >
                                 <MetaMaskIcon mr={2}/> Get MetaMask Wallet <ExternalIcon ml={2}/>
                             </Button>
@@ -81,6 +82,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                                 py={2}
                                 px={4}
                                 cursor="pointer"
+                                fontWeight={400}
                             >
                                 🌈 &nbsp;Get Rainbow Wallet <ExternalIcon ml={2}/>
                             </Button>
@@ -186,15 +188,6 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                         />
 
                         <WalletItem
-                            onClick={()=>{connectWallet('celo')}}
-                            backgroundImage="linear-gradient(215deg, rgb(251 204 92 / 66%) 0%, rgb(53 208 127 / 59%) 100%);"
-                            title="Celo"
-                            icon={<CeloIcon boxSize={8} mx={2}/>}
-                            onMouseEnter={()=>{setWalletInfo('Sign-in with Celo Blockchain.')}}
-                            onMouseLeave={()=>{setWalletInfo('')}}
-                        />
-
-                        <WalletItem
                             onClick={()=>{connectWallet('okex')}}
                             backgroundImage="linear-gradient(228deg, rgb(32 95 236 / 44%) 0%, rgb(136 189 243 / 60%) 100%);"
                             title="OKEx Defi Hub"
@@ -205,7 +198,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
 
                     </Wrap>
                     <Text cursor="pointer" onClick={()=>{connectWallet('portis')}} align="center" fontSize="sm" color={colorMode === "light"? "black": "white"}>
-                        {isPortisLoading === true ? (<Spinner size="md"/>) : "Just use an Email Address" }
+                        {isPortisLoading === true ? (<Spinner size="md"/>) : "Just use my Email Address" }
                     </Text>
                 </Flex>
 

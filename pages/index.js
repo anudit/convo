@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Head from 'next/head';
 import Image from 'next/image';
-import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Button, Box, UnorderedList, ListItem, Tabs, TabList, Tab, TabPanels, TabPanel, SimpleGrid } from "@chakra-ui/react";
+import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Button, Box, UnorderedList, ListItem, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import PropTypes from 'prop-types';
 
@@ -215,16 +215,16 @@ const Home = ({tweetData}) => {
         <Flex direction={{ base: "column", md: "row"}} alignItems="center" textAlign="center" justifyContent="space-evenly" >
 
           <Flex direction="row" w="100%" justifyContent="center">
-            <Link href="/explore" style={{textDecoration: 'inherit'}} mr={{ base: 0, md: 2}} >
+            <Link href="/dashboard" style={{textDecoration: 'inherit'}} mr={{ base: 0, md: 2}} >
               <CustomButton
                 py={8}
                 px={8}
                 fontSize="30px"
-                aria-label="Explore Convo"
+                aria-label="Dashboard"
                 color="white"
                 backgroundColor={useColorModeValue("#7E869D","#78687B")}
               >
-                Explore
+                Dashboard
                 <ArrowForwardIcon ml={2}/>
               </CustomButton>
             </Link>
@@ -638,7 +638,13 @@ const Home = ({tweetData}) => {
             Community
           </Heading>
 
-          <SimpleGrid columns={{base:1, lg: 2, xl:3}} spacingX="10px" spacingY="10px">
+          <Box
+            padding={4}
+            w="100%"
+            maxW={{base:"95%", md:"1500px"}}
+            mx="auto"
+            sx={{ columnCount: [1, 1, 2, 3], columnGap: "8px" }}
+          >
             {
               Boolean(tweetData) === true && tweetData.map((tweet, index) => {
                 return (
@@ -646,8 +652,7 @@ const Home = ({tweetData}) => {
                 )
               })
             }
-          </SimpleGrid>
-
+          </Box>
         </Flex>
 
         <Flex

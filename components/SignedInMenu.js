@@ -2,7 +2,7 @@ import React, { useClipboard, MenuItem, MenuList, Menu, MenuButton } from "@chak
 import { ChevronDownIcon, CopyIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
 import { Web3Context } from "@/contexts/Web3Context";
-import { CosmosIcon, CeloIcon, DisconnectIcon, ExternalIcon, FlowIcon, FreetonIcon, MetaMaskIcon, NearIcon, OKExIcon, SolanaIcon, WalletConnectIcon } from "@/public/icons";
+import { CosmosIcon, DisconnectIcon, ExternalIcon, FlowIcon, FreetonIcon, MetaMaskIcon, NearIcon, OKExIcon, SolanaIcon, WalletConnectIcon } from "@/public/icons";
 import { truncateAddress } from "@/utils/stringUtils";
 
 const SignedInMenu = () => {
@@ -29,7 +29,6 @@ const SignedInMenu = () => {
                 {connectedWallet === "solana" ? (<SolanaIcon mr={2}/>) : (<></>) }
                 {connectedWallet === "flow" ? (<FlowIcon mr={2}/>) : (<></>) }
                 {connectedWallet === "near" ? (<NearIcon mr={2}/>) : (<></>) }
-                {connectedWallet === "celo" ? (<CeloIcon mr={2}/>) : (<></>) }
                 {connectedWallet === "okex" ? (<OKExIcon mr={2}/>) : (<></>) }
                 {connectedWallet === "freeton" ? (<FreetonIcon mr={2}/>) : (<></>) }
                 {connectedWallet === "cosmos" ? (<CosmosIcon mr={2}/>) : (<></>) }
@@ -57,9 +56,6 @@ const SignedInMenu = () => {
                             break;
                         case 'near':
                             link = `https://explorer.testnet.near.org/accounts/${signerAddress}`;
-                            break;
-                        case 'celo':
-                            link = `https://alfajores-blockscout.celo-testnet.org/address/${signerAddress}`;
                             break;
                         case 'okex':
                             link = `https://www.oklink.com/okexchain/address/${signerAddress}`;
