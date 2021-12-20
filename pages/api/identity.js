@@ -7,7 +7,7 @@ const mongoClientPromise = require('@/lib/mongo-db');
 
 async function calculateScore(address) {
 
-    let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
+    let tp = new ethers.providers.AlchemyProvider("mainnet","aCCNMibQ1zmvthnsyWUWFkm_UAvGtZdv");
 
     let promiseArray = [
         checkPoH(address, tp),

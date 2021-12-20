@@ -33,7 +33,7 @@ export const Web3ContextProvider = ({children}) => {
   const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
   async function updatePrettyName(address){
-    let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
+    let tp = new ethers.providers.AlchemyProvider("mainnet","aCCNMibQ1zmvthnsyWUWFkm_UAvGtZdv");
     let ensReq  = tp.lookupAddress(address);
     let udReq = checkUnstoppableDomains(address);
 

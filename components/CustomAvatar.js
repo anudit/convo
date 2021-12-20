@@ -28,7 +28,7 @@ const CustomAvatar = (props) => {
 
     useEffect(() => {
         if (Boolean(props?.ensName) === true ){
-            let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
+            let tp = new ethers.providers.AlchemyProvider("mainnet","aCCNMibQ1zmvthnsyWUWFkm_UAvGtZdv");
             tp.getResolver(props.ensName).then(async (resolver) => {
                 let pfp = await resolver?.getText('avatar');
                 if(Boolean(pfp) === true){
