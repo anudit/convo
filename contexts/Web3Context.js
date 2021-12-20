@@ -13,6 +13,7 @@ import freeton from '@/lib/freeton/src/index';
 
 import { checkUnstoppableDomains } from '@/lib/identity';
 import fetcher from "@/utils/fetcher";
+import { Convo } from '@theconvospace/sdk';
 
 export const Web3Context = React.createContext(undefined);
 
@@ -29,6 +30,7 @@ export const Web3ContextProvider = ({children}) => {
   const [signerAddress, setSignerAddress] = useState("");
   const [prettyName, setPrettyName] = useState("");
   const [isPortisLoading, setIsPortisLoading] = useState(false);
+  const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
   async function updatePrettyName(address){
     let tp = new ethers.providers.AlchemyProvider("mainnet","A4OQ6AV7W-rqrkY9mli5-MCt-OwnIRkf");
@@ -47,6 +49,7 @@ export const Web3ContextProvider = ({children}) => {
     }
   }
 
+  // try autologin for near.
   useEffect(() => {
     if (router.query?.account_id != undefined && signerAddress === "") {
       console.log('Got NEAR res for', router.query?.account_id);
@@ -496,8 +499,11 @@ export const Web3ContextProvider = ({children}) => {
   async function updateAuthToken(signerAddress, chainName, tempProvider) {
 
     console.log('update auth token');
+
     let timestamp = Date.now();
     let data = `I allow this site to access my data on The Convo Space using the account ${signerAddress}. Timestamp:${timestamp}`;
+
+    let dataV2 = convoInstance.auth.getSignatureDataV2('https://theconvo.space/', signerAddress, 1);
     let res;
 
     if (chainName === "ethereum") {
@@ -520,19 +526,18 @@ export const Web3ContextProvider = ({children}) => {
         signature = await ethProvider.request(
           {
             method: 'personal_sign',
-            params:[ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
+            params:[ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(dataV2)), signerAddress.toLowerCase() ]
           }
         );
 
         setTimeout(async ()=>{
 
-          const messageHash = appsSdk.safe.calculateMessageHash(data);
-          const messageIsSigned = await appsSdk.safe.isMessageSigned(data);
+          const messageHash = appsSdk.safe.calculateMessageHash(dataV2);
+          const messageIsSigned = await appsSdk.safe.isMessageSigned(dataV2);
           console.log(messageHash, messageIsSigned);
-          res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+          res = await fetcher(`/api/authV2?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
             signerAddress,
             signature,
-            timestamp,
             chain: "ethereum"
           });
         }, 10000)
@@ -541,10 +546,10 @@ export const Web3ContextProvider = ({children}) => {
 
         signature = await tempProvider.send(
           'personal_sign',
-          [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)), signerAddress.toLowerCase() ]
+          [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(dataV2)), signerAddress.toLowerCase() ]
         );
-        res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
-          signerAddress,
+        res = await fetcher(`/api/authV2?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+          message: dataV2,
           signature,
           timestamp,
           chain: "ethereum"
@@ -561,7 +566,7 @@ export const Web3ContextProvider = ({children}) => {
         "signature": Buffer.from(signatureData.signature).toString('hex'),
         "signerAddress": Buffer.from(signatureData.publicKey.data).toString('hex'),
         "accountId": signerAddress,
-        "timestamp": timestamp,
+        timestamp,
         "chain": "near"
       });
 
@@ -592,8 +597,7 @@ export const Web3ContextProvider = ({children}) => {
 
     }
     else if (chainName === "freeton") {
-      let {signed} = await tempProvider.sign(data);
-      console.log(signed, data, signerAddress, timestamp);
+      let { signed } = await tempProvider.sign(data);
       res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
         signerAddress: signerAddress,
         signature: signed,

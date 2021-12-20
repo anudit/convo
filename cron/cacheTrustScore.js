@@ -1322,7 +1322,7 @@ const cacheTrustScores = async () => {
 
     const threadClient = await getClient();
     let addresses = await getAddresses(threadClient);
-    addresses = getArraySample(addresses, 12000);
+    addresses = getArraySample(addresses, 11000);
     console.log('addresses.length', addresses.length);
 
     uniswapData = await getAllUniswapSybilData();
@@ -1435,6 +1435,7 @@ const cacheTrustScoresManual = async (addresses = []) => {
 
 cacheTrustScores().then(()=>{
     console.log("✅ Cached all trust Scores");
+    process.exit(0);
 });
 
 // cacheTrustScoresManual(["0xB53b0255895c4F9E3a185E484e5B674bCCfbc076", "0xa28992A6744e36f398DFe1b9407474e1D7A3066b", "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"])

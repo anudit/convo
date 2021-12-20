@@ -631,19 +631,6 @@ export const OKExIcon = createIcon({
     )
 });
 
-
-export const CeloIcon = createIcon({
-    displayName: 'CeloIcon',
-    viewBox: '0 0 950 950',
-    path: (
-        <g>
-            <path d="M375 850a275 275 0 1 0 0-550 275 275 0 0 0 0 550zm0 100a375 375 0 1 1 0-750 375 375 0 0 1 0 750z" fill="#fbcc5c"/>
-            <path d="M575 650a275 275 0 1 0 0-550 275 275 0 0 0 0 550zm0 100a375 375 0 1 1 0-750 375 375 0 0 1 0 750z" fill="#35d07f"/>
-            <path d="M587 750c26-31 45-68 55-108 39-10 76-29 108-55-1 46-11 91-29 134-42 18-88 28-134 29zM308 308c-39 10-76 29-108 55 1-46 11-91 29-134 43-18 88-27 134-29-26 32-45 68-55 108z" fill="#5ea33b"/>
-        </g>
-    )
-});
-
 export const CosmosIcon = createIcon({
     displayName: 'CosmosIcon',
     viewBox: '0 0 486 486',
