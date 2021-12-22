@@ -1105,7 +1105,7 @@ const CyberconnectCard = ({trustScoreData}) => {
   return (
     <IdentityCard image_url={cyberconnect}>
       {
-        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.cyberconnect?.followingCount) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.cyberconnect.me/">Connect on Cyberconnect</chakra.p></>) : (<><Text mr={1}>Profile on Cyberconnect</Text><VerifiedIcon color="blue.400"/></>)
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.cyberconnect?.followerCount) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.cyberconnect.me/">Connect on Cyberconnect</chakra.p></>) : (<><Text mr={1}>Profile on Cyberconnect</Text><VerifiedIcon color="blue.400"/></>)
       }
     </IdentityCard>
   );

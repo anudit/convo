@@ -242,7 +242,7 @@ const Threads = (props) => {
                     m="0 auto"
                     >
                     <p>
-                        Incorrect Setup, refer to the docs for more details.
+                        Setting up.
                     </p>
                 </Flex>
             </>
