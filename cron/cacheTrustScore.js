@@ -484,7 +484,7 @@ async function getRss3Data(address = ""){
 }
 
 async function getRabbitholeData(address = ""){
-    let data = await fetch(`https://iqs5wfdv79.execute-api.us-east-1.amazonaws.com/prod/task_progress?address=${address.toLowerCase()}`);
+    let data = await fetch(`https://h8p3c8m7bg.execute-api.us-east-1.amazonaws.com/app/task_progress?address=${address.toLowerCase()}`);
     let jsonData = await data.json();
     let taskList = Object.keys(jsonData['taskData']['taskProgress']);
     let tasksCompleted = [];
