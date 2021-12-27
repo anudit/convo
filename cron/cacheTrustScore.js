@@ -687,6 +687,26 @@ async function querySubgraph(url='', query = '') {
 
 }
 
+async function getProjectGalaxyData(address) {
+
+    let queryResult = await querySubgraph('https://graphigo.prd.galaxy.eco/query',
+        `{
+          addressInfo(address: "${address.toLowerCase()}") {
+            id
+            avatar
+            username
+            eligibleCredentials {
+                list {
+                    id
+                    name
+                }
+            }
+          }
+    }`);
+
+    return queryResult['addressInfo'];
+}
+
 async function checkUnstoppableDomains(address) {
 
           if (isAddress(address) === true) {
@@ -1130,7 +1150,8 @@ async function calculateScore(address) {
         timeit(getContextData, [address]),
         timeit(getArcxData, [address]),
         timeit(getBoardroomData, [address]),
-        timeit(getMetagameData, [address])
+        timeit(getMetagameData, [address]),
+        timeit(getProjectGalaxyData, [address])
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -1213,6 +1234,7 @@ async function calculateScore(address) {
         'arcx': results[26]?.value,
         'boardroom': results[27]?.value,
         'metagame': results[28]?.value,
+        'projectgalaxy':  results[29]?.value?.eligibleCredentials?.list
     };
 
     if(results[0].value === true){ // poh
@@ -1271,6 +1293,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[28]?.value?.metagame) === true){ // metagame
         score += (results[28]?.value?.metagame?.season_xp)**0.5;
+    }
+    if(Boolean( results[29]?.value?.eligibleCredentials?.list) === true){ // project galaxy
+        score += results[29]?.value?.eligibleCredentials?.list.length;
     }
 
     let coinviseScore = (

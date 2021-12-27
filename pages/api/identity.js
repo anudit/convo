@@ -1,4 +1,4 @@
-import { getBoardroomData, getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData, getContextData, getAge, getRabbitholeData, getArcxData, addressToEns, getMetagameData } from "@/lib/identity";
+import { getBoardroomData, getAllUniswapSybilData, getCeloData, checkPoH, getMirrorData, getZoraData, getCoinviseData, checkUnstoppableDomains, getEthPrice, getFoundationData, getRaribleData, getSuperrareData, getKnownOriginData, getAsyncartData, getDeepDaoData, getAllGitcoinData, getCoordinapeData, getPolygonData, getShowtimeData, getCyberconnectData, getRss3Data, getAaveData, getContextData, getAge, getRabbitholeData, getArcxData, addressToEns, getMetagameData, getProjectGalaxyData } from "@/lib/identity";
 import { ethers } from "ethers";
 import { getAddress, isAddress } from 'ethers/lib/utils';
 import fetcher from '@/utils/fetcher';
@@ -41,7 +41,8 @@ async function calculateScore(address) {
         getArcxData(address),
         getAge(address),
         getBoardroomData(address),
-        getMetagameData(address)
+        getMetagameData(address),
+        getProjectGalaxyData(address)
     ];
 
     let results = await Promise.allSettled(promiseArray);
@@ -119,7 +120,8 @@ async function calculateScore(address) {
         'arcx':  results[28]?.value,
         'age':  results[29]?.value,
         'boardroom':  results[30]?.value,
-        'metagame':  results[31]?.value
+        'metagame':  results[31]?.value,
+        'projectgalaxy':  results[32]?.value?.eligibleCredentials?.list
     };
 
     if(results[0].value === true){ // poh
@@ -175,6 +177,9 @@ async function calculateScore(address) {
     }
     if(Boolean(results[31]?.value?.metagame) === true){ // metagame
         score += (results[31]?.value?.metagame?.season_xp)**0.5;
+    }
+    if(Boolean( results[32]?.value?.eligibleCredentials?.list) === true){ // project galaxy
+        score += results[32]?.value?.eligibleCredentials?.list.length;
     }
 
     // Coinvise

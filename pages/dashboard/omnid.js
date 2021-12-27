@@ -44,6 +44,8 @@ import aave from '../../public/images/aave.webp';
 import context from '../../public/images/context.webp';
 import arcx from '../../public/images/arcx.webp';
 import metagame from '../../public/images/metagame.webp';
+import projectgalaxy from '../../public/images/projectgalaxy.webp';
+
 import { ethers } from 'ethers';
 
 const IdentitySection = () => {
@@ -301,6 +303,9 @@ const IdentitySection = () => {
                   </Item>
                   <Item searchString={searchString} tags={['identity', 'proof of humanity']}>
                     <PoHCard trustScoreData={trustScoreData}/>
+                  </Item>
+                  <Item searchString={searchString} tags={['identity', 'project galaxy']}>
+                    <ProjectgalaxyCard trustScoreData={trustScoreData}/>
                   </Item>
                   <Item searchString={searchString} tags={['play to earn', 'rabbithole']}>
                     <RabbitholeCard trustScoreData={trustScoreData} />
@@ -758,6 +763,19 @@ const BoardroomCard = ({trustScoreData}) => {
   );
 };
 BoardroomCard.propTypes = propTypes
+
+
+const ProjectgalaxyCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url={projectgalaxy}>
+      {
+        trustScoreData === null ? "Loading" : trustScoreData?.projectgalaxy.length === 0 ? (<><chakra.p size="xs" as="a" target="_blank" href="https://galaxy.eco/">Discover on Galaxy</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+ProjectgalaxyCard.propTypes = propTypes
 
 const ENSCard = ({trustScoreData}) => {
   return (
