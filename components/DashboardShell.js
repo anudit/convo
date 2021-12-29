@@ -5,8 +5,8 @@ import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, He
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, OKExIcon, HomeIcon, CosmosIcon, FreetonIcon } from '@/public/icons';
-import { InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
+import { ThreeDotMenuFlatIcon, GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, OKExIcon, HomeIcon, CosmosIcon, FreetonIcon } from '@/public/icons';
+import { CloseIcon, InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
 
@@ -46,6 +46,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [walletInfo, setWalletInfo] = useState('');
+    const [isMoreOpen, setIsMoreOpen] = useState(false);
 
     // Not logged in
     if (signerAddress === ""){
@@ -121,7 +122,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             </Text>
                         )
                     }
-                    <Wrap mt={10} width={{base:"100%", md:"80%"}}>
+                    <Wrap mt={10} width={{base:"100%", md:"40%"}}>
                         <WalletItem
                             onClick={()=>{connectWallet('injected')}}
                             backgroundImage="linear-gradient(229.83deg, rgb(205 131 59) -258.34%, rgb(205 189 178 / 18%) 100.95%)"
@@ -166,14 +167,12 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 
-                    </Wrap>
-                    <Wrap mt={4} mb={6} width={{base:"100%", md:"80%"}}>
-
                         <WalletItem
                             onClick={()=>{connectWallet('cosmos')}}
                             backgroundImage="linear-gradient(215deg, rgb(27 30 54) 0%, rgb(111 115 144) 100%);"
                             title="Cosmos"
                             icon={<CosmosIcon boxSize={8} mx={2} style={{transform:"scale(1.5)"}}/>}
+                            display={isMoreOpen === true ? 'inline-flex' : 'none'}
                             onMouseEnter={()=>{setWalletInfo('Sign-in with Cosmos Blockchain using Evmos.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
@@ -183,20 +182,23 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             backgroundImage="linear-gradient(228deg, rgb(32 95 236 / 44%) 0%, rgb(136 189 243 / 60%) 100%);"
                             title="FreeTON"
                             icon={<FreetonIcon boxSize={8} mx={2} transform="scale(1.2)"/>}
+                            display={isMoreOpen === true ? 'inline-flex' : 'none'}
                             onMouseEnter={()=>{setWalletInfo('Sign-in with FreeTON Blockchain powered by Extraton Wallet.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 
                         <WalletItem
-                            onClick={()=>{connectWallet('okex')}}
-                            backgroundImage="linear-gradient(228deg, rgb(32 95 236 / 44%) 0%, rgb(136 189 243 / 60%) 100%);"
-                            title="OKEx Defi Hub"
-                            icon={<OKExIcon boxSize={8} mx={2}/>}
-                            onMouseEnter={()=>{setWalletInfo('Sign-in with OKEx DeFi Hub.')}}
+                            backgroundImage="transparent"
+                            title={isMoreOpen === true ? "Less Options" :  "More Options"}
+                            icon={isMoreOpen === true ? <CloseIcon /> : <ThreeDotMenuFlatIcon boxSize={8} mx={2}/>}
+                            onMouseEnter={()=>{setWalletInfo(isMoreOpen === true ? 'Show less options.' : 'Get more options for Signing in.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
+                            onClick={()=>{setIsMoreOpen(!isMoreOpen)}}
+                            border="1px solid #ffffff17"
                         />
 
                     </Wrap>
+                    <br/>
                     <Text cursor="pointer" onClick={()=>{connectWallet('portis')}} align="center" fontSize="sm" color={colorMode === "light"? "black": "white"}>
                         {isPortisLoading === true ? (<Spinner size="md"/>) : "Just use my Email Address" }
                     </Text>
@@ -487,7 +489,7 @@ export default DashboardShell;
 const WalletItem = (props) => {
     return (
         <WrapItem>
-            <Flex direction="column" alignItems="center">
+            <Flex direction="column" alignItems="center" display={Boolean(props?.display) === true ? props.display : "inline-flex" }>
                 <Flex
                     h="80px"
                     w="80px"
@@ -505,6 +507,7 @@ const WalletItem = (props) => {
                     onMouseEnter={props.onMouseEnter}
                     onMouseLeave={props.onMouseLeave}
                     filter={props?.disabled === true ? "grayscale(1)":""}
+                    border={props?.border}
                 >
                     {props?.icon}
                 </Flex>
@@ -519,7 +522,9 @@ WalletItem.propTypes = {
     icon: PropTypes.object,
     title: PropTypes.string,
     disabled: PropTypes.bool,
+    display: PropTypes.string,
     backgroundImage: PropTypes.string,
+    border: PropTypes.string,
     onMouseEnter: PropTypes.func.isRequired,
     onMouseLeave: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired

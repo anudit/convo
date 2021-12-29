@@ -9,6 +9,18 @@ export const ThreeDotMenuIcon = createIcon({
     )
 });
 
+export const ThreeDotMenuFlatIcon = createIcon({
+    displayName: 'ThreeDotMenuFlatIcon',
+    viewBox: '0 0 24 24',
+    path: (
+        <g>
+            <circle cx="5.5" cy="12" r="1.5" fill="currentColor"></circle>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"></circle>
+            <circle cx="18.5" cy="12" r="1.5" fill="currentColor"></circle>
+        </g>
+    )
+});
+
 export const ReplyIcon = createIcon({
     displayName: 'ReplyIcon',
     viewBox: '0 0 512 512',
