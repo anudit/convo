@@ -5,7 +5,7 @@ import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, He
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { ThreeDotMenuFlatIcon, GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, OKExIcon, HomeIcon, CosmosIcon, FreetonIcon } from '@/public/icons';
+import { ThreeDotMenuFlatIcon, GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon } from '@/public/icons';
 import { CloseIcon, InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
