@@ -5,7 +5,7 @@ import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, He
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { ThreeDotMenuFlatIcon, GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon } from '@/public/icons';
+import { ThreeDotMenuFlatIcon, GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon, UdIcon } from '@/public/icons';
 import { CloseIcon, InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
@@ -174,6 +174,16 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             icon={<CosmosIcon boxSize={8} mx={2} style={{transform:"scale(1.5)"}}/>}
                             display={isMoreOpen === true ? 'inline-flex' : 'none'}
                             onMouseEnter={()=>{setWalletInfo('Sign-in with Cosmos Blockchain using Evmos.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                        />
+
+                        <WalletItem
+                            onClick={()=>{connectWallet('custom-uauth')}}
+                            backgroundImage="linear-gradient(213deg, #2fe9ff4f 0%, #4c47f76b 70%)"
+                            title="Unstoppable"
+                            icon={<UdIcon boxSize={8} mx={2}/>}
+                            display={isMoreOpen === true ? 'inline-flex' : 'none'}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with your Unstoppable Domain.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 
