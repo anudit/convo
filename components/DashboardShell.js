@@ -488,8 +488,8 @@ export default DashboardShell;
 
 const WalletItem = (props) => {
     return (
-        <WrapItem>
-            <Flex direction="column" alignItems="center" display={Boolean(props?.display) === true ? props.display : "inline-flex" }>
+        <WrapItem display={Boolean(props?.display) === true ? props.display : "flex" }>
+            <Flex direction="column" alignItems="center">
                 <Flex
                     h="80px"
                     w="80px"

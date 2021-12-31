@@ -14,7 +14,8 @@ export async function getStaticProps() {
             statistics: {
                 commentsCount: results.comments,
                 threadsCount: results.threads,
-                uniqueUsersCount: results.uniqueUsers
+                uniqueSocial: results.uniqueSocial,
+                uniqueOmnid: results.uniqueOmnid
             }
         },
         revalidate: 1
@@ -47,16 +48,24 @@ const Stats = ({statistics}) => {
             {
                 statistics && (
                     <Flex w="100vw" align="center" justifyContent="center" direction={{base:"column", md:"row"}}>
-                        <Box p={5} borderLeftRadius={5} shadow="md" borderWidth="1px" w="200px">
-                            <Heading fontSize="xl">Comments</Heading>
+                        <Box p={5} borderLeftRadius={5} shadow="md" borderWidth="1px" w="200px" height="150px" justifyContent="space-between" display="flex" flexDirection="column">
+                            <Heading fontSize="xl">Total Comments</Heading>
                             <Text mt={2} fontSize="xx-large">{statistics.commentsCount}</Text>
                         </Box>
-                        <Box p={5} shadow="md" borderWidth="1px" w="200px">
-                            <Heading fontSize="xl">Unique Users</Heading>
-                            <Text mt={2} fontSize="xx-large">{statistics.uniqueUsersCount}</Text>
+                        <Box p={5} shadow="md" borderWidth="1px" w="200px" height="150px" justifyContent="space-between" display="flex" flexDirection="column">
+                            <Heading fontSize="xl">Unique Users (Comments)</Heading>
+                            <Text mt={2} fontSize="xx-large">{statistics.uniqueSocial}</Text>
                         </Box>
-                        <Box p={5} borderRightRadius={5} shadow="md" borderWidth="1px" w="200px">
-                            <Heading fontSize="xl">Threads</Heading>
+                        <Box p={5} shadow="md" borderWidth="1px" w="200px" height="150px" justifyContent="space-between" display="flex" flexDirection="column">
+                            <Heading fontSize="xl">Unique Users (Omnid)</Heading>
+                            <Text mt={2} fontSize="xx-large">{statistics.uniqueOmnid}</Text>
+                        </Box>
+                        <Box p={5} shadow="md" borderWidth="1px" w="200px" height="150px" justifyContent="space-between" display="flex" flexDirection="column">
+                            <Heading fontSize="xl">Unique Users (Total)</Heading>
+                            <Text mt={2} fontSize="xx-large">{statistics.uniqueOmnid + statistics.uniqueSocial}</Text>
+                        </Box>
+                        <Box p={5} borderRightRadius={5} shadow="md" borderWidth="1px" w="200px" height="150px" justifyContent="space-between" display="flex" flexDirection="column">
+                            <Heading fontSize="xl">Total Threads</Heading>
                             <Text mt={2} fontSize="xx-large">{statistics.threadsCount}</Text>
                         </Box>
                     </Flex>

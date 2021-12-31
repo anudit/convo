@@ -16,8 +16,8 @@
     "cron:backup": "node ./cron/backupFilecoin.js"
   },
   "dependencies": {
-    "@babel/core": "^7.16.5",
-    "@babel/runtime": "^7.16.5",
+    "@babel/core": "^7.16.7",
+    "@babel/runtime": "^7.16.7",
     "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.7.3",
     "@chakra-ui/system": "^1.8.3",

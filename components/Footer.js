@@ -43,11 +43,21 @@ const Footer = () => {
                     }}>
                         Docs
                     </Link>
+                    <Link rel="noreferrer" target="_blank" href="https://blog.theconvo.space" aria-label="Blog" _hover={{
+                        color: useColorModeValue("black", "whiteAlpha.700"),
+                    }}>
+                        Blog
+                    </Link>
                 </Stack>
                 <Stack textAlign="left" spacing={{base: 2, md: 4}} mb={{base: 4, md: 0}}>
                     <Text fontWeight={600} pb={{base: 1, md: 4}} color={useColorModeValue("gray.800","whiteAlpha.600")} >
                         Company
                     </Text>
+                    <Link rel="noreferrer" target="_blank" href="https://github.com/anudit/convodesign" aria-label="Brand" _hover={{
+                        color: useColorModeValue("black", "whiteAlpha.700"),
+                    }}>
+                        Brand
+                    </Link>
                     <Link rel="noreferrer" target="_blank" href="mailto:nagaranudit@gmail.com" aria-label="Feedback" _hover={{
                         color: useColorModeValue("black", "whiteAlpha.700"),
                     }}>
@@ -75,7 +85,7 @@ const Footer = () => {
                             <GithubIcon mr={2}/>GitHub
                         </>
                     </Text>
-                    <Text cursor="pointer" as="a" rel="noreferrer" href="https://twitter.com/anuditnagar" target="_blank" aria-label="Twitter" _hover={{
+                    <Text cursor="pointer" as="a" rel="noreferrer" href="https://twitter.com/0xConvo" target="_blank" aria-label="Twitter" _hover={{
                         color: useColorModeValue("black", "whiteAlpha.700"),
                     }}>
                         <>
