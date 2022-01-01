@@ -651,6 +651,7 @@ export const Web3ContextProvider = ({children}) => {
       getAuthToken,
       web3Modal,
       isPortisLoading,
+      convoInstance,
       connectedWallet
     }}>
         {children}

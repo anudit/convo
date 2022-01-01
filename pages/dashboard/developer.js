@@ -91,7 +91,7 @@ const DeveloperSection = () => {
 
     return (
         <DashboardShell active="developer" title="Developer">
-            <Flex mt={4} direction="column" w={{base:"100%",lg:"600px"}}>
+            <Flex mt={4} direction="column" w={{base:"100%",lg:"600px"}} p={3}>
 
                 <Alert status="info" display="flex" flexDirection="column" width="100%" alignItems="flex-start">
                     <AlertIcon />

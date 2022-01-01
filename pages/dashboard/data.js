@@ -50,8 +50,8 @@ const DataSection = () => {
 
 
   return (
-    <DashboardShell active="data" title="Data">
-        <Flex direction="column" w="100%">
+    <DashboardShell active="data" title="Data" >
+        <Flex direction="column" w="100%" p={3}>
             <Heading as="h4" size="md" mb={4}>
               Administration
             </Heading>
