@@ -75,7 +75,7 @@ async function computeScoreData(address){
                 }
             }
             else if(key === 'poh'){
-                if(Boolean(value.value) === true){
+                if(Boolean(value.value?.vouchesReceivedLength) === true){
                     score += 8;
                 }
             }
@@ -223,7 +223,6 @@ async function cacheTrustScoresManual(addresses){
     const client = await MongoClient.connect(MONGODB_URI);
     let db = client.db('convo');
     let coll = db.collection('cachedTrustScores');
-    console.log('here2');
 
     for (let index = 0; index < addresses.length; index++) {
         let startDate = new Date();
