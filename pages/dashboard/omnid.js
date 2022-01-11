@@ -34,6 +34,7 @@ import sybil from '../../public/images/sybil.webp';
 import unstoppable from '../../public/images/unstoppable.webp';
 import zora from '../../public/images/zora.webp';
 import gitcoin from '../../public/images/gitcoin.webp';
+import hiveone from '../../public/images/hiveone.webp';
 import coordinape from '../../public/images/coordinape.webp';
 import celo from '../../public/images/celo.webp';
 import polygon from '../../public/images/polygon.webp';
@@ -282,6 +283,9 @@ const IdentitySection = () => {
                 </Item>
                 <Item searchString={searchString} tags={['gitcoin', 'open source', 'funding']}>
                   <GitcoinCard trustScoreData={trustScoreData}/>
+                </Item>
+                <Item searchString={searchString} tags={['identity', 'hiveone']}>
+                  <HiveoneCard />
                 </Item>
                 <Item searchString={searchString} tags={['id', 'identity', 'idena', 'proof of person']}>
                   <IdenaCard trustScoreData={trustScoreData} />
@@ -764,6 +768,17 @@ const BoardroomCard = ({trustScoreData}) => {
 };
 BoardroomCard.propTypes = propTypes
 
+const HiveoneCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url={hiveone}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.hiveone?.attention_score) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://hive.one/">Discover on hive.one</chakra.p></>) : (<><Text mr={1}>InsiderScore {trustScoreData?.hiveone?.attention_score}</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+HiveoneCard.propTypes = propTypes
 
 const ProjectgalaxyCard = ({trustScoreData}) => {
 
