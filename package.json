@@ -26,8 +26,8 @@
     "@dicebear/micah": "^4.10.2",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@gnosis.pm/safe-apps-sdk": "^6.1.1",
-    "@gnosis.pm/safe-apps-web3modal": "^6.0.1",
+    "@gnosis.pm/safe-apps-sdk": "^6.2.0",
+    "@gnosis.pm/safe-apps-web3modal": "^7.0.0",
     "@hapi/iron": "^6.0.0",
     "@oceanprotocol/contracts": "^0.6.9",
     "@oceanprotocol/lib": "^0.20.2",
@@ -38,7 +38,7 @@
     "@self.id/web": "^0.2.0",
     "@solana/web3.js": "^1.31.0",
     "@textile/hub": "^6.3.2",
-    "@theconvospace/sdk": "^0.3.13",
+    "@theconvospace/sdk": "^0.3.15",
     "@uauth/js": "^0.7.9",
     "@uauth/web3modal": "^0.7.9",
     "@walletconnect/web3-provider": "^1.7.1",
@@ -47,7 +47,7 @@
     "critters": "^0.0.16",
     "dotenv": "^11.0.0",
     "ethers": "^5.5.3",
-    "framer-motion": "^5.5.7",
+    "framer-motion": "^5.6.0",
     "ioredis": "^4.28.3",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
@@ -55,7 +55,7 @@
     "mongodb": "^4.3.0",
     "mongodb-client-encryption": "^2.0.0-beta.2",
     "near-api-js": "^0.44.2",
-    "next": "^12.0.7",
+    "next": "^12.0.8",
     "next-pwa": "^5.4.4",
     "nft.storage": "^5.2.0",
     "node-fetch": "^3.1.0",
@@ -75,15 +75,15 @@
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.5",
-    "webpack": "^5.65.0"
+    "webpack": "^5.66.0"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^12.0.7",
+    "@next/eslint-plugin-next": "^12.0.8",
     "eslint": "^8.6.0",
-    "eslint-config-next": "^12.0.7",
+    "eslint-config-next": "^12.0.8",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "ipfs-http-client": "^55.0.0",
-    "next-sitemap": "^1.8.4"
+    "next-sitemap": "^1.9.9"
   }
 }
