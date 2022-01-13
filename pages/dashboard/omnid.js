@@ -21,6 +21,7 @@ import boardroom from '../../public/images/boardroom.webp';
 import coinvise from '../../public/images/coinvise.webp';
 import deepdao from '../../public/images/deepdao.webp';
 import ens from '../../public/images/ens.webp';
+import forta from '../../public/images/forta.webp';
 import foundation from '../../public/images/foundation.webp';
 import idena from '../../public/images/idena.webp';
 import idx from '../../public/images/idx.webp';
@@ -277,6 +278,9 @@ const IdentitySection = () => {
                 </Item>
                 <Item searchString={searchString} tags={['ens','ethereum name service', 'domains']}>
                   <ENSCard trustScoreData={trustScoreData} />
+                </Item>
+                <Item searchString={searchString} tags={['forta', 'alert']}>
+                  <FortaCard trustScoreData={trustScoreData} />
                 </Item>
                 <Item searchString={searchString} tags={['nft','art','foundation']}>
                   <FoundationCard trustScoreData={trustScoreData} />
@@ -744,6 +748,18 @@ const MetagameCard = ({trustScoreData}) => {
 };
 MetagameCard.propTypes = propTypes
 
+const FortaCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url={forta}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.forta?.length) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://explorer.forta.network/">Alerts on Forta</chakra.p></>) : (<><Text mr={1}>{trustScoreData?.forta?.length} Alerts</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+FortaCard.propTypes = propTypes
+
 const MirrorCard = ({trustScoreData}) => {
 
   return (
@@ -979,7 +995,7 @@ PoHCard.propTypes = propTypes
 const AgeCard = ({trustScoreData}) => {
 
   const { colorMode } = useColorMode();
-  let age = trustScoreData?.age;
+  let age = Boolean(trustScoreData?.age) === false ? 0 : trustScoreData?.age?.polygon > trustScoreData?.age?.ethereum ? trustScoreData?.age?.polygon : trustScoreData?.age?.ethereum;
 
   return (
       <Flex
