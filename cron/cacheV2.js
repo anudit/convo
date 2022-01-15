@@ -7,6 +7,8 @@ const { getAddress, isAddress } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
 const { MongoClient } = require('mongodb');
 const { Client, PrivateKey, ThreadID } = require('@textile/hub');
+const fs = require('fs');
+const path = require('path');
 
 const { ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID, MONGODB_URI } = process.env;
 
@@ -61,10 +63,14 @@ async function computeScoreData(address){
         etherscanApiKey: ETHERSCAN_API_KEY,
         polygonscanApiKey: POLYGONSCAN_API_KEY,
         CNVSEC_ID: CNVSEC_ID,
-        DEBUG: DEBUG,
+        DEBUG: false,
     }
 
-    let resp = await convoInstance.omnid.computeTrustScore(address, computeConfig);
+    let resp = await convoInstance.omnid.computeTrustScore(
+        address,
+        computeConfig,
+        ['coordinape', 'arcx', 'superrare']
+    );
 
     for (const [key, value] of Object.entries(resp)) {
         if (value.status === 'fulfilled'){
@@ -315,7 +321,7 @@ function getArraySample(arr, sample_size, return_indexes = false) {
 async function runPipline(){
     const threadClient = await getClient();
     const addressTable = await getAddresses(threadClient);
-    const sampledAddresses = getArraySample(addressTable, 4000);
+    const sampledAddresses = getArraySample(addressTable, 5000);
     await cacheTrustScoresManual(sampledAddresses);
 }
 
@@ -324,12 +330,19 @@ runPipline().then(()=>{
     process.exit(0);
 })
 
+// const cacheAddsFromFile = async(fileName = "") => {
+//     var adds = JSON.parse(fs.readFileSync(path.resolve(__dirname, fileName), 'utf8'));
+//     const adl = adds.map(e=>e._id);
+//     await cacheTrustScoresManual(adl);
+// }
+// cacheAddsFromFile("cachedTrustScores.json");
 
 // cacheTrustScoresManual([
-//     "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-//     "0xcf0949bf6d2adf8032260fd08039c879cf71c128",
-//     "0xD665afb9A4019a8c482352aaa862567257Ed62CF",
-//     "0xB53b0255895c4F9E3a185E484e5B674bCCfbc076",
-//     "0xa28992A6744e36f398DFe1b9407474e1D7A3066b",
-//     "0x707aC3937A9B31C225D8C240F5917Be97cab9F20"
+//     // "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+//     // "0xcf0949bf6d2adf8032260fd08039c879cf71c128",
+//     // "0xD665afb9A4019a8c482352aaa862567257Ed62CF",
+//     // "0xB53b0255895c4F9E3a185E484e5B674bCCfbc076",
+//     // "0xa28992A6744e36f398DFe1b9407474e1D7A3066b",
+//     // "0x707aC3937A9B31C225D8C240F5917Be97cab9F20",
+//     // "0xa28992A6744e36f398DFe1b9407474e1D7A3066b"
 // ])

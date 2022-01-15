@@ -3605,10 +3605,10 @@
     event-iterator "^2.0.0"
     loglevel "^1.7.0"
 
-"@theconvospace/sdk@^0.3.15":
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.3.15.tgz#da05a68d4574e8262acdc414f56658c20a750264"
-  integrity sha512-Fd1IaLn1CqWF5DExi/fkq3HeW+hvowsxN/j/iUfDa5GzZs59zP+FwiTGL0H2Ri3nvmHmi69W2t8O6aSI0JO47g==
+"@theconvospace/sdk@^0.3.16":
+  version "0.3.16"
+  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.3.16.tgz#c12deeee75bf14ec844085a33afd72c46a83a8b3"
+  integrity sha512-AlFAAsJPtBxStvZRTRNs5aGXCvg8r6IeRcxTi078E/1rP9azJyh8COqMB0+/Fmzpzfw0HgvMZ1MsETVCu5cmLA==
   dependencies:
     abort-controller "^3.0.0"
     cross-fetch "^3.1.4"
@@ -4911,10 +4911,10 @@ abbrev@1:
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
-ably@^1.2.15:
-  version "1.2.15"
-  resolved "https://registry.yarnpkg.com/ably/-/ably-1.2.15.tgz#63778b3d562669a08f23e08a3446d7ff3af73c66"
-  integrity sha512-n+z+UX8+K3weEqqnt8vT5IzqtBpN+Dji5DsnJtMv9gZz6DRvukZNVVFwbaULuw+MxibK3rulqXS7tNCyTOo+kg==
+ably@^1.2.17:
+  version "1.2.17"
+  resolved "https://registry.yarnpkg.com/ably/-/ably-1.2.17.tgz#6e687e598b0b0e96c5cfbed7af2c173bdd25194e"
+  integrity sha512-h22zA0gdzxzp73RetNvDkx4Fbh4CyNIYzecYAsjClO3x++QgKAutlzWYm+gQmZ/KC2iRPs1MJuLXKkzvbGtPbg==
   dependencies:
     "@ably/msgpack-js" "^0.3.3"
     got "^11.8.2"
@@ -8097,10 +8097,10 @@ dot-prop@^6.0.1:
   dependencies:
     is-obj "^2.0.0"
 
-dotenv@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-11.0.0.tgz#ee37feddf8ada6d348a79e198312d4a8abfd1c1e"
-  integrity sha512-Fp/b504Y5W+e+FpCxTFMUZ7ZEQkQYF0rx+KZtmwixJxGQbLHrhCwo3FjZgNC8vIfrSi29PABNbMoCGD9YoiXbQ==
+dotenv@^12.0.3:
+  version "12.0.3"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-12.0.3.tgz#362b83f866dfed8e540deaa5bbcb3c8ab401dcb6"
+  integrity sha512-RlOysyzyGiABgDFgITo5fRnMV1QStdoVvkXhnxQc5Or/CiQo52s2Bh6DVMvzZsmFQ9IrNxYHOC/gdpNwHsitnQ==
 
 double-ended-queue@2.1.0-0:
   version "2.1.0-0"
