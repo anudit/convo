@@ -21,6 +21,7 @@ import boardroom from '../../public/images/boardroom.webp';
 import coinvise from '../../public/images/coinvise.webp';
 import deepdao from '../../public/images/deepdao.webp';
 import ens from '../../public/images/ens.webp';
+import etherscan from '../../public/images/etherscan.webp';
 import forta from '../../public/images/forta.webp';
 import foundation from '../../public/images/foundation.webp';
 import idena from '../../public/images/idena.webp';
@@ -225,7 +226,7 @@ const IdentitySection = () => {
                   backgroundImage="url('/images/gradient.webp')"
                   backgroundSize="cover"
                 >
-                  {extString} Trust Score is {trustScore}
+                  {extString} Trust Score is {parseFloat(trustScore).toFixed(2)}
                 </Heading>
 
                 <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={()=>{refreshScore()}} disabled={trustScoreLoading} title="Re-Index Score"/>
@@ -278,6 +279,9 @@ const IdentitySection = () => {
                 </Item>
                 <Item searchString={searchString} tags={['ens','ethereum name service', 'domains']}>
                   <ENSCard trustScoreData={trustScoreData} />
+                </Item>
+                <Item searchString={searchString} tags={['etherscan','defi', 'block explorer']}>
+                  <EtherscanCard trustScoreData={trustScoreData} />
                 </Item>
                 <Item searchString={searchString} tags={['forta', 'alert']}>
                   <FortaCard trustScoreData={trustScoreData} />
@@ -893,7 +897,7 @@ const SuperrareCard = ({trustScoreData}) => {
     <IdentityCard image_url={superrare}>
       {
         trustScoreData === null ? "Loading" :
-        trustScoreData?.superrare?.totalCountSold === 0 ? (
+        Boolean(trustScoreData?.superrare?.totalCountSold) === false ? (
             <chakra.p size="xs" as="a" target="_blank" href="https://superrare.com/">
               Create on SuperRare
             </chakra.p>
@@ -1182,6 +1186,17 @@ const ContextCard = ({trustScoreData}) => {
   );
 };
 ContextCard.propTypes = propTypes
+
+const EtherscanCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={etherscan}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.etherscan?.labels?.length) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://etherscan.io/labelcloud">View on Etherscan</chakra.p></>) : (<><Text mr={1}>Labelled on Etherscan</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+EtherscanCard.propTypes = propTypes
 
 const ArcxCard = ({trustScoreData}) => {
   return (

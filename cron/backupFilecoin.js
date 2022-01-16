@@ -108,8 +108,8 @@ async function pinToPinata(hash) {
         }
     }).then(res=>{return res.json()});
 
-    // Unpin Old Backups, keeping 2 latest ones.
-    for (let index = 2; index < pinlist['rows'].length; index++) {
+    // Unpin Old Backups, keeping last backup.
+    for (let index = 1; index < pinlist['rows'].length; index++) {
         const hash = pinlist['rows'][index].ipfs_pin_hash;
         console.log(`Unpinning ${index+1}/${pinlist['rows'].length}`);
         await fetch(`https://api.pinata.cloud/pinning/unpin/${hash}`, {

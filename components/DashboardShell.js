@@ -128,7 +128,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             backgroundImage="linear-gradient(229.83deg, rgb(205 131 59) -258.34%, rgb(205 189 178 / 18%) 100.95%)"
                             title="MetaMask"
                             icon={ <MetaMaskIcon boxSize={9} mx={2} /> }
-                            onMouseEnter={()=>{setWalletInfo('One of the most Secure and Flexible Wallets.')}}
+                            onMouseEnter={()=>{setWalletInfo('One of the most Secure and Flexible Wallet.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 

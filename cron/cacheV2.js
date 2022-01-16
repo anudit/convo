@@ -321,7 +321,7 @@ function getArraySample(arr, sample_size, return_indexes = false) {
 async function runPipline(){
     const threadClient = await getClient();
     const addressTable = await getAddresses(threadClient);
-    const sampledAddresses = getArraySample(addressTable, 5000);
+    const sampledAddresses = getArraySample(addressTable, 10000);
     await cacheTrustScoresManual(sampledAddresses);
 }
 
