@@ -5,8 +5,8 @@ import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, He
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { ThreeDotMenuFlatIcon, GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, IdentityIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon } from '@/public/icons';
-import { CloseIcon, InfoIcon, MoonIcon, QuestionIcon, SunIcon } from '@chakra-ui/icons';
+import { ThreeDotMenuFlatIcon, GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon, OmnidIcon, VartaIcon } from '@/public/icons';
+import { CloseIcon, InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
 
@@ -42,7 +42,7 @@ PageShell.propTypes = {
 
 const DashboardShell = ({title, active, children, searchbox}) => {
 
-    const { connectWallet, signerAddress, isPortisLoading, connectedChain } = useContext(Web3Context);
+    const { connectWallet, signerAddress, isPortisLoading } = useContext(Web3Context);
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [walletInfo, setWalletInfo] = useState('');
@@ -227,7 +227,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                 <Flex
                     direction="column"
                     align="center"
-                    w={{base:"64px", md:"200px"}}
+                    w={{base:"64px", md:"250px"}}
                     m="0"
                     height="100vh"
                     position="fixed"
@@ -247,153 +247,51 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                                 </Text>
                             </Flex>
                         </Link>
-                        <Link href="/dashboard" passHref={true}>
-                            <Flex
-                                m={1}
-                                h={{base: "50px", md:"50px"}}
-                                w="90%"
-                                fontWeight={400}
-                                cursor="pointer"
-                                direction="row"
-                                align="left"
-                                justifyContent="flex-start"
-                                paddingLeft="20px"
-                                alignItems="center"
-                                backgroundColor={active === "home" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
-                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
-                            >
-                                <HomeIcon mr={4}/>
-                                <Text display={{base:"none", md:"block"}} fontSize="sm">
-                                    Home
-                                </Text>
-                            </Flex>
-                        </Link>
-                        <Link href="/dashboard/messages" passHref={true}>
-                            <Flex
-                                m={1}
-                                h={{base: "50px", md:"50px"}}
-                                w="90%"
-                                fontWeight={400}
-                                cursor="pointer"
-                                direction="row"
-                                align="left"
-                                justifyContent="flex-start"
-                                paddingLeft="20px"
-                                alignItems="center"
-                                backgroundColor={active === "messages" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
-                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
-                            >
-                                <MessagesIcon mr={4}/>
-                                <Text display={{base:"none", md:"block"}} fontSize="sm">
-                                    Messages
-                                </Text>
-                            </Flex>
-                        </Link>
-                        <Link href="/dashboard/omnid" passHref={true} >
-                            <Flex
-                                display={connectedChain === "ethereum" ? "flex" : "none"}
-                                m={1}
-                                h={{base: "50px", md:"50px"}}
-                                w="90%"
-                                fontWeight={400}
-                                cursor="pointer"
-                                direction="row"
-                                align="left"
-                                justifyContent="flex-start"
-                                paddingLeft="20px"
-                                alignItems="center"
-                                backgroundColor={active === "identity" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
-                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
-                            >
-                                <IdentityIcon mr={4}/>
-                                <Text display={{base:"none", md:"block"}} fontSize="sm">
-                                    Omnid
-                                </Text>
-                            </Flex>
-                        </Link>
-                        <Link href="/dashboard/data" passHref={true}>
-                            <Flex
-                                m={1}
-                                h={{base: "50px", md:"50px"}}
-                                w="90%"
-                                fontWeight={400}
-                                cursor="pointer"
-                                direction="row"
-                                align="left"
-                                justifyContent="flex-start"
-                                paddingLeft="20px"
-                                alignItems="center"
-                                backgroundColor={active === "data" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
-                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
-                            >
-                                <DataIcon2 mr={4} />
-                                <Text display={{base:"none", md:"block"}} fontSize="sm">
-                                    Data
-                                </Text>
-                            </Flex>
-                        </Link>
-                        <Link href="/dashboard/developer" passHref={true}>
-                            <Flex
-                                m={1}
-                                h={{base: "50px", md:"50px"}}
-                                w="90%"
-                                fontWeight={400}
-                                cursor="pointer"
-                                direction="row"
-                                align="left"
-                                justifyContent="flex-start"
-                                paddingLeft="20px"
-                                alignItems="center"
-                                backgroundColor={active === "developer" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
-                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
-                            >
-                                <DeveloperIcon mr={4}/>
-                                <Text display={{base:"none", md:"block"}} fontSize="sm">
-                                    Developer
-                                </Text>
-                            </Flex>
-                        </Link>
-                        <Link href="https://bridge.theconvo.space/" passHref={true} isExternal>
-                            <Flex
-                                m={1}
-                                h={{base: "50px", md:"50px"}}
-                                w="90%"
-                                fontWeight={400}
-                                cursor="pointer"
-                                direction="row"
-                                align="left"
-                                justifyContent="flex-start"
-                                paddingLeft="20px"
-                                alignItems="center"
-                                backgroundColor={active === "bridge" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
-                                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
-                            >
-                                <BridgeIcon mr={3} boxSize="20px"/>
-                                <Text display={{base:"none", md:"block"}} fontSize="sm">
-                                    Bridge <Tag size="sm" ml={2}>βeta</Tag>
-                                </Text>
-                            </Flex>
-                        </Link>
-                        <Flex
-                            m={1}
-                            h={{base: "50px", md:"50px"}}
-                            w="90%"
-                            fontWeight={400}
-                            cursor="pointer"
-                            direction="row"
-                            align="left"
-                            justifyContent="flex-start"
-                            paddingLeft="20px"
-                            alignItems="center"
-                            backgroundColor={active === "bridge" ? (colorMode === "light" ? "#eee" : "#212121") : ""}
-                            _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}
-                        >
-                            <QuestionIcon mr={4}/>
-                            <Text display={{base:"none", md:"block"}} fontSize="sm" >
-                                Varta
-                                <Tag size="sm" ml={2}>soon</Tag>
-                            </Text>
-                        </Flex>
+                        <SidebarItem
+                            name="Home"
+                            icon={<HomeIcon mr={4}/>}
+                            isActive={active === "home"}
+                            href="/dashboard"
+                        />
+                        <SidebarItem
+                            name="Messages"
+                            icon={<MessagesIcon mr={4}/>}
+                            isActive={active === "messages"}
+                            href="/dashboard/messages"
+                        />
+                        <SidebarItem
+                            name="Omnid"
+                            icon={<OmnidIcon mr={4}/>}
+                            isActive={active === "identity"}
+                            href="/dashboard/omnid"
+                        />
+                        <SidebarItem
+                            name="Data"
+                            icon={<DataIcon2 mr={4} />}
+                            isActive={active === "data"}
+                            href="/dashboard/data"
+                        />
+                        <SidebarItem
+                            name="Developer"
+                            icon={ <DeveloperIcon mr={4}/>}
+                            isActive={active === "developer"}
+                            href="/dashboard/developer"
+                        />
+                        <SidebarItem
+                            name="Bridge"
+                            icon={<BridgeIcon mr={3} boxSize="20px"/>}
+                            isActive={active === "bridge"}
+                            tag={<Tag size="sm" ml={2}>βeta</Tag>}
+                            href="https://bridge.theconvo.space/"
+                            isExternal={true}
+                        />
+                        <SidebarItem
+                            name="Varta"
+                            icon={<VartaIcon mr={4}/>}
+                            isActive={active === "varta"}
+                            tag={<Tag size="sm" ml={2}>soon</Tag>}
+                            href="#"
+                        />
                     </Flex>
                     <Flex direction={{base:"column", md:"row"}} justifyContent="space-around">
                         <Flex onClick={toggleColorMode} h={{base: "50px", md:"50px"}} w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
@@ -432,15 +330,15 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                 </Flex>
                 <Flex
                     direction="column"
-                    w={{base:"calc(100% - 63px)", md:"calc(100% - 200px)"}}
+                    w={{base:"calc(100% - 63px)", md:"calc(100% - 250px)"}}
                     minH="100vh"
                     position="relative"
-                    left={{base:"64px", md:"200px"}}
+                    left={{base:"64px", md:"250px"}}
                 >
                     <Flex
                         as="nav"
                         align="center"
-                        w={{base:"calc(100% - 63px)", md:"calc(100% - 200px)"}}
+                        w={{base:"calc(100% - 63px)", md:"calc(100% - 250px)"}}
                         p={5}
                         display="flex"
                         position="fixed"
@@ -493,6 +391,46 @@ DashboardShell.propTypes = {
 }
 
 export default DashboardShell;
+
+
+const SidebarItem = ({name, tag, icon, isActive, href, isExternal}) => {
+    const { colorMode } = useColorMode();
+    return (
+        <Link href={href} passHref={true} isExternal={isExternal}>
+            <Flex
+                m={1}
+                h={{base: "50px", md:"50px"}}
+                w="90%"
+                fontWeight={400}
+                cursor="pointer"
+                direction="row"
+                align="left"
+                justifyContent="flex-start"
+                paddingLeft="20px"
+                alignItems="center"
+                borderRadius="10px"
+                transitionDuration="0.3s"
+                transitionTimingFunction="ease-in-out"
+                transitionProperty="background-color,border-color,color,fill,stroke"
+                backgroundColor={isActive === true ? (colorMode === "light" ? "#eee" : "hsla(0,0%,100%,0.04)") : ""}
+                _hover={{backgroundColor:colorMode === "light" ? "#eee" : "hsla(0,0%,100%,0.04)"}}
+            >
+                {icon}
+                <Text display={{base:"none", md:"block"}} fontSize="sm" fontWeight="800" opacity="80%">
+                    {name} {tag}
+                </Text>
+            </Flex>
+        </Link>
+    )
+}
+SidebarItem.propTypes = {
+    name: PropTypes.string.isRequired,
+    tag: PropTypes.string,
+    icon: PropTypes.object.isRequired,
+    isActive: PropTypes.bool.isRequired,
+    href: PropTypes.string.isRequired,
+    isExternal: PropTypes.bool
+}
 
 
 const WalletItem = (props) => {

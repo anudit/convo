@@ -16,7 +16,7 @@ const Dashboard = () => {
         <DashboardShell active="home" title="Dashboard">
             <Flex direction="column" w="100%" align="center" justifyContent="start" alignItems="center" mt={2}>
 
-                <Flex direction="column" w={{base:"100%", md:"90%"}} mt={2} borderRadius="10px" background="url(/images/patterns.webp) #0009" backgroundBlendMode="darken" minH="250px" justifyContent="center" py={{base: "30px", md: 0}}>
+                <Flex direction="column" w={{base:"100%", md:"95%"}} mt={2} borderRadius="10px" background="url(/images/patterns.webp) #0009" backgroundBlendMode="darken" minH="250px" justifyContent="center" py={{base: "30px", md: 0}}>
 
                     <Flex justifyContent="center" alignItems="center">
                         <CustomAvatar ensName={prettyName} address={signerAddress} size="lg"/>
@@ -39,7 +39,7 @@ const Dashboard = () => {
 
                 </Flex>
 
-                <Flex direction="column" w={{base:"90%"}} mt={2}>
+                <Flex direction="column" w={{base:"95%"}} mt={2}>
 
                     <Wrap display="flex" direction={{base:"column", md:"row"}} w="100%" justify="start !important" ml={{base:"-18px", md:"0"}}>
 
