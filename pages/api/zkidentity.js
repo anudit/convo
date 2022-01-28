@@ -85,6 +85,11 @@ async function calculateScore(address) {
                   score += parseInt(value.value?.score);
               }
           }
+          else if(key === 'dapplist'){
+            if(Boolean(value.value?.score) === true){
+                score += value.value?.score;
+            }
+          }
           else if(key === 'rabbithole'){
               if(Boolean(value.value?.level) === true){
                   score += (parseInt(value.value?.level)-1);
@@ -226,7 +231,7 @@ const handler = async(req, res) => {
       if (Object.keys(req.query).includes('address') === true && isAddress(req.query.address) === true ){
           validatedAddress = req.query.address;
       }
-      else if (Object.keys(req.query).includes('address') === true && req.query.address.toString().slice(req.query.address.length-4,req.query.address.length) === '.eth' ){
+      else if (Object.keys(req.query).includes('address') === true && req.query.address.endsWith('.eth') === true ){
           let ensReq  = await ensToAddress(req.query.address);
           if (Boolean(ensReq) === true){
               validatedAddress = ensReq;

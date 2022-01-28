@@ -110,6 +110,11 @@ async function computeScoreData(address){
                     score -= 20;
                 }
             }
+            else if(key === 'dapplist'){
+                if(Boolean(value.value?.score) === true){
+                    score += value.value?.score;
+                }
+            }
             else if(key === 'unstoppable'){
                 if(Boolean(value.value) === true){
                     score += 10;
@@ -321,7 +326,7 @@ function getArraySample(arr, sample_size, return_indexes = false) {
 async function runPipline(){
     const threadClient = await getClient();
     const addressTable = await getAddresses(threadClient);
-    const sampledAddresses = getArraySample(addressTable, 10000);
+    const sampledAddresses = getArraySample(addressTable, 5000);
     await cacheTrustScoresManual(sampledAddresses);
 }
 
