@@ -338,9 +338,9 @@ runPipline().then(()=>{
 // const cacheAddsFromFile = async(fileName = "") => {
 //     var adds = JSON.parse(fs.readFileSync(path.resolve(__dirname, fileName), 'utf8'));
 //     const adl = adds.map(e=>e._id);
-//     await cacheTrustScoresManual(adl);
+//     await cacheTrustScoresManual(adl.slice(12109+1378+6690+19405));
 // }
-// cacheAddsFromFile("cachedTrustScores.json");
+// cacheAddsFromFile("toindex.json");
 
 // cacheTrustScoresManual([
 //     // "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
