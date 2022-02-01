@@ -59,7 +59,6 @@ async function computeScoreData(address){
         avalancheMainnetRpc: "https://api.avax.network/ext/bc/C/rpc",
         etherumPriceInUsd: GLOBAL_ETH_PRICE,
         maticPriceInUsd: GLOBAL_MATIC_PRICE,
-        deepdaoApiKey: "LfYMTHGu6J7oTEXT1JDkZ+SrbSD5ETfaXguV0mL44rMowgRsClZwaENG3LHBHv7rFeDJrQnOvEmxcLVZvNqVFA==",
         etherscanApiKey: ETHERSCAN_API_KEY,
         polygonscanApiKey: POLYGONSCAN_API_KEY,
         CNVSEC_ID: CNVSEC_ID,
@@ -69,7 +68,7 @@ async function computeScoreData(address){
     let resp = await convoInstance.omnid.computeTrustScore(
         address,
         computeConfig,
-        ['coordinape', 'arcx', 'superrare']
+        ['coordinape', 'arcx', 'superrare', 'asyncart']
     );
 
     for (const [key, value] of Object.entries(resp)) {
@@ -122,7 +121,7 @@ async function computeScoreData(address){
             }
             else if(key === 'deepdao'){
                 if(Boolean(value.value?.score) === true){
-                    score += parseInt(value.value?.score);
+                    score += parseInt(value.value?.score)/10;
                 }
             }
             else if(key === 'rabbithole'){
@@ -322,11 +321,10 @@ function getArraySample(arr, sample_size, return_indexes = false) {
     return sample_idxs.map(i => arr[i]);
 }
 
-
 async function runPipline(){
     const threadClient = await getClient();
     const addressTable = await getAddresses(threadClient);
-    const sampledAddresses = getArraySample(addressTable, 5000);
+    const sampledAddresses = getArraySample(addressTable, 5500);
     await cacheTrustScoresManual(sampledAddresses);
 }
 
@@ -338,7 +336,7 @@ runPipline().then(()=>{
 // const cacheAddsFromFile = async(fileName = "") => {
 //     var adds = JSON.parse(fs.readFileSync(path.resolve(__dirname, fileName), 'utf8'));
 //     const adl = adds.map(e=>e._id);
-//     await cacheTrustScoresManual(adl.slice(12109+1378+6690+19405));
+//     await cacheTrustScoresManual(adl.slice(12109+1378+6690+19405+12197));
 // }
 // cacheAddsFromFile("toindex.json");
 

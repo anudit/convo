@@ -73,13 +73,16 @@ const Threads = (props) => {
             document.body.classList.add('tp');
             document.body.classList.add('oh');
 
+            console.log('initComments', initComments);
             // let initComments = props.initialComments;
 
-            setComments(initComments?.reverse());
-            setInitScroll(i=>!i);
+            if(Boolean(initComments) === true && initComments?.length >= 0){
+                setComments(initComments?.reverse());
+                setInitScroll(i=>!i);
+            }
         }
 
-    }, [loadedMoreOnce, initComments, props, router]);
+    }, [loadedMoreOnce, initComments]);
 
     useEffect(() => {
         let commentsBox = document.getElementById('commentsBox');

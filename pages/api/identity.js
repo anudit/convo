@@ -29,7 +29,7 @@ async function calculateScore(address) {
     let resp = await convoInstance.omnid.computeTrustScore(
         address,
         computeConfig,
-        ['coordinape', 'arcx', 'superrare']
+        ['coordinape', 'arcx', 'superrare', 'asyncart']
     );
 
     for (const [key, value] of Object.entries(resp)) {
@@ -82,7 +82,7 @@ async function calculateScore(address) {
             }
             else if(key === 'deepdao'){
                 if(Boolean(value.value?.score) === true){
-                    score += parseInt(value.value?.score);
+                    score += parseInt(value.value?.score)/10;
                 }
             }
             else if(key === 'rabbithole'){
