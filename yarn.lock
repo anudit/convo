@@ -3042,10 +3042,10 @@
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.4.2.tgz#f0518f6d23a0b0f699a71976483323ac84bc4ace"
   integrity sha512-GGiIscTM+CEUNV52anj3g5FqAZKL2+eRKtvBOAlC99qGBbvJ3qTLImrUR/I3lXY7PRuLgzI6kh34quA1oUxWYQ==
 
-"@react-three/drei@^8.8.0":
-  version "8.8.0"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.8.0.tgz#005f8f274eecd424eb866403bbe32af1da961ae6"
-  integrity sha512-2+1LXDqimAgQbC02I6PVXN9QMpQCKMY/sYA14V8Or/2USiIZla00elG1qI63IrEMxIngjiObLAur7S2YIkaPxg==
+"@react-three/drei@^8.8.1":
+  version "8.8.1"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.8.1.tgz#66491763aee0292077282b37b0a32e495d00a109"
+  integrity sha512-3YOLk7C+t3oWrsFlQd4laeHsDND3srKcYn1Xj9Hiyo7WfHR/lLHdh01IlHLqdZED22a7MiYyNozZPWohnS0HSA==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "^9.3.1"
@@ -3623,10 +3623,10 @@
     event-iterator "^2.0.0"
     loglevel "^1.7.0"
 
-"@theconvospace/sdk@^0.3.22":
-  version "0.3.22"
-  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.3.22.tgz#ceabd7d17be029d92f47261c320f082d3c003eb4"
-  integrity sha512-qYgvCiPA1SEYQGfO63tbGON+cbClmGigkjOeVHUTqMlcbSqakHF4IfD+HJbhyZJh+9SiVNKvNWsX6Fh0GeQ1ug==
+"@theconvospace/sdk@^0.3.23":
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.3.23.tgz#0df670a51289b006c791de9b1086e45bc54a9b7c"
+  integrity sha512-cz1Oz/lr0iFKL/CPo+rE1YN0ShD/tnLA3IJsPeqhem32ERvb9VrR8rH0qOtCnRoLGuYktzIlOccO0zHwZb2waQ==
   dependencies:
     ably "^1.2.17"
     abort-controller "^3.0.0"
@@ -14254,10 +14254,10 @@ next-pwa@^5.4.4:
     workbox-webpack-plugin "^6.4.2"
     workbox-window "^6.4.2"
 
-next-sitemap@^2.1.6:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-2.1.6.tgz#2105d47c5877e5bdb7e3224812a9463ecbe0095d"
-  integrity sha512-62toKkimpFSV1BhsVk+IyZewtVboQ9JCAhtx9vR7620pPcEfTDvp4Jtb03A1oAX3PMjiqf5T45SvDBO4Kv4LTA==
+next-sitemap@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-2.1.8.tgz#2fbfcfd842f0f14444467fbd895e12345e5c0208"
+  integrity sha512-q7MuDqK3bDQO/RDBkAbC0sP2LDpdKwE6QsOZ+vY/k16MLhSIaY9ZVBjnv2ePAThQDdhQ3dxaj8jKY7z5lnQxxw==
   dependencies:
     "@corex/deepmerge" "^2.6.148"
     minimist "^1.2.5"

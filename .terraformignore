@@ -1,0 +1,4 @@
+# .terraformignore
+*
+!terraform/
+!**/.next-tf/**

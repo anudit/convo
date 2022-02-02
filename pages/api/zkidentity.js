@@ -24,7 +24,6 @@ async function calculateScore(address) {
       avalancheMainnetRpc: "https://api.avax.network/ext/bc/C/rpc",
       etherumPriceInUsd: 3300,
       maticPriceInUsd: 2.3,
-      deepdaoApiKey: "LfYMTHGu6J7oTEXT1JDkZ+SrbSD5ETfaXguV0mL44rMowgRsClZwaENG3LHBHv7rFeDJrQnOvEmxcLVZvNqVFA==",
       etherscanApiKey: ETHERSCAN_API_KEY,
       polygonscanApiKey: POLYGONSCAN_API_KEY,
       CNVSEC_ID: CNVSEC_ID,
