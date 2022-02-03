@@ -12,7 +12,7 @@ import { EthereumAuthProvider, SelfID } from '@self.id/web'
 import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
 import { Web3Context } from '@/contexts/Web3Context';
-import { ReloadIcon, VerifiedIcon } from '@/public/icons';
+import { ReloadIcon, VerifiedIcon, MetaMaskIcon, OmnidIcon } from '@/public/icons';
 import { ensToAddress, prettifyNumber, truncateAddress } from '@/utils/stringUtils';
 
 import brightid from '../../public/images/brightid.webp';
@@ -124,6 +124,40 @@ const IdentitySection = () => {
 
   }
 
+  async function addToMetamask(){
+    const provider = await web3Modal.connect();
+    console.log(provider, provider.isMetamask)
+    let result;
+    try {
+      result = await provider.request({
+        method: 'wallet_enable',
+        params: [
+          {
+            wallet_snap: {
+              'npm:@omnid/snap': {},
+            },
+          },
+        ],
+      });
+    } catch (error) {
+      if (error.code === 4001) {
+        console.log('The user rejected the request.');
+      }
+      else if (error.code === -32601) {
+        alert('Please get MetaMask Flask')
+      }
+      else {
+        console.log('Unexpected error:', error);
+      }
+    }
+    if (result?.errors) {
+      console.log('Snap installation failure :(', result?.errors);
+    } else {
+      console.log('Success!', result);
+    }
+
+  }
+
   async function switchToMumbai(){
     const p = await web3Modal.connect();
     try {
@@ -215,7 +249,6 @@ const IdentitySection = () => {
               _hover={{
                   boxShadow: "2xl"
               }}
-              cursor="pointer"
               justifyContent="center"
               textAlign="center"
               alignItems="center"
@@ -231,10 +264,12 @@ const IdentitySection = () => {
 
                 <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={()=>{refreshScore()}} disabled={trustScoreLoading} title="Re-Index Score"/>
               </Flex>
-              <Flex flexDirection="row" mt={4} alignItems="center">
-
-                <Button size="md" onClick={onOpen} ml={2}>
-                  Mint it
+              <Flex flexDirection={{base:"column", md: "row"}} mt={4} alignItems="center">
+                <Button size="md" onClick={addToMetamask} m={1} background="linear-gradient(69deg, #e404f396, #ff7c4a8c)" _active={{background:"linear-gradient(100deg, #e404f396, #ff7c4a8c)"}} _hover={{background:"linear-gradient(100deg, #e404f396, #ff7c4a8c)"}}>
+                  <MetaMaskIcon mr={2}/> Add To Metamask Flask
+                </Button>
+                <Button size="md" onClick={onOpen} m={1} background="linear-gradient(69deg, #046ff396, #4affee8c)" _active={{background:"linear-gradient(100deg, #046ff396, #4affee8c)"}} _hover={{background:"linear-gradient(100deg, #046ff396, #4affee8c)"}}>
+                  <OmnidIcon mr={2} /> Mint your Omnid
                 </Button>
               </Flex>
             </Flex>
