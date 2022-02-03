@@ -49,3 +49,7 @@ private
 /pages/embed/oth
 ocean.js
 scripts
+.next-tf
+.terraform
+.terraform.lock.hcl
+.terraformignore
