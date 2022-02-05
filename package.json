@@ -20,9 +20,9 @@
   "dependencies": {
     "@babel/core": "^7.17.0",
     "@babel/runtime": "^7.17.0",
-    "@chakra-ui/icons": "^1.1.1",
-    "@chakra-ui/react": "^1.8.1",
-    "@chakra-ui/system": "^1.10.1",
+    "@chakra-ui/icons": "^1.1.5",
+    "@chakra-ui/react": "^1.8.3",
+    "@chakra-ui/system": "^1.10.3",
     "@dicebear/avatars": "^4.10.2",
     "@dicebear/micah": "^4.10.2",
     "@emotion/react": "^11.7.1",
@@ -37,7 +37,7 @@
     "@react-three/drei": "^8.8.1",
     "@react-three/fiber": "^7.0.26",
     "@self.id/web": "^0.2.0",
-    "@solana/web3.js": "^1.32.0",
+    "@solana/web3.js": "^1.33.0",
     "@textile/hub": "^6.3.2",
     "@theconvospace/sdk": "^0.3.23",
     "@uauth/js": "^0.7.9",
@@ -48,7 +48,7 @@
     "critters": "^0.0.16",
     "dotenv": "^15.0.0",
     "ethers": "^5.5.4",
-    "framer-motion": "^6.2.3",
+    "framer-motion": "^6.2.4",
     "ioredis": "^4.28.4",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
@@ -70,7 +70,7 @@
     "recharts": "^2.1.8",
     "styled-components": "^5.3.3",
     "swr": "^1.2.1",
-    "telegraf": "^4.6.0",
+    "telegraf": "^4.7.0",
     "three": "^0.137.5",
     "tweetnacl": "^1.0.3",
     "twitter-v2": "^1.1.0",
@@ -86,7 +86,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "ipfs-http-client": "^55.0.0",
-    "next-sitemap": "^2.1.8",
+    "next-sitemap": "^2.1.9",
     "tf-next": "^0.11.4"
   }
 }

@@ -29,6 +29,7 @@ import idx from '../../public/images/idx.webp';
 import knownorigin from '../../public/images/knownorigin.webp';
 import mirror from '../../public/images/mirror.webp';
 import poh from '../../public/images/poh.webp';
+import pop from '../../public/images/pop.webp';
 import rabbithole from '../../public/images/rabbithole.webp';
 import rarible from '../../public/images/rarible.webp';
 import superrare from '../../public/images/superrare.webp';
@@ -42,6 +43,7 @@ import celo from '../../public/images/celo.webp';
 import polygon from '../../public/images/polygon.webp';
 import showtime from '../../public/images/showtime.webp';
 import cyberconnect from '../../public/images/cyberconnect.webp';
+import dapplist from '../../public/images/dapplist.webp';
 import rss3 from '../../public/images/rss3.webp';
 import aave from '../../public/images/aave.webp';
 import context from '../../public/images/context.webp';
@@ -309,6 +311,9 @@ const IdentitySection = () => {
                 <Item searchString={searchString} tags={['connect','cyberconnect', 'social']}>
                   <CyberconnectCard trustScoreData={trustScoreData} />
                 </Item>
+                <Item searchString={searchString} tags={['dapplist', 'social']}>
+                  <DapplistCard trustScoreData={trustScoreData} />
+                </Item>
                 <Item searchString={searchString} tags={['dao','governanace', 'deep', 'deepdao']}>
                   <DeepdaoCard trustScoreData={trustScoreData} />
                 </Item>
@@ -350,6 +355,9 @@ const IdentitySection = () => {
                 </Item>
                 <Item searchString={searchString} tags={['identity', 'proof of humanity']}>
                   <PoHCard trustScoreData={trustScoreData}/>
+                </Item>
+                <Item searchString={searchString} tags={['proofofpersonhood', 'gitcoin', 'identity']}>
+                  <PopCard trustScoreData={trustScoreData} />
                 </Item>
                 <Item searchString={searchString} tags={['identity', 'project galaxy']}>
                   <ProjectgalaxyCard trustScoreData={trustScoreData}/>
@@ -763,6 +771,18 @@ const SybilCard = ({trustScoreData}) => {
 };
 SybilCard.propTypes = propTypes
 
+const PopCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url={pop}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.pop?.personhood_score) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://proofofpersonhood.com/">Get your Passport</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+PopCard.propTypes = propTypes
+
 const DeepdaoCard = ({trustScoreData}) => {
 
     return (
@@ -786,6 +806,18 @@ const MetagameCard = ({trustScoreData}) => {
   );
 };
 MetagameCard.propTypes = propTypes
+
+const DapplistCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url={dapplist}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.dapplist?.xp) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://thedapplist.com/">Hunt on Dapplist</chakra.p></>) : (<><Text mr={1}>Hunter on DappList </Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+DapplistCard.propTypes = propTypes
 
 const FortaCard = ({trustScoreData}) => {
 
