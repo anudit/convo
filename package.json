@@ -34,12 +34,12 @@
     "@oceanprotocol/lib": "^0.20.2",
     "@onflow/fcl": "^0.0.78",
     "@portis/web3": "^4.0.7",
-    "@react-three/drei": "^8.8.1",
+    "@react-three/drei": "^8.8.3",
     "@react-three/fiber": "^7.0.26",
     "@self.id/web": "^0.2.0",
     "@solana/web3.js": "^1.33.0",
     "@textile/hub": "^6.3.2",
-    "@theconvospace/sdk": "^0.3.23",
+    "@theconvospace/sdk": "^0.3.25",
     "@uauth/js": "^0.7.9",
     "@uauth/web3modal": "^0.7.9",
     "@walletconnect/web3-provider": "^1.7.1",
@@ -49,7 +49,7 @@
     "dotenv": "^15.0.0",
     "ethers": "^5.5.4",
     "framer-motion": "^6.2.4",
-    "ioredis": "^4.28.4",
+    "ioredis": "^4.28.5",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "kerberos": "^1.1.7",
@@ -86,7 +86,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "ipfs-http-client": "^55.0.0",
-    "next-sitemap": "^2.1.9",
+    "next-sitemap": "^2.1.13",
     "tf-next": "^0.11.4"
   }
 }

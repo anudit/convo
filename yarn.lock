@@ -3113,10 +3113,10 @@
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.4.2.tgz#f0518f6d23a0b0f699a71976483323ac84bc4ace"
   integrity sha512-GGiIscTM+CEUNV52anj3g5FqAZKL2+eRKtvBOAlC99qGBbvJ3qTLImrUR/I3lXY7PRuLgzI6kh34quA1oUxWYQ==
 
-"@react-three/drei@^8.8.1":
-  version "8.8.1"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.8.1.tgz#66491763aee0292077282b37b0a32e495d00a109"
-  integrity sha512-3YOLk7C+t3oWrsFlQd4laeHsDND3srKcYn1Xj9Hiyo7WfHR/lLHdh01IlHLqdZED22a7MiYyNozZPWohnS0HSA==
+"@react-three/drei@^8.8.3":
+  version "8.8.3"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.8.3.tgz#a4c3ad678a42e9300c739a578d0591f33fc5e22f"
+  integrity sha512-vXRnUFZUTSqJzegTAxYfH+I6UoV6Ek6m26gU7w+/D1TabeKdMLRxcByBvi293jsBbb220mVFgqAafUXpa/Ql4w==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "^9.3.1"
@@ -3129,7 +3129,7 @@
     react-merge-refs "^1.1.0"
     stats.js "^0.17.0"
     three-mesh-bvh "^0.5.4"
-    three-stdlib "^2.8.2"
+    three-stdlib "^2.8.6"
     troika-three-text "^0.44.0"
     use-asset "^1.0.4"
     utility-types "^3.10.0"
@@ -3694,10 +3694,10 @@
     event-iterator "^2.0.0"
     loglevel "^1.7.0"
 
-"@theconvospace/sdk@^0.3.23":
-  version "0.3.23"
-  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.3.23.tgz#0df670a51289b006c791de9b1086e45bc54a9b7c"
-  integrity sha512-cz1Oz/lr0iFKL/CPo+rE1YN0ShD/tnLA3IJsPeqhem32ERvb9VrR8rH0qOtCnRoLGuYktzIlOccO0zHwZb2waQ==
+"@theconvospace/sdk@^0.3.25":
+  version "0.3.25"
+  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.3.25.tgz#ebce617de8b3837ba35b24f0d5c9a95a0c540bdd"
+  integrity sha512-V2ETOj7RWvhXWNsS/gJsHd3O5AUZ751S/hvnv87hPJjqDHHAIIAXMzdP2S2XNa8R4mvf1/cwTXUxn6orn61CFw==
   dependencies:
     ably "^1.2.17"
     abort-controller "^3.0.0"
@@ -3705,7 +3705,7 @@
     ethers "^5.5.4"
     react "^17.0.2"
     react-dom "^17.0.2"
-    siwe "^1.0.0"
+    siwe "^1.1.0"
 
 "@truffle/abi-utils@^0.2.6":
   version "0.2.6"
@@ -4967,11 +4967,6 @@
   version "0.0.15"
   resolved "https://registry.yarnpkg.com/@webgpu/glslang/-/glslang-0.0.15.tgz#f5ccaf6015241e6175f4b90906b053f88483d1f2"
   integrity sha512-niT+Prh3Aff8Uf1MVBVUsaNjFj9rJAKDXuoHIKiQbB+6IUP/3J3JIhBNyZ7lDhytvXxw6ppgnwKZdDJ08UMj4Q==
-
-"@webxr-input-profiles/motion-controllers@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@webxr-input-profiles/motion-controllers/-/motion-controllers-1.0.0.tgz#0a84533288af39d85bfe1987721035925d69be47"
-  integrity sha512-Ppxde+G1/QZbU8ShCQg+eq5VtlcL/FPkerF1dkDOLlIml0LJD1tFqnCZYR0SrHzYleIQ2siRnOx7xbFLaCpExQ==
 
 "@wry/equality@^0.1.2":
   version "0.1.11"
@@ -11268,10 +11263,10 @@ invert-kv@^2.0.0:
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
   integrity sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==
 
-ioredis@^4.28.4:
-  version "4.28.4"
-  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.28.4.tgz#de62dee96159a97b37f75d91318f2c6dbfe63c15"
-  integrity sha512-KmG3FDd1pKZcWQ7/fIbwzvpkZ50NwRJ3RBK9dpetJrNfC+sxhK6TzaVkExvh9AiF+rAVSUmvqfHyQp5U418aDw==
+ioredis@^4.28.5:
+  version "4.28.5"
+  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.28.5.tgz#5c149e6a8d76a7f8fa8a504ffc85b7d5b6797f9f"
+  integrity sha512-3GYo0GJtLqgNXj4YhrisLaNNvWSNwSS2wS4OELGfGxH8I69+XfNdnmV1AyN+ZqMh0i7eX+SWjrwFKDBDgfBC1A==
   dependencies:
     cluster-key-slot "^1.1.0"
     debug "^4.3.1"
@@ -14325,10 +14320,10 @@ next-pwa@^5.4.4:
     workbox-webpack-plugin "^6.4.2"
     workbox-window "^6.4.2"
 
-next-sitemap@^2.1.9:
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-2.1.9.tgz#3dc2751c2f8a77dcc74a26ecf326aeb31d0d5c61"
-  integrity sha512-ESd+kbTwCpCttz+vH4xgBpJxdT93ODvSt1xoQvVa7q+Rg8mN/9SkxX6Z+N3cDNvB5TNjLc8/kbl4PdVHQINvVA==
+next-sitemap@^2.1.13:
+  version "2.1.13"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-2.1.13.tgz#1772e9f0eae07d4b1c3194654b84e6579c05a95c"
+  integrity sha512-gybyH7ylRiwgRakI81++Hx6a+LUl7tkcmcsjNJA0L0t95lk3gc0OYHH9siV+JMdytd4lag5ue8E8iMGKJ06Q/Q==
   dependencies:
     "@corex/deepmerge" "^2.6.148"
     minimist "^1.2.5"
@@ -17490,10 +17485,10 @@ simple-mime@^0.1.0:
   resolved "https://registry.yarnpkg.com/simple-mime/-/simple-mime-0.1.0.tgz#95f517c4f466d7cff561a71fc9dab2596ea9ef2e"
   integrity sha1-lfUXxPRm18/1YacfydqyWW6p7y4=
 
-siwe@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/siwe/-/siwe-1.0.0.tgz#efda45b428e3ae63b048e7583b4c4395c971139d"
-  integrity sha512-rAPcXB/gFDunsGDnOI55jsAqEvS369GzKLB6pSVzvMUdrQzdjafllHRc2EnNovNG2zIwVW46kLA2okzJF/UIXw==
+siwe@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/siwe/-/siwe-1.1.0.tgz#46ed70913159a3948ad8f15d1b517f5fefc59c52"
+  integrity sha512-dOv8Y3756kdE5sdXdqvyAJzvIub+e4dGtY7TVdMeu6/PzK+Bu9do2kcXga2zgunZW0eiM2N9Hd0+u0Wd5OLitg==
   dependencies:
     "@stablelib/random" "^1.0.1"
     apg-js "^4.1.1"
@@ -18375,14 +18370,13 @@ three-mesh-bvh@^0.5.4:
   resolved "https://registry.yarnpkg.com/three-mesh-bvh/-/three-mesh-bvh-0.5.4.tgz#f4c8d751f420c60c35f880393bb00553ce1b298c"
   integrity sha512-Hq3zpjqBxx2sp/K2Fw7cZ1yEoIVbMc4hOv3VRtmCjHapDKkZpDh8w3OcktbCwn+vBNPt9Ii8D0nDTeqt+73Dwg==
 
-three-stdlib@^2.8.2:
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.8.2.tgz#b04e8cf09a931aac942307f673813426ce0e70bd"
-  integrity sha512-B91eN9CFwqg/D7g3TOhth994dLoh6dQYtj5pRTVxHk0v02vdC7lutGkmKYryDh1YBg7x2bTdxvMxbfOT4RtF9Q==
+three-stdlib@^2.8.6:
+  version "2.8.6"
+  resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.8.6.tgz#80aab4ea175acb2f5c32d7488bb26e0a0955be9f"
+  integrity sha512-0emGIVrJG3SGmDyU/mdd4fPOwkXrDCCCwSugHiQBkN5AruAtSTS85Y7zjvexQsQaDYb5RGlJsDefH41nM9uG4Q==
   dependencies:
     "@babel/runtime" "^7.16.7"
     "@webgpu/glslang" "^0.0.15"
-    "@webxr-input-profiles/motion-controllers" "^1.0.0"
     chevrotain "^9.0.2"
     draco3d "^1.4.1"
     fflate "^0.6.9"
