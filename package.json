@@ -18,8 +18,8 @@
     "tf-next": "tf-next build"
   },
   "dependencies": {
-    "@babel/core": "^7.17.0",
-    "@babel/runtime": "^7.17.0",
+    "@babel/core": "^7.17.2",
+    "@babel/runtime": "^7.17.2",
     "@chakra-ui/icons": "^1.1.5",
     "@chakra-ui/react": "^1.8.3",
     "@chakra-ui/system": "^1.10.3",
@@ -27,8 +27,8 @@
     "@dicebear/micah": "^4.10.2",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@gnosis.pm/safe-apps-sdk": "^6.2.0",
-    "@gnosis.pm/safe-apps-web3modal": "^7.0.0",
+    "@gnosis.pm/safe-apps-sdk": "6.2.0",
+    "@gnosis.pm/safe-apps-web3modal": "7.0.0",
     "@hapi/iron": "^6.0.0",
     "@oceanprotocol/contracts": "^0.6.9",
     "@oceanprotocol/lib": "^0.20.2",

@@ -27,6 +27,7 @@ import foundation from '../../public/images/foundation.webp';
 import idena from '../../public/images/idena.webp';
 import idx from '../../public/images/idx.webp';
 import knownorigin from '../../public/images/knownorigin.webp';
+import lens from '../../public/images/lens.webp';
 import mirror from '../../public/images/mirror.webp';
 import poh from '../../public/images/poh.webp';
 import pop from '../../public/images/pop.webp';
@@ -343,6 +344,9 @@ const IdentitySection = () => {
                 </Item>
                 <Item searchString={searchString} tags={['nft', 'art', 'knownorigin']}>
                   <KnownoriginCard trustScoreData={trustScoreData} />
+                </Item>
+                <Item searchString={searchString} tags={['social', 'nft', 'aave', 'lens protocol']}>
+                  <LensCard trustScoreData={trustScoreData} />
                 </Item>
                 <Item searchString={searchString} tags={['dao','metagame']}>
                   <MetagameCard trustScoreData={trustScoreData} />
@@ -819,6 +823,18 @@ const DapplistCard = ({trustScoreData}) => {
 };
 DapplistCard.propTypes = propTypes
 
+const LensCard = ({trustScoreData}) => {
+
+  return (
+    <IdentityCard image_url={lens}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.lens?.handle) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://lens.dev/">Discover on Lens</chakra.p></>) : (<><Text mr={1}>{trustScoreData?.lens?.handle} on Lens</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+LensCard.propTypes = propTypes
+
 const FortaCard = ({trustScoreData}) => {
 
   return (
@@ -1079,15 +1095,15 @@ const AgeCard = ({trustScoreData}) => {
       >
         <Flex direction="column" align="center" backgroundColor="#000" width="288px" height="162px" className="br-10" alignItems="center" justifyContent="center">
           <Flex direction="row" justifyContent="space-between" w="70%">
-            <Flex align="center" direction="column" display={age>365 ? "flex" : "none"}>
+            <Flex color="white" align="center" direction="column" display={age>365 ? "flex" : "none"}>
               <Heading fontSize="60px" mb={0}>{parseInt(age/365)}</Heading>
               <Text mt={0}>Yr{age>730 ? "s" : ""}</Text>
             </Flex>
-            <Flex align="center" direction="column" display={(age - (parseInt(age/365)*365))>0 ? "flex" : "none"}>
+            <Flex color="white" align="center" direction="column" display={(age - (parseInt(age/365)*365))>0 ? "flex" : "none"}>
               <Heading fontSize="60px" mb={0}>{age - (parseInt(age/365)*365)}</Heading>
               <Text mt={0}>Day{age>0 ? "s" : ""}</Text>
             </Flex>
-            <Flex align="center" direction="column" display={age === 0 ? "flex" : "none"}>
+            <Flex color="white" align="center" direction="column" display={age === 0 ? "flex" : "none"}>
               <Heading fontSize="60px" mb={0}>0</Heading>
               <Text mt={0}>Days</Text>
             </Flex>

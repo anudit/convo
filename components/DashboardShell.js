@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag  } from "@chakra-ui/react";
+import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag, Divider  } from "@chakra-ui/react";
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { ThreeDotMenuFlatIcon, GithubIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon, OmnidIcon, VartaIcon } from '@/public/icons';
+import { MoonOutlineIcon, SunActiveIcon, ThreeDotMenuFlatIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon, OmnidIcon, VartaIcon } from '@/public/icons';
 import { CloseIcon, InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
@@ -293,8 +293,16 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             href="#"
                         />
                     </Flex>
-                    <Flex direction={{base:"column", md:"row"}} justifyContent="space-around">
-                        <Flex onClick={toggleColorMode} h={{base: "50px", md:"50px"}} w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
+                    <Flex direction="column" justifyContent="space-around" alignItems="center">
+                        <Divider w="90%"/>
+                        <Flex as="a" href="https://docs.theconvo.space" target="_blank" h="50px" w="100%" cursor="pointer" direction="row" align="center" justifyContent="center" alignItems="center" m={2} mb={0}>
+                            <DocsIcon mx={2}/>
+                            <Text fontWeight="100" fontSize="small">
+                                Build on Convo Space →
+                            </Text>
+                        </Flex>
+
+                        <Flex display={{base: "flex", md: "none"}} onClick={toggleColorMode} h="50px" w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
                             <IconButton
                                 colorScheme={colorMode === 'light' ? "blackAlpha": "gray" }
                                 aria-label="Docs"
@@ -305,26 +313,22 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             />
                         </Flex>
 
-                        <Flex as="a" href="https://blog.theconvo.space" target="_blank" h={{base: "50px", md:"50px"}} w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
-                            <IconButton
-                                colorScheme={colorMode === 'light' ? "blackAlpha": "gray"}
-                                aria-label="Blog"
-                                size="lg"
-                                icon={<DocsIcon/>}
-                                variant="ghost"
-                                borderRadius="100px"
-                            />
+                        <Flex display={{base: "none", md: "flex"}} onClick={toggleColorMode} w="80%" fontWeight={200} cursor="pointer" direction="row" align="center" alignItems="center" background="hsla(0,0%,100%,0.06)" borderRadius="100px" m={2} mb={4}>
+                            <Flex background={colorMode === "light" ? "hsla(0,0%,100%,0.04)" : ""} w="50%" h="30px" alignItems="center" justifyContent="center" borderRadius="100px" py="2px" ml={1} my={1}>
+                                {colorMode === "light" ? <SunActiveIcon mr={2} /> : <SunIcon mr={2}/>}
+                                <Text fontWeight={colorMode === "light" ? 900 : 100} fontSize="small">
+                                    Light
+                                </Text>
+                            </Flex>
+                            <Flex background={colorMode === "dark" ? "hsla(0,0%,100%,0.04)" : ""} w="50%" h="30px" alignItems="center" justifyContent="center" borderRadius="100px" py="2px" mr={1} my={1}>
+                                {colorMode === "light" ? <MoonOutlineIcon mr={2} /> : <MoonIcon mr={2}/>}
+                                <Text fontWeight={colorMode === "dark" ? 900 : 100} fontSize="small">
+                                    Dark
+                                </Text>
+                            </Flex>
                         </Flex>
-                        <Flex as="a" href="https://github.com/anudit/convo" target="_blank" h={{base: "50px", md:"50px"}} w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" >
-                            <IconButton
-                                colorScheme={colorMode === 'light' ? "blackAlpha": "gray" }
-                                aria-label="Github"
-                                size="lg"
-                                icon={<GithubIcon/>}
-                                variant="ghost"
-                                borderRadius="100px"
-                            />
-                        </Flex>
+
+
                     </Flex>
 
                 </Flex>
@@ -416,7 +420,7 @@ const SidebarItem = ({name, tag, icon, isActive, href, isExternal}) => {
                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "hsla(0,0%,100%,0.04)"}}
             >
                 {icon}
-                <Text display={{base:"none", md:"block"}} fontSize="sm" fontWeight="800" opacity="80%">
+                <Text display={{base:"none", md:"block"}} fontSize="sm" fontWeight={isActive === true ? 900 : 100} opacity="80%">
                     {name} {tag}
                 </Text>
             </Flex>
