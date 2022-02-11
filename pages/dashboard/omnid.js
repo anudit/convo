@@ -22,6 +22,7 @@ import coinvise from '../../public/images/coinvise.webp';
 import deepdao from '../../public/images/deepdao.webp';
 import ens from '../../public/images/ens.webp';
 import etherscan from '../../public/images/etherscan.webp';
+import mew from '../../public/images/mew.webp';
 import forta from '../../public/images/forta.webp';
 import foundation from '../../public/images/foundation.webp';
 import idena from '../../public/images/idena.webp';
@@ -321,7 +322,7 @@ const IdentitySection = () => {
                 <Item searchString={searchString} tags={['ens','ethereum name service', 'domains']}>
                   <ENSCard trustScoreData={trustScoreData} />
                 </Item>
-                <Item searchString={searchString} tags={['etherscan','defi', 'block explorer']}>
+                <Item searchString={searchString} tags={['etherscan','defi', 'block explorer', 'scam']}>
                   <EtherscanCard trustScoreData={trustScoreData} />
                 </Item>
                 <Item searchString={searchString} tags={['forta', 'alert']}>
@@ -350,6 +351,9 @@ const IdentitySection = () => {
                 </Item>
                 <Item searchString={searchString} tags={['dao','metagame']}>
                   <MetagameCard trustScoreData={trustScoreData} />
+                </Item>
+                <Item searchString={searchString} tags={['scam','mew', 'MyEtherWallet']}>
+                  <MewCard trustScoreData={trustScoreData} />
                 </Item>
                 <Item searchString={searchString} tags={['mirror', 'writing']}>
                   <MirrorCard trustScoreData={trustScoreData} />
@@ -1003,7 +1007,7 @@ const KnownoriginCard = ({trustScoreData}) => {
     <IdentityCard image_url={knownorigin}>
       {
         trustScoreData === null ? "Loading" :
-        trustScoreData?.knownorigin?.totalCountSold === 0 ? (
+        Boolean(trustScoreData?.knownorigin?.totalCountSold) === false ? (
             <chakra.p size="xs" as="a" target="_blank" href="https://knownorigin.io/">
               Create on KnownOrigin
             </chakra.p>
@@ -1026,14 +1030,14 @@ const FoundationCard = ({trustScoreData}) => {
     <IdentityCard image_url={foundation}>
       {
         trustScoreData === null ? "Loading" :
-        trustScoreData?.foundation?.totalCountSold === 0 ? (
+        Boolean(trustScoreData?.foundation?.totalCountSold) === false ? (
             <chakra.p size="xs" as="a" target="_blank" href="https://foundation.app/">
               Create on Foundation
             </chakra.p>
           ) : (
             <>
               <Text mr={1}>
-                {trustScoreData.foundation.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.foundation.totalAmountSold)}
+                {trustScoreData?.foundation?.totalCountSold + " sold for $" + prettifyNumber(trustScoreData?.foundation?.totalAmountSold)}
               </Text>
               <VerifiedIcon color="blue.400"/>
             </>
@@ -1180,6 +1184,16 @@ const GitcoinCard = ({trustScoreData}) => {
 };
 GitcoinCard.propTypes = propTypes
 
+const MewCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={mew}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.mew?.handle) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.myetherwallet.com/">Explore MyEtherWallet</chakra.p></>) : (<><Text mr={1}>BlackListed!</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+MewCard.propTypes = propTypes
 
 const CoordinapeCard = ({trustScoreData}) => {
   return (
