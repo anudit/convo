@@ -169,9 +169,9 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                         <WalletItem
                             onClick={()=>{connectWallet('okx')}}
                             backgroundImage="linear-gradient(215deg, rgb(16 15 19) 0%, rgb(255 255 255 / 13%) 100%)"
-                            title="OKX"
+                            title="OEC"
                             icon={<OkxIcon boxSize={8} mx={2}/>}
-                            onMouseEnter={()=>{setWalletInfo('Sign-in with MetaX Wallet.')}}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with OEC powwered by MetaX Wallet.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 
