@@ -391,8 +391,7 @@ export const Web3ContextProvider = ({children}) => {
       }
 
     }
-    // DEPRECATED
-    else if (choice === "okex"){
+    else if (choice === "okx"){
 
       if (typeof window.okexchain !== 'undefined') {
 
@@ -442,7 +441,7 @@ export const Web3ContextProvider = ({children}) => {
 
       }
       else {
-        alert('OKEx DeFi Hub Wallet not found.')
+        alert('MetaX Wallet not found.')
       }
     }
     else if (choice === "freeton") {

@@ -5,7 +5,7 @@ import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, He
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { MoonOutlineIcon, SunActiveIcon, ThreeDotMenuFlatIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon, OmnidIcon, VartaIcon } from '@/public/icons';
+import { MoonOutlineIcon, SunActiveIcon, ThreeDotMenuFlatIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon, OmnidIcon, VartaIcon, OkxIcon } from '@/public/icons';
 import { CloseIcon, InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
@@ -160,16 +160,24 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                         />
                         <WalletItem
                             onClick={()=>{connectWallet('solana')}}
-                            backgroundImage="linear-gradient(215deg, rgb(111 29 140) 0%, rgb(53 174 145 / 33%) 100%);"
+                            backgroundImage="linear-gradient(215deg, rgb(111 29 140) 0%, rgb(53 174 145 / 33%) 100%)"
                             title="Solana"
                             icon={<SolanaIcon boxSize={8} mx={2}/>}
                             onMouseEnter={()=>{setWalletInfo('Sign-in with Solana powered by Phantom Wallet.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
+                        <WalletItem
+                            onClick={()=>{connectWallet('okx')}}
+                            backgroundImage="linear-gradient(215deg, rgb(16 15 19) 0%, rgb(255 255 255 / 13%) 100%)"
+                            title="OKX"
+                            icon={<OkxIcon boxSize={8} mx={2}/>}
+                            onMouseEnter={()=>{setWalletInfo('Sign-in with MetaX Wallet.')}}
+                            onMouseLeave={()=>{setWalletInfo('')}}
+                        />
 
                         <WalletItem
                             onClick={()=>{connectWallet('cosmos')}}
-                            backgroundImage="linear-gradient(215deg, rgb(27 30 54) 0%, rgb(111 115 144) 100%);"
+                            backgroundImage="linear-gradient(215deg, rgb(27 30 54) 0%, rgb(111 115 144) 100%)"
                             title="Cosmos"
                             icon={<CosmosIcon boxSize={8} mx={2} style={{transform:"scale(1.5)"}}/>}
                             display={isMoreOpen === true ? 'inline-flex' : 'none'}
