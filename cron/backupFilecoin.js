@@ -6,6 +6,7 @@ const Redis = require("ioredis");
 const { MongoClient } = require('mongodb');
 const { ethers } = require('ethers');
 const { create } = require('ipfs-http-client');
+const bfj = require('bfj');
 
 const { CHAINSAFE_STORAGE_API_KEY, TEXTILE_PK, TEXTILE_HUB_KEY_DEV, MONGODB_URI, TEXTILE_THREADID, NFTSTORAGE_KEY, PINATA_API_KEY, PINATA_API_SECRET, REDIS_CONNECTION} = process.env;
 
@@ -19,6 +20,48 @@ const getClient = async () =>{
     await client.getToken(identity);
     return client;
 
+}
+
+async function testStringify(dataToStringify) {
+    return new Promise((resolve, reject) => {
+
+        let fp = './temp-stringify.json'
+
+        //createStringifyStream
+        let stringifyStream = createStringifyStream(dataToStringify)
+
+        //createWriteStream
+        let writerStream = fs.createWriteStream(fp)
+
+        // //pipe
+        // stringifyStream.pipe(writerStream)
+
+        //stringifyStream onData
+        stringifyStream.on('data', function(chunk) {
+            writerStream.write(chunk, 'UTF8')
+        })
+
+        //stringifyStream onEnd
+        stringifyStream.on('end', function() {
+            writerStream.end()
+        })
+
+        //writerStream onFinish
+        writerStream.on('finish', function() {
+            console.log('writerStream finish')
+            // let res = fs.readFileSync(fp, 'utf8')
+            // fs.unlinkSync(fp)
+            // console.log('res.length', res.length)
+            // console.log('res', res.substr(0, 200) + '...')
+            resolve()
+        })
+
+        //writerStream onError
+        writerStream.on('error', function(err) {
+            console.log('writerStream error', err)
+        })
+
+    })
 }
 
 const prettyDate = (timestamp) => {
@@ -271,12 +314,30 @@ async function pinToChainsafe(hash) {
     }
 }
 
+async function bfjStringify(data){
+    let promise = new Promise((res, rej) => {
+
+        bfj.stringify(data)
+            .then(jsonString => {
+                res(jsonString)
+            })
+            .catch(error => {
+                console.error('bfjStringify.error', error);
+                rej(error)
+            });
+
+    });
+    let result = await promise;
+    return result;
+}
+
+
 // Gateway : https://<hash>.ipfs.dweb.link/
 const client = new NFTStorage({ token: NFTSTORAGE_KEY })
 console.log("🔃 Backing up data to NFT.Storage")
 
 getData().then(async (data)=>{
-    const content = new Blob([JSON.stringify(data)]);
+    const content = new Blob([bfjStringify(data)]);
     let ipfsHash = await client.storeBlob(content);
     console.log("✅ Backed up Data to NFT.Storage");
     await pinToPinata(ipfsHash);
