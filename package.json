@@ -23,6 +23,7 @@
   "dependencies": {
     "@babel/core": "^7.17.5",
     "@babel/runtime": "^7.17.2",
+    "@biconomy/mexa": "^2.0.28",
     "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.5",
     "@chakra-ui/system": "^1.11.1",
@@ -52,11 +53,11 @@
     "critters": "^0.0.16",
     "dotenv": "^15.0.0",
     "ethers": "^5.5.4",
-    "framer-motion": "^6.2.7",
+    "framer-motion": "^6.2.8",
     "ioredis": "^4.28.5",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "kerberos": "^1.1.7",
+    "kerberos": "^2.0.0",
     "mongodb": "^4.4.0",
     "mongodb-client-encryption": "^2.0.0",
     "near-api-js": "^0.44.2",
@@ -75,7 +76,7 @@
     "styled-components": "^5.3.3",
     "swr": "^1.2.2",
     "telegraf": "^4.7.0",
-    "three": "^0.137.5",
+    "three": "^0.138.0",
     "tweetnacl": "^1.0.3",
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
@@ -90,7 +91,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "ipfs-http-client": "^55.0.0",
-    "next-sitemap": "^2.4.6",
+    "next-sitemap": "^2.5.1",
     "tf-next": "^0.11.4"
   }
 }

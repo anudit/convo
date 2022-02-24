@@ -22,48 +22,6 @@ const getClient = async () =>{
 
 }
 
-async function testStringify(dataToStringify) {
-    return new Promise((resolve, reject) => {
-
-        let fp = './temp-stringify.json'
-
-        //createStringifyStream
-        let stringifyStream = createStringifyStream(dataToStringify)
-
-        //createWriteStream
-        let writerStream = fs.createWriteStream(fp)
-
-        // //pipe
-        // stringifyStream.pipe(writerStream)
-
-        //stringifyStream onData
-        stringifyStream.on('data', function(chunk) {
-            writerStream.write(chunk, 'UTF8')
-        })
-
-        //stringifyStream onEnd
-        stringifyStream.on('end', function() {
-            writerStream.end()
-        })
-
-        //writerStream onFinish
-        writerStream.on('finish', function() {
-            console.log('writerStream finish')
-            // let res = fs.readFileSync(fp, 'utf8')
-            // fs.unlinkSync(fp)
-            // console.log('res.length', res.length)
-            // console.log('res', res.substr(0, 200) + '...')
-            resolve()
-        })
-
-        //writerStream onError
-        writerStream.on('error', function(err) {
-            console.log('writerStream error', err)
-        })
-
-    })
-}
-
 const prettyDate = (timestamp) => {
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const dt = new Date(parseInt(timestamp));
@@ -106,6 +64,7 @@ const getAllTrustScoreData = async () => {
     const client = await MongoClient.connect(MONGODB_URI);
     let db = client.db('convo');
     let coll = db.collection('cachedTrustScores');
+    // TODO: stream the data for mongdb and possibly strinfy on the fly.
     let completeData = await coll.find().toArray();
 
     return completeData;

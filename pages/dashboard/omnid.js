@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Image from 'next/image';
+import Script from 'next/script'
 import { FormControl, FormLabel, useDisclosure, Modal, ModalOverlay, ModalContent, ModalFooter, ModalHeader, ModalBody, ModalCloseButton, useToast, Wrap, WrapItem, Heading, Button, Text, chakra, Box, Flex, useColorModeValue, useColorMode,useClipboard, InputGroup, Input, InputRightElement, IconButton, Select, Spinner, Image as ChakraImage } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon, ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons';
 import useSWR from 'swr';
 import QRCode from "react-qr-code";
 import { isAddress } from 'ethers/lib/utils';
 import PropTypes from 'prop-types';
+import { Biconomy } from "@biconomy/mexa";
 
 import { EthereumAuthProvider, SelfID } from '@self.id/web'
 
@@ -57,7 +59,7 @@ import { ethers } from 'ethers';
 
 const IdentitySection = () => {
 
-  const { web3Modal, signerAddress } = useContext(Web3Context);
+  const { web3Modal, provider, signerAddress } = useContext(Web3Context);
   const [trustScoreData, setTrustScoreData] = useState(null);
   const [trustScore, setTrustScore] = useState(0);
   const [trustScoreLoading, setTrustScoreLoading] = useState(false);
@@ -88,9 +90,37 @@ const IdentitySection = () => {
     setTrustScoreLoading(false);
   }
 
+  async function getBiconomyInstance(modalProvider){
+    let promise = new Promise((res, rej) => {
+
+      const biconomy = new Biconomy(new ethers.providers.Web3Provider(modalProvider), {
+        apiKey: 'zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5',
+        debug: true,
+      });
+
+      biconomy
+      .onEvent(biconomy.READY, async () => {
+        res(biconomy);
+
+      })
+      .onEvent(biconomy.ERROR, (error, message) => {
+        console.error(error, message);
+        rej(error);
+      });
+    });
+    let result = await promise;
+    return result;
+  }
+
   async function mintId(){
+
     const p = await web3Modal.connect();
+
     const chainId = await p.request({ method: 'eth_chainId' });
+
+    const bicoInstance = await getBiconomyInstance(p);
+
+    const sign = await bicoInstance.ethersProvider.getSigner();
 
     let contractABI = [{
       "inputs": [
@@ -115,16 +145,21 @@ const IdentitySection = () => {
       "stateMutability": "nonpayable",
       "type": "function"
     }];
-    let contractAddress = "0xF66D5443b4e881c41A16eCd9Ba72C715A413929b";
+    let contractAddress = "0x835796B65ECD11cD55Ff1C4940348Cb251f6c401";
 
     if (parseInt(chainId) !== 80001 ){
       alert('Please switch to Mumbai Testnet!')
     }
     else {
-      let omnid = new ethers.Contract(contractAddress, contractABI, p);
-      let result = await omnid.createId(signerAddress, ethers.utils.formatBytes32String(etchingRef.current.value), parseInt(skinRef.current.value));
+      let omnid = new ethers.Contract(contractAddress, contractABI, sign);
+      let result = await omnid.createId(
+        signerAddress,
+        ethers.utils.formatBytes32String(etchingRef.current.value),
+        parseInt(skinRef.current.value)
+      );
       console.log(result);
     }
+
 
   }
 
@@ -215,6 +250,10 @@ const IdentitySection = () => {
           <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
+            <Script
+              src="https://cdn.jsdelivr.net/npm/@biconomy/mexa@latest/dist/mexa.js"
+              strategy="afterInteractive"
+            />
               <ModalHeader>Create an ID (Mumbai Testnet)</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
@@ -656,10 +695,11 @@ const PoapSection = ({trustScoreData}) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [poapDetails, setPoapDetails] = useState(null);
+  const { signerAddress } = useContext(Web3Context);
 
   useEffect(() => {
-    fetcher(`https://api.poap.xyz/actions/scan/${trustScoreData?.cyberconnect?.address}`, "GET", {}).then(setPoaps);
-  }, [trustScoreData]);
+    if (isAddress(signerAddress)) fetcher(`https://api.poap.xyz/actions/scan/${signerAddress}`, "GET", {}).then(setPoaps);
+  }, [signerAddress, trustScoreData]);
 
   function showDetails(id) {
     setPoapDetails({
