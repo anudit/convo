@@ -59,7 +59,7 @@ import { ethers } from 'ethers';
 
 const IdentitySection = () => {
 
-  const { web3Modal, provider, signerAddress } = useContext(Web3Context);
+  const { web3Modal, signerAddress } = useContext(Web3Context);
   const [trustScoreData, setTrustScoreData] = useState(null);
   const [trustScore, setTrustScore] = useState(0);
   const [trustScoreLoading, setTrustScoreLoading] = useState(false);
