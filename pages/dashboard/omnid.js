@@ -812,7 +812,7 @@ const SybilCard = ({trustScoreData}) => {
     return (
       <IdentityCard image_url={sybil}>
         {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData.uniswapSybil) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.uniswapSybil) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://sybil.org/">Verify on Uniswap Sybil</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -836,7 +836,7 @@ const DeepdaoCard = ({trustScoreData}) => {
     return (
       <IdentityCard image_url={deepdao}>
         {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData.deepdao.score) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://deepdao.io/">Explore on Deepdao</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.deepdao?.score) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://deepdao.io/">Explore on Deepdao</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -943,7 +943,7 @@ const ENSCard = ({trustScoreData}) => {
   return (
     <IdentityCard image_url={ens}>
       {
-        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.ens) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</chakra.p></>) : (<><Text mr={1}>{trustScoreData.ens}</Text><VerifiedIcon color="blue.400"/></>)
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.ens) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.ens.domains/">Get your ENS</chakra.p></>) : (<><Text mr={1}>{trustScoreData?.ens}</Text><VerifiedIcon color="blue.400"/></>)
       }
     </IdentityCard>
   );
@@ -962,7 +962,7 @@ const CoinviseCard = ({trustScoreData}) => {
           ) : (
             <>
               <Text mr={1}>
-                {trustScoreData.coinvise.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.coinvise.totalAmountSold)}
+                {trustScoreData?.coinvise.totalCountSold + " sold for $" + prettifyNumber(trustScoreData?.coinvise.totalAmountSold)}
               </Text>
               <VerifiedIcon color="blue.400"/>
             </>
@@ -985,7 +985,7 @@ const RaribleCard = ({trustScoreData}) => {
           ) : (
             <>
               <Text mr={1}>
-                {trustScoreData.rarible.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.rarible.totalAmountSold)}
+                {trustScoreData?.rarible.totalCountSold + " sold for $" + prettifyNumber(trustScoreData?.rarible.totalAmountSold)}
               </Text>
               <VerifiedIcon color="blue.400"/>
             </>
@@ -1008,7 +1008,7 @@ const ZoraCard = ({trustScoreData}) => {
           ) : (
             <>
               <Text mr={1}>
-                {trustScoreData.zora.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.zora.totalAmountSold)}
+                {trustScoreData?.zora.totalCountSold + " sold for $" + prettifyNumber(trustScoreData?.zora.totalAmountSold)}
               </Text>
               <VerifiedIcon color="blue.400"/>
             </>
@@ -1031,7 +1031,7 @@ const SuperrareCard = ({trustScoreData}) => {
           ) : (
             <>
               <Text mr={1}>
-                {trustScoreData.superrare.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.superrare.totalAmountSold)}
+                {trustScoreData?.superrare.totalCountSold + " sold for $" + prettifyNumber(trustScoreData?.superrare.totalAmountSold)}
               </Text>
               <VerifiedIcon color="blue.400"/>
             </>
@@ -1100,7 +1100,7 @@ const AsyncartCard = ({trustScoreData}) => {
             ) : (
               <>
                 <Text mr={1}>
-                  {trustScoreData?.asyncart?.totalCountSold + " sold for $" + prettifyNumber(trustScoreData.asyncart.totalAmountSold)}
+                  {trustScoreData?.asyncart?.totalCountSold + " sold for $" + prettifyNumber(trustScoreData?.asyncart.totalAmountSold)}
                 </Text>
                 <VerifiedIcon color="blue.400"/>
               </>
@@ -1115,7 +1115,7 @@ const PoHCard = ({trustScoreData}) => {
   return (
     <IdentityCard image_url={poh}>
       {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData.poh) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.poh) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.proofofhumanity.id/">Click to Verify</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
       }
     </IdentityCard>
   );
@@ -1182,7 +1182,7 @@ const UdCard = ({trustScoreData}) => {
   return (
     <IdentityCard image_url={unstoppable}>
       {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData.unstoppableDomains) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>{trustScoreData.unstoppableDomains}</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.unstoppableDomains) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>{trustScoreData?.unstoppableDomains}</Text><VerifiedIcon color="blue.400"/></>)
       }
     </IdentityCard>
   );
@@ -1194,7 +1194,7 @@ const IdenaCard = ({trustScoreData}) => {
     return (
       <IdentityCard image_url={idena}>
         {
-         trustScoreData === null ? "Loading" : Boolean(trustScoreData.idena) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.idena.io/">Verify on Idena</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
+         trustScoreData === null ? "Loading" : Boolean(trustScoreData?.idena) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://www.idena.io/">Verify on Idena</chakra.p></>) : (<><Text mr={1}>Verified</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -1206,7 +1206,7 @@ const RabbitholeCard = ({trustScoreData}) => {
     return (
       <IdentityCard image_url={rabbithole}>
         {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData.rabbitHole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Level {trustScoreData?.rabbitHole.level}</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.rabbitHole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Level {trustScoreData?.rabbitHole.level}</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
