@@ -305,7 +305,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                         <Divider w="90%"/>
                         <Flex as="a" href="https://docs.theconvo.space" target="_blank" h="50px" w="100%" cursor="pointer" direction="row" align="center" justifyContent="center" alignItems="center" m={2} mb={0}>
                             <DocsIcon mx={2}/>
-                            <Text fontWeight="100" fontSize="small">
+                            <Text fontWeight="100" fontSize="small" display={{base:"none", md: "inline-flex"}}>
                                 Build on Convo Space →
                             </Text>
                         </Flex>
@@ -437,7 +437,7 @@ const SidebarItem = ({name, tag, icon, isActive, href, isExternal}) => {
 }
 SidebarItem.propTypes = {
     name: PropTypes.string.isRequired,
-    tag: PropTypes.string,
+    tag: PropTypes.object,
     icon: PropTypes.object.isRequired,
     isActive: PropTypes.bool.isRequired,
     href: PropTypes.string.isRequired,

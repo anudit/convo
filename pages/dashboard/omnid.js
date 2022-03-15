@@ -61,11 +61,9 @@ const IdentitySection = () => {
 
   const { web3Modal, signerAddress } = useContext(Web3Context);
   const [trustScoreData, setTrustScoreData] = useState(null);
-  const [trustScore, setTrustScore] = useState(0);
   const [trustScoreLoading, setTrustScoreLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchString, setSearchString] = useState("");
-  const [extString, setExtString] = useState("Your");
   const etchingRef = useRef();
   const skinRef = useRef();
 
@@ -79,13 +77,9 @@ const IdentitySection = () => {
 
   async function refreshScore(address = ""){
     console.log('loading score for',address === "" ? signerAddress : address)
-    if (address === signerAddress){
-      setExtString('Your')
-    }
     setTrustScoreLoading(true);
     let data = await fetcher(`/api/identity?address=${address === "" ? signerAddress : address}&noCache=true&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET", {});
     console.log(data);
-    setTrustScore(data?.score);
     setTrustScoreData(data);
     setTrustScoreLoading(false);
   }
@@ -226,14 +220,12 @@ const IdentitySection = () => {
           const searchVal = e.currentTarget.value;
           if (isAddress(searchVal) === true){
             setSearchString('')
-            setExtString(truncateAddress(searchVal) + "'s")
             await refreshScore(searchVal)
           }
           else if(searchVal.endsWith('.eth') === true){
             let address = await ensToAddress(searchVal);
             if (Boolean(address) != false){
               setSearchString('')
-              setExtString(searchVal + "'s")
               await refreshScore(address)
             }
           }
@@ -282,38 +274,28 @@ const IdentitySection = () => {
               w={{base:"100%"}}
               maxW="600px"
               m={4}
-              px={8}
-              py={8}
               color={useColorModeValue("black", "white")}
-              backgroundColor={useColorModeValue("#ececec30", "#3c3c3c30")}
-              borderColor={useColorModeValue("gray.200", "#121212")}
-              borderWidth="1px"
-              borderRadius="10px"
-              _hover={{
-                  boxShadow: "2xl"
-              }}
+              // backgroundColor={useColorModeValue("#ececec30", "#3c3c3c30")}
+              // borderColor={useColorModeValue("gray.200", "#121212")}
+              // borderWidth="1px"
+              // borderRadius="10px"
+              // _hover={{
+              //     boxShadow: "2xl"
+              // }}
               justifyContent="center"
               textAlign="center"
               alignItems="center"
             >
-              <Flex flexDirection="row" alignItems="center">
-                <Heading
-                  bgClip="text"
-                  backgroundImage="url('/images/gradient.webp')"
-                  backgroundSize="cover"
-                >
-                  {extString} Trust Score is {parseFloat(trustScore).toFixed(2)}
-                </Heading>
-
-                <IconButton ml={4} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={()=>{refreshScore()}} disabled={trustScoreLoading} title="Re-Index Score"/>
-              </Flex>
               <Flex flexDirection={{base:"column", md: "row"}} mt={4} alignItems="center">
                 <Button size="md" onClick={addToMetamask} m={1} background="linear-gradient(69deg, #e404f396, #ff7c4a8c)" _active={{background:"linear-gradient(100deg, #e404f396, #ff7c4a8c)"}} _hover={{background:"linear-gradient(100deg, #e404f396, #ff7c4a8c)"}}>
                   <MetaMaskIcon mr={2}/> Add To Metamask Flask
                 </Button>
-                <Button size="md" onClick={onOpen} m={1} background="linear-gradient(69deg, #046ff396, #4affee8c)" _active={{background:"linear-gradient(100deg, #046ff396, #4affee8c)"}} _hover={{background:"linear-gradient(100deg, #046ff396, #4affee8c)"}}>
-                  <OmnidIcon mr={2} /> Mint your Omnid
-                </Button>
+                <Flex direction="row">
+                  <Button size="md" onClick={onOpen} m={1} background="linear-gradient(69deg, #046ff396, #4affee8c)" _active={{background:"linear-gradient(100deg, #046ff396, #4affee8c)"}} _hover={{background:"linear-gradient(100deg, #046ff396, #4affee8c)"}}>
+                    <OmnidIcon mr={2} /> Mint your Omnid
+                  </Button>
+                  <IconButton ml={1} mt={1} icon={trustScoreLoading === true? <Spinner size="sm" /> : <ReloadIcon />} onClick={()=>{refreshScore()}} disabled={trustScoreLoading} title="Re-Index Score"/>
+                </Flex>
               </Flex>
             </Flex>
           </Flex>
@@ -426,6 +408,9 @@ const IdentitySection = () => {
                 </Item>
                 <Item searchString={searchString} tags={['uniswap', 'dao', 'governance', 'sybil']}>
                   <SybilCard trustScoreData={trustScoreData} />
+                </Item>
+                <Item searchString={searchString} tags={['trustscore']}>
+                  <TrustScoreCard trustScoreData={trustScoreData} />
                 </Item>
                 <Item searchString={searchString} tags={['unstoppable domains']}>
                   <UdCard trustScoreData={trustScoreData} />
@@ -1176,6 +1161,50 @@ const AgeCard = ({trustScoreData}) => {
   );
 }
 AgeCard.propTypes = propTypes
+
+
+const TrustScoreCard = ({trustScoreData}) => {
+
+  const { colorMode } = useColorMode();
+
+  return (
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        w="xs"
+        mx="auto"
+        m={1}
+        >
+          <Flex direction="column" align="center" backgroundColor="#000" width="288px" height="162px" className="br-10" alignItems="center" justifyContent="center">
+          <Flex direction="row" justifyContent="space-between" w="60%">
+            <Heading fontSize="60px" mb={0}>{parseFloat(trustScoreData?.score).toFixed(2)}</Heading>
+          </Flex>
+          </Flex>
+
+        <Box
+          w={{ base: 56, md: 64 }}
+          bg={colorMode === "light" ? "white" : "gray.800"}
+          mt={-6}
+          shadow="lg"
+          rounded="lg"
+          overflow="hidden"
+        >
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            py={2}
+            px={3}
+            backdropFilter="blur(300px) opacity(1)"
+          >
+            TrustScore
+          </Flex>
+        </Box>
+      </Flex>
+  );
+}
+TrustScoreCard.propTypes = propTypes
+
 
 const UdCard = ({trustScoreData}) => {
 
