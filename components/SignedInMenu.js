@@ -5,13 +5,20 @@ import { Web3Context } from "@/contexts/Web3Context";
 import { CosmosIcon, DisconnectIcon, ExternalIcon, FlowIcon, FreetonIcon, MetaMaskIcon, NearIcon, OkxIcon, SolanaIcon, WalletConnectIcon } from "@/public/icons";
 import { truncateAddress } from "@/utils/stringUtils";
 
+import dynamic from "next/dynamic";
+const QrCode = dynamic(
+    () => import('./QrCode'),
+    { ssr: false }
+)
+
 const SignedInMenu = () => {
 
     const { prettyName, connectedWallet, signerAddress, disconnectWallet } = useContext(Web3Context);
     const { hasCopied, onCopy } = useClipboard(signerAddress)
 
     return (
-        <Menu >
+        <Menu>
+
             <MenuButton
                 px={4}
                 py={2}
@@ -36,6 +43,9 @@ const SignedInMenu = () => {
                 <ChevronDownIcon ml={2}/>
             </MenuButton>
             <MenuList>
+                <MenuItem >
+                    <QrCode data={signerAddress} config={{height: 200, width: 200}}/>
+                </MenuItem>
                 <MenuItem icon={<ExternalIcon />} onClick={()=>{
                     let link = "";
                     switch(connectedWallet){

@@ -5,7 +5,7 @@ import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, He
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { MoonOutlineIcon, SunActiveIcon, ThreeDotMenuFlatIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon, OmnidIcon, VartaIcon, OkxIcon } from '@/public/icons';
+import { MoonOutlineIcon, SunActiveIcon, ThreeDotMenuFlatIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon, OmnidIcon, VartaIcon, OkxIcon, UdIcon } from '@/public/icons';
 import { CloseIcon, InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
@@ -42,7 +42,7 @@ PageShell.propTypes = {
 
 const DashboardShell = ({title, active, children, searchbox}) => {
 
-    const { connectWallet, signerAddress, isPortisLoading } = useContext(Web3Context);
+    const { connectWallet, signerAddress, isPortisLoading, connectedChain } = useContext(Web3Context);
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [walletInfo, setWalletInfo] = useState('');
@@ -185,7 +185,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 
-                        {/* <WalletItem
+                        <WalletItem
                             onClick={()=>{connectWallet('custom-uauth')}}
                             backgroundImage="linear-gradient(213deg, #2fe9ff4f 0%, #4c47f76b 70%)"
                             title="Unstoppable"
@@ -193,7 +193,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             display={isMoreOpen === true ? 'inline-flex' : 'none'}
                             onMouseEnter={()=>{setWalletInfo('Sign-in with your Unstoppable Domain.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
-                        /> */}
+                        />
 
                         <WalletItem
                             onClick={()=>{connectWallet('freeton')}}
@@ -267,12 +267,16 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             isActive={active === "messages"}
                             href="/dashboard/messages"
                         />
-                        <SidebarItem
-                            name="Omnid"
-                            icon={<OmnidIcon mr={4}/>}
-                            isActive={active === "identity"}
-                            href="/dashboard/omnid"
-                        />
+                        {
+                            connectedChain === 'ethereum' && (
+                                <SidebarItem
+                                    name="Omnid"
+                                    icon={<OmnidIcon mr={4}/>}
+                                    isActive={active === "identity"}
+                                    href="/dashboard/omnid"
+                                />
+                            )
+                        }
                         <SidebarItem
                             name="Data"
                             icon={<DataIcon2 mr={4} />}

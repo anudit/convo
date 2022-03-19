@@ -10,8 +10,8 @@ import * as fcl from "@onflow/fcl";
 import { WalletConnection, connect, keyStores } from 'near-api-js';
 import PropTypes from 'prop-types';
 import freeton from '@/lib/freeton/src/index';
-// import * as UAuthWeb3Modal from '@uauth/web3modal'
-// import UAuthSPA from '@uauth/js'
+import * as UAuthWeb3Modal from '@uauth/web3modal'
+import UAuthSPA from '@uauth/js'
 
 import { checkUnstoppableDomains } from '@/lib/identity';
 import fetcher from "@/utils/fetcher";
@@ -53,31 +53,33 @@ export const Web3ContextProvider = ({children}) => {
 
   // try autologin for near.
   useEffect(() => {
-    if (router.query?.account_id != undefined && signerAddress === "") {
-      console.log('Got NEAR res for', router.query?.account_id);
+    setTimeout(() => {
+      if (router.query?.account_id != undefined && signerAddress === "") {
+        console.log('Got NEAR res for', router.query?.account_id);
 
-      const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+        const keyStore = new keyStores.BrowserLocalStorageKeyStore();
 
-      const config = {
-          networkId: "testnet",
-          keyStore,
-          nodeUrl: "https://rpc.testnet.near.org",
-          walletUrl: "https://wallet.testnet.near.org",
-          helperUrl: "https://helper.testnet.near.org",
-          explorerUrl: "https://explorer.testnet.near.org",
-      };
-      connect(config).then(async (near)=>{
-        let wallet = new WalletConnection(near);
-        console.log('wallet.isSignedIn?', wallet.isSignedIn())
-        let accountId = wallet.getAccountId();
+        const config = {
+            networkId: "testnet",
+            keyStore,
+            nodeUrl: "https://rpc.testnet.near.org",
+            walletUrl: "https://wallet.testnet.near.org",
+            helperUrl: "https://helper.testnet.near.org",
+            explorerUrl: "https://explorer.testnet.near.org",
+        };
+        connect(config).then(async (near)=>{
+          let wallet = new WalletConnection(near);
+          console.log('wallet.isSignedIn?', wallet.isSignedIn())
+          let accountId = wallet.getAccountId();
 
-        await updateAuthToken(accountId, "near", wallet);
-        setProvider(wallet);
-        setConnectedChain("near");
-        setSignerAddress(accountId);
-        setConnectedWallet('near');
-      });
-    }
+          await updateAuthToken(accountId, "near", wallet);
+          setProvider(wallet);
+          setConnectedChain("near");
+          setSignerAddress(accountId);
+          setConnectedWallet('near');
+        });
+      }
+    }, 2000);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
 
@@ -85,8 +87,6 @@ export const Web3ContextProvider = ({children}) => {
 
     async function setupWeb3Modal(){
 
-      // dynamically import lib to fix NextJS's window not found error.
-      // const UAuthSPA = (await import('@uauth/js')).default;
       const providerOptions = {
         walletconnect: {
           package: WalletConnectProvider,
@@ -104,17 +104,17 @@ export const Web3ContextProvider = ({children}) => {
             id: "d3230cb7-51c6-414f-a47f-293364021451"
           }
         },
-        // 'custom-uauth': {
-        //   display: UAuthWeb3Modal.display,
-        //   connector: UAuthWeb3Modal.connector,
-        //   package: UAuthSPA,
-        //   options: {
-        //     clientID: '1wioFy9JI2JsQHz5syGsnJIaVAORs5vUZZcCySdlfvs=',
-        //     clientSecret: 'Ww2xHg8dsD+6DIRRFMBUvf8iZcY3gVqpsId334SRB4Q=',
-        //     redirectUri: 'http://localhost:3000',
-        //     scope: 'openid wallet',
-        //   },
-        // },
+        'custom-uauth': {
+          display: UAuthWeb3Modal.display,
+          connector: UAuthWeb3Modal.connector,
+          package: UAuthSPA,
+          options: {
+            clientID: '1wioFy9JI2JsQHz5syGsnJIaVAORs5vUZZcCySdlfvs=',
+            clientSecret: 'Ww2xHg8dsD+6DIRRFMBUvf8iZcY3gVqpsId334SRB4Q=',
+            redirectUri: 'https://theconvo.space/callback',
+            scope: 'openid wallet email:optional humanity_check:optional',
+          },
+        },
       };
 
       let w3m = new Web3Modal({
@@ -293,6 +293,7 @@ export const Web3ContextProvider = ({children}) => {
           if (Boolean(sigResp) === true){
             setProvider(window.solana);
             setConnectedChain("solana");
+            setConnectedWallet(choice);
             setSignerAddress(resp.publicKey.toString());
           }
           else {

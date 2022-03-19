@@ -137,6 +137,8 @@ const CommentsSection = (props) => {
                     maxW="1600px"
                     w={{ base: "95%", md: "80%", lg: "90%"}}
                     m="0 auto"
+                    p={2}
+                    mt={2}
                 >
                     No Messages
                 </Flex>

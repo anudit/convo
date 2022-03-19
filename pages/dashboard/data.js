@@ -63,12 +63,16 @@ const DataSection = () => {
                     💣 Nuke my Data
                 </Button>
             </Flex>
-            <Flex display={connectedChain === "ethereum" ? "flex" : "none"} flexDirection="column">
-                <Heading as="h4" size="md" my={4}>
-                    Data Tokens (🚧 Mumbai Testnet)
-                </Heading>
-                <DataTokenView/>
-            </Flex>
+            {
+                connectedChain === "ethereum" && (
+                    <Flex display="flex" flexDirection="column">
+                        <Heading as="h4" size="md" my={4}>
+                            Data Tokens (🚧 Mumbai Testnet)
+                        </Heading>
+                        <DataTokenView/>
+                    </Flex>
+                )
+            }
         </Flex>
     </DashboardShell>
   )

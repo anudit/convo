@@ -10,7 +10,7 @@ import { truncateAddress } from '@/utils/stringUtils';
 
 const Dashboard = () => {
 
-    const { signerAddress, prettyName } = useContext(Web3Context);
+    const { signerAddress, prettyName, connectedChain } = useContext(Web3Context);
 
     return (
         <DashboardShell active="home" title="Dashboard">
@@ -50,13 +50,17 @@ const Dashboard = () => {
                             link="/dashboard/messages"
                             tags={['Textile', 'ThreadDB']}
                         />
-                        <SimpleCard
-                            title="My Identities"
-                            emoji="🆔"
-                            text="Manage your Decentralized Identities and Trust Score."
-                            link="/dashboard/omnid"
-                            tags={['IDX', 'PoH', 'BrightID', 'ENS', 'Idena']}
-                        />
+                        {
+                            connectedChain === 'ethereum' ? (
+                                <SimpleCard
+                                    title="My Identities"
+                                    emoji="🆔"
+                                    text="Manage your Decentralized Identities and Trust Score."
+                                    link="/dashboard/omnid"
+                                    tags={['IDX', 'PoH', 'BrightID', 'ENS', 'Idena']}
+                                />
+                            ) : (<></>)
+                        }
                         <SimpleCard
                             title="My Data"
                             emoji="📁"

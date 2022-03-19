@@ -8,7 +8,10 @@ module.exports = (phase) => {
     reactStrictMode: true,
     experimental: {
       esmExternals: false
-    }
+    },
+    images: {
+      domains: ['api.qrserver.com', 'qrserver.com'],
+    },
   }
 
   if (phase === PHASE_DEVELOPMENT_SERVER) {
