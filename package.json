@@ -23,7 +23,7 @@
   "dependencies": {
     "@babel/core": "^7.17.8",
     "@babel/runtime": "^7.17.8",
-    "@biconomy/mexa": "^2.0.30",
+    "@biconomy/mexa": "^2.0.31",
     "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.6",
     "@chakra-ui/system": "^1.11.2",
@@ -38,12 +38,12 @@
     "@oceanprotocol/lib": "^0.20.2",
     "@onflow/fcl": "^0.0.78",
     "@portis/web3": "^4.0.7",
-    "@react-three/drei": "^8.18.1",
+    "@react-three/drei": "^8.18.10",
     "@react-three/fiber": "^7.0.26",
     "@self.id/web": "^0.3.0",
     "@solana/web3.js": "^1.36.0",
     "@textile/hub": "^6.3.3",
-    "@theconvospace/sdk": "^0.3.35",
+    "@theconvospace/sdk": "^0.3.37",
     "@uauth/js": "^1.0.0",
     "@uauth/web3modal": "^1.0.0",
     "@walletconnect/web3-provider": "^1.7.5",
@@ -92,7 +92,7 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.3.0",
     "ipfs-http-client": "^55.0.0",
-    "next-sitemap": "^2.5.10",
+    "next-sitemap": "^2.5.13",
     "tf-next": "^0.11.4"
   }
 }

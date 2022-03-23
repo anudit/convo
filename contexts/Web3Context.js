@@ -111,6 +111,7 @@ export const Web3ContextProvider = ({children}) => {
           options: {
             clientID: '1wioFy9JI2JsQHz5syGsnJIaVAORs5vUZZcCySdlfvs=',
             clientSecret: 'Ww2xHg8dsD+6DIRRFMBUvf8iZcY3gVqpsId334SRB4Q=',
+            shouldLoginWithRedirect: true,
             redirectUri: 'https://theconvo.space/callback',
             scope: 'openid wallet email:optional humanity_check:optional',
           },

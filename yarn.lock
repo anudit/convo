@@ -1219,10 +1219,10 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@biconomy/mexa@^2.0.30":
-  version "2.0.30"
-  resolved "https://registry.yarnpkg.com/@biconomy/mexa/-/mexa-2.0.30.tgz#cba6d91900592310f697b03724df92218b39e926"
-  integrity sha512-raq/h1I7Y/vBZdsTvlhab+G1Z4GHf0no5X++pIWYKquH4igR25csA7iSNbocKiZoZrQmrqNHB+Hi1PBtJso7/A==
+"@biconomy/mexa@^2.0.31":
+  version "2.0.31"
+  resolved "https://registry.yarnpkg.com/@biconomy/mexa/-/mexa-2.0.31.tgz#e761c0466c31bb1d90c77629994cc43fcc49606c"
+  integrity sha512-orbZ/8nLq0FuXOaBv6dNo7aolSqXmxFQJPCTz0Txugd4C7Eb3EjcxJkglSkXJa8HeuRU08D8mvy6P5l3CNv5qg==
   dependencies:
     "@babel/core" "^7.12.13"
     "@babel/runtime" "^7.12.13"
@@ -2631,31 +2631,6 @@
     bech32 "1.1.4"
     ws "7.4.6"
 
-"@ethersproject/providers@5.6.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.6.0.tgz#08ec8e2666771e3a347e66c8f664a2af97366534"
-  integrity sha512-6+5PKXTWAttJWFWF8+xCDTCa2/dtq9BNrdKQHGl0IyIOwj99vM6OeThmIRcsIAzIOb8m0XS6w+1KFZwrf3j9nw==
-  dependencies:
-    "@ethersproject/abstract-provider" "^5.6.0"
-    "@ethersproject/abstract-signer" "^5.6.0"
-    "@ethersproject/address" "^5.6.0"
-    "@ethersproject/basex" "^5.6.0"
-    "@ethersproject/bignumber" "^5.6.0"
-    "@ethersproject/bytes" "^5.6.0"
-    "@ethersproject/constants" "^5.6.0"
-    "@ethersproject/hash" "^5.6.0"
-    "@ethersproject/logger" "^5.6.0"
-    "@ethersproject/networks" "^5.6.0"
-    "@ethersproject/properties" "^5.6.0"
-    "@ethersproject/random" "^5.6.0"
-    "@ethersproject/rlp" "^5.6.0"
-    "@ethersproject/sha2" "^5.6.0"
-    "@ethersproject/strings" "^5.6.0"
-    "@ethersproject/transactions" "^5.6.0"
-    "@ethersproject/web" "^5.6.0"
-    bech32 "1.1.4"
-    ws "7.4.6"
-
 "@ethersproject/providers@5.6.1":
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.6.1.tgz#9a05f00ecbac59565bf6907c8d2af8ac33303b48"
@@ -3612,10 +3587,10 @@
   resolved "https://registry.npmjs.org/@react-spring/types/-/types-9.4.2.tgz"
   integrity sha512-GGiIscTM+CEUNV52anj3g5FqAZKL2+eRKtvBOAlC99qGBbvJ3qTLImrUR/I3lXY7PRuLgzI6kh34quA1oUxWYQ==
 
-"@react-three/drei@^8.18.1":
-  version "8.18.1"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.18.1.tgz#677b6593547f5438745d1a0c02c70ae1a5a30ba5"
-  integrity sha512-XgwaKf+opNnh/o13aPC83ZueDqFIBPVeXm8vig/zkoP/6QLSOct3Fz2kpDKidyNchtcCqxKoYJ7Do2lnhXZdyg==
+"@react-three/drei@^8.18.10":
+  version "8.18.10"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.18.10.tgz#fd4b15c149c3c6ec4bf418cf20b55aa1efdbae28"
+  integrity sha512-frlJ6JEERIxj5NftUEbIHuerXUHvBXi34dF/MT4tfDUSOkNnfQr5eZyA72+Kbow75Lluq3jL65unyIxV+pJeFw==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "^9.3.1"
@@ -4339,15 +4314,15 @@
     event-iterator "^2.0.0"
     loglevel "^1.7.0"
 
-"@theconvospace/sdk@^0.3.35":
-  version "0.3.35"
-  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.3.35.tgz#3ea2284b68c5e0058579efa9faf8808faa6dde0c"
-  integrity sha512-lleTq2hAlbR+utTcGo0qz9AB9haCKzcuMLuB3iptgKVPLSiPXja4YqSf+7Y3w9q5XSRSaSyIy4Kf0s0dIAQyEA==
+"@theconvospace/sdk@^0.3.37":
+  version "0.3.37"
+  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.3.37.tgz#18bff08619451f50f9d5340054e3b16a66c3a0d3"
+  integrity sha512-OwhYCT6Eyq1TjqGElZGp5fe8goP1KMf4mfZ8CP5gX4r5mLu7iDCd1RapolTeSMbOSWj0sQl7c63C0+YDvSQdMw==
   dependencies:
     ably "^1.2.17"
     abort-controller "^3.0.0"
     cross-fetch "^3.1.5"
-    ethers "^5.6.0"
+    ethers "^5.6.1"
     react "^17.0.2"
     react-dom "^17.0.2"
     siwe "^1.1.2"
@@ -10219,42 +10194,6 @@ ethers@^5.0.24:
     "@ethersproject/web" "5.5.1"
     "@ethersproject/wordlists" "5.5.0"
 
-ethers@^5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.6.0.tgz#924eb965dc03963fad0a09ce687efdf49aca3b45"
-  integrity sha512-00FP71jt6bW3ndO5DhgH9mLIZhoCGnAKFLu8qig5KmV03ubEChKf2ilB3g6fX512tTYo+tSMDJ5WpCJWdBHkBQ==
-  dependencies:
-    "@ethersproject/abi" "5.6.0"
-    "@ethersproject/abstract-provider" "5.6.0"
-    "@ethersproject/abstract-signer" "5.6.0"
-    "@ethersproject/address" "5.6.0"
-    "@ethersproject/base64" "5.6.0"
-    "@ethersproject/basex" "5.6.0"
-    "@ethersproject/bignumber" "5.6.0"
-    "@ethersproject/bytes" "5.6.0"
-    "@ethersproject/constants" "5.6.0"
-    "@ethersproject/contracts" "5.6.0"
-    "@ethersproject/hash" "5.6.0"
-    "@ethersproject/hdnode" "5.6.0"
-    "@ethersproject/json-wallets" "5.6.0"
-    "@ethersproject/keccak256" "5.6.0"
-    "@ethersproject/logger" "5.6.0"
-    "@ethersproject/networks" "5.6.0"
-    "@ethersproject/pbkdf2" "5.6.0"
-    "@ethersproject/properties" "5.6.0"
-    "@ethersproject/providers" "5.6.0"
-    "@ethersproject/random" "5.6.0"
-    "@ethersproject/rlp" "5.6.0"
-    "@ethersproject/sha2" "5.6.0"
-    "@ethersproject/signing-key" "5.6.0"
-    "@ethersproject/solidity" "5.6.0"
-    "@ethersproject/strings" "5.6.0"
-    "@ethersproject/transactions" "5.6.0"
-    "@ethersproject/units" "5.6.0"
-    "@ethersproject/wallet" "5.6.0"
-    "@ethersproject/web" "5.6.0"
-    "@ethersproject/wordlists" "5.6.0"
-
 ethers@^5.6.1:
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.6.1.tgz#a56cd67f1595b745dc3dde0ccf2b5de53a41a6d0"
@@ -15119,10 +15058,10 @@ next-pwa@^5.4.6:
     workbox-webpack-plugin "^6.5.1"
     workbox-window "^6.5.1"
 
-next-sitemap@^2.5.10:
-  version "2.5.10"
-  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-2.5.10.tgz#6b4aa7aebb745ef3b3b17dcef859e87043c3b0af"
-  integrity sha512-9jFvViLL2US0obp6NAGlEpE4gWU5NACupHvVFtLhOhgJ33M/vBPqEgCiZQsG9dKDhZXchjrjQrtDvhk/KZBekg==
+next-sitemap@^2.5.13:
+  version "2.5.13"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-2.5.13.tgz#d7ac297130274abbdc90c4206f903ae73c8f6b1e"
+  integrity sha512-MIIqXdabDLj086OwP2MQmpk90KR7Sxup8DWxkDQBD2KZhml/ds2vulCv7sZptpuVjXckCufoMSsP+JjMdr2cSw==
   dependencies:
     "@corex/deepmerge" "^2.6.148"
     minimist "^1.2.5"

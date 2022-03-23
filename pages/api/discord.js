@@ -97,7 +97,8 @@ const handler = async (req, res, interaction ) => {
                 'upvotes': [],
                 'downvotes': [],
                 'chain': "ethereum",
-                'replyTo': ""
+                'replyTo': "",
+                'editHistory': [],
             };
             let retId = await createComment(commentData, interaction['user']['username']+"#"+interaction['user']['discriminator']);
             // console.log('retId', retId);

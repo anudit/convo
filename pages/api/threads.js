@@ -488,17 +488,17 @@ const handler = async(req, res) => {
             }
 
             // Check if the signerAddress is a moderators.
-            if (threadData.moderators.includes(req.body.signerAddress) === true) {
+            if (threadData[0].moderators.includes(req.body.signerAddress) === false) {
               return res.status(400).json({
                 success: false,
                 'error':'signerAddress not a Moderator of the Thread.'
               });
             }
 
-            threadData.isReadPublic = !threadData.isReadPublic;
+            threadData[0].isReadPublic = !threadData[0].isReadPublic;
 
             // save the updated value of isReadPublic
-            await updateThread(threadData);
+            await updateThread(threadData[0]);
 
             return res.status(200).json({
               success: true
@@ -526,17 +526,17 @@ const handler = async(req, res) => {
             }
 
             // Check if the signerAddress is a moderators.
-            if (threadData.moderators.includes(req.body.signerAddress) === true) {
+            if (threadData[0].moderators.includes(req.body.signerAddress) === false) {
               return res.status(400).json({
                 success: false,
                 'error':'signerAddress not a Moderator of the Thread.'
               });
             }
 
-            threadData.isWritePublic = !threadData.isWritePublic;
+            threadData[0].isWritePublic = !threadData[0].isWritePublic;
 
             // save the updated value of isWritePublic
-            await updateThread(threadData);
+            await updateThread(threadData[0]);
 
             return res.status(200).json({
               success: true

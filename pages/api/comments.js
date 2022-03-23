@@ -1,5 +1,5 @@
 import validateAuth from "@/lib/validateAuth";
-import { createComment, deleteComment, getComments } from "@/lib/thread-db";
+import { createComment, deleteComment, getComment, getComments, updateComment } from "@/lib/thread-db";
 import { Where } from "@textile/hub";
 import withApikey from "@/middlewares/withApikey";
 import { addressToChainName } from "@/utils/stringUtils";
@@ -19,8 +19,6 @@ function isValidUrl(string) {
 const handler = async(req, res) => {
 
   try {
-
-
 
     if (req.method === "GET") {
 
@@ -136,6 +134,7 @@ const handler = async(req, res) => {
             'downvotes': [],
             'chain': addressToChainName(req.body.signerAddress),
             'replyTo': replyTo,
+            'editHistory': [],
           };
           let newId = await createComment(commentData);
 
@@ -143,6 +142,61 @@ const handler = async(req, res) => {
             _id: newId,
             ...commentData
           });
+
+        }
+        else {
+          return res.status(400).json({
+            success: false,
+            'error':'Invalid/Incomplete params'
+          });
+        }
+
+      }
+      else {
+        return res.status(503).json({
+          success: false,
+          'error':'Invalid Auth'
+        });
+      }
+
+    }
+    else if (req.method === "PATCH" ) {
+
+      let valAuthResp = await validateAuth(req.body.token, req.body.signerAddress);
+
+      if (valAuthResp === true) {
+
+        if (
+          Object.keys(req.body).includes('comment') === true && req.body?.comment.trim() !== ""
+          && Object.keys(req.body).includes('commentId') === true && req.body?.commentId.trim() !== ""
+        ){
+
+          let commentData = await getComment(req.body.commentId);
+
+          if (Boolean(commentData) === true){
+            let newCommentData = {
+              ...commentData,
+              'text': req.body.comment,
+              'editHistory': commentData?.editHistory.concat([
+                {
+                  'changedOn': Date.now().toString(),
+                  'text': commentData?.text,
+                }
+              ])
+            }
+
+            let resp = await updateComment(newCommentData);
+            return res.status(200).json({
+              'success': true,
+              ...resp
+            });
+          }
+          else{
+            return res.status(404).json({
+              success: false,
+              'error':'Comment not found.'
+            });
+          }
 
         }
         else {

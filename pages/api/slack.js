@@ -54,7 +54,8 @@ const handler = async (req, res) => {
                         'upvotes': [],
                         'downvotes': [],
                         'chain': "ethereum",
-                        'replyTo': ""
+                        'replyTo': "",
+                        'editHistory': [],
                     };
                     let retId = await createComment(commentData, req.body.user_name);
 
