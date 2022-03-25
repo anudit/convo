@@ -4,7 +4,7 @@
 # Install dependencies only when needed
 FROM node:16-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat git openssh
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
@@ -28,6 +28,7 @@ RUN adduser -S nextjs -u 1001
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=builder /app/components ./components
 COPY --from=builder /app/contexts ./contexts
+COPY --from=builder /app/files ./files
 COPY --from=builder /app/hooks ./hooks
 COPY --from=builder /app/lib ./lib
 COPY --from=builder /app/middlewares ./middlewares
@@ -44,6 +45,7 @@ COPY --from=builder /app/next-sitemap-config.js ./
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/vercel.json ./
+COPY --from=builder /app/yarn.lock ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 
