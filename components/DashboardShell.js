@@ -171,6 +171,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             backgroundImage="linear-gradient(215deg, rgb(16 15 19) 0%, rgb(255 255 255 / 13%) 100%)"
                             title="OEC"
                             icon={<OkxIcon boxSize={8} mx={2}/>}
+                            display={isMoreOpen === true ? 'inline-flex' : 'none'}
                             onMouseEnter={()=>{setWalletInfo('Sign-in with OEC powwered by MetaX Wallet.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />

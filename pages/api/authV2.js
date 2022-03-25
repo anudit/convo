@@ -20,7 +20,7 @@ function validateMessageRules(siweObj){
     resp.message.push("Signature Expired.");
   }
 
-  // Error out if statement is correct
+  // Error out if statement is incorrect
   if ( siweObj.statement !== "I allow this site to access my data on The Convo Space."){
     resp.result = false;
     resp.message.push("Incorrect statement.");
