@@ -1,4 +1,4 @@
-import React, { useClipboard, MenuItem, MenuList, Menu, MenuButton } from "@chakra-ui/react";
+import React, { useClipboard, MenuDivider, MenuItem, MenuList, Menu, MenuButton } from "@chakra-ui/react";
 import { ChevronDownIcon, CopyIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
 import { Web3Context } from "@/contexts/Web3Context";
@@ -42,10 +42,11 @@ const SignedInMenu = () => {
                 {prettyName == "" ? truncateAddress(signerAddress, 3): prettyName}
                 <ChevronDownIcon ml={2}/>
             </MenuButton>
-            <MenuList>
-                <MenuItem >
+            <MenuList pt={0}>
+                <MenuItem backgroundColor="#fff" _hover={{backgroundColor: "#fff"}}>
                     <QrCode data={signerAddress} config={{height: 200, width: 200}}/>
                 </MenuItem>
+                <MenuDivider />
                 <MenuItem icon={<ExternalIcon />} onClick={()=>{
                     let link = "";
                     switch(connectedWallet){

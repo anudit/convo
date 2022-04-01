@@ -25,13 +25,19 @@ const QrCode = ({data, styles, config = {}}) => {
           imageSize: 0.3,
           margin: 5
         },
+        cornersSquareOptions: {
+          type: "dot",
+        },
+        cornersDotOptions: {
+          type: "dot",
+        },
         ...config
     });
 
     const ref = useRef(null);
 
     useEffect(() => {
-      console.log('Generation Qr with data:', data)
+      // console.log('Generation Qr with data:', data)
         qrCodeObject.append(ref.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

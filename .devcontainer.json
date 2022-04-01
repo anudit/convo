@@ -1,0 +1,4 @@
+{
+    "name": "Convo Space Container",
+    "postCreateCommand": "yarn install"
+}

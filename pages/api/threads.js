@@ -116,7 +116,7 @@ const handler = async(req, res) => {
 
           if (
             Object.keys(req.body).includes('title') === true && req.body?.title.trim() !== ""
-            && Object.keys(req.body).includes('description') === true && req.body?.description.trim() !== ""
+            && Object.keys(req.body).includes('description') === true
             && Object.keys(req.body).includes('isReadPublic') === true && typeof (req.body.isReadPublic) === 'boolean'
             && Object.keys(req.body).includes('isWritePublic') === true && typeof (req.body.isWritePublic) === 'boolean'
             && Object.keys(req.body).includes('members') === true
