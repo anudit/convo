@@ -23,7 +23,7 @@
   "dependencies": {
     "@babel/core": "^7.17.8",
     "@babel/runtime": "^7.17.8",
-    "@biconomy/mexa": "^2.0.31",
+    "@biconomy/mexa": "^2.0.32",
     "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.7",
     "@chakra-ui/system": "^1.12.0",
@@ -38,16 +38,16 @@
     "@oceanprotocol/lib": "^0.20.2",
     "@onflow/fcl": "^0.0.78",
     "@portis/web3": "^4.0.7",
-    "@react-three/drei": "^9.0.1",
-    "@react-three/fiber": "^8.0.6",
+    "@react-three/drei": "^9.1.0",
+    "@react-three/fiber": "^8.0.8",
     "@self.id/web": "^0.3.0",
     "@solana/web3.js": "^1.37.0",
     "@textile/hub": "^6.3.3",
-    "@theconvospace/sdk": "^0.3.37",
+    "@theconvospace/sdk": "^0.3.38",
     "@uauth/js": "^1.0.0",
     "@uauth/web3modal": "^1.0.0",
     "@walletconnect/web3-provider": "^1.7.7",
-    "ably": "^1.2.17",
+    "ably": "^1.2.18",
     "bson-ext": "^4.0.2",
     "critters": "^0.0.16",
     "dotenv": "^15.0.0",
@@ -81,7 +81,7 @@
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
     "web3modal": "^1.9.5",
-    "webpack": "^5.70.0",
+    "webpack": "^5.71.0",
     "zokrates-js": "1.0.39"
   },
   "devDependencies": {
@@ -91,6 +91,6 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
     "next-sitemap": "^2.5.17",
-    "tf-next": "^0.11.4"
+    "tf-next": "^0.11.5"
   }
 }

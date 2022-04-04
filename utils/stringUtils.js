@@ -189,3 +189,38 @@ export async function ensToAddress(ensAddress){
         return false;
     }
 }
+
+export async function addressToEns(address){
+    try {
+
+        let resp = await fetch("https://api.thegraph.com/subgraphs/name/ensdomains/ens", {
+            "headers": {
+                "accept": "*/*",
+                "content-type": "application/json",
+            },
+            "body": JSON.stringify(
+                {
+                    "query":`
+                    {
+                        domains(where: {resolvedAddress: "${address.toLowerCase()}"}) {
+                          name
+                        }
+                    }`,
+                    "variables":null
+                }
+            ),
+            "method": "POST",
+        }).then((r)=>{return r.json()});
+
+        if (Boolean(resp['data']["domains"].length) === false){
+            return false;
+        }
+        else {
+            return resp['data']["domains"][resp['data']["domains"].length-1]?.name;
+        }
+
+    } catch (error) {
+        console.log('addressToEns.error', error)
+        return false;
+    }
+}
