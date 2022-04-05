@@ -62,6 +62,27 @@ const Threads = (props) => {
 
     const [loadedMoreOnce, setLoadedMoreOnce] = useState(false);
 
+
+    function respondToParent(origin, data){
+        // console.log('responding to parent', origin, data);
+        window.postMessage(data, origin);
+    }
+
+    useEffect(() => {
+        window.addEventListener('message', function(e) {
+            const {action, data, target, origin} = e.data;
+            if (target === "convo-embed" && action === 'setTheme'){
+                if(['dark', 'light'].includes(data?.theme) === true){
+                    toggleColorMode(data.theme);
+                }
+                else {
+                    respondToParent(origin, {sucess: false, message: `Invalid theme value, allowed 'dark' or 'light', got: '${data?.theme}'.`})
+                }
+            }
+        }, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     useEffect(() => {
         if (loadedMoreOnce === false) {
             // if (Boolean(props?.thread)==true && Object.keys(props.thread).includes('url') == false) {
@@ -106,7 +127,8 @@ const Threads = (props) => {
                 toggleColorMode();
             }
         }
-    }, [router.query, colorMode, toggleColorMode]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router.query]);
 
     async function createNewComment(){
         setSending(true);
