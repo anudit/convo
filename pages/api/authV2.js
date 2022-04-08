@@ -4,6 +4,7 @@ import { seal, defaults } from "@hapi/iron";
 import { Convo } from "@theconvospace/sdk";
 
 import withApikey from "@/middlewares/withApikey";
+import withCors from "@/middlewares/withCors";
 
 function validateMessageRules(siweObj){
 
@@ -104,4 +105,4 @@ const handler = async(req, res) => {
   }
 }
 
-export default withApikey(handler)
+export default withCors(withApikey(handler))

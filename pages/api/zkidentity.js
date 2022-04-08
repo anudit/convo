@@ -5,6 +5,8 @@ import { getAddress, isAddress } from 'ethers/lib/utils';
 import { Convo } from "@theconvospace/sdk";
 import { promisify } from 'util'
 import { initialize } from 'zokrates-js/node';
+import withCors from '@/middlewares/withCors';
+import withApikey from '@/middlewares/withApikey';
 
 const readFileAsync = promisify(fs.readFile);
 const fromHexString = hexString =>
@@ -274,4 +276,4 @@ const handler = async(req, res) => {
   }
 }
 
-export default handler
+export default withCors(withApikey(handler))

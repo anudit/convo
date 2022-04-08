@@ -1,4 +1,5 @@
 import withApikey from '@/middlewares/withApikey';
+import withCors from '@/middlewares/withCors';
 import { unseal, defaults } from '@hapi/iron';
 import jwt from 'jsonwebtoken'
 
@@ -55,4 +56,4 @@ const handler = async(req, res) => {
     }
 }
 
-export default withApikey(handler)
+export default withCors(withApikey(handler))

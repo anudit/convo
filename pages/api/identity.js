@@ -4,6 +4,7 @@ import { getAddress, isAddress } from 'ethers/lib/utils';
 // import fetcher from '@/utils/fetcher';
 import withApikey from "@/middlewares/withApikey";
 import { Convo } from "@theconvospace/sdk";
+import withCors from "@/middlewares/withCors";
 const mongoClientPromise = require('@/lib/mongo-db');
 
 const { ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, PK_ORACLE, CNVSEC_ID } = process.env;
@@ -284,4 +285,4 @@ const handler = async(req, res) => {
     }
 }
 
-export default withApikey(handler)
+export default withCors(withApikey(handler))

@@ -7,6 +7,7 @@ import { PublicKey } from '@solana/web3.js'
 const { createHash } = require('crypto');
 
 import withApikey from "@/middlewares/withApikey";
+import withCors from '@/middlewares/withCors';
 
 async function validateNearSignature(data, signature, signerAddress){
   const tokenMessage = new TextEncoder().encode(data);
@@ -314,4 +315,4 @@ const handler = async(req, res) => {
   }
 }
 
-export default withApikey(handler)
+export default withCors(withApikey(handler))

@@ -1,6 +1,7 @@
 import validateAuth from "@/lib/validateAuth";
 import  { toggleUpvote, toggleDownvote } from "@/lib/thread-db";
 import withApikey from "@/middlewares/withApikey";
+import withCors from "@/middlewares/withCors";
 
 const handler = async(req, res) => {
 
@@ -65,4 +66,4 @@ const handler = async(req, res) => {
     }
 }
 
-export default withApikey(handler);
+export default withCors(withApikey(handler))

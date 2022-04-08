@@ -3,6 +3,7 @@ import { createComment, deleteComment, getComment, getComments, updateComment } 
 import { Where } from "@textile/hub";
 import withApikey from "@/middlewares/withApikey";
 import { addressToChainName } from "@/utils/stringUtils";
+import withCors from "@/middlewares/withCors";
 
 function isValidUrl(string) {
   let url;
@@ -261,4 +262,4 @@ const handler = async(req, res) => {
   }
 }
 
-export default withApikey(handler);
+export default withCors(withApikey(handler))

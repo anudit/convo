@@ -3,6 +3,7 @@ import { createThread, deleteThreadAndComments, getThread, getThreads, updateAdd
 import { Where } from "@textile/hub";
 import withApikey from "@/middlewares/withApikey";
 import { isBlockchainAddress, randomId } from "@/utils/stringUtils";
+import withCors from "@/middlewares/withCors";
 
 const handler = async(req, res) => {
 
@@ -626,4 +627,4 @@ const handler = async(req, res) => {
   }
 }
 
-export default withApikey(handler);
+export default withCors(withApikey(handler))

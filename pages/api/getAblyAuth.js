@@ -1,5 +1,6 @@
 import Ably from "ably/promises";
 import withApikey from "@/middlewares/withApikey";
+import withCors from "@/middlewares/withCors";
 
 const handler = async(req, res) => {
 
@@ -8,4 +9,4 @@ const handler = async(req, res) => {
     res.status(200).json(tokenRequestData);
 }
 
-export default withApikey(handler)
+export default withCors(withApikey(handler))
