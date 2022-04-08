@@ -72,6 +72,7 @@
     "react-hotkeys-hook": "^3.4.4",
     "react-linkify": "^1.0.0-alpha",
     "recharts": "^2.1.9",
+    "sharp": "^0.30.3",
     "styled-components": "^5.3.5",
     "swr": "^1.2.2",
     "telegraf": "^4.7.0",
