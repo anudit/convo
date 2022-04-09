@@ -25,8 +25,8 @@
     "@babel/runtime": "^7.17.9",
     "@biconomy/mexa": "^2.0.32",
     "@chakra-ui/icons": "^1.1.7",
-    "@chakra-ui/react": "^1.8.7",
-    "@chakra-ui/system": "^1.12.0",
+    "@chakra-ui/react": "^1.8.8",
+    "@chakra-ui/system": "^1.12.1",
     "@dicebear/avatars": "^4.10.2",
     "@dicebear/micah": "^4.10.2",
     "@emotion/react": "^11.9.0",
@@ -38,7 +38,7 @@
     "@oceanprotocol/lib": "^0.20.2",
     "@onflow/fcl": "^0.0.78",
     "@portis/web3": "^4.0.7",
-    "@react-three/drei": "^9.1.5",
+    "@react-three/drei": "^9.1.7",
     "@react-three/fiber": "^8.0.10",
     "@self.id/web": "^0.3.0",
     "@solana/web3.js": "^1.37.1",
@@ -53,7 +53,7 @@
     "dotenv": "^15.0.0",
     "ethers": "^5.6.2",
     "framer-motion": "^6.2.9",
-    "ioredis": "^5.0.3",
+    "ioredis": "^5.0.4",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "kerberos": "^2.0.0",
@@ -62,7 +62,7 @@
     "near-api-js": "^0.44.2",
     "next": "^12.1.4",
     "next-pwa": "^5.4.7",
-    "nft.storage": "^6.1.0",
+    "nft.storage": "^6.2.0",
     "node-fetch": "^3.2.3",
     "prop-types": "^15.8.1",
     "qr-code-styling": "^1.6.0-rc.1",
@@ -81,17 +81,17 @@
     "tweetnacl": "^1.0.3",
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
-    "web3modal": "^1.9.5",
+    "web3modal": "^1.9.6",
     "webpack": "^5.72.0",
     "zokrates-js": "1.0.39"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.1.4",
-    "eslint": "^8.12.0",
+    "eslint": "^8.13.0",
     "eslint-config-next": "^12.1.4",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
     "next-sitemap": "^2.5.19",
-    "tf-next": "^0.11.5"
+    "tf-next": "^0.12.0"
   }
 }
