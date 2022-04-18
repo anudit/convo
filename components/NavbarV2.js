@@ -74,7 +74,7 @@ const NavBar = () => {
               Docs
             </Link>
 
-            <Link rel="noreferrer" target="_blank" href="https://blog.theconvo.space" aria-label="Blog"
+            <Link rel="noreferrer" target="_blank" href="https://blog.cupoc.space" aria-label="Blog"
               style={{textDecoration: 'inherit'}}
               _hover={{
                 color: useColorModeValue("black", "white"),

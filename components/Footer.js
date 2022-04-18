@@ -43,7 +43,7 @@ const Footer = () => {
                     }}>
                         Docs
                     </Link>
-                    <Link rel="noreferrer" target="_blank" href="https://blog.theconvo.space" aria-label="Blog" _hover={{
+                    <Link rel="noreferrer" target="_blank" href="https://blog.cupoc.space" aria-label="Blog" _hover={{
                         color: useColorModeValue("black", "whiteAlpha.700"),
                     }}>
                         Blog

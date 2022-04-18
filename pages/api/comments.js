@@ -4,6 +4,7 @@ import { Where } from "@textile/hub";
 import withApikey from "@/middlewares/withApikey";
 import { addressToChainName } from "@/utils/stringUtils";
 import withCors from "@/middlewares/withCors";
+import { getAddress } from "ethers/lib/utils";
 
 function isValidUrl(string) {
   let url;
@@ -175,22 +176,33 @@ const handler = async(req, res) => {
           let commentData = await getComment(req.body.commentId);
 
           if (Boolean(commentData) === true){
-            let newCommentData = {
-              ...commentData,
-              'text': req.body.comment,
-              'editHistory': commentData?.editHistory.concat([
-                {
-                  'changedOn': Date.now().toString(),
-                  'text': commentData?.text,
-                }
-              ])
+
+            if (commentData.author === getAddress(req.body.signerAddress)){
+
+              let newCommentData = {
+                ...commentData,
+                'text': req.body.comment,
+                'editHistory': commentData?.editHistory.concat([
+                  {
+                    'changedOn': Date.now().toString(),
+                    'text': commentData?.text,
+                  }
+                ])
+              }
+
+              let resp = await updateComment(newCommentData);
+              return res.status(200).json({
+                'success': true,
+                ...resp
+              });
+            }
+            else {
+              return res.status(503).json({
+                success: false,
+                'error':'A user can only edit their own comment.'
+              });
             }
 
-            let resp = await updateComment(newCommentData);
-            return res.status(200).json({
-              'success': true,
-              ...resp
-            });
           }
           else{
             return res.status(404).json({
@@ -221,27 +233,36 @@ const handler = async(req, res) => {
       let valAuthResp = await validateAuth(req.body.token, req.body.signerAddress);
       if (valAuthResp === true) {
 
-        if (Object.keys(req.body).includes('commentId') === true){
-          let resp = await deleteComment(req.body.commentId);
-          if (resp === true){
-            return res.status(200).json({
-              success: true
-            });
+        let commentData = await getComment(req.body.commentId);
+        if (commentData.author === getAddress(req.body.signerAddress)){
+
+          if (Object.keys(req.body).includes('commentId') === true){
+            let resp = await deleteComment(req.body.commentId);
+            if (resp === true){
+              return res.status(200).json({
+                success: true
+              });
+            }
+            else {
+              return res.status(200).json({
+                success: false,
+                'error':'Invalid commentId.'
+              });
+            }
           }
           else {
-            return res.status(200).json({
+            return res.status(400).json({
               success: false,
-              'error':'Invalid commentId.'
+              'error':'Invalid/Incomplete params'
             });
           }
         }
         else {
-          return res.status(400).json({
+          return res.status(503).json({
             success: false,
-            'error':'Invalid/Incomplete params'
+            'error':'A user can only delete their own comment.'
           });
         }
-
       }
       else {
         return res.status(503).json({
