@@ -3677,19 +3677,21 @@
   resolved "https://registry.npmjs.org/@react-spring/types/-/types-9.4.2.tgz"
   integrity sha512-GGiIscTM+CEUNV52anj3g5FqAZKL2+eRKtvBOAlC99qGBbvJ3qTLImrUR/I3lXY7PRuLgzI6kh34quA1oUxWYQ==
 
-"@react-three/drei@^9.4.3":
-  version "9.4.3"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.4.3.tgz#a01fed740c9170783148e24532295ce6ae51beb6"
-  integrity sha512-1IQ1oSVUJ9GAQKOE1G2gzR8wo/PkkpMliE4+TVHboIUta02m8sGpDXS0ZsMu/xpA/P0hLDGOkJ4rc9sboQcSlw==
+"@react-three/drei@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.5.0.tgz#a1d9c4687a1cd4a645604cef5f54feb641f2b52c"
+  integrity sha512-WN1P/+CBQR7wQbeg1+KpKhX+6aNHnsm7DJzYTFfuZaZkR0bpWZD+78u4yeAoYk39D9d+ltWGj9c1G5htxh1Nmg==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "^9.3.1"
+    "@types/nanoid" "^3.0.0"
     "@use-gesture/react" "^10.2.0"
     detect-gpu "^4.0.14"
     glsl-noise "^0.0.0"
     lodash.omit "^4.5.0"
     lodash.pick "^4.4.0"
     meshline "^2.0.4"
+    nanoid "^3.3.3"
     react-composer "^5.0.2"
     react-merge-refs "^1.1.0"
     stats.js "^0.17.0"
@@ -3700,13 +3702,13 @@
     utility-types "^3.10.0"
     zustand "^3.5.13"
 
-"@react-three/fiber@^8.0.11":
-  version "8.0.11"
-  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-8.0.11.tgz#3fc140b43d954270da15c2d366ee940e62b43f32"
-  integrity sha512-plvh1mLDIAa3lJfqXJHBWi0PxTOQVXoPXd03/SIwt+vZFBPSzuQCRnhYY/8Q2Of3S89PWTl8TtFXNfRzTUHNnw==
+"@react-three/fiber@^8.0.12":
+  version "8.0.12"
+  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-8.0.12.tgz#4082d18b3f3bdafef3ead1fa2d1019738f4c1bf7"
+  integrity sha512-McYcJDlkksn9LlIhE2A4Y2scZOtKfX1ia3+7EvpFjFozFJx0Ecszi7atlizOvesIa9nG9VQWQCvjQxu9L0/TmA==
   dependencies:
     "@babel/runtime" "^7.17.8"
-    "@types/react-reconciler" "^0.26.4"
+    "@types/react-reconciler" "^0.26.6"
     react-merge-refs "^1.1.0"
     react-reconciler "^0.27.0"
     react-use-measure "^2.1.1"
@@ -5066,6 +5068,13 @@
   resolved "https://registry.npmjs.org/@types/minimist/-/minimist-1.2.2.tgz"
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
+"@types/nanoid@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/nanoid/-/nanoid-3.0.0.tgz#c757b20f343f3a1dd76e80a9a431b6290fc20f35"
+  integrity sha512-UXitWSmXCwhDmAKe7D3hNQtQaHeHt5L8LO1CB8GF8jlYVzOv5cBWDNqiJ+oPEWrWei3i3dkZtHY/bUtd0R/uOQ==
+  dependencies:
+    nanoid "*"
+
 "@types/node@*", "@types/node@>=13.7.0":
   version "17.0.10"
   resolved "https://registry.npmjs.org/@types/node/-/node-17.0.10.tgz"
@@ -5123,10 +5132,10 @@
   resolved "https://registry.npmjs.org/@types/range-parser/-/range-parser-1.2.4.tgz"
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
-"@types/react-reconciler@^0.26.4":
-  version "0.26.4"
-  resolved "https://registry.yarnpkg.com/@types/react-reconciler/-/react-reconciler-0.26.4.tgz#651404be172cf29b65cddf246d8d964b4e448399"
-  integrity sha512-bdx4aIBkQRDAnzc23JBFeZmVpmfLJHfHikmQukEt9qs4bQtq9f+PDbNwhR9u74FkIUyIDz1I1qJ8OF6RwadKpw==
+"@types/react-reconciler@^0.26.6":
+  version "0.26.6"
+  resolved "https://registry.yarnpkg.com/@types/react-reconciler/-/react-reconciler-0.26.6.tgz#271b850616413b5c197ec485403961a11cedd4ef"
+  integrity sha512-N8MpyC6PJksD+CbMaZ1GW1t940+L4K+f7soiNKcKfgOgof3xWLvs5nPRQ/Q0P6QwDX0GH1PT1MsiQh2FtUY6aw==
   dependencies:
     "@types/react" "*"
 
@@ -15037,6 +15046,11 @@ nano-json-stream-parser@^0.1.2:
   resolved "https://registry.npmjs.org/nano-json-stream-parser/-/nano-json-stream-parser-0.1.2.tgz"
   integrity sha1-DMj20OK2IrR5xA1JnEbWS3Vcb18=
 
+nanoid@*, nanoid@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.3.tgz#fd8e8b7aa761fe807dba2d1b98fb7241bb724a25"
+  integrity sha512-p1sjXuopFs0xg+fPASzQ28agW1oHD7xDsd9Xkf3T15H3c/cifrFHVwrh74PdoklAPi+i7MdRsE47vm2r6JoB+w==
+
 nanoid@^2.1.0:
   version "2.1.11"
   resolved "https://registry.npmjs.org/nanoid/-/nanoid-2.1.11.tgz"
@@ -17063,10 +17077,10 @@ react-composer@^5.0.2:
   dependencies:
     prop-types "^15.6.0"
 
-react-data-table-component@^7.4.7:
-  version "7.4.7"
-  resolved "https://registry.npmjs.org/react-data-table-component/-/react-data-table-component-7.4.7.tgz"
-  integrity sha512-S4iaArrcYvJcIdOBsdUeBgEDfLFghI/G5Oykr5ZbfrUA282JTeQAQtGwutsIs6TKfXQAwMVUs2R+bu3S8oZfWA==
+react-data-table-component@^7.5.0:
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.5.0.tgz#bc5fe8c5000d3fd29bb018f51a96d8402e11e2f8"
+  integrity sha512-h8FH42rnNNz18ZTq1FKVr1Z+4pWAELyFgl7GWxW+SXcI4kfa0z/WKfaU9XP0ffGmGJloNZga7m9brONYzoVapA==
   dependencies:
     deepmerge "^4.2.2"
 
@@ -21058,10 +21072,10 @@ web3@^1.6.1:
     web3-shh "1.7.1"
     web3-utils "1.7.1"
 
-web3modal@^1.9.6:
-  version "1.9.6"
-  resolved "https://registry.yarnpkg.com/web3modal/-/web3modal-1.9.6.tgz#ace73e46f8a1a24ae553fd196e035ba1f5c44c8d"
-  integrity sha512-Kb05om51YTB60WEH+5HUCGDzs0S5lFJlT0uebwzA3QZhJbX9x6rj1aSWn/UnZ54H5vM9fuxdnrZMu7FcN8y3qw==
+web3modal@^1.9.7:
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/web3modal/-/web3modal-1.9.7.tgz#d657b97e53faafae60c55038d046781083645423"
+  integrity sha512-z3XfY7cV8GwGvHP3WvrSxPU6/7ocwVyiU77U/Lxoa53AUSsOKl01V8ErZ8CkJSH41C3YgzwBaOETj0rC9uFBKg==
   dependencies:
     detect-browser "^5.1.0"
     prop-types "^15.7.2"
@@ -21909,10 +21923,10 @@ zip-stream@^4.1.0:
     compress-commons "^4.1.0"
     readable-stream "^3.6.0"
 
-zokrates-js@^1.0.41:
-  version "1.0.41"
-  resolved "https://registry.yarnpkg.com/zokrates-js/-/zokrates-js-1.0.41.tgz#6af4630d1e88f1a52208c9649531b01c365c522d"
-  integrity sha512-lTBcmv3Tbk8MPphLP1t3ElRayXxKVMUQHOtCQdnTfVyeERHxcVfdaQ/ymTH3sqafSiiT5+F8zchfdZpC//LXuw==
+zokrates-js@^1.0.43:
+  version "1.0.43"
+  resolved "https://registry.yarnpkg.com/zokrates-js/-/zokrates-js-1.0.43.tgz#b0519c742b2fa1c1ae1c6bcfd1cee2b2c4dce6e6"
+  integrity sha512-34R5gZNEdpXevt3iV9h0nOr2Tf187BfLW54oNc0/xdDFBq6FxzqXsEw0YP5UJkm87zGGe9XNTyMv7mukb3BSGw==
 
 zstddec@^0.0.2:
   version "0.0.2"

@@ -18,7 +18,8 @@
     "cron:cache": "node ./cron/cacheTrustScore.js",
     "cron:cacheV2": "node ./cron/cacheV2.js",
     "cron:backup": "node ./cron/backupFilecoin.js",
-    "tf-next": "tf-next build"
+    "tf-next": "tf-next build",
+    "tf-apply": "terraform apply"
   },
   "dependencies": {
     "@babel/core": "^7.17.9",
@@ -38,8 +39,8 @@
     "@oceanprotocol/lib": "^0.20.2",
     "@onflow/fcl": "^0.0.78",
     "@portis/web3": "^4.0.7",
-    "@react-three/drei": "^9.4.3",
-    "@react-three/fiber": "^8.0.11",
+    "@react-three/drei": "^9.5.0",
+    "@react-three/fiber": "^8.0.12",
     "@self.id/web": "^0.3.0",
     "@solana/web3.js": "^1.39.1",
     "@textile/hub": "^6.3.3",
@@ -67,7 +68,7 @@
     "prop-types": "^15.8.1",
     "qr-code-styling": "^1.6.0-rc.1",
     "react": "^18.0.0",
-    "react-data-table-component": "^7.4.7",
+    "react-data-table-component": "^7.5.0",
     "react-dom": "^18.0.0",
     "react-hotkeys-hook": "^3.4.4",
     "react-linkify": "^1.0.0-alpha",
@@ -81,9 +82,9 @@
     "tweetnacl": "^1.0.3",
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
-    "web3modal": "^1.9.6",
+    "web3modal": "^1.9.7",
     "webpack": "^5.72.0",
-    "zokrates-js": "^1.0.41"
+    "zokrates-js": "^1.0.43"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.1.5",
