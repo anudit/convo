@@ -219,7 +219,16 @@ function avg(array) {
     return total / count;
 }
 
-async function cacheTrustScoresManual(addresses){
+function cleanNulls(obj){
+    return JSON.parse(JSON.stringify(obj), (key, value) => {
+               if (value == null)
+                   return undefined;
+               return value;
+           });
+
+}
+
+async function cacheTrustScoresManual(addresses, mongoClient){
 
     const price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH,MATIC&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
     const GLOBAL_ETH_PRICE = parseFloat(price_data['data']['items'][0]['quote_rate']);
@@ -230,8 +239,7 @@ async function cacheTrustScoresManual(addresses){
 
     console.log('Iterating over', addresses.length);
 
-    const client = await MongoClient.connect(MONGODB_URI);
-    let db = client.db('convo');
+    let db = mongoClient.db('convo');
     let coll = db.collection('cachedTrustScores');
 
     for (let index = 0; index < addresses.length; index++) {
@@ -239,11 +247,13 @@ async function cacheTrustScoresManual(addresses){
         const lookupAddress = getAddress(addresses[index]);
 
         let scoreData = await computeScoreData(lookupAddress);
+        scoreData = cleanNulls(scoreData); // Mongo freaks out when it sees a null.
 
         let newDoc = {
             _id: getAddress(lookupAddress),
             ...scoreData
         }
+
         await coll.updateOne(
             { _id : getAddress(lookupAddress)},
             { $set: newDoc },
@@ -257,29 +267,15 @@ async function cacheTrustScoresManual(addresses){
         console.log(`🟢 Cached ${index}`, scoreData.score, ` | Avg Time: ${parseFloat(avg(times)).toFixed(3)}s`);
     }
 
-    client.close();
-
 }
 
-const getAddresses = async (threadClient) =>{
+const getAddresses = async (threadClient, mongoClient) =>{
 
-    let promise = new Promise((res, rej) => {
+    let db = mongoClient.db('convo');
+    let coll = db.collection('cachedTrustScores');
 
-        MongoClient.connect(MONGODB_URI, async function(err, client) {
-            if(err) throw err;
-            let db = client.db('convo');
-            let coll = db.collection('cachedTrustScores');
-
-            const cursor = await coll.distinct("_id", {});
-            console.log('cursor.length', cursor.length);
-            res(cursor);
-
-            client.close();
-
-        });
-
-    });
-    let snapshot_trustscores = await promise;
+    const snapshot_trustscores = await coll.distinct("_id", {});
+    console.log('cursor.length', snapshot_trustscores.length);
 
     const threadId = ThreadID.fromString(TEXTILE_THREADID);
     let snapshot_comments = await threadClient.find(threadId, 'comments', {});
@@ -323,9 +319,12 @@ function getArraySample(arr, sample_size, return_indexes = false) {
 
 async function runPipline(){
     const threadClient = await getClient();
-    const addressTable = await getAddresses(threadClient);
-    const sampledAddresses = getArraySample(addressTable, 5500);
-    await cacheTrustScoresManual(sampledAddresses);
+    const mongoClient = await MongoClient.connect(MONGODB_URI);
+
+    let addressTable = await getAddresses(threadClient, mongoClient);
+    addressTable = getArraySample(addressTable, 5500);
+    await cacheTrustScoresManual(addressTable, mongoClient);
+    await mongoClient.close();
 }
 
 runPipline().then(()=>{
@@ -340,12 +339,17 @@ runPipline().then(()=>{
 // }
 // cacheAddsFromFile("toindex.json");
 
-// cacheTrustScoresManual([
-//     // "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-//     // "0xcf0949bf6d2adf8032260fd08039c879cf71c128",
-//     // "0xD665afb9A4019a8c482352aaa862567257Ed62CF",
-//     // "0xB53b0255895c4F9E3a185E484e5B674bCCfbc076",
-//     // "0xa28992A6744e36f398DFe1b9407474e1D7A3066b",
-//     // "0x707aC3937A9B31C225D8C240F5917Be97cab9F20",
-//     // "0xa28992A6744e36f398DFe1b9407474e1D7A3066b"
-// ])
+// async function runPipline2(){
+//     const mongoClient = await MongoClient.connect(MONGODB_URI);
+//     await cacheTrustScoresManual([
+//         "0x707aC3937A9B31C225D8C240F5917Be97cab9F20",
+//         // "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+//         // "0xcf0949bf6d2adf8032260fd08039c879cf71c128",
+//         // "0xD665afb9A4019a8c482352aaa862567257Ed62CF",
+//         // "0xB53b0255895c4F9E3a185E484e5B674bCCfbc076",
+//         // "0xa28992A6744e36f398DFe1b9407474e1D7A3066b",
+//         // "0xa28992A6744e36f398DFe1b9407474e1D7A3066b"
+//     ], mongoClient);
+//     await mongoClient.close();
+// }
+// runPipline2();
