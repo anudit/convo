@@ -586,7 +586,8 @@ const handler = async(req, res) => {
           }
 
           // Check if the signerAddress is a moderators.
-          if (threadData.moderators.includes(req.body.signerAddress) === true) {
+          const adminList = [...new Set([...threadData[0].moderators, threadData[0].creator])];
+          if (adminList.includes(req.body.signerAddress) === true) {
             return res.status(400).json({
               success: false,
               'error':'signerAddress not a Moderator of the Thread.'
@@ -594,7 +595,7 @@ const handler = async(req, res) => {
           }
 
           // delete Thread And Comments
-          await deleteThreadAndComments(threadData);
+          await deleteThreadAndComments(threadData[0]._id);
 
           return res.status(200).json({
             success: true
