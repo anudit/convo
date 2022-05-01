@@ -559,7 +559,7 @@ const handler = async(req, res) => {
 
       }
       else {
-        return res.status(503).json({
+        return res.status(401).json({
           success: false,
           'error':'Invalid Auth'
         });
@@ -610,7 +610,7 @@ const handler = async(req, res) => {
 
       }
       else {
-        return res.status(503).json({
+        return res.status(401).json({
           success: false,
           'error':'Invalid Auth'
         });

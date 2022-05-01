@@ -10,6 +10,16 @@ const mongoClientPromise = require('@/lib/mongo-db');
 const { ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, PK_ORACLE, CNVSEC_ID } = process.env;
 const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
+function cleanNulls(obj){
+    return JSON.parse(JSON.stringify(obj), (key, value) => {
+               if (value == null)
+                   return undefined;
+               return value;
+           });
+
+}
+
+
 async function calculateScore(address) {
     let score = 0;
     let final = {};
@@ -165,7 +175,7 @@ async function calculateScore(address) {
     final['signatureAddress'] = wallet.address;
     final['success'] = true;
 
-    return final;
+    return cleanNulls(final);
 }
 
 async function setCache(client, address, scoreData) {

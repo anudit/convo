@@ -155,7 +155,7 @@ const handler = async(req, res) => {
 
       }
       else {
-        return res.status(503).json({
+        return res.status(401).json({
           success: false,
           'error':'Invalid Auth'
         });
@@ -197,7 +197,7 @@ const handler = async(req, res) => {
               });
             }
             else {
-              return res.status(503).json({
+              return res.status(401).json({
                 success: false,
                 'error':'A user can only edit their own comment.'
               });
@@ -221,7 +221,7 @@ const handler = async(req, res) => {
 
       }
       else {
-        return res.status(503).json({
+        return res.status(401).json({
           success: false,
           'error':'Invalid Auth'
         });
@@ -258,14 +258,14 @@ const handler = async(req, res) => {
           }
         }
         else {
-          return res.status(503).json({
+          return res.status(401).json({
             success: false,
             'error':'A user can only delete their own comment.'
           });
         }
       }
       else {
-        return res.status(503).json({
+        return res.status(401).json({
           success: false,
           'error':'Invalid Auth'
         });
