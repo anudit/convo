@@ -55,8 +55,8 @@ async function computeScoreData(address){
 
     let computeConfig = {
         polygonMainnetRpc: "https://polygon-rpc.com/",
-        etherumMainnetRpc: "https://mainnet.infura.io/v3/1e7969225b2f4eefb3ae792aabf1cc17",
-        avalancheMainnetRpc: "https://api.avax.network/ext/bc/C/rpc",
+        etherumMainnetRpc: "https://eth.public-rpc.com/",
+        avalancheMainnetRpc: "https://avalanche.public-rpc.com/",
         etherumPriceInUsd: GLOBAL_ETH_PRICE,
         maticPriceInUsd: GLOBAL_MATIC_PRICE,
         etherscanApiKey: ETHERSCAN_API_KEY,

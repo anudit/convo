@@ -11,7 +11,7 @@ const handler = async(req, res) => {
 
             let token = await unseal(req.body.token, process.env.JWT_SECRET, defaults);
 
-            jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+            jwt.verify(token, process.env.JWT_SECRET, {algorithms: ["HS256"]}, function(err, decoded) {
                 if (err) {
                     return res.status(400).json({
                         'success': false,

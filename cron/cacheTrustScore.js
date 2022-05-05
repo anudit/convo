@@ -181,7 +181,7 @@ async function checkPoH(address, provider) {
 async function getAaveData(address, providerEth) {
 
     const providerMatic = new ethers.providers.JsonRpcProvider("https://polygon-rpc.com/");
-    const providerAvalanche = new ethers.providers.JsonRpcProvider('https://api.avax.network/ext/bc/C/rpc');
+    const providerAvalanche = new ethers.providers.JsonRpcProvider('https://avalanche.public-rpc.com');
     const lendingPoolAbi = [{
         "inputs":[
            {
