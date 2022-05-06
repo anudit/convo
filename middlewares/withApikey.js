@@ -54,7 +54,7 @@ const withApikey = (next) => async (req, res) => {
         }
 
         if (user_apikey == "CSS3EFgktCyrmUAR6rX9YT9fIjxAoB0fJGxWn9zp"){
-            return res.status(200).end(); // Just testing.
+            return res.status(204).end(); // Just testing.
         }
 
         const CAP = 1000000; //1M

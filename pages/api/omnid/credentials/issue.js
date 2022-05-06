@@ -2,10 +2,11 @@ import withApikey from "@/middlewares/withApikey";
 import withCors from "@/middlewares/withCors";
 import { Convo } from "@theconvospace/sdk";
 import { isAddress } from '@ethersproject/address';
+import nacl from 'tweetnacl';
+import bs58 from 'bs58';
 
 const { ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, CNVSEC_ID } = process.env;
 const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
-
 
 const keyTofn = {
     'age': {
@@ -54,9 +55,12 @@ const handler = async(req, res) => {
             if (Boolean(keyTofn[adaptor].withConfig) === true) params.push(computeConfig)
             let credentialSubject = await fn.apply(this, params);
 
-            return res.status(200).json({
+            let issuanceDate = new Date().toISOString();
+
+            let VC = {
                 "@context": [
                     "https://www.w3.org/2018/credentials/v1",
+                    "https://w3id.org/security/suites/ed25519-2020/v1"
                 ],
                 "id": "http://example.gov/credentials/3732",
                 "type": [
@@ -66,11 +70,43 @@ const handler = async(req, res) => {
                 "issuer": {
                     "id": "did:web:omnid.space"
                 },
-                "issuanceDate": new Date().toISOString(),
+                "issuanceDate": issuanceDate,
                 "credentialSubject": {
                     "id": `did:ethr:${address}`,
                     "data": credentialSubject
-                }
+                },
+
+            }
+
+            const keyPair = nacl.sign.keyPair();
+
+            // Sign the Verifiable Credential using detached EdDSA (next Multibase encode) as set in,
+            // https://w3c-ccg.github.io/lds-ed25519-2020/#ed25519-signature-2020
+            const sig = nacl.sign.detached(new Uint8Array(JSON.stringify(VC)), keyPair.secretKey);
+
+            // Encode the Signature to its base58 Multibase representation as set in,
+            // https://datatracker.ietf.org/doc/html/draft-multiformats-multibase-01#appendix-B.3
+            const sigEncoded = 'z'+bs58.encode(sig);
+            const publicKeyEncoded = 'z'+bs58.encode(keyPair.publicKey);
+
+            let vcProof = {
+                "type": "Ed25519Signature2020",
+                "created": issuanceDate,
+                "proofPurpose": "assertionMethod",
+                "verificationMethod": [
+                    {
+                      "id": "#key-0",
+                      "type": "Ed25519VerificationKey2020",
+                      "controller": "https://example.com/issuer/123",
+                      "publicKeyMultibase": publicKeyEncoded
+                    }
+                ],
+                "proofValue": sigEncoded,
+            }
+
+            return res.status(200).json({
+                ...VC,
+                proof: vcProof,
             });
 
         }
