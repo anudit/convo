@@ -3,7 +3,7 @@ import withCors from "@/middlewares/withCors";
 import { Convo } from "@theconvospace/sdk";
 import { isAddress } from '@ethersproject/address';
 
-const { ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, PK_ORACLE, CNVSEC_ID } = process.env;
+const { ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, CNVSEC_ID } = process.env;
 const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
 
