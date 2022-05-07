@@ -35,7 +35,7 @@ async function calculateScore(address) {
   let resp = await convoInstance.omnid.computeTrustScore(
       address,
       computeConfig,
-      ['coordinape', 'arcx', 'superrare']
+      ['coordinape', 'arcx', 'superrare', 'karma']
   );
 
   for (const [key, value] of Object.entries(resp)) {
