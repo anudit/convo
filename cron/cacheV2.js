@@ -322,7 +322,7 @@ async function runPipline(){
     const mongoClient = await MongoClient.connect(MONGODB_URI);
 
     let addressTable = await getAddresses(threadClient, mongoClient);
-    addressTable = getArraySample(addressTable, 5500);
+    addressTable = getArraySample(addressTable, 7000);
     await cacheTrustScoresManual(addressTable, mongoClient);
     await mongoClient.close();
 }

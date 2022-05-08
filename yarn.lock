@@ -4515,10 +4515,10 @@
     event-iterator "^2.0.0"
     loglevel "^1.7.0"
 
-"@theconvospace/sdk@^0.4.8":
-  version "0.4.8"
-  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.4.8.tgz#cc205031e360a199bd985c145e5db41926ce33c6"
-  integrity sha512-hP8wMbcrWO9nmaoJizJawoSH0gUEbFowa7YfzD/c7SkO6NgL3jfSshpNG3jBwcD9FUUDVuQU9PFRmz6Oe0Ukvw==
+"@theconvospace/sdk@^0.4.9":
+  version "0.4.9"
+  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.4.9.tgz#be66ecf2062a948489e21fca5632c7e528140321"
+  integrity sha512-GbBmKkAIZ24sE1FzhSrso2lmD8bt+fx49flfuNLhQJE7VHalUo5ujTH95IwjrXSVg2NbWbJp75ukqzQYGDs7SQ==
   dependencies:
     "@ethersproject/abi" "^5.6.1"
     "@ethersproject/providers" "^5.6.5"
