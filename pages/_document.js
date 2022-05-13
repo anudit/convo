@@ -39,7 +39,7 @@ class MyDocument extends Document {
                     <script type='application/ld+json' dangerouslySetInnerHTML={ { __html: `{"@context": "https://schema.org","@type": "WebSite","url": "https://theconvo.space","potentialAction": {"@type": "SearchAction","target": "https://theconvo.space/explore?search={searchTerms}","query-input": "required name=searchTerms"}}`}} />
                 </Head>
                 <body>
-                    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+                    <ColorModeScript type="cookie" initialColorMode={theme.config.initialColorMode} />
                     <Main />
                     <NextScript />
                 </body>

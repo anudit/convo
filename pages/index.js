@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import Head from 'next/head';
 import Image from 'next/image';
-import { chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Button, Box, UnorderedList, ListItem, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
+import { SimpleGrid, chakra, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Heading, Text, Flex, Link, useColorMode, useColorModeValue, Button, Box, UnorderedList, ListItem, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import PropTypes from 'prop-types';
 
-import { DataIcon, DevfolioIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon, DiscordIcon, CoinviseIcon, DecentralandIcon } from '@/public/icons';
+import { DataIcon, JoinIcon, ExternalIcon, ComposabilityIcon, ConsensysIcon, ProtocolLabsIcon, DiscordIcon, CoinviseIcon, DecentralandIcon, NfxIcon, GalaxyDigitalIcon, EtherealVenturesIcon, TachyonIcon } from '@/public/icons';
 import { CustomButton } from '@/components/CustomButtons';
 import Footer from "@/components/Footer";
 import Card from '@/components/Card';
@@ -176,22 +176,29 @@ const Home = ({tweetData}) => {
               >
                 of Internet
               </Heading>
-              <br/><br/>
-              <Text py={2} fontWeight={400} color={"gray.400"}>
-                TRUSTED BY THE INDUSTRY
+              <Text py={2} fontWeight={400} color={"gray.400"} mt={16} mb={2}>
+                BACKED BY
               </Text>
-              <Flex direction={{base:"column",md:"row"}} mt={2} w="100%" justifyContent="center" align="center">
+              <SimpleGrid columns={[2, null, 3]} spacing={5} align="center">
                 <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="Consensys" rel="noreferrer" target="_blank" href="https://mesh.xyz/tachyon/">
-                  <ConsensysIcon width="200px" height="50px"/>
+                  <ConsensysIcon width="150px" height="50px"/>
+                </Link>
+                <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="NFX" rel="noreferrer" target="_blank" href="https://www.nfx.com/">
+                  <EtherealVenturesIcon width="150px" height="50px"/>
+                </Link>
+                <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="GD" rel="noreferrer" target="_blank" href="https://www.galaxydigital.io/">
+                  <GalaxyDigitalIcon transform="scale(3)" width="150px" height="50px"/>
+                </Link>
+                <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="NFX" rel="noreferrer" target="_blank" href="https://www.nfx.com/">
+                  <NfxIcon width="100px" height="50px"/>
                 </Link>
                 <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="ProtocolLabs" rel="noreferrer" target="_blank" href="https://protocol.ai/">
-                  <ProtocolLabsIcon width="200px" height="50px"/>
+                  <ProtocolLabsIcon width="150px" height="50px"/>
                 </Link>
-                <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="Devfolio" rel="noreferrer" target="_blank" href="https://devfolio.co/blog/first-bif-cohort/">
-                  <DevfolioIcon width="200px" height="50px"/>
+                <Link my={{base: 2, md: 1}} mx={{base: 1, md: 2}} aria-label="Tachyon" rel="noreferrer" target="_blank" href="https://mesh.xyz/tachyon/">
+                  <TachyonIcon width="150px" height="50px"/>
                 </Link>
-              </Flex>
-
+              </SimpleGrid>
             </Flex>
 
           </Flex>
