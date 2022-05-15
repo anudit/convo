@@ -28,8 +28,9 @@ const contracts = {
 
 const DataSection = () => {
 
-  const web3Context = useContext(Web3Context);
-  const { signerAddress, connectedChain } = web3Context;
+  const { signerAddress, connectedChain, getAuthToken } = useContext(Web3Context);
+    const [isNukeLoading, setNukeLoading] = useState(false);
+
 
   async function downloadAllData(){
       let backup = JSON.stringify([{}]);
@@ -45,7 +46,26 @@ const DataSection = () => {
   }
 
   async function nukeAllData(){
-      console.log("TODO: nukeAllData");
+    setNukeLoading(true);
+    let token = await getAuthToken();
+    const response = await fetch('/api/comments?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', {
+        method: 'DELETE',
+        mode: 'cors',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            signerAddress,
+            token,
+            deleteAll: true,
+        })
+    });
+    let resp = await response.json();
+    if (resp?.success === true){
+        alert('All your data has been nuked, It might take a few seconds to propogate across the network.')
+    }
+    setNukeLoading(false);
   }
 
 
@@ -59,7 +79,7 @@ const DataSection = () => {
                 <Button size="md" onClick={downloadAllData} m={1}>
                     <DownloadIcon w={4} h={4} mr={2}/> Download my Data
                 </Button>
-                <Button size="md" colorScheme="red" onClick={nukeAllData} m={1}>
+                <Button isLoading={isNukeLoading}size="md" colorScheme="red" onClick={nukeAllData} m={1}>
                     💣 Nuke my Data
                 </Button>
             </Flex>
@@ -263,7 +283,7 @@ const DataTokenView = () => {
                 <Button leftIcon={<OceanProtocolIcon />} size="md" onClick={onOpen} w="fit-content">
                     Mint a DataToken
                 </Button>
-                <Link href="https://oceanprotocol.com/technology/data-tokens" isExternal>
+                <Link href="https://oceanprotocol.com/technology/data-nfts-and-data-tokens" isExternal>
                     <InfoIcon m={3}/>
                 </Link>
             </Flex>

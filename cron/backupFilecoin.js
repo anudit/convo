@@ -64,7 +64,6 @@ const getAllTrustScoreData = async () => {
     const client = await MongoClient.connect(MONGODB_URI);
     let db = client.db('convo');
     let coll = db.collection('cachedTrustScores');
-    // TODO: stream the data for mongdb and possibly strinfy on the fly.
     let completeData = await coll.find().toArray();
 
     return completeData;

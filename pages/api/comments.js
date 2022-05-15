@@ -1,5 +1,5 @@
 import validateAuth from "@/lib/validateAuth";
-import { createComment, deleteComment, getComment, getComments, updateComment } from "@/lib/thread-db";
+import { createComment, deleteAllUserComments, deleteComment, getComment, getComments, updateComment } from "@/lib/thread-db";
 import { Where } from "@textile/hub";
 import withApikey from "@/middlewares/withApikey";
 import { addressToChainName } from "@/utils/stringUtils";
@@ -233,9 +233,17 @@ const handler = async(req, res) => {
       let valAuthResp = await validateAuth(req.body.token, req.body.signerAddress);
       if (valAuthResp === true) {
 
+        if(Object.keys(req.body).includes('deleteAll') && Boolean(req.body?.deleteAll) === true){
+          let execRes = await deleteAllUserComments(getAddress(req.body.signerAddress))
+          return res.status(200).json({
+            success: execRes
+          });
+        }
+
         let commentData = await getComment(req.body.commentId);
         if (commentData.author === getAddress(req.body.signerAddress)){
 
+          // TODO: Check this condition
           if (Object.keys(req.body).includes('commentId') === true){
             let resp = await deleteComment(req.body.commentId);
             if (resp === true){
@@ -263,6 +271,7 @@ const handler = async(req, res) => {
             'error':'A user can only delete their own comment.'
           });
         }
+
       }
       else {
         return res.status(401).json({
