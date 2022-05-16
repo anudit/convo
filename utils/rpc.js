@@ -12,5 +12,5 @@ export const maticMumbaiReadOnlyProvider = new ethers.providers.JsonRpcProvider(
 
 export const ethereumReadOnlyProvider = new ethers.providers.JsonRpcProvider({
     allowGzip: "true",
-    url: "https://eth-mainnet.alchemyapi.io/v2/aCCNMibQ1zmvthnsyWUWFkm_UAvGtZdv",
+    url: "https://eth.public-rpc.com",
 });

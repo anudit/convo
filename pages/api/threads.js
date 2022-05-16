@@ -43,6 +43,24 @@ const handler = async(req, res) => {
         }
       }
 
+      if (Boolean(req.query?.url) === true){
+        if (query === undefined) {
+          query = new Where('url').eq(decodeURIComponent(req.query.url));
+        }
+        else {
+          query = query.and('url').eq(decodeURIComponent(req.query.url));
+        }
+      }
+
+      if (Boolean(req.query?.title) === true){
+        if (query === undefined) {
+          query = new Where('title').eq(req.query.title);
+        }
+        else {
+          query = query.and('title').eq(req.query.title);
+        }
+      }
+
       if (Boolean(req.query?.isReadPublic) === true){
         if (query === undefined) {
           query = new Where('isReadPublic').eq(req.query.isReadPublic === 'true'? true: false);
