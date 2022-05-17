@@ -16,6 +16,7 @@ import UAuthSPA from '@uauth/js'
 import { checkUnstoppableDomains } from '@/lib/identity';
 import fetcher from "@/utils/fetcher";
 import { Convo } from '@theconvospace/sdk';
+import { addressToEns } from '@/utils/stringUtils';
 
 export const Web3Context = React.createContext(undefined);
 
@@ -35,8 +36,7 @@ export const Web3ContextProvider = ({children}) => {
   const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
   async function updatePrettyName(address){
-    let tp = new ethers.providers.AlchemyProvider("mainnet","aCCNMibQ1zmvthnsyWUWFkm_UAvGtZdv");
-    let ensReq  = tp.lookupAddress(address);
+    let ensReq  = addressToEns(address);
     let udReq = checkUnstoppableDomains(address);
 
     let promiseArray = [ensReq, udReq];

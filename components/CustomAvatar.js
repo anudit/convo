@@ -6,8 +6,8 @@ import { getAvatar } from '@/utils/avatar';
 import fetcher from '@/utils/fetcher';
 import { VerifiedIcon } from '@/public/icons';
 import { WarningIcon } from '@chakra-ui/icons';
-import { ethers } from 'ethers';
 import { isAddress } from '@ethersproject/address';
+import { ethereumReadOnlyProvider } from '@/utils/rpc';
 
 const CustomAvatar = (props) => {
 
@@ -28,7 +28,7 @@ const CustomAvatar = (props) => {
 
     useEffect(() => {
         if (Boolean(props?.ensName) === true ){
-            let tp = new ethers.providers.AlchemyProvider("mainnet","aCCNMibQ1zmvthnsyWUWFkm_UAvGtZdv");
+            let tp = ethereumReadOnlyProvider;
             tp.getResolver(props.ensName).then(async (resolver) => {
                 let pfp = await resolver?.getText('avatar');
                 if(Boolean(pfp) === true){

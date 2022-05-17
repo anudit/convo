@@ -3,19 +3,18 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Avatar, useColorMode, Flex, Text, Button, Divider, Tooltip, useClipboard } from "@chakra-ui/react";
 import { LinkIcon } from "@chakra-ui/icons";
-import { ethers } from 'ethers';
 import PropTypes from 'prop-types';
 
 import { TheConvoSpaceIcon, ExternalIcon } from "@/public/icons";
 import { getComment } from "@/lib/thread-db"
 import { truncateAddress, prettyTime } from "@/utils/stringUtils"
 import { getAvatar } from '@/utils/avatar';
+import { addressToEns } from '@/lib/identity';
 
 export async function getServerSideProps(context) {
 
   let commentData = await getComment(context.params.commentId);
-  let provider = new ethers.providers.AlchemyProvider("mainnet","aCCNMibQ1zmvthnsyWUWFkm_UAvGtZdv");
-  let ensAdd = await provider.lookupAddress(commentData.author);
+  let ensAdd = await addressToEns(commentData.author);
 
   if (Boolean(ensAdd) === true) {
     commentData['authorENS'] = ensAdd;
