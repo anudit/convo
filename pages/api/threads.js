@@ -605,7 +605,7 @@ const handler = async(req, res) => {
 
           // Check if the signerAddress is a moderators.
           const adminList = [...new Set([...threadData[0].moderators, threadData[0].creator])];
-          if (adminList.includes(req.body.signerAddress) === true) {
+          if (!adminList.includes(req.body.signerAddress)) {
             return res.status(400).json({
               success: false,
               'error':'signerAddress not a Moderator of the Thread.'
