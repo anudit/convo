@@ -54,7 +54,7 @@ async function computeScoreData(address){
     let final = {};
 
     let computeConfig = {
-        polygonMainnetRpc: "https://polygon-rpc.com/",
+        polygonMainnetRpc: "https://polygon-rpc.com",
         etherumMainnetRpc: "https://eth.public-rpc.com/",
         avalancheMainnetRpc: "https://avalanche.public-rpc.com/",
         etherumPriceInUsd: GLOBAL_ETH_PRICE,

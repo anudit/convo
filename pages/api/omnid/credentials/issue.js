@@ -16,7 +16,7 @@ const keyTofn = {
 }
 
 const computeConfig = {
-    polygonMainnetRpc: "https://polygon-rpc.com/",
+    polygonMainnetRpc: "https://polygon-rpc.com",
     etherumMainnetRpc: "https://eth.public-rpc.com",
     avalancheMainnetRpc: "https://avalanche.public-rpc.com",
     etherumPriceInUsd: 3300,
