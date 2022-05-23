@@ -6,7 +6,7 @@ import Web3 from "web3";
 
 import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
-import { Web3Context } from '@/contexts/Web3Context';
+import { RainbowContext } from '@/contexts/RainbowContext';
 import { OceanProtocolIcon, ExternalIcon  } from '@/public/icons';
 import { isAddress } from 'ethers/lib/utils';
 
@@ -28,7 +28,7 @@ const contracts = {
 
 const DataSection = () => {
 
-  const { signerAddress, connectedChain, getAuthToken } = useContext(Web3Context);
+  const { signerAddress, connectedChain, getAuthToken } = useContext(RainbowContext);
     const [isNukeLoading, setNukeLoading] = useState(false);
 
 
@@ -103,8 +103,7 @@ export default DataSection;
 
 const DataTokenView = () => {
 
-    const web3Context = useContext(Web3Context);
-    const { signerAddress, web3Modal, prettyName, connectedChain } = web3Context;
+    const { signerAddress, web3Modal, prettyName, connectedChain } = useContext(RainbowContext);
     const { colorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useState(false);

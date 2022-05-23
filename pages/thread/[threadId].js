@@ -14,7 +14,7 @@ import { ReplyIcon, ThreeDotMenuIcon, CodeIcon } from '@/public/icons';
 import { /*getAllThreads,*/ getComments, getThread } from "@/lib/thread-db";
 import timeAgo from '@/utils/timeAgo';
 import { toB64, cleanAdd, truncateAddress, prettyTime } from '@/utils/stringUtils';
-import { Web3Context } from '@/contexts/Web3Context';
+import { RainbowContext } from '@/contexts/RainbowContext';
 import CustomAvatar from '@/components/CustomAvatar';
 
 export async function getServerSideProps(context) {
@@ -87,8 +87,7 @@ const Threads = (props) => {
     const toast = useToast()
     const [isSending, setSending] = useState(false);
 
-    const web3Context = useContext(Web3Context)
-    const {connectWallet, signerAddress, getAuthToken} = web3Context;
+    const {connectWallet, signerAddress, getAuthToken} = useContext(RainbowContext);
 
     useEffect(() => {
         if (thread && Object.keys(thread).includes('url') == false) {

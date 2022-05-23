@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, Heading, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Spinner, Tag, Divider  } from "@chakra-ui/react";
 import PropTypes from 'prop-types';
 
-import { Web3Context } from '@/contexts/Web3Context';
+import { RainbowContext } from '@/contexts/RainbowContext';
 import { MoonOutlineIcon, SunActiveIcon, ThreeDotMenuFlatIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, FreetonIcon, OmnidIcon, VartaIcon, OkxIcon, UdIcon } from '@/public/icons';
 import { CloseIcon, InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
@@ -42,7 +42,7 @@ PageShell.propTypes = {
 
 const DashboardShell = ({title, active, children, searchbox}) => {
 
-    const { connectWallet, signerAddress, isPortisLoading, connectedChain } = useContext(Web3Context);
+    const { connectWallet, signerAddress, isPortisLoading, connectedChain } = useContext(RainbowContext);
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [walletInfo, setWalletInfo] = useState('');
@@ -124,7 +124,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                     }
                     <Wrap mt={10} width={{base:"100%", md:"40%"}}>
                         <WalletItem
-                            onClick={()=>{connectWallet('injected')}}
+                            onClick={()=>{connectWallet('metaMask')}}
                             backgroundImage="linear-gradient(229.83deg, rgb(205 131 59) -258.34%, rgb(205 189 178 / 18%) 100.95%)"
                             title="MetaMask"
                             icon={ <MetaMaskIcon boxSize={9} mx={2} /> }
@@ -133,7 +133,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                         />
 
                         <WalletItem
-                            onClick={()=>{connectWallet('walletconnect')}}
+                            onClick={()=>{connectWallet('walletConnect')}}
                             backgroundImage="linear-gradient(229.83deg, rgb(59 153 252) -258.34%, rgb(82 153 231 / 18%) 100.95%)"
                             title="WalletConnect"
                             icon={ <WalletConnectIcon boxSize={9} mx={2} /> }
@@ -167,42 +167,12 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
                         <WalletItem
-                            onClick={()=>{connectWallet('okx')}}
-                            backgroundImage="linear-gradient(215deg, rgb(16 15 19) 0%, rgb(255 255 255 / 13%) 100%)"
-                            title="OEC"
-                            icon={<OkxIcon boxSize={8} mx={2}/>}
-                            display={isMoreOpen === true ? 'inline-flex' : 'none'}
-                            onMouseEnter={()=>{setWalletInfo('Sign-in with OEC powwered by MetaX Wallet.')}}
-                            onMouseLeave={()=>{setWalletInfo('')}}
-                        />
-
-                        <WalletItem
-                            onClick={()=>{connectWallet('cosmos')}}
-                            backgroundImage="linear-gradient(215deg, rgb(27 30 54) 0%, rgb(111 115 144) 100%)"
-                            title="Cosmos"
-                            icon={<CosmosIcon boxSize={8} mx={2} style={{transform:"scale(1.5)"}}/>}
-                            display={isMoreOpen === true ? 'inline-flex' : 'none'}
-                            onMouseEnter={()=>{setWalletInfo('Sign-in with Cosmos Blockchain using Evmos.')}}
-                            onMouseLeave={()=>{setWalletInfo('')}}
-                        />
-
-                        <WalletItem
                             onClick={()=>{connectWallet('custom-uauth')}}
                             backgroundImage="linear-gradient(213deg, #2fe9ff4f 0%, #4c47f76b 70%)"
                             title="Unstoppable"
                             icon={<UdIcon boxSize={8} mx={2}/>}
                             display={isMoreOpen === true ? 'inline-flex' : 'none'}
                             onMouseEnter={()=>{setWalletInfo('Sign-in with your Unstoppable Domain.')}}
-                            onMouseLeave={()=>{setWalletInfo('')}}
-                        />
-
-                        <WalletItem
-                            onClick={()=>{connectWallet('freeton')}}
-                            backgroundImage="linear-gradient(228deg, rgb(32 95 236 / 44%) 0%, rgb(136 189 243 / 60%) 100%);"
-                            title="FreeTON"
-                            icon={<FreetonIcon boxSize={8} mx={2} transform="scale(1.2)"/>}
-                            display={isMoreOpen === true ? 'inline-flex' : 'none'}
-                            onMouseEnter={()=>{setWalletInfo('Sign-in with FreeTON Blockchain powered by Extraton Wallet.')}}
                             onMouseLeave={()=>{setWalletInfo('')}}
                         />
 

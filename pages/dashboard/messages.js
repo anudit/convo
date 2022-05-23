@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { CheckIcon, DeleteIcon, SearchIcon} from "@chakra-ui/icons"
 import PropTypes from 'prop-types';
 
-import { Web3Context } from '@/contexts/Web3Context';
+import { RainbowContext } from '@/contexts/RainbowContext';
 import fetcher from '@/utils/fetcher';
 import { prettyTime } from "@/utils/stringUtils"
 import { CodeIcon } from '@/public/icons';
@@ -59,7 +59,7 @@ createTheme('lightTable', {
 
 const CommentsSection = (props) => {
 
-    const { signerAddress} = useContext(Web3Context);
+    const { signerAddress} = useContext(RainbowContext);
 
     const [messageGroups, setMessageGroups] = useState({});
     const [activeId, setActiveId] = useState('');
@@ -234,7 +234,7 @@ export default CommentsSection;
 
 const MessagesTable = ({messages, mutate}) => {
 
-    const { signerAddress, getAuthToken } = useContext(Web3Context);
+    const { signerAddress, getAuthToken } = useContext(RainbowContext);
     const { colorMode } = useColorMode();
     const toast = useToast();
     const [resetPaginationToggle,] = useState(false);

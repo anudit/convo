@@ -13,7 +13,7 @@ const QrCode = dynamic(
 
 const SignedInMenu = () => {
 
-    const { prettyName, connectedWallet, signerAddress, disconnectWallet } = useContext(Web3Context);
+    const { prettyName, connectedWallet, signerAddress, disconnectWallet } = useContext(RainbowContext);
     const { hasCopied, onCopy } = useClipboard(signerAddress)
 
     return (

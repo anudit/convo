@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import DashboardShell from '@/components/DashboardShell';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { CopyIcon, CheckIcon } from '@chakra-ui/icons';
-import { Web3Context } from '@/contexts/Web3Context';
+import { RainbowContext } from '@/contexts/RainbowContext';
 import fetcher from '@/utils/fetcher';
 import { prettifyNumber } from '@/utils/stringUtils';
 
@@ -17,7 +17,7 @@ const DeveloperSection = () => {
     const cookies = Cookies.withAttributes({
         path: '/'
     })
-    const { signerAddress, getAuthToken } = useContext(Web3Context);
+    const { signerAddress, getAuthToken } = useContext(RainbowContext);
     const [apikeyData, setApikeyData] = useState({});
     const [chartData, setChartData] = useState([]);
     const { hasCopied, onCopy } = useClipboard(apikeyData?.activeKey);

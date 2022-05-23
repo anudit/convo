@@ -12,7 +12,7 @@ import { EthereumAuthProvider, SelfID } from '@self.id/web'
 
 import DashboardShell from '@/components/DashboardShell';
 import fetcher from '@/utils/fetcher';
-import { Web3Context } from '@/contexts/Web3Context';
+import { RainbowContext } from '@/contexts/RainbowContext';
 import { ReloadIcon, VerifiedIcon, MetaMaskIcon, OmnidIcon } from '@/public/icons';
 import { ensToAddress, prettifyNumber, truncateAddress } from '@/utils/stringUtils';
 
@@ -58,7 +58,7 @@ import { ethers } from 'ethers';
 
 const IdentitySection = () => {
 
-  const { web3Modal, signerAddress, connectedChain } = useContext(Web3Context);
+  const { web3Modal, signerAddress, connectedChain } = useContext(RainbowContext);
   const [trustScoreData, setTrustScoreData] = useState(null);
   const [trustScoreLoading, setTrustScoreLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -442,8 +442,7 @@ export default IdentitySection;
 
 const BrightIdCard = () => {
 
-  const web3Context = useContext(Web3Context)
-  const { signerAddress } = web3Context;
+  const { signerAddress } = useContext(RainbowContext);
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { hasCopied, onCopy } = useClipboard(`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`)
@@ -512,8 +511,7 @@ const BrightIdCard = () => {
 
 const IdxCard = () => {
 
-  const web3Context = useContext(Web3Context);
-  const { signerAddress, web3Modal, provider } = web3Context;
+  const { signerAddress, web3Modal, provider } = useContext(RainbowContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [identities, setIdentities] = useState(null);
@@ -690,7 +688,7 @@ const PoapSection = ({trustScoreData}) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [poapDetails, setPoapDetails] = useState(null);
-  const { signerAddress } = useContext(Web3Context);
+  const { signerAddress } = useContext(RainbowContext);
 
   useEffect(() => {
     if (isAddress(signerAddress)) fetcher(`https://api.poap.xyz/actions/scan/${signerAddress}`, "GET", {}).then(setPoaps);

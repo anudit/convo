@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 
 import DashboardShell from '@/components/DashboardShell';
 import CustomAvatar from '@/components/CustomAvatar';
-import { Web3Context } from '@/contexts/Web3Context';
+import { RainbowContext } from '@/contexts/RainbowContext';
 import { truncateAddress } from '@/utils/stringUtils';
 
 const Dashboard = () => {
 
-    const { signerAddress, prettyName, connectedChain } = useContext(Web3Context);
+    const { signerAddress, prettyName, connectedChain } = useContext(RainbowContext);
 
     return (
         <DashboardShell active="home" title="Dashboard">

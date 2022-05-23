@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import customTheme from '@/styles/theme';
 import { Web3ContextProvider } from '@/contexts/Web3Context';
+import { RainbowContextProvider } from '@/contexts/RainbowContext';
 
 const GlobalStyle = ({ children }) => {
   return (
@@ -133,15 +134,15 @@ GlobalStyle.propTypes = {
 
 const App = ({ Component, pageProps }) => {
   return (
-    <Web3ContextProvider>
-      <ChakraProvider theme={customTheme} resetCSS>
-          <GlobalStyle />
-          <Head>
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-          </Head>
-          <Component {...pageProps} />
-      </ChakraProvider>
-    </Web3ContextProvider>
+    <RainbowContextProvider>
+        <ChakraProvider theme={customTheme} resetCSS>
+            <GlobalStyle />
+            <Head>
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+            </Head>
+            <Component {...pageProps} />
+        </ChakraProvider>
+    </RainbowContextProvider>
   )
 }
 

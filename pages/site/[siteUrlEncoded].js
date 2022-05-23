@@ -13,7 +13,7 @@ import NavBar from '@/components/NavBar';
 import { getThreadsByUrl /*,getAllThreads*/ } from "@/lib/thread-db";
 import { /*toB64,*/ fromB64 } from '@/utils/stringUtils';
 import { createThread } from "@/lib/thread-db";
-import { Web3Context } from '@/contexts/Web3Context'
+import { RainbowContext } from '@/contexts/RainbowContext'
 import { CustomButton } from '@/components/CustomButtons';
 
 export async function getServerSideProps(context) {
@@ -123,8 +123,7 @@ const SiteInterface = ({initialThreads}) => {
     const newThreadTitleRef = useRef()
     const toast = useToast()
 
-    const web3Context = useContext(Web3Context)
-    const {connectWallet, signerAddress} = web3Context;
+    const {connectWallet, signerAddress} = useContext(RainbowContext);
 
     async function creatNewThread () {
 

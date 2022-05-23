@@ -11,9 +11,62 @@ import PropTypes from 'prop-types';
 import { ReplyIcon, ThreeDotMenuIcon, DisconnectIcon, TheConvoSpaceIcon } from '@/public/icons';
 import timeAgo from '@/utils/timeAgo';
 import { cleanAdd, truncateAddress } from '@/utils/stringUtils';
-import { Web3Context } from '@/contexts/Web3Context'
+import { RainbowContext } from '@/contexts/RainbowContext'
 import fetcher from '@/utils/fetcher';
 import CustomAvatar from '@/components/CustomAvatar';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+
+export const YourApp = ({createNewComment, isLoading}) => {
+    return (
+      <ConnectButton.Custom>
+        {({
+          account,
+          chain,
+          openAccountModal,
+          openChainModal,
+          openConnectModal,
+          mounted,
+        }) => {
+          return (
+            <div
+              {...(!mounted && {
+                'aria-hidden': true,
+                'style': {
+                  opacity: 0,
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                },
+              })}
+            >
+              {(() => {
+                if (!mounted || !account || !chain) {
+                  return (
+                    <button onClick={openConnectModal} type="button">
+                      Login
+                    </button>
+                    // <Button
+                    //     h="1.75rem"
+                    //     size="sm"
+                    //     onClick={createNewComment}
+                    //     isLoading={isSending}
+                    // >
+                    //     {signerAddress == "" ?("Login") : ("Send")}
+                    // </Button>
+                  );
+                }
+
+                return (
+                    <button onClick={createNewComment} type="button">
+                      Send
+                    </button>
+                );
+              })()}
+            </div>
+          );
+        }}
+      </ConnectButton.Custom>
+    );
+  };
 
 const Threads = (props) => {
 
@@ -30,8 +83,7 @@ const Threads = (props) => {
     const toast = useToast()
     const [isSending, setSending] = useState(false);
 
-    const web3Context = useContext(Web3Context)
-    const {connectWallet, signerAddress, disconnectWallet, getAuthToken} = web3Context;
+    const {connectWallet, signerAddress, disconnectWallet, getAuthToken} = useContext(RainbowContext);
 
     const [embedCode, setEmbedCode] = useState("");
     const { onCopy: onCopyEmbedCode } = useClipboard(embedCode);
@@ -133,7 +185,7 @@ const Threads = (props) => {
     async function createNewComment(){
         setSending(true);
 
-        if (signerAddress ===   ""){
+        if (signerAddress ===  ""){
             connectWallet();
         }
         else {
@@ -426,14 +478,15 @@ const Threads = (props) => {
                                 autoComplete="off"
                             />
                             <InputRightElement width="4.5rem">
-                                <Button
+                                <YourApp createNewComment={createNewComment} isLoading={isSending}/>
+                                {/* <Button
                                     h="1.75rem"
                                     size="sm"
                                     onClick={createNewComment}
                                     isLoading={isSending}
                                 >
                                     {signerAddress == "" ?("Login") : ("Send")}
-                                </Button>
+                                </Button> */}
                             </InputRightElement>
                         </InputGroup>
                     </Flex>

@@ -4,7 +4,7 @@ import { useDisclosure, useToast, Link, InputGroup, Stack, InputLeftElement,Inpu
 import { SearchIcon } from "@chakra-ui/icons";
 import PropTypes from 'prop-types';
 
-import { Web3Context } from '@/contexts/Web3Context'
+import { RainbowContext } from '@/contexts/RainbowContext'
 import { createThread } from "@/lib/thread-db";
 import { ThreadCard, ThreadCardSkeleton } from '@/components/ThreadCard';
 import { toB64 } from '@/utils/stringUtils';
@@ -12,8 +12,7 @@ import { toB64 } from '@/utils/stringUtils';
 export const ThreadView = ({link, threads, exploreAll}) => {
 
     const router = useRouter();
-    const web3Context = useContext(Web3Context)
-    const {connectWallet, signerAddress} = web3Context;
+    const {connectWallet, signerAddress} = useContext(RainbowContext);
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const searchText = useRef()
