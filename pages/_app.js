@@ -5,7 +5,6 @@ import Head from 'next/head'
 import PropTypes from 'prop-types';
 
 import customTheme from '@/styles/theme';
-import { Web3ContextProvider } from '@/contexts/Web3Context';
 import { RainbowContextProvider } from '@/contexts/RainbowContext';
 
 const GlobalStyle = ({ children }) => {

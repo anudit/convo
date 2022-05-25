@@ -16,14 +16,15 @@ import fetcher from '@/utils/fetcher';
 import CustomAvatar from '@/components/CustomAvatar';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
-export const YourApp = ({createNewComment, isLoading}) => {
+export const Connect = ({createNewComment, isLoading}) => {
+
+    const {getAuthToken} = useContext(RainbowContext)
+
     return (
       <ConnectButton.Custom>
         {({
           account,
           chain,
-          openAccountModal,
-          openChainModal,
           openConnectModal,
           mounted,
         }) => {
@@ -41,24 +42,26 @@ export const YourApp = ({createNewComment, isLoading}) => {
               {(() => {
                 if (!mounted || !account || !chain) {
                   return (
-                    <button onClick={openConnectModal} type="button">
-                      Login
-                    </button>
-                    // <Button
-                    //     h="1.75rem"
-                    //     size="sm"
-                    //     onClick={createNewComment}
-                    //     isLoading={isSending}
-                    // >
-                    //     {signerAddress == "" ?("Login") : ("Send")}
-                    // </Button>
+                    <Button
+                        h="1.75rem"
+                        mr={2}
+                        size="sm"
+                        onClick={openConnectModal}
+                    >
+                        Login
+                    </Button>
                   );
                 }
 
                 return (
-                    <button onClick={createNewComment} type="button">
-                      Send
-                    </button>
+                    <Button
+                        h="1.75rem"
+                        size="sm"
+                        onClick={createNewComment}
+                        isLoading={isLoading}
+                    >
+                        Send
+                    </Button>
                 );
               })()}
             </div>
@@ -66,7 +69,12 @@ export const YourApp = ({createNewComment, isLoading}) => {
         }}
       </ConnectButton.Custom>
     );
-  };
+};
+
+Connect.propTypes = {
+    isLoading: PropTypes.bool,
+    createNewComment: PropTypes.func
+}
 
 const Threads = (props) => {
 
@@ -478,7 +486,7 @@ const Threads = (props) => {
                                 autoComplete="off"
                             />
                             <InputRightElement width="4.5rem">
-                                <YourApp createNewComment={createNewComment} isLoading={isSending}/>
+                                <Connect createNewComment={createNewComment} isLoading={isSending}/>
                                 {/* <Button
                                     h="1.75rem"
                                     size="sm"

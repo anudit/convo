@@ -155,14 +155,15 @@ const handler = async(req, res) => {
         let data = `I allow this site to access my data on The Convo Space using the account ${req.body.signerAddress}. Timestamp:${req.body.timestamp}`;
         fcl.config()
             .put("challenge.scope", "email") // request for Email
-            .put("accessNode.api", "https://access-testnet.onflow.org") // Flow testnet
+            // .put("accessNode.api", "https://access-testnet.onflow.org") // Flow testnet
             .put("discovery.wallet", "https://flow-wallet-testnet.blocto.app/api/flow/authn") // Blocto testnet wallet
-            .put("discovery.wallet.method", "HTTP/POST")
+            // .put("discovery.wallet.method", "HTTP/POST")
             .put("service.OpenID.scopes", "email!")
+            .put("flow.network", "testnet")
 
         const MSG = Buffer.from(data).toString("hex")
 
-        let isValid = await fcl.verifyUserSignatures(MSG, req.body.signature);
+        let isValid = await fcl.AppUtils.verifyUserSignatures(MSG, req.body.signature);
 
         if(isValid === true){
 

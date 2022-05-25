@@ -64,7 +64,7 @@ const RainbowKit = ({children}) => {
     const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
     const { data: accountData } = useAccount();
-    const { activeConnector, connectors, connectAsync } = useConnect();
+    const { connectors, connectAsync } = useConnect();
     const { disconnectAsync } = useDisconnect({
         onError(error) {
           console.log('Error', error)
@@ -72,6 +72,7 @@ const RainbowKit = ({children}) => {
     })
 
     function getConnectorById(id){
+
         for (let index = 0; index < connectors.length; index++) {
             if (id == connectors[index].id) {
                 return connectors[index]
@@ -117,8 +118,9 @@ const RainbowKit = ({children}) => {
               setIsPortisLoading(true);
             }
 
-            let {provider} = await connectAsync(getConnectorById(choice));
-
+            let connector = getConnectorById(choice);
+            console.log('got here', connector);
+            let {provider} = await connectAsync(connector);
             const ethersProvider = new ethers.providers.Web3Provider(provider);
 
             let tempsigner = ethersProvider.getSigner();
@@ -263,112 +265,112 @@ const RainbowKit = ({children}) => {
 
     async function getAuthToken(manualAddress = undefined) {
 
-    let authAdd = Boolean(manualAddress) === true ? manualAddress : signerAddress;
-    let tokenRes = await fetcher('/api/validateAuth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', "POST", {
-        signerAddress: authAdd,
-        token: cookies.get('CONVO_SESSION')
-    });
+      let authAdd = Boolean(manualAddress) === true ? manualAddress : signerAddress;
+      let tokenRes = await fetcher('/api/validateAuth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO', "POST", {
+          signerAddress: authAdd,
+          token: cookies.get('CONVO_SESSION')
+      });
 
-    if (tokenRes['success'] === true){
-        return cookies.get('CONVO_SESSION');
-    }
-    else {
-        try {
-        let tokenUpdateRes = await updateAuthToken(authAdd, connectedChain, provider);
-        if (tokenUpdateRes) {
-            return tokenUpdateRes;
-        }
-        }
-        catch (e) {
-        alert('Dynamic Auth Token update Error.');
-        console.log(e);
-        }
-    }
+      if (tokenRes['success'] === true){
+          return cookies.get('CONVO_SESSION');
+      }
+      else {
+          try {
+            let tokenUpdateRes = await updateAuthToken(authAdd, connectedChain == "" ? "ethereum" : connectedChain, provider);
+            if (tokenUpdateRes) {
+                return tokenUpdateRes;
+            }
+          }
+          catch (e) {
+            alert('Dynamic Auth Token update Error.');
+            console.log(e);
+          }
+      }
     }
 
     async function updateAuthToken(signerAddress, chainName, tempProvider) {
 
-    console.log('update auth token');
+      console.log('update auth token');
 
-    let timestamp = Date.now();
-    let data = `I allow this site to access my data on The Convo Space using the account ${signerAddress}. Timestamp:${timestamp}`;
+      let timestamp = Date.now();
+      let data = `I allow this site to access my data on The Convo Space using the account ${signerAddress}. Timestamp:${timestamp}`;
 
-    let dataV2 = convoInstance.auth.getSignatureDataV2('https://theconvo.space/', signerAddress, 1);
-    let res;
+      let dataV2 = convoInstance.auth.getSignatureDataV2('https://theconvo.space/', signerAddress, 1);
+      let res;
 
-    if (chainName === "ethereum") {
-        let signature = await tempProvider.send(
-            'personal_sign',
-            [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(dataV2)), signerAddress.toLowerCase() ]
-        );
-        res = await fetcher(`/api/authV2?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
-            message: dataV2,
-            signature,
+      if (chainName === "ethereum") {
+          let signature = await tempProvider.send(
+              'personal_sign',
+              [ ethers.utils.hexlify(ethers.utils.toUtf8Bytes(dataV2)), signerAddress.toLowerCase() ]
+          );
+          res = await fetcher(`/api/authV2?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+              message: dataV2,
+              signature,
+              timestamp,
+              chain: "ethereum"
+          });
+
+      }
+      else if (chainName === "near"){
+
+          const tokenMessage = new TextEncoder().encode(data);
+          const signatureData = await tempProvider.account().connection.signer.signMessage(tokenMessage, signerAddress, 'testnet');
+
+          res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+          "signature": Buffer.from(signatureData.signature).toString('hex'),
+          "signerAddress": Buffer.from(signatureData.publicKey.data).toString('hex'),
+          "accountId": signerAddress,
+          timestamp,
+          "chain": "near"
+          });
+
+      }
+      else if (chainName === "flow"){
+
+          const MSG = Buffer.from(data).toString("hex")
+          const signature = await fcl.currentUser().signUserMessage(MSG)
+
+          res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+          signerAddress,
+          signature,
+          timestamp,
+          chain: "flow"
+          });
+
+      }
+      else if (chainName === "solana") {
+          const encodedMessage = new TextEncoder().encode(data);
+          const { publicKey, signature } = await tempProvider.signMessage(encodedMessage, "utf8");
+
+          res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+          signerAddress: publicKey.toString(),
+          signature: Buffer.from(signature).toString('hex'),
+          timestamp,
+          chain: "solana"
+          });
+
+      }
+      else if (chainName === "freeton") {
+          let { signed } = await tempProvider.sign(data);
+          res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
+            signerAddress: signerAddress,
+            signature: signed,
             timestamp,
-            chain: "ethereum"
-        });
+            chain: "freeton"
+          });
 
-    }
-    else if (chainName === "near"){
+      }
 
-        const tokenMessage = new TextEncoder().encode(data);
-        const signatureData = await tempProvider.account().connection.signer.signMessage(tokenMessage, signerAddress, 'testnet');
-
-        res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
-        "signature": Buffer.from(signatureData.signature).toString('hex'),
-        "signerAddress": Buffer.from(signatureData.publicKey.data).toString('hex'),
-        "accountId": signerAddress,
-        timestamp,
-        "chain": "near"
-        });
-
-    }
-    else if (chainName === "flow"){
-
-        const MSG = Buffer.from(data).toString("hex")
-        const signature = await fcl.currentUser().signUserMessage(MSG)
-
-        res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
-        signerAddress,
-        signature,
-        timestamp,
-        chain: "flow"
-        });
-
-    }
-    else if (chainName === "solana") {
-        const encodedMessage = new TextEncoder().encode(data);
-        const { publicKey, signature } = await tempProvider.signMessage(encodedMessage, "utf8");
-
-        res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
-        signerAddress: publicKey.toString(),
-        signature: Buffer.from(signature).toString('hex'),
-        timestamp,
-        chain: "solana"
-        });
-
-    }
-    else if (chainName === "freeton") {
-        let { signed } = await tempProvider.sign(data);
-        res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
-        signerAddress: signerAddress,
-        signature: signed,
-        timestamp,
-        chain: "freeton"
-        });
-
-    }
-
-    if (res.success === true ) {
-        cookies.set('CONVO_SESSION', res['message'], { expires: 1, secure: true });
-        console.log('valid session setup.')
-        return res['message'];
-    }
-    else {
-        alert(`Auth Error, ${res['message']}`);
-        await disconnectWallet();
-        return false;
-    }
+      if (res.success === true ) {
+          cookies.set('CONVO_SESSION', res['message'], { expires: 1, secure: true });
+          console.log('valid session setup.')
+          return res['message'];
+      }
+      else {
+          alert(`Auth Error, ${res['message']}`);
+          await disconnectWallet();
+          return false;
+      }
     }
 
       async function disconnectWallet() {
