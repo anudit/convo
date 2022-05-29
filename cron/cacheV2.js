@@ -10,7 +10,7 @@ const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const fs = require('fs');
 const path = require('path');
 
-const { ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID, MONGODB_URI } = process.env;
+const { BITQUERY_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID, MONGODB_URI } = process.env;
 
 const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
@@ -61,6 +61,7 @@ async function computeScoreData(address){
         maticPriceInUsd: GLOBAL_MATIC_PRICE,
         etherscanApiKey: ETHERSCAN_API_KEY,
         polygonscanApiKey: POLYGONSCAN_API_KEY,
+        bitqueryApiKey: BITQUERY_API_KEY,
         CNVSEC_ID: CNVSEC_ID,
         DEBUG: false,
     }
@@ -322,7 +323,7 @@ async function runPipline(){
     const mongoClient = await MongoClient.connect(MONGODB_URI);
 
     let addressTable = await getAddresses(threadClient, mongoClient);
-    addressTable = getArraySample(addressTable, 8000);
+    addressTable = getArraySample(addressTable, 5000);
     await cacheTrustScoresManual(addressTable, mongoClient);
     await mongoClient.close();
 }

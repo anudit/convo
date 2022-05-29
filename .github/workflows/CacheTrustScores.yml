@@ -29,5 +29,6 @@ jobs:
         CNVSEC_ID: ${{ secrets.CNVSEC_ID }}
         MONGODB_URI: ${{ secrets.MONGODB_URI }}
         ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
-        POLYGONSCAN_API_KEY:  ${{ secrets.POLYGONSCAN_API_KEY }}
+        POLYGONSCAN_API_KEY: ${{ secrets.POLYGONSCAN_API_KEY }}
+        BITQUERY_API_KEY: ${{ secrets.BITQUERY_API_KEY }}
       run: yarn cron:cacheV2

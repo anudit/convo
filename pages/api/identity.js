@@ -5,7 +5,7 @@ import { Convo } from "@theconvospace/sdk";
 import withCors from "@/middlewares/withCors";
 const mongoClientPromise = require('@/lib/mongo-db');
 
-const { ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, PK_ORACLE, CNVSEC_ID } = process.env;
+const { BITQUERY_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, PK_ORACLE, CNVSEC_ID } = process.env;
 const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
 function cleanNulls(obj){
@@ -30,6 +30,7 @@ async function calculateScore(address) {
         maticPriceInUsd: 2.3,
         etherscanApiKey: ETHERSCAN_API_KEY,
         polygonscanApiKey: POLYGONSCAN_API_KEY,
+        bitqueryApiKey: BITQUERY_API_KEY,
         CNVSEC_ID: CNVSEC_ID,
         DEBUG: false,
     }

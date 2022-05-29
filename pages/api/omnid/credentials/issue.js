@@ -5,7 +5,7 @@ import { isAddress } from '@ethersproject/address';
 import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 
-const { ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, CNVSEC_ID } = process.env;
+const { BITQUERY_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, CNVSEC_ID } = process.env;
 const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
 const keyTofn = {
@@ -23,6 +23,7 @@ const computeConfig = {
     maticPriceInUsd: 2.3,
     etherscanApiKey: ETHERSCAN_API_KEY,
     polygonscanApiKey: POLYGONSCAN_API_KEY,
+    bitqueryApiKey: BITQUERY_API_KEY,
     CNVSEC_ID: CNVSEC_ID,
     DEBUG: false,
 }
