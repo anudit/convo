@@ -202,7 +202,7 @@ export async function addressToEns(address){
                 {
                     "query":`
                     {
-                        domains(where: {resolvedAddress: "${address.toLowerCase()}"}) {
+                        domains(where: {resolvedAddress: "${address.toLowerCase()}"}, orderBy: createdAt, orderDirection: asc) {
                           name
                         }
                     }`,
@@ -216,7 +216,7 @@ export async function addressToEns(address){
             return false;
         }
         else {
-            return resp['data']["domains"][resp['data']["domains"].length-1]?.name;
+            return resp['data']["domains"][0]?.name;
         }
 
     } catch (error) {

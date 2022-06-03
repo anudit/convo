@@ -3,6 +3,7 @@ import { getAddress, isAddress } from 'ethers/lib/utils';
 import withApikey from "@/middlewares/withApikey";
 import { Convo } from "@theconvospace/sdk";
 import withCors from "@/middlewares/withCors";
+import { ensToAddress } from "@/utils/stringUtils";
 const mongoClientPromise = require('@/lib/mongo-db');
 
 const { BITQUERY_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, PK_ORACLE, CNVSEC_ID } = process.env;
@@ -191,30 +192,6 @@ async function setCache(client, address, scoreData) {
         { upsert: true }
     )
 
-}
-
-async function ensToAddress(ensAddress){
-    try {
-
-        let resp = await fetch("https://api.thegraph.com/subgraphs/name/ensdomains/ens", {
-            "headers": {
-                "accept": "*/*",
-                "content-type": "application/json",
-            },
-            "body": "{\"query\":\"{\\n  domains(where:{name:\\\""+ensAddress+"\\\"}) {\\n    resolvedAddress {\\n      id\\n    }\\n  }\\n}\\n\",\"variables\":null}",
-            "method": "POST",
-        }).then((r)=>{return r.json()});
-
-        if (Boolean(resp['data']["domains"][0]["resolvedAddress"]) === false){
-            return false;
-        }
-        else {
-            return getAddress(resp['data']["domains"][0]["resolvedAddress"]['id'])
-        }
-
-    } catch (error) {
-        return false;
-    }
 }
 
 const handler = async(req, res) => {

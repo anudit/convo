@@ -1,12 +1,13 @@
 import fs from 'fs'
 import path from 'path'
 import { ethers } from "ethers";
-import { getAddress, isAddress } from 'ethers/lib/utils';
+import { isAddress } from 'ethers/lib/utils';
 import { Convo } from "@theconvospace/sdk";
 import { promisify } from 'util'
 import { initialize } from 'zokrates-js/node';
 import withCors from '@/middlewares/withCors';
 import withApikey from '@/middlewares/withApikey';
+import { ensToAddress } from '@/utils/stringUtils';
 
 const readFileAsync = promisify(fs.readFile);
 const fromHexString = hexString =>
@@ -174,30 +175,6 @@ async function calculateScore(address) {
   final['success'] = true;
 
   return final;
-}
-
-async function ensToAddress(ensAddress){
-  try {
-
-      let resp = await fetch("https://api.thegraph.com/subgraphs/name/ensdomains/ens", {
-          "headers": {
-              "accept": "*/*",
-              "content-type": "application/json",
-          },
-          "body": "{\"query\":\"{\\n  domains(where:{name:\\\""+ensAddress+"\\\"}) {\\n    resolvedAddress {\\n      id\\n    }\\n  }\\n}\\n\",\"variables\":null}",
-          "method": "POST",
-      }).then((r)=>{return r.json()});
-
-      if (Boolean(resp['data']["domains"][0]["resolvedAddress"]) === false){
-          return false;
-      }
-      else {
-          return getAddress(resp['data']["domains"][0]["resolvedAddress"]['id'])
-      }
-
-  } catch (error) {
-      return false;
-  }
 }
 
 async function generateProof(score, rangeLow, rangeHigh){

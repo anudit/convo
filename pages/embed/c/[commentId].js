@@ -9,7 +9,7 @@ import { TheConvoSpaceIcon, ExternalIcon } from "@/public/icons";
 import { getComment } from "@/lib/thread-db"
 import { truncateAddress, prettyTime } from "@/utils/stringUtils"
 import { getAvatar } from '@/utils/avatar';
-import { addressToEns } from '@/lib/identity';
+import { addressToEns } from '@/utils/stringUtils';
 
 export async function getServerSideProps(context) {
 
