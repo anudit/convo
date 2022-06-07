@@ -3632,10 +3632,10 @@
     event-iterator "^2.0.0"
     loglevel "^1.7.0"
 
-"@theconvospace/sdk@^0.4.17":
-  version "0.4.17"
-  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.4.17.tgz#b87adc03eb285649dfe22d08caa4e7b14b3177a2"
-  integrity sha512-QyO+Uk1/ZGdrHgjG+iFOsxMlfw3H60CLmz4Ok7rTAgbLp929KKvLiIRhwonzQKHcFbzh6ah4o8JhaMM0BSub9A==
+"@theconvospace/sdk@^0.4.18":
+  version "0.4.18"
+  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.4.18.tgz#69446984f608d2384495a71ef434f06dc3c69f93"
+  integrity sha512-yrZYU+DFzYp2IPm2bgDkCDpQkg1z5X52THYDzdaf5dzVcCJcTxQWHqAN4xS/0vRwTuCO3dUs+8I0XfC/BiM1lg==
   dependencies:
     "@ethersproject/abi" "^5.6.3"
     "@ethersproject/providers" "^5.6.8"

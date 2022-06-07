@@ -101,6 +101,18 @@ const handler = async(req, res) => {
           count: comments.length
         })
       }
+      else if (Boolean(req.query?.airdrop) === true && req.query.airdrop == 'true'){
+
+        let addressList = comments.map(e=>{
+          return e.author;
+        })
+
+        return res.status(200).json({
+          success: true,
+          addresses: addressList
+        })
+
+      }
       else {
         return res.status(200).json(comments);
       }
