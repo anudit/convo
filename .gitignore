@@ -53,3 +53,6 @@ scripts
 .terraform
 .terraform.lock.hcl
 .terraformignore
+*.ppk
+*.pem
+fly.toml

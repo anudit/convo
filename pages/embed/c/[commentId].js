@@ -14,16 +14,26 @@ import { addressToEns } from '@/utils/stringUtils';
 export async function getServerSideProps(context) {
 
   let commentData = await getComment(context.params.commentId);
-  let ensAdd = await addressToEns(commentData.author);
+  if (commentData){
 
-  if (Boolean(ensAdd) === true) {
-    commentData['authorENS'] = ensAdd;
+    let ensAdd = await addressToEns(commentData.author);
+
+    if (Boolean(ensAdd) === true) {
+      commentData['authorENS'] = ensAdd;
+    }
+
+    return {
+      props: {
+        comment: commentData
+      },
+    }
   }
-
-  return {
-    props: {
-      comment: commentData
-    },
+  else {
+    return {
+      props: {
+        comment: false
+      }
+    }
   }
 }
 
@@ -142,7 +152,7 @@ const Card = ({comment}) => {
             width="fit-content"
           >
             <Flex>
-              Invalid Address
+              Not Found
             </Flex>
 
           </Flex>
@@ -157,7 +167,7 @@ const Card = ({comment}) => {
   }
 };
 Card.propTypes = {
-  comment: PropTypes.object
+  comment: PropTypes.any
 }
 
 export default Card;

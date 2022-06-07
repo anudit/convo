@@ -24,7 +24,8 @@ provider "aws" {
 
 module "tf_next" {
   source = "milliHQ/next-js/aws"
-
+  version = "0.13.2"
+  lambda_runtime = "nodejs16.x"
   providers = {
     aws.global_region = aws.global_region
   }
