@@ -103,14 +103,21 @@ const handler = async(req, res) => {
       }
       else if (Boolean(req.query?.airdrop) === true && req.query.airdrop == 'true'){
 
-        let addressList = comments.map(e=>{
+        let addressList = Array.from(new Set(comments.map(e=>{
           return e.author;
-        })
+        })));
 
-        return res.status(200).json({
-          success: true,
-          addresses: addressList
-        })
+        if (req.query?.airdropMode === 'csv'){
+          res.setHeader('Content-Type', 'text/csv');
+          let airdropData = addressList.map((e)=>`${e},${Boolean(req.query?.airdropAmount) === true ? parseInt(req.query?.airdropAmount) : ""}`).join('\n');
+          return res.status(200).send(airdropData)
+        }
+        else {
+          return res.status(200).json({
+            success: true,
+            addresses: addressList
+          })
+        }
 
       }
       else {
