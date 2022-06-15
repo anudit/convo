@@ -1,4 +1,4 @@
-name: "Cache Trust Scores"
+name: "Cache Omnid Data"
 on:
   schedule:
     - cron: "0 0,12 * * *" # Every 12 hrs.
@@ -6,7 +6,7 @@ on:
 jobs:
   convo_crons:
     runs-on: ubuntu-latest
-    name: Cache Trust Scores
+    name: Cache Omnid Data
     steps:
     - name: checkout
       uses: actions/checkout@v3
@@ -20,7 +20,7 @@ jobs:
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: yarn install
-    - name: Cache Trust Scores
+    - name: Cache Omnid Data
       env:
         TEXTILE_THREADID: ${{ secrets.TEXTILE_THREADID }}
         TEXTILE_PK: ${{ secrets.TEXTILE_PK }}

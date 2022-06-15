@@ -232,8 +232,8 @@ function cleanNulls(obj){
 async function cacheTrustScoresManual(addresses, mongoClient){
 
     const price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH,MATIC&key=ckey_2000734ae6334c75b8b44b1466e', "GET", {});
-    const GLOBAL_ETH_PRICE = parseFloat(price_data['data']['items'][0]['quote_rate']);
-    const GLOBAL_MATIC_PRICE = parseFloat(price_data['data']['items'][1]['quote_rate']);
+    GLOBAL_ETH_PRICE = parseFloat(price_data['data']['items'][0]['quote_rate']);
+    GLOBAL_MATIC_PRICE = parseFloat(price_data['data']['items'][1]['quote_rate']);
     console.log(`GLOBAL_MATIC_PRICE:${GLOBAL_MATIC_PRICE}$`,`GLOBAL_ETH_PRICE:${GLOBAL_ETH_PRICE}$`);
 
     let times = [];
