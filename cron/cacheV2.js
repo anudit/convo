@@ -10,7 +10,7 @@ const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const fs = require('fs');
 const path = require('path');
 
-const { BITQUERY_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID, MONGODB_URI } = process.env;
+const { OPTIMISMSCAN_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID, MONGODB_URI } = process.env;
 
 const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
@@ -55,16 +55,16 @@ async function computeScoreData(address){
 
     let computeConfig = {
         polygonMainnetRpc: "https://polygon-rpc.com",
-        etherumMainnetRpc: "https://eth.public-rpc.com/",
-        avalancheMainnetRpc: "https://avalanche.public-rpc.com/",
-        etherumPriceInUsd: GLOBAL_ETH_PRICE,
+        etherumMainnetRpc: "https://eth.public-rpc.com",
+        avalancheMainnetRpc: "https://avalanche.public-rpc.com",
         maticPriceInUsd: GLOBAL_MATIC_PRICE,
+        etherumPriceInUsd: GLOBAL_ETH_PRICE,
         etherscanApiKey: ETHERSCAN_API_KEY,
         polygonscanApiKey: POLYGONSCAN_API_KEY,
-        bitqueryApiKey: BITQUERY_API_KEY,
+        optimismscanApiKey: OPTIMISMSCAN_API_KEY,
         CNVSEC_ID: CNVSEC_ID,
         DEBUG: false,
-    }
+    };
 
     let resp = await convoInstance.omnid.computeTrustScore(
         address,

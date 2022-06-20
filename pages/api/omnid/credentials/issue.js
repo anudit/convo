@@ -5,7 +5,7 @@ import { isAddress } from '@ethersproject/address';
 import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 
-const { BITQUERY_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, CNVSEC_ID } = process.env;
+const { OPTIMISMSCAN_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, CNVSEC_ID } = process.env;
 const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
 const keyTofn = {
@@ -19,14 +19,14 @@ const computeConfig = {
     polygonMainnetRpc: "https://polygon-rpc.com",
     etherumMainnetRpc: "https://eth.public-rpc.com",
     avalancheMainnetRpc: "https://avalanche.public-rpc.com",
-    etherumPriceInUsd: 3300,
-    maticPriceInUsd: 2.3,
+    maticPriceInUsd: 0.4,
+    etherumPriceInUsd: 1200,
     etherscanApiKey: ETHERSCAN_API_KEY,
     polygonscanApiKey: POLYGONSCAN_API_KEY,
-    bitqueryApiKey: BITQUERY_API_KEY,
+    optimismscanApiKey: OPTIMISMSCAN_API_KEY,
     CNVSEC_ID: CNVSEC_ID,
     DEBUG: false,
-}
+};
 
 const handler = async(req, res) => {
 

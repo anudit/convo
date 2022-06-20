@@ -6,7 +6,7 @@ import withCors from "@/middlewares/withCors";
 import { ensToAddress } from "@/utils/stringUtils";
 const mongoClientPromise = require('@/lib/mongo-db');
 
-const { BITQUERY_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, PK_ORACLE, CNVSEC_ID } = process.env;
+const { OPTIMISMSCAN_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, PK_ORACLE, CNVSEC_ID } = process.env;
 const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
 function cleanNulls(obj){
@@ -27,14 +27,14 @@ async function calculateScore(address) {
         polygonMainnetRpc: "https://polygon-rpc.com",
         etherumMainnetRpc: "https://eth.public-rpc.com",
         avalancheMainnetRpc: "https://avalanche.public-rpc.com",
-        etherumPriceInUsd: 3300,
-        maticPriceInUsd: 2.3,
+        maticPriceInUsd: 0.4,
+        etherumPriceInUsd: 1200,
         etherscanApiKey: ETHERSCAN_API_KEY,
         polygonscanApiKey: POLYGONSCAN_API_KEY,
-        bitqueryApiKey: BITQUERY_API_KEY,
+        optimismscanApiKey: OPTIMISMSCAN_API_KEY,
         CNVSEC_ID: CNVSEC_ID,
         DEBUG: false,
-    }
+    };
 
     let resp = await convoInstance.omnid.computeTrustScore(
         address,
@@ -191,6 +191,7 @@ async function setCache(client, address, scoreData) {
         { $set: newDoc },
         { upsert: true }
     )
+    console.log('Cache set for', address);
 
 }
 
@@ -238,16 +239,18 @@ const handler = async(req, res) => {
             else {
 
                 let coll = client.db('convo').collection('cachedTrustScores');
-                let cachedTrustScore = await coll.findOne({_id: validatedAddress});
+                let cachedTrustScore = await coll.findOne({_id: getAddress(validatedAddress)});
 
                 // cache-hit
                 if (Boolean(cachedTrustScore) === true) {
+                    res.setHeader('Omnid-Cache-Hit', 'true');
                     return res.status(200).json({
                         ...cachedTrustScore
                     });
                 }
                 // cache-miss
                 else {
+                    res.setHeader('Omnid-Cache-Hit', 'false');
                     let scoreData = await calculateScore(validatedAddress);
                     if (scoreData?.score > 0){
                         setCache(client, getAddress(validatedAddress), scoreData);
