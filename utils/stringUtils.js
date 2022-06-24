@@ -168,20 +168,13 @@ export const isBlockchainAddress = (address) => {
 export async function ensToAddress(ensAddress){
     try {
 
-        let resp = await fetch("https://api.thegraph.com/subgraphs/name/ensdomains/ens", {
-            "headers": {
-                "accept": "*/*",
-                "content-type": "application/json",
-            },
-            "body": "{\"query\":\"{\\n  domains(where:{name:\\\""+ensAddress+"\\\"}) {\\n    resolvedAddress {\\n      id\\n    }\\n  }\\n}\\n\",\"variables\":null}",
-            "method": "POST",
-        }).then((r)=>{return r.json()});
+        let resp = await fetch(`https://api.ensideas.com/ens/resolve/${ensAddress}`).then(r=>r.json());
 
-        if (Boolean(resp['data']["domains"][0]["resolvedAddress"]) === false){
+        if (Boolean(resp?.address) === false){
             return false;
         }
         else {
-            return getAddress(resp['data']["domains"][0]["resolvedAddress"]['id'])
+            return getAddress(resp.address);
         }
 
     } catch (error) {
@@ -193,30 +186,13 @@ export async function ensToAddress(ensAddress){
 export async function addressToEns(address){
     try {
 
-        let resp = await fetch("https://api.thegraph.com/subgraphs/name/ensdomains/ens", {
-            "headers": {
-                "accept": "*/*",
-                "content-type": "application/json",
-            },
-            "body": JSON.stringify(
-                {
-                    "query":`
-                    {
-                        domains(where: {resolvedAddress: "${address.toLowerCase()}"}, orderBy: createdAt, orderDirection: asc) {
-                          name
-                        }
-                    }`,
-                    "variables":null
-                }
-            ),
-            "method": "POST",
-        }).then((r)=>{return r.json()});
+        let resp = await fetch(`https://api.ensideas.com/ens/resolve/${address}`).then(r=>r.json());
 
-        if (Boolean(resp['data']["domains"].length) === false){
+        if (Boolean(resp?.name) === false){
             return false;
         }
         else {
-            return resp['data']["domains"][0]?.name;
+            return resp.name;
         }
 
     } catch (error) {
