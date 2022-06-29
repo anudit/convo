@@ -49,6 +49,7 @@ module.exports = (phase) => {
         runtimeCaching,
         maximumFileSizeToCacheInBytes: 10000000
       },
+      output: 'standalone',
       experimental: {
         esmExternals: false,
         optimizeCss: true

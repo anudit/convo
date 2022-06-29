@@ -4,7 +4,8 @@
   "license": "MIT",
   "sideEffects": false,
   "cacheDirectories": [
-    ".next/cache"
+    ".next/cache",
+    "node_modules"
   ],
   "scripts": {
     "dev": "next dev --port 3000",
@@ -21,8 +22,8 @@
     "tf-apply": "terraform apply"
   },
   "dependencies": {
-    "@babel/core": "^7.18.5",
-    "@babel/runtime": "^7.18.3",
+    "@babel/core": "^7.18.6",
+    "@babel/runtime": "^7.18.6",
     "@biconomy/mexa": "^2.0.32",
     "@chakra-ui/icons": "^2.0.1",
     "@chakra-ui/react": "^2.2.1",
@@ -61,7 +62,7 @@
     "mongodb": "^4.6.0",
     "mongodb-client-encryption": "^2.1.0",
     "near-api-js": "^0.45.1",
-    "next": "^12.1.6",
+    "next": "^12.2.0",
     "next-pwa": "^5.5.2",
     "nft.storage": "^6.4.0",
     "node-fetch": "^3.2.6",
@@ -87,9 +88,9 @@
     "zokrates-js": "1.0.43"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^12.1.6",
+    "@next/eslint-plugin-next": "^12.2.0",
     "eslint": "^8.18.0",
-    "eslint-config-next": "^12.1.6",
+    "eslint-config-next": "^12.2.0",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "next-sitemap": "^3.1.7",
