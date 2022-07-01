@@ -2633,28 +2633,28 @@
     "@ceramicnetwork/stream-tile" "^2.0.0"
     dataloader "^2.1.0"
 
-"@gnosis.pm/safe-apps-provider@0.11.1":
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-provider/-/safe-apps-provider-0.11.1.tgz#febbaa8878f69bdc74ac33a21006eb70e036f7da"
-  integrity sha512-gVhNtiF09GIUjQgjKdtnSXc1hDFF3DPCiDN2+6u/wI/nnLg8+3tjQZWqOLnJ3qnee/GbIb3AV1fWVN7DDJH4QA==
+"@gnosis.pm/safe-apps-provider@0.11.2":
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-provider/-/safe-apps-provider-0.11.2.tgz#4fb1716c1d6a3760a9ade4925a59fb4a099a006b"
+  integrity sha512-ddXgB6wEvVHY0Nb2PvCBtbM9DE+K81d+mX+tdP929Q4lCeccgtga7PtbUfY2i5LAqV7zEXiCMPXyKlnDjP9zFA==
   dependencies:
-    "@gnosis.pm/safe-apps-sdk" "7.4.0"
+    "@gnosis.pm/safe-apps-sdk" "7.4.1"
     events "^3.3.0"
 
-"@gnosis.pm/safe-apps-sdk@7.4.0", "@gnosis.pm/safe-apps-sdk@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-sdk/-/safe-apps-sdk-7.4.0.tgz#05d9ba4fa21961161c2869e22e81534990294901"
-  integrity sha512-7YYtEnOioRWo7Lre2XBRxNlCFBseqizWBmkYcjPFBMP8K9blBrntyRo/jr+FdK+wss+85n80RatAP0v8KjmDSg==
+"@gnosis.pm/safe-apps-sdk@7.4.1", "@gnosis.pm/safe-apps-sdk@^7.4.1":
+  version "7.4.1"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-sdk/-/safe-apps-sdk-7.4.1.tgz#3e397b3f54e5d1be7977f1dcb4cd3785eff721b3"
+  integrity sha512-l00IIKnSxd6qfTGyrh9FgP1Bx0rKwwGym9WOVrTY6E8PMDjg8z0qxTFhN7Qoc7pnvVa0kmtbZFcuuxgiOHFUzQ==
   dependencies:
     "@gnosis.pm/safe-react-gateway-sdk" "^3.1.1"
     ethers "^5.6.8"
 
-"@gnosis.pm/safe-apps-web3modal@^13.0.0":
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-web3modal/-/safe-apps-web3modal-13.0.0.tgz#544e79528319cbb579b205c0f7029a2db6a0be52"
-  integrity sha512-5/OTP6wRLzdvs1++0NFVSKaUmJaqU0mP+O8PGhLYwbfFMlVs6agcODBYdgwc4JUT2EnX/GAfWrcuSI41HKBfEQ==
+"@gnosis.pm/safe-apps-web3modal@^13.0.1":
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-web3modal/-/safe-apps-web3modal-13.0.1.tgz#8a98e18f0bbc51779a9b4db3334d82d6c444ec65"
+  integrity sha512-jXDKjmUwHnL7s5S/F1mKpWjLZJptXQPwU2Gf7hcUr9TGt1V3oOOgGruHcs5K0yMYRB8tJnN010vKTbqBYsjdQQ==
   dependencies:
-    "@gnosis.pm/safe-apps-provider" "0.11.1"
+    "@gnosis.pm/safe-apps-provider" "0.11.2"
 
 "@gnosis.pm/safe-react-gateway-sdk@^3.1.1":
   version "3.1.1"
@@ -3441,10 +3441,10 @@
   dependencies:
     buffer "~6.0.3"
 
-"@solana/web3.js@^1.44.3":
-  version "1.44.3"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.44.3.tgz#a4a6ac593c3b4b0ab47fa7d716ffd9ab03542f7b"
-  integrity sha512-x6IUi1ikwgXe2fgZGeMhuGRRRp2JbqzP+Qos/zsDhkZP0TpaZhJtPXUy7h5EhmXBK4JneSpIj1SQvakVvEJ+Mw==
+"@solana/web3.js@^1.47.0":
+  version "1.47.0"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.47.0.tgz#7332a5271bfa28fa985d6a162c8477f84771deb2"
+  integrity sha512-E+2UDtTT5Ab+IIX3RmenhrZW3O4tj9uGKvF92eTUerDYh/7eheuaGI7N60WQOlXUT+8twatqZLrili15kzwppw==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@ethersproject/sha2" "^5.5.0"
@@ -3458,7 +3458,7 @@
     jayson "^3.4.4"
     js-sha3 "^0.8.0"
     node-fetch "2"
-    rpc-websockets "^7.4.2"
+    rpc-websockets "^7.5.0"
     secp256k1 "^4.0.2"
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
@@ -3868,10 +3868,10 @@
     event-iterator "^2.0.0"
     loglevel "^1.7.0"
 
-"@theconvospace/sdk@^0.5.7":
-  version "0.5.7"
-  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.5.7.tgz#f3822f3ca6a8c2b98610fd5fcd4418057911334f"
-  integrity sha512-RBsgh43Ztk0tXbhSmujUx489SVOCz8CakzGclBAY7vuQI4I2Lthzg6cJ8fwTcAkyIKAjZorsCQ9TvWTDzD+tiw==
+"@theconvospace/sdk@^0.5.8":
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/@theconvospace/sdk/-/sdk-0.5.8.tgz#3910247b92cab3ccb32b12147c64722b11093aad"
+  integrity sha512-3rvQEuo8OUSC1NgJvKhHfecC0+XDx8IMELCuoWoB1LcPo2Iplgvhyzn/uE95ne8L5fvGpwxnb+dlOwXqAI1KRw==
   dependencies:
     "@ethersproject/abi" "^5.6.4"
     "@ethersproject/providers" "^5.6.8"
@@ -4998,10 +4998,10 @@ abbrev@1:
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
-ably@^1.2.25:
-  version "1.2.25"
-  resolved "https://registry.yarnpkg.com/ably/-/ably-1.2.25.tgz#f5f9aac272e6fe4163b62012ad0cd9bf46cc4754"
-  integrity sha512-2TqkhoYfBkYCogvlE8DOzyOnIrCbccu3LESEaiynwbqz1M2l9Ka+Fl7IW1s8IPwhvKgb2cXNm0Vux8GdHQ5Vqw==
+ably@^1.2.26:
+  version "1.2.26"
+  resolved "https://registry.yarnpkg.com/ably/-/ably-1.2.26.tgz#464cf62170fb81b612761e0e552d96ba5d33563b"
+  integrity sha512-o7GRp2YIYQWQMjHo28Uvi5Ioo4XXRm6QBtX0/jRguMO6XfhM1ncWKQXI8q+IPqFk6E53HlIx/sxQreoJQt7t5A==
   dependencies:
     "@ably/msgpack-js" "^0.4.0"
     got "^11.8.2"
@@ -14575,7 +14575,7 @@ rpc-utils@^0.6.0, rpc-utils@^0.6.1:
   dependencies:
     nanoid "^3.3.1"
 
-rpc-websockets@^7.4.2:
+rpc-websockets@^7.5.0:
   version "7.5.0"
   resolved "https://registry.yarnpkg.com/rpc-websockets/-/rpc-websockets-7.5.0.tgz#bbeb87572e66703ff151e50af1658f98098e2748"
   integrity sha512-9tIRi1uZGy7YmDjErf1Ax3wtqdSSLIlnmL5OtOzgd5eqPKbsPpwDP5whUDO2LQay3Xp0CcHlcNSGzacNRluBaQ==
@@ -15755,10 +15755,10 @@ three-stdlib@^2.10.2:
     potpack "^1.0.1"
     zstddec "^0.0.2"
 
-three@^0.141.0:
-  version "0.141.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.141.0.tgz#16677a12b9dd0c3e1568ebad0fd09de15d5a8216"
-  integrity sha512-JaSDAPWuk4RTzG5BYRQm8YZbERUxTfTDVouWgHMisS2to4E5fotMS9F2zPFNOIJyEFTTQDDKPpsgZVThKU3pXA==
+three@^0.142.0:
+  version "0.142.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.142.0.tgz#89e226a16221f212eb1d40f0786604b711f28aed"
+  integrity sha512-ESjPO+3geFr+ZUfVMpMnF/eVU2uJPOh0e2ZpMFqjNca1wApS9lJb7E4MjwGIczgt9iuKd8PEm6Pfgp2bJ92Xtg==
 
 throttled-queue@^2.1.2:
   version "2.1.4"

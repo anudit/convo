@@ -1,0 +1,9 @@
+{
+    "window.experimental.commandCenter": true,
+    "workbench.colorCustomizations": {
+        "titleBar.activeForeground": "#fff",
+        "titleBar.inactiveForeground": "#fff",
+        "titleBar.activeBackground": "#112378",
+        "titleBar.inactiveBackground": "#112378"
+      }
+}
