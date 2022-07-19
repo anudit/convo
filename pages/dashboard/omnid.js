@@ -327,9 +327,6 @@ const IdentitySection = () => {
                   <Item searchString={searchString} tags={['art','nft', 'coinvise', 'creator']}>
                     <CoinviseCard trustScoreData={trustScoreData} />
                   </Item>
-                  <Item searchString={searchString} tags={['nft', 'context']}>
-                    <ContextCard trustScoreData={trustScoreData} />
-                  </Item>
                   <Item searchString={searchString} tags={['governance','dao', 'coordinape']}>
                     <CoordinapeCard trustScoreData={trustScoreData} />
                   </Item>
@@ -1088,7 +1085,7 @@ const AsyncartCard = ({trustScoreData}) => {
       <IdentityCard image_url={asyncart}>
         {
           trustScoreData === null ? "Loading" :
-          trustScoreData?.asyncart?.totalCountSold === 0 ? (
+          Boolean(trustScoreData?.asyncart?.totalCountSold) === false ? (
               <chakra.p size="xs" as="a" target="_blank" href="https://async.art/">
                 Create on AsyncArt
               </chakra.p>
@@ -1121,7 +1118,7 @@ PoHCard.propTypes = propTypes
 const AgeCard = ({trustScoreData}) => {
 
   const { colorMode } = useColorMode();
-  let age = Boolean(trustScoreData?.age) === false ? 0 : trustScoreData?.age?.polygon > trustScoreData?.age?.ethereum ? trustScoreData?.age?.polygon : trustScoreData?.age?.ethereum;
+  let age = Math.max(...Object.values(trustScoreData?.txn).map(r=>r.age));
 
   return (
       <Flex
@@ -1221,7 +1218,7 @@ const UdCard = ({trustScoreData}) => {
   return (
     <IdentityCard image_url={unstoppable}>
       {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.unstoppableDomains) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>{trustScoreData?.unstoppableDomains}</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.unstoppable) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://unstoppabledomains.com/">Get your domain</chakra.p></>) : (<><Text mr={1}>{trustScoreData?.unstoppable}</Text><VerifiedIcon color="blue.400"/></>)
       }
     </IdentityCard>
   );
@@ -1245,7 +1242,7 @@ const RabbitholeCard = ({trustScoreData}) => {
     return (
       <IdentityCard image_url={rabbithole}>
         {
-          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.rabbitHole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Level {trustScoreData?.rabbitHole.level}</Text><VerifiedIcon color="blue.400"/></>)
+          trustScoreData === null ? "Loading" : Boolean(trustScoreData?.rabbithole) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.rabbithole.gg/">Explore on RabbitHole</chakra.p></>) : (<><Text mr={1}>Level {trustScoreData?.rabbithole.level}</Text><VerifiedIcon color="blue.400"/></>)
         }
       </IdentityCard>
     );
@@ -1351,17 +1348,6 @@ const Rss3Card = ({trustScoreData}) => {
   );
 };
 Rss3Card.propTypes = propTypes
-
-const ContextCard = ({trustScoreData}) => {
-  return (
-    <IdentityCard image_url={context}>
-      {
-        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.context?.followerCount) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://context.app/">Follow on Context</chakra.p></>) : (<><Text mr={1}>Connected on Context</Text><VerifiedIcon color="blue.400"/></>)
-      }
-    </IdentityCard>
-  );
-};
-ContextCard.propTypes = propTypes
 
 const EtherscanCard = ({trustScoreData}) => {
   return (
