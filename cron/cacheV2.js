@@ -356,3 +356,6 @@ runPipline().then(()=>{
 //     await mongoClient.close();
 // }
 // runPipline2();
+
+
+// computeScoreData('0x00654fa5E772E1e55c06D8E703Fb6a67f5755aBc').then(console.log);
