@@ -3111,7 +3111,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@oceanprotocol/contracts@0.6.9", "@oceanprotocol/contracts@^0.6.9":
+"@oceanprotocol/contracts@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@oceanprotocol/contracts/-/contracts-1.1.0.tgz#ac650af8834337f2b8a663afd78f21e8ab0debac"
+  integrity sha512-b6/SPzsRUnTC9pt5U8zokeyYXq0N+ukhL+oUDoBKCtICuOgH61Q2OcfrX7AiPbNDBhWCUILspRz+tEiXA8vy3g==
+
+"@oceanprotocol/contracts@^0.6.9":
   version "0.6.9"
   resolved "https://registry.yarnpkg.com/@oceanprotocol/contracts/-/contracts-0.6.9.tgz#219c3308e63f91b544f9700e89ae9c99b44cf5f6"
   integrity sha512-3VqI+TBy07QwJJrhkXUyqJ2nHFs2n1G98KLTzxUPjJgOXZMPnWlmJnmWMKqSj23S/eT16DgEdlTfsqtzC+eKUg==

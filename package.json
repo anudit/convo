@@ -35,7 +35,7 @@
     "@gnosis.pm/safe-apps-sdk": "^7.6.0",
     "@gnosis.pm/safe-apps-web3modal": "^15.0.0",
     "@hapi/iron": "^7.0.0",
-    "@oceanprotocol/contracts": "0.6.9",
+    "@oceanprotocol/contracts": "1.1.0",
     "@oceanprotocol/lib": "^0.20.2",
     "@onflow/fcl": "^1.1.0",
     "@portis/web3": "^4.0.7",
