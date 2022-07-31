@@ -2,6 +2,7 @@ name: "Cache Omnid Data"
 on:
   schedule:
     - cron: "0 0,12 * * *" # Every 12 hrs.
+  workflow_dispatch:
 
 jobs:
   convo_crons:
