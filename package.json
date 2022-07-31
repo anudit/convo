@@ -41,7 +41,7 @@
     "@portis/web3": "^4.0.7",
     "@react-three/drei": "^9.17.3",
     "@react-three/fiber": "^8.2.1",
-    "@self.id/web": "0.4.0",
+    "@self.id/web": "0.4.2",
     "@solana/web3.js": "^1.50.1",
     "@textile/hub": "^6.3.4",
     "@theconvospace/sdk": "^0.5.16",
