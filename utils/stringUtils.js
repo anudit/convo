@@ -186,7 +186,7 @@ export async function ensToAddress(ensAddress){
 export async function addressToEns(address){
     try {
 
-        let resp = await fetch(`https://api.ensideas.com/ens/resolve/${address}`).then(r=>r.json());
+        let resp = await fetch(`https://api.ensideas.com/ens/resolve/${address.toLowerCase()}`).then(r=>r.json());
 
         if (Boolean(resp?.name) === false){
             return false;
