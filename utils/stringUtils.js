@@ -135,9 +135,6 @@ export const addressToChainName = (address) => {
     else if(/^[A-HJ-NP-Za-km-z1-9]*$/.test(address)){
         return "solana";
     }
-    else if(address.slice(0, 2) === "0:" && address.length === 66){  // freeton
-        return "freeton";
-    }
     else {
         return "ethereum";
     }
@@ -154,9 +151,6 @@ export const isBlockchainAddress = (address) => {
         return true;
     }
     else if(/^[A-HJ-NP-Za-km-z1-9]*$/.test(address)){  // solana base58 check
-        return true;
-    }
-    else if(address.slice(0, 2) === "0:" && address.length === 66){  // freeton
         return true;
     }
     else {

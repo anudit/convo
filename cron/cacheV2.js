@@ -10,7 +10,7 @@ const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const fs = require('fs');
 const path = require('path');
 
-const { ALCHEMY_API_KEY, ZAPPER_API_KEY, OPTIMISMSCAN_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, DEBUG, CNVSEC_ID, MONGODB_URI } = process.env;
+const { ALCHEMY_API_KEY, ZAPPER_API_KEY, OPTIMISMSCAN_API_KEY, ETHERSCAN_API_KEY, POLYGONSCAN_API_KEY, TEXTILE_PK, TEXTILE_HUB_KEY_DEV, TEXTILE_THREADID, PK_ORACLE, CNVSEC_ID, MONGODB_URI } = process.env;
 
 const convoInstance = new Convo('CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO');
 
@@ -336,11 +336,13 @@ runPipline().then(()=>{
 })
 
 // const cacheAddsFromFile = async(fileName = "") => {
-//     var adds = JSON.parse(fs.readFileSync(path.resolve(__dirname, fileName), 'utf8'));
-//     const adl = adds.map(e=>e._id);
-//     await cacheTrustScoresManual(adl.slice(12109+1378+6690+19405+12197));
+//     const mongoClient = await MongoClient.connect(MONGODB_URI);
+
+//     let adds = JSON.parse(fs.readFileSync(path.resolve(__dirname, fileName), 'utf8'));
+//     adds = adds.map(e=>e._id);
+//     await cacheTrustScoresManual(adds.slice(514+5639+520+663), mongoClient);
 // }
-// cacheAddsFromFile("toindex.json");
+// cacheAddsFromFile("neg.json");
 
 // async function runPipline2(){
 //     const mongoClient = await MongoClient.connect(MONGODB_URI);

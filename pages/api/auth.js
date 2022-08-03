@@ -245,59 +245,6 @@ const handler = async(req, res) => {
       }
 
     }
-    else if(chain  === 'freeton') {
-
-      if (
-        Object.keys(req.body).includes('signature') &&
-        Object.keys(req.body).includes('signerAddress') &&
-        Object.keys(req.body).includes('timestamp')
-      ){
-
-        let currentTimestamp = Date.now();
-
-        if (currentTimestamp - req.body.timestamp > 24*60*60*1000){ // stale signature request
-          return res.status(400).json({
-            'success':false,
-            'message': 'Request timestamp too old.'
-          });
-        }
-
-        let data = `I allow this site to access my data on The Convo Space using the account ${req.body.signerAddress}. Timestamp:${req.body.timestamp}`;
-
-        let signedParsed = Buffer.from(req.body.signature, 'base64').toString();
-        let isValid = data === signedParsed.slice(signedParsed.length-164);
-
-        if(isValid === true){
-
-          let token = jwt.sign(
-              {user: req.body.signerAddress, chain: "freeton"},
-              process.env.JWT_SECRET,
-              { expiresIn: "1d" }
-          );
-          token = await seal(token, process.env.JWT_SECRET, defaults);
-
-          return res.status(200).json({
-              'success': true,
-              'message': token
-          });
-
-        }
-        else {
-          return res.status(400).json({
-            'success':false,
-            'message': "Recovered address from signature doesn't match signerAddress"
-          });
-        }
-
-      }
-      else {
-        return res.status(400).json({
-            'success':false,
-            'message': 'signerAddress or signature or timestamp is missing/invalid.'
-        });
-      }
-
-    }
     else {
       return res.status(400).json({
         'success': true,

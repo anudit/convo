@@ -1117,7 +1117,7 @@ PoHCard.propTypes = propTypes
 const AgeCard = ({trustScoreData}) => {
 
   const { colorMode } = useColorMode();
-  let age = Math.max(...Object.values(trustScoreData?.txn).map(r=>r.age));
+  let age = trustScoreData?.txn ? Math.max(...Object.keys(trustScoreData?.txn).map(k=>trustScoreData?.txn[k].age)) : 0;
 
   return (
       <Flex

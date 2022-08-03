@@ -9,9 +9,6 @@ import Cookies from "js-cookie";
 import * as fcl from "@onflow/fcl";
 import { WalletConnection, connect, keyStores } from 'near-api-js';
 import PropTypes from 'prop-types';
-import freeton from '@/lib/freeton/src/index';
-import * as UAuthWeb3Modal from '@uauth/web3modal'
-import UAuthSPA from '@uauth/js'
 
 import fetcher from "@/utils/fetcher";
 import { Convo } from '@theconvospace/sdk';
@@ -178,19 +175,7 @@ export const Web3ContextProvider = ({children}) => {
           options: {
             id: "d3230cb7-51c6-414f-a47f-293364021451"
           }
-        },
-        'custom-uauth': {
-          display: UAuthWeb3Modal.display,
-          connector: UAuthWeb3Modal.connector,
-          package: UAuthSPA,
-          options: {
-            clientID: '1wioFy9JI2JsQHz5syGsnJIaVAORs5vUZZcCySdlfvs=',
-            clientSecret: 'Ww2xHg8dsD+6DIRRFMBUvf8iZcY3gVqpsId334SRB4Q=',
-            shouldLoginWithRedirect: true,
-            redirectUri: 'https://theconvo.space/callback',
-            scope: 'openid wallet email:optional humanity_check:optional',
-          },
-        },
+        }
       };
 
       let w3m = new Web3Modal({
@@ -199,7 +184,6 @@ export const Web3ContextProvider = ({children}) => {
         theme: "dark",
         providerOptions,
       })
-      // UAuthWeb3Modal.registerWeb3Modal(w3m);
 
       setWeb3Modal(w3m);
     }
@@ -211,7 +195,7 @@ export const Web3ContextProvider = ({children}) => {
 
     console.log("choice", choice);
 
-    if (choice === "" || choice === "portis" || choice === "injected" || choice === "walletconnect" || choice === "custom-uauth") {
+    if (choice === "" || choice === "portis" || choice === "injected" || choice === "walletconnect") {
 
       try {
 
@@ -521,36 +505,6 @@ export const Web3ContextProvider = ({children}) => {
         alert('MetaX Wallet not found.')
       }
     }
-    else if (choice === "freeton") {
-
-      if (typeof window.freeton !== 'undefined') {
-
-        let ft = new freeton.providers.ExtensionProvider( window.freeton );
-        let wall = await (await ft.getSigner()).getWallet();
-
-        if (Boolean(wall) === true){
-          console.log('signedin');
-
-          let token = await updateAuthToken(wall.address, "freeton", ft);
-          if (token !== false){
-            setProvider(ft);
-            setConnectedChain("freeton");
-            setSignerAddress(wall.address);
-            setConnectedWallet(choice);
-          }
-          else {
-            alert('Login Failed');
-          }
-        }
-        else {
-          //
-        }
-
-      }
-      else {
-        alert('ExtraTon Wallet not found.')
-      }
-    }
     else {
       alert('Invalid choice:', choice);
     }
@@ -690,16 +644,6 @@ export const Web3ContextProvider = ({children}) => {
         signature: Buffer.from(signature).toString('hex'),
         timestamp,
         chain: "solana"
-      });
-
-    }
-    else if (chainName === "freeton") {
-      let { signed } = await tempProvider.sign(data);
-      res = await fetcher(`/api/auth?apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "POST", {
-        signerAddress: signerAddress,
-        signature: signed,
-        timestamp,
-        chain: "freeton"
       });
 
     }

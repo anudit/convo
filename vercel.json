@@ -89,11 +89,6 @@
         "source": "/dashboard/identity",
         "destination": "/dashboard/omnid",
         "permanent": true
-      },
-      {
-        "source": "/callback",
-        "destination": "/api/uauthCallback",
-        "permanent": true
       }
     ]
 }

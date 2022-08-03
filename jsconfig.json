@@ -18,7 +18,7 @@
                 "utils/*"
             ],
             "@/hooks/*": [
-                "lib/freeton/hooks/*"
+                "hooks/*"
             ],
             "@/contexts/*": [
                 "contexts/*"
