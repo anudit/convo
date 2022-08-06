@@ -441,7 +441,7 @@ const Home = ({tweetData}) => {
                         rel="noopener"
                       >
                         <video controls autoPlay loop width="700px" height="350px" className="br-10">
-                          <source src="https://docs.theconvo.space/ConvoxDecentraland.mp4" type="video/mp4" />
+                          <source src="https://res.cloudinary.com/anudit/video/upload/v1659766317/convo/ConvoxDecentraland.mp4" type="video/mp4" />
                           Your browser does not support the video tag.
                         </video>
 
