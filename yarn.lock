@@ -9998,13 +9998,13 @@ module-alias@^2.2.2:
   integrity sha512-A/78XjoX2EmNvppVWEhM2oGk3x4lLxnkEA4jTbaK97QKSDjkIoOsKQlfylt/d3kKKi596Qy3NP5XrXJ6fZIC9Q==
 
 mongodb-client-encryption@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/mongodb-client-encryption/-/mongodb-client-encryption-2.1.0.tgz#afa5c78c1d356ab0fa9ac93eb385622f39c34d01"
-  integrity sha512-9HlH2HlvF091SBj4aTV4duPgJzSPPpLc82CFvuMCCp15dP3HKvjMQec/lj1IzTfIH3ydgzteBw3z6PkKuIFujg==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/mongodb-client-encryption/-/mongodb-client-encryption-2.2.0.tgz#549b2f56b1ac8d72198dc050c7432fa4ec6fe770"
+  integrity sha512-rkUXUhFF3gwRK6gMQxtK1HZqPcibvtMolJ7n8BgBsZIamnw85L8FYa+gzx+egbSgelVlJUga67slFDaEWGz7Ig==
   dependencies:
     bindings "^1.5.0"
     node-addon-api "^4.3.0"
-    prebuild-install "^7.0.1"
+    prebuild-install "^7.1.1"
     socks "^2.6.1"
 
 mongodb-connection-string-url@^2.5.2:
@@ -10966,25 +10966,6 @@ prebuild-install@^6.1.2:
     pump "^3.0.0"
     rc "^1.2.7"
     simple-get "^3.0.3"
-    tar-fs "^2.0.0"
-    tunnel-agent "^0.6.0"
-
-prebuild-install@^7.0.1:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-7.1.0.tgz#991b6ac16c81591ba40a6d5de93fb33673ac1370"
-  integrity sha512-CNcMgI1xBypOyGqjp3wOc8AAo1nMhZS3Cwd3iHIxOdAUbb+YxdNuM4Z5iIrZ8RLvOsf3F3bl7b7xGq6DjQoNYA==
-  dependencies:
-    detect-libc "^2.0.0"
-    expand-template "^2.0.3"
-    github-from-package "0.0.0"
-    minimist "^1.2.3"
-    mkdirp-classic "^0.5.3"
-    napi-build-utils "^1.0.1"
-    node-abi "^3.3.0"
-    npmlog "^4.0.1"
-    pump "^3.0.0"
-    rc "^1.2.7"
-    simple-get "^4.0.0"
     tar-fs "^2.0.0"
     tunnel-agent "^0.6.0"
 
