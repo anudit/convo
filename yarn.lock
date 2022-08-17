@@ -1291,6 +1291,19 @@
     near-api-js "^0.44.2"
     uint8arrays "^3.0.0"
 
+"@ceramicnetwork/blockchain-utils-linking@^2.0.7":
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/@ceramicnetwork/blockchain-utils-linking/-/blockchain-utils-linking-2.0.8.tgz#41b9b5a1861001edf6d4e059e0030a0ea2516162"
+  integrity sha512-Nq7KtDRgf2po61gwNfNWTOvYP0IIx28QWFfbxKdkJmIaQu2dy2BIN++oKEGgadZUxX6XTQqQXBlLA+5WQjZcpw==
+  dependencies:
+    "@ceramicnetwork/streamid" "^2.3.0"
+    "@stablelib/random" "^1.0.1"
+    "@stablelib/sha256" "^1.0.1"
+    caip "~1.1.0"
+    ceramic-cacao "^1.1.1"
+    near-api-js "^0.44.2"
+    uint8arrays "^3.0.0"
+
 "@ceramicnetwork/common@^2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@ceramicnetwork/common/-/common-2.0.4.tgz#be7d88361b96dcca96c7bf195de083900bce84ef"
@@ -1300,6 +1313,27 @@
     abort-controller "^3.0.0"
     caip "~1.1.0"
     ceramic-cacao "^1.0.0"
+    cross-fetch "^3.1.4"
+    flat "^5.0.2"
+    jet-logger "^1.1.5"
+    lodash.clonedeep "^4.5.0"
+    logfmt "^1.3.2"
+    multiformats "^9.5.8"
+    rxjs "^7.5.2"
+    uint8arrays "^3.0.0"
+
+"@ceramicnetwork/common@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@ceramicnetwork/common/-/common-2.4.0.tgz#5d748e19692d97d7748a9a4fdc411b6070a7be15"
+  integrity sha512-REMNKg08QgFHIwighDb7eQ1vcC1tCVAiax1Oq0iY3nQ/ucY7rUc4M9NaknwwacoTx6sd4zYPACHPrK4nRNWk3g==
+  dependencies:
+    "@ceramicnetwork/streamid" "^2.3.0"
+    "@opentelemetry/exporter-prometheus" "^0.28.0"
+    "@opentelemetry/sdk-metrics-base" "^0.28.0"
+    "@opentelemetry/semantic-conventions" "^1.3.0"
+    "@stablelib/random" "^1.0.1"
+    caip "~1.1.0"
+    ceramic-cacao "^1.1.1"
     cross-fetch "^3.1.4"
     flat "^5.0.2"
     jet-logger "^1.1.5"
@@ -1372,10 +1406,34 @@
     fast-json-patch "^3.1.0"
     uint8arrays "^3.0.0"
 
+"@ceramicnetwork/stream-tile@^2.3.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@ceramicnetwork/stream-tile/-/stream-tile-2.4.0.tgz#3884b69df6261f56ee0b79852f8413123f598691"
+  integrity sha512-SzWj16iY5sdJcXeuPsEAbS7TJfwdnbyKq5xq4FC42ZUPBZN4vRS7RtcRoiCZj+GLDmq5LmepJoAD1Ckli7ndhQ==
+  dependencies:
+    "@ceramicnetwork/common" "^2.4.0"
+    "@ceramicnetwork/streamid" "^2.3.0"
+    "@ipld/dag-cbor" "^7.0.0"
+    "@stablelib/random" "^1.0.1"
+    fast-json-patch "^3.1.0"
+    lodash.clonedeep "^4.5.0"
+    uint8arrays "^3.0.0"
+
 "@ceramicnetwork/streamid@^2.0.0", "@ceramicnetwork/streamid@^2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@ceramicnetwork/streamid/-/streamid-2.0.4.tgz#64d968bbc649d74da6c41e4bc04ce12da995c462"
   integrity sha512-KhlJdzAD1kEo6JiU1NY0+/mHkw3fycBFEyoHFgiXkPZs2Z0UzGsLimq4YsaoKWrSSPI1NerXTbrrNb/chWxg3Q==
+  dependencies:
+    "@ipld/dag-cbor" "^7.0.0"
+    multiformats "^9.5.8"
+    typescript-memoize "^1.1.0"
+    uint8arrays "^3.0.0"
+    varint "^6.0.0"
+
+"@ceramicnetwork/streamid@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@ceramicnetwork/streamid/-/streamid-2.3.0.tgz#7dbd41666adb656aa626dd753e43f3398a21e091"
+  integrity sha512-5PBXYyhxsqxAhBvlnwPoA/yniLVBs5S9nLWKkDcb6W0/JH4o9eUo48m2f2PPE7c1cwdP9GBtnN2M82Gmd3oXxg==
   dependencies:
     "@ipld/dag-cbor" "^7.0.0"
     multiformats "^9.5.8"
@@ -2554,14 +2612,6 @@
     "@glazed/datamodel" "^0.3.0"
     "@glazed/tile-loader" "^0.2.0"
 
-"@glazed/did-session@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@glazed/did-session/-/did-session-0.0.1.tgz#cc4768e8e80b41deb62fe784ccdc16cfc3610593"
-  integrity sha512-tI4yZYcUiwVIdFXYLM16B5koZ+Z6kxvDg56A4Kmfr3jLBtvDK7dKYw7ntY80ecKDTD9qoNgQjee7P0TNhQx4Vg==
-  dependencies:
-    "@ceramicnetwork/blockchain-utils-linking" "^2.0.0"
-    "@ceramicnetwork/stream-tile" "^2.0.0"
-
 "@glazed/tile-loader@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@glazed/tile-loader/-/tile-loader-0.2.0.tgz#fe3e0ef46b04050e58c0a42b134ab3af6817d23d"
@@ -3081,6 +3131,62 @@
   dependencies:
     "@babel/runtime" "^7.18.6"
 
+"@opentelemetry/api-metrics@0.28.0":
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/api-metrics/-/api-metrics-0.28.0.tgz#698acbb2f570ece49815fca8be6f3070ae41f016"
+  integrity sha512-UcrJqEiV20YTibYXUT0TDBtl4uLh4tMpAYSa1g1780QrVMlsOMAnBrdD3EYTMPog14Zw+2QzPnDJ4X7q67YrSA==
+  dependencies:
+    "@opentelemetry/api" "^1.0.0"
+
+"@opentelemetry/api@^1.0.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.1.0.tgz#563539048255bbe1a5f4f586a4a10a1bb737f44a"
+  integrity sha512-hf+3bwuBwtXsugA2ULBc95qxrOqP2pOekLz34BJhcAKawt94vfeNyUKpYc0lZQ/3sCP6LqRa7UAdHA7i5UODzQ==
+
+"@opentelemetry/core@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/core/-/core-1.2.0.tgz#cc6dabb7bb2f317427135863ba6bebe22b0b475e"
+  integrity sha512-QiKp8fBbT9ZhRTP+ZVVMyqH62tD/ZQa4gWPi+GnpNetvK1SWPO/8DmRpaSXHwAhu5FWUDJrbFgpLsrDd1zGPOw==
+  dependencies:
+    "@opentelemetry/semantic-conventions" "1.2.0"
+
+"@opentelemetry/exporter-prometheus@^0.28.0":
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/exporter-prometheus/-/exporter-prometheus-0.28.0.tgz#760c62a552906b9a4d4886cd05b662ec29c0f594"
+  integrity sha512-1PpJk0xFwVIRXb1vUEDWb+cV2Z8m/5YkZ+zL3+u58iZBiNn5t5VMHQ7iNPE+sV6Hr2BG8X7PtNzIIuJQKXrqsw==
+  dependencies:
+    "@opentelemetry/api-metrics" "0.28.0"
+    "@opentelemetry/core" "1.2.0"
+    "@opentelemetry/sdk-metrics-base" "0.28.0"
+
+"@opentelemetry/resources@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/resources/-/resources-1.2.0.tgz#5046d104d33839e58cca3184547c5dc26602f228"
+  integrity sha512-S5ZlZa2JF+1qhiF7eb3tTtDfKmTODO//pvam9vEyZvr+/At45rIQ7cyznRdMWCppZbholwXWXnrKml29IIG9vQ==
+  dependencies:
+    "@opentelemetry/core" "1.2.0"
+    "@opentelemetry/semantic-conventions" "1.2.0"
+
+"@opentelemetry/sdk-metrics-base@0.28.0", "@opentelemetry/sdk-metrics-base@^0.28.0":
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/sdk-metrics-base/-/sdk-metrics-base-0.28.0.tgz#8b317bbf45607594e749795ac56512ffd0d306b9"
+  integrity sha512-PFjk9+WWU6Y51ZjxClnPW1rzTtcT79pR1FTiFjTsNmKSG0zU3qvUHAoTo0+jvvrO0Djihj7AE+iIG2xLWY4GNQ==
+  dependencies:
+    "@opentelemetry/api-metrics" "0.28.0"
+    "@opentelemetry/core" "1.2.0"
+    "@opentelemetry/resources" "1.2.0"
+    lodash.merge "4.6.2"
+
+"@opentelemetry/semantic-conventions@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-1.2.0.tgz#1549c1d88dc45d720b8487e39077eacc69636c73"
+  integrity sha512-BNKB9fiYVghALJzCuWO3eNYfdTExPVK4ykrtmfNfy0A6UWYhOYjGMXifUmkunDJNL8ju9tBobo8jF0WR9zGy1Q==
+
+"@opentelemetry/semantic-conventions@^1.3.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-1.5.0.tgz#cea9792bfcf556c87ded17c6ac729348697bb632"
+  integrity sha512-wlYG/U6ddW1ilXslnDLLQYJ8nd97W8JJTTfwkGhubx6dzW6SUkd+N4/MzTjjyZlrHQunxHtkHFvVpUKiROvFDw==
+
 "@popperjs/core@^2.9.3":
   version "2.11.5"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
@@ -3294,14 +3400,14 @@
     key-did-resolver "^2.0.0"
 
 "@self.id/web@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@self.id/web/-/web-0.4.2.tgz#4b63f5014a77c97a7cb1653429aebedd15cca77c"
-  integrity sha512-S/Mdsd4b0rJREE0rK2dc9qrq1YGtPO5gzrwlPjluYLfM2U67JWV4RZHY8wB0Szuzl5RHS5NDmcdQfzoDFwF3Ag==
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@self.id/web/-/web-0.4.3.tgz#108ba028ef52ff1b84a73260844ca5908943567d"
+  integrity sha512-Qfh26Kvt5Ew7svD6Nl5nQWzAWPvCH2PXdGcYy9BcS45Tz57wB/dMBT417gD6mye2bLRBe2s3zZ5ETRVW/3XtZw==
   dependencies:
     "@3id/connect" "^0.4.1"
-    "@glazed/did-session" "^0.0.1"
     "@self.id/core" "^0.4.1"
-    dids "^3.1.0"
+    did-session "^0.1.1"
+    dids "^3.2.0"
 
 "@sindresorhus/is@^4.0.0":
   version "4.6.0"
@@ -5495,6 +5601,17 @@ ceramic-cacao@^1.0.0, ceramic-cacao@^1.1.0:
     caip "^1.0.0"
     multiformats "^9.5.1"
 
+ceramic-cacao@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ceramic-cacao/-/ceramic-cacao-1.1.1.tgz#2efecca677e4d4bf7308692d894b78fe3392eacc"
+  integrity sha512-p/IO5/EmUBhD0hbSpJaXTN8bKHYNZ8zDou3m2170wfbb+fJFf71kzWEsT/WV3JlWNBgkKEhwgbe9YGVOP2shoA==
+  dependencies:
+    "@ethersproject/wallet" "^5.5.0"
+    "@ipld/dag-cbor" "^7.0.1"
+    apg-js "^4.1.1"
+    caip "^1.0.0"
+    multiformats "^9.5.1"
+
 chalk@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
@@ -6323,7 +6440,17 @@ did-resolver@^3.1.5, did-resolver@^3.2.0, did-resolver@^3.2.2:
   resolved "https://registry.yarnpkg.com/did-resolver/-/did-resolver-3.2.2.tgz#6f4e252a810f785d1b28a10265fad6dffee25158"
   integrity sha512-Eeo2F524VM5N3W4GwglZrnul2y6TLTwMQP3In62JdG34NZoqihYyOZLk+5wUW8sSgvIYIcJM8Dlt3xsdKZZ3tg==
 
-dids@^3.0.0, dids@^3.1.0:
+did-session@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/did-session/-/did-session-0.1.1.tgz#9dc0acd8879b7f4fd2c802f8889be28c7435a6a2"
+  integrity sha512-MTkthfSu6/3W7I8lgVB7WRrvDUIFCS9NJ1sJhYgSlJxD4OXEXkp27UCvjN+Gs/N2ZJPC7r4/jmqcIn+C7Lf/zA==
+  dependencies:
+    "@ceramicnetwork/blockchain-utils-linking" "^2.0.7"
+    "@ceramicnetwork/stream-tile" "^2.3.0"
+    ceramic-cacao "^1.1.1"
+    dids "^3.2.0"
+
+dids@^3.0.0, dids@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/dids/-/dids-3.2.0.tgz#92a907aabc68cc0bd25b80e282bed34485233a92"
   integrity sha512-p6PUUvlX/BYqnrX192KM0DW/h1dohbMohFSwSv7hxjHr7Sp26jAIu6M59f2HNJaSwE7k0lTqLz9tuDtE/QbWZA==
@@ -9651,7 +9778,7 @@ lodash.map@^4.4.0:
   resolved "https://registry.yarnpkg.com/lodash.map/-/lodash.map-4.6.0.tgz#771ec7839e3473d9c4cde28b19394c3562f4f6d3"
   integrity sha512-worNHGKLDetmcEYDvh2stPCrrQRkP20E4l0iIS7F8EvzMqBBi7ltvFN5m1HvTf1P7Jk1txKhvFcmYsCr8O2F1Q==
 
-lodash.merge@^4.4.0, lodash.merge@^4.6.2:
+lodash.merge@4.6.2, lodash.merge@^4.4.0, lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
