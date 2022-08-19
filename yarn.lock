@@ -10434,9 +10434,9 @@ next-pwa@^5.5.5:
     workbox-window "^6.5.4"
 
 next-sitemap@^3.1.18:
-  version "3.1.18"
-  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-3.1.18.tgz#1eaecbf88697f6825f7f0b397fe508ecf9a93cb8"
-  integrity sha512-kt0I8Aeepd8NrsExUnexFwQy8ln8Bx4+cBLfcxflyLyVhlTwchDZ/XA/VzqUbhEAqPDfWkNiezPSP9U9+JblJA==
+  version "3.1.20"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-3.1.20.tgz#3b5839b452688a5eaebec22603d2f9e59ef70088"
+  integrity sha512-ugcSQpAtwc9fk7fsr5to0yrlA/RjY0kw2wHOUqcrRXnZDwFfBwGnEVvaYbI7C4ZlhvxjJTA3G15QMpvpmvPquw==
   dependencies:
     "@corex/deepmerge" "^4.0.29"
     minimist "^1.2.6"
