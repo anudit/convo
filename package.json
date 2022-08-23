@@ -22,7 +22,7 @@
     "tf-apply": "terraform apply"
   },
   "dependencies": {
-    "@babel/core": "^7.18.10",
+    "@babel/core": "^7.18.13",
     "@babel/runtime": "^7.18.9",
     "@biconomy/mexa": "^3.0.2",
     "@chakra-ui/icons": "^2.0.8",
@@ -37,7 +37,7 @@
     "@hapi/iron": "^7.0.0",
     "@onflow/fcl": "^1.2.0",
     "@portis/web3": "^4.0.7",
-    "@react-three/drei": "^9.23.1",
+    "@react-three/drei": "^9.23.3",
     "@react-three/fiber": "^8.4.1",
     "@self.id/web": "^0.4.3",
     "@solana/web3.js": "^1.53.0",
@@ -94,7 +94,7 @@
     "eslint-config-next": "^12.2.5",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "next-sitemap": "^3.1.20",
+    "next-sitemap": "^3.1.21",
     "tf-next": "^0.13.2"
   },
   "engines": {

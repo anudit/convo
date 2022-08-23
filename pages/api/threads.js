@@ -13,7 +13,7 @@ const handler = async(req, res) => {
 
       if (req.query?.allPublic == 'true'){
         let query = new Where('isReadPublic').eq(true);
-        const threads = await getThreads(query, req.query?.page, req.query?.pageSize);
+        const threads = await getThreads(query, req.query?.page, req.query?.pageSize | 50);
         return res.status(200).json(threads);
       }
 
