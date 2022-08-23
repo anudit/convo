@@ -14462,10 +14462,10 @@ zip-stream@^4.1.0:
     compress-commons "^4.1.0"
     readable-stream "^3.6.0"
 
-zokrates-js@1.0.43:
-  version "1.0.43"
-  resolved "https://registry.yarnpkg.com/zokrates-js/-/zokrates-js-1.0.43.tgz#b0519c742b2fa1c1ae1c6bcfd1cee2b2c4dce6e6"
-  integrity sha512-34R5gZNEdpXevt3iV9h0nOr2Tf187BfLW54oNc0/xdDFBq6FxzqXsEw0YP5UJkm87zGGe9XNTyMv7mukb3BSGw==
+zokrates-js@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/zokrates-js/-/zokrates-js-1.1.1.tgz#20c9a1941ebd3d268d4731846b68a7ea0d0482d2"
+  integrity sha512-KfL9tLqTFU/KzbbOFGquE95G9FWBIGCnlQer7hSou6fTlo25Hej7QR2RHJmYD7qhr+8LLJ1JPr6+3bPZgApPfQ==
 
 zstddec@^0.0.2:
   version "0.0.2"
