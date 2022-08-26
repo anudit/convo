@@ -61,7 +61,7 @@
     "key-did-provider-ed25519": "^2.0.1",
     "mongodb": "^4.9.0",
     "mongodb-client-encryption": "^2.2.0",
-    "near-api-js": "^0.45.1",
+    "near-api-js": "^1.0.0",
     "next": "^12.2.5",
     "next-pwa": "^5.5.5",
     "nft.storage": "^7.0.0",
