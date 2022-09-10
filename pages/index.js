@@ -608,7 +608,7 @@ const Home = ({tweetData}) => {
               value={`"${typeof window !="undefined"? window.location.origin : process.env.NEXT_PUBLIC_API_SITE_URL}/embed/dt?threadId=KIGZUnR4RzXDFheXoOwo"`}
             />
             <br/>
-            <iframe title="Comments Page Demo" src={"/embed/dt?threadId=KIGZUnR4RzXDFheXoOwo&height=500&theme=" + colorMode} loading="lazy" width="100%" height="650px" allowtransparency="true" style={{overflow:"hidden"}}>
+            <iframe title="Comments Page Demo" src={"/embed/dt?threadId=KIGZUnR4RzXDFheXoOwo&height=500&theme=" + colorMode} loading="lazy" width="100%" height="650px" style={{overflow:"hidden", background:"transparent"}}>
               Comments Page Demo
             </iframe>
           </Flex>
