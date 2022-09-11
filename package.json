@@ -51,7 +51,6 @@
     "critters": "^0.0.16",
     "dotenv": "^16.0.2",
     "ethers": "^5.7.0",
-    "follow-redirects": "^1.15.1",
     "framer-motion": "^7.3.2",
     "got": "^12.4.1",
     "ioredis": "^5.2.3",
@@ -64,7 +63,6 @@
     "near-api-js": "^1.0.0",
     "next": "^12.3.0",
     "next-pwa": "^5.6.0",
-    "nft.storage": "^7.0.0",
     "node-fetch": "^3.2.10",
     "prop-types": "^15.8.1",
     "qr-code-styling": "^1.6.0-rc.1",
@@ -78,7 +76,6 @@
     "styled-components": "^5.3.5",
     "swr": "^1.3.0",
     "telegraf": "^4.9.1",
-    "terraform": "^1.22.1",
     "three": "^0.144.0",
     "tweetnacl": "^1.0.3",
     "twitter-v2": "^1.1.0",
@@ -95,10 +92,11 @@
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-react-hooks": "^4.6.0",
     "next-sitemap": "^3.1.22",
+    "terraform": "^1.22.1",
     "tf-next": "^0.13.2"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.6.0"
   },
   "nextBundleAnalysis": {
     "budget": null,

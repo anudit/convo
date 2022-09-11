@@ -1,5 +1,5 @@
-const withPWA = require('next-pwa')({ dest: 'public' })
 const runtimeCaching = require('next-pwa/cache')
+const withPWA = require('next-pwa')({ dest: 'public', maximumFileSizeToCacheInBytes: 10000000, runtimeCaching })
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants')
 
 module.exports = (phase) => {
@@ -43,10 +43,6 @@ module.exports = (phase) => {
         }
         config.mode = 'production'
         return config;
-      },
-      pwa: {
-        runtimeCaching,
-        maximumFileSizeToCacheInBytes: 10000000
       },
       output: 'standalone',
       experimental: {

@@ -54,6 +54,7 @@ import metagame from '../../public/images/metagame.webp';
 import projectgalaxy from '../../public/images/projectgalaxy.webp';
 
 import { ethers } from 'ethers';
+import { CloseIcon } from '@chakra-ui/icons';
 
 const IdentitySection = () => {
 
@@ -235,7 +236,10 @@ const IdentitySection = () => {
             }
           }} />
           <InputRightElement>
-            <SearchIcon/>
+            {searchString != "" ? (<CloseIcon onClick={async ()=>{
+              setSearchString('')
+              await refreshScore(signerAddress)
+            }} cursor="pointer"/>) : (<SearchIcon/>)}
           </InputRightElement>
         </InputGroup>
       }>

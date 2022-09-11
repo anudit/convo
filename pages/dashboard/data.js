@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { Heading, Button, Flex } from "@chakra-ui/react";
-import { Blob } from "nft.storage";
 import { DownloadIcon } from '@chakra-ui/icons';
 
 import DashboardShell from '@/components/DashboardShell';
@@ -12,18 +11,19 @@ const DataSection = () => {
   const { signerAddress, getAuthToken } = useContext(Web3Context);
   const [isNukeLoading, setNukeLoading] = useState(false);
 
-
   async function downloadAllData(){
+
+      // TODO: Query all comments.
       let backup = JSON.stringify([{}]);
-      var blob1 = new Blob([backup], { type: "application/json;charset=utf-8" });
-      var url = window.URL || window.webkitURL;
-      let link = url.createObjectURL(blob1);
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(backup);
+
       var a = document.createElement("a");
-      a.download = `Backup-${signerAddress}.json`;
-      a.href = link;
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", `Backup-${signerAddress}.json`);
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+
   }
 
   async function nukeAllData(){
