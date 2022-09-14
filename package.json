@@ -42,7 +42,7 @@
     "@self.id/web": "^0.4.3",
     "@solana/web3.js": "^1.60.0",
     "@textile/hub": "^6.3.4",
-    "@theconvospace/sdk": "^0.5.19",
+    "@theconvospace/sdk": "^0.6.0",
     "@walletconnect/web3-provider": "^1.8.0",
     "ably": "^1.2.29",
     "axios": "^0.27.2",
