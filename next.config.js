@@ -44,7 +44,6 @@ module.exports = (phase) => {
         config.mode = 'production'
         return config;
       },
-      output: 'standalone',
       experimental: {
         esmExternals: false,
         optimizeCss: true
