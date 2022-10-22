@@ -19,7 +19,7 @@ const computeConfig = {
     polygonMainnetRpc: "https://polygon-rpc.com",
     etherumMainnetRpc: "https://eth.public-rpc.com",
     avalancheMainnetRpc: "https://avalanche.public-rpc.com",
-    maticPriceInUsd: 0.4,
+    maticPriceInUsd: 0.8,
     etherumPriceInUsd: 1200,
     etherscanApiKey: ETHERSCAN_API_KEY,
     polygonscanApiKey: POLYGONSCAN_API_KEY,
