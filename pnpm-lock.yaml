@@ -17,7 +17,7 @@ specifiers:
   '@next/eslint-plugin-next': ^12.3.1
   '@onflow/fcl': ^1.3.1
   '@portis/web3': ^4.0.7
-  '@react-three/drei': ^9.36.0
+  '@react-three/drei': ^9.37.1
   '@react-three/fiber': ^8.8.10
   '@self.id/web': ^0.5.0
   '@solana/web3.js': ^1.66.2
@@ -88,7 +88,7 @@ dependencies:
   '@hapi/iron': 7.0.0
   '@onflow/fcl': 1.3.1
   '@portis/web3': 4.0.7_@babel+core@7.19.6
-  '@react-three/drei': 9.36.0_cpod6d3cr76qxhqbh6bdljlrqm
+  '@react-three/drei': 9.37.1_cpod6d3cr76qxhqbh6bdljlrqm
   '@react-three/fiber': 8.8.10_ee34sidbpuk5ebd4phepfgxxdi
   '@self.id/web': 0.5.0
   '@solana/web3.js': 1.66.2
@@ -4563,8 +4563,8 @@ packages:
     resolution: {integrity: sha512-7I/qY8H7Enwasxr4jU6WmtNK+RZ4Z/XvSlDvjXFVe7ii1x0MoSlkw6pD7xuac8qrHQRm9BTcbZNyeeKApYsvCg==}
     dev: false
 
-  /@react-three/drei/9.36.0_cpod6d3cr76qxhqbh6bdljlrqm:
-    resolution: {integrity: sha512-D4628ws3K1CLIteBL1OKRABkIlNdIuPSHaPVW6pVHya32KxA+RKcKlzwltA0v77XFZUV4of5Bn3WVy7fOnYtow==}
+  /@react-three/drei/9.37.1_cpod6d3cr76qxhqbh6bdljlrqm:
+    resolution: {integrity: sha512-9KwZ1ipJicc239BNC9TBe8G8C9unxb9NOBnHYJSQjZTvxiMDAbqELYp8HE7/g2ZwVhY/SytywRMm3V+Mz4tP9Q==}
     peerDependencies:
       '@react-three/fiber': '>=8.0'
       react: '>=18.0'

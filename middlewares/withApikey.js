@@ -53,9 +53,9 @@ const withApikey = (next) => async (req, res) => {
             return await next(req, res);
         }
 
-        if (user_apikey == "CSS3EFgktCyrmUAR6rX9YT9fIjxAoB0fJGxWn9zp"){
-            return res.status(204).end(); // Just testing.
-        }
+        // if (user_apikey == "CSS3EFgktCyrmUAR6rX9YT9fIjxAoB0fJGxWn9zp"){
+        //     return res.status(204).end(); // Just testing.
+        // }
 
         const CAP = 1000000; //1M
         let data = await getRedisData(client, user_apikey);
