@@ -22,7 +22,7 @@ specifiers:
   '@self.id/web': ^0.5.0
   '@solana/web3.js': ^1.66.2
   '@textile/hub': ^6.3.4
-  '@theconvospace/sdk': ^0.6.4
+  '@theconvospace/sdk': ^0.6.5
   '@walletconnect/web3-provider': ^1.8.0
   ably: ^1.2.30
   axios: ^0.27.2
@@ -93,7 +93,7 @@ dependencies:
   '@self.id/web': 0.5.0
   '@solana/web3.js': 1.66.2
   '@textile/hub': 6.3.4_node-fetch@3.2.10
-  '@theconvospace/sdk': 0.6.4
+  '@theconvospace/sdk': 0.6.5
   '@walletconnect/web3-provider': 1.8.0_@babel+core@7.20.2
   ably: 1.2.30
   axios: 0.27.2
@@ -5184,8 +5184,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@theconvospace/sdk/0.6.4:
-    resolution: {integrity: sha512-uV+jGtLj3A1NEgDMCFuA0K9CpcueW15invMaBvZWfYtChlLZCwlf65wrimp325x0WcvKReF4tmQbwH4/kwa8EA==}
+  /@theconvospace/sdk/0.6.5:
+    resolution: {integrity: sha512-TAIrTkBcEF/XR11zrcNM9jG7aw2i26SAkgc4qQbsIDwhs2lumM255UMbAbA/vd+dd6RP2I2+3is+m+PW8jUdOw==}
     engines: {node: '>=14.17.0'}
     dependencies:
       '@ethersproject/abi': 5.7.0
