@@ -85,7 +85,7 @@
     "zokrates-js": "1.0.43"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^12.3.1",
+    "@next/eslint-plugin-next": "^13.0.6",
     "bfj": "^7.0.2",
     "eslint": "^8.26.0",
     "eslint-config-next": "^12.3.1",
