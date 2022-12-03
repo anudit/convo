@@ -1,6 +1,5 @@
 import validateAuth from "@/lib/validateAuth";
-import { createThread, deleteThreadAndComments, getThread, getThreads, updateAddressToThreadIds, updateThread } from "@/lib/thread-db";
-import { Where } from "@textile/hub";
+import { createThread, deleteThreadAndComments, getAllThreads, getThread, getThreads, updateAddressToThreadIds, updateThread } from "@/lib/thread-db";
 import withApikey from "@/middlewares/withApikey";
 import { isBlockchainAddress, randomId } from "@/utils/stringUtils";
 import withCors from "@/middlewares/withCors";
@@ -12,14 +11,14 @@ const handler = async(req, res) => {
     if (req.method === "GET") {
 
       if (req.query?.allPublic == 'true'){
-        let query = new Where('isReadPublic').eq(true);
-        const threads = await getThreads(query, req.query?.page, req.query?.pageSize | 50);
+        const threads = await getAllThreads();
         return res.status(200).json(threads);
       }
 
       // No 'key' filter params returns Incomplete req.
       if (Boolean(req.query?.threadId) === false &&
         Boolean(req.query?.creator) === false &&
+        Boolean(req.query?.title) === false &&
         Boolean(req.query?.member) === false
       ){
         return res.status(400).json({
@@ -31,88 +30,89 @@ const handler = async(req, res) => {
       let query = undefined;
 
       if (Boolean(req.query?.threadId) === true){
-        query = new Where('_id').eq(req.query.threadId);
+        query = {'_id': req.query.threadId};
       }
 
       if (Boolean(req.query?.creator) === true){
         if (query === undefined) {
-          query = new Where('creator').eq(req.query.creator);
+          query = {'creator': req.query.creator}
         }
         else {
-          query = query.and('creator').eq(req.query.creator);
+          query['creator'] = req.query.creator;
         }
       }
 
       if (Boolean(req.query?.url) === true){
         if (query === undefined) {
-          query = new Where('url').eq(decodeURIComponent(req.query.url));
+          query = {'url': decodeURIComponent(req.query.url)};
         }
         else {
-          query = query.and('url').eq(decodeURIComponent(req.query.url));
+          query['url'] = decodeURIComponent(req.query.url);
         }
       }
 
       if (Boolean(req.query?.title) === true){
         if (query === undefined) {
-          query = new Where('title').eq(req.query.title);
+          query = { 'title': req.query.title };
         }
         else {
-          query = query.and('title').eq(req.query.title);
+          query['title'] = req.query.title;
         }
       }
 
       if (Boolean(req.query?.isReadPublic) === true){
         if (query === undefined) {
-          query = new Where('isReadPublic').eq(req.query.isReadPublic === 'true'? true: false);
+          query = { 'isReadPublic': req.query.isReadPublic === 'true'? true: false };
         }
         else {
-          query = query.and('isReadPublic').eq(req.query.isReadPublic === 'true'? true: false);
+          query['isReadPublic'] = req.query.isReadPublic === 'true'? true: false;
         }
       }
 
       if (Boolean(req.query?.isWritePublic) === true){
         if (query === undefined) {
-          query = new Where('isWritePublic').eq(req.query.isWritePublic === 'true'? true: false);
+          query = { 'isWritePublic': req.query.isWritePublic === 'true'? true: false };
         }
         else {
-          query = query.and('isWritePublic').eq(req.query.isWritePublic === 'true'? true: false);
+          query['isWritePublic'] = req.query.isWritePublic === 'true'? true: false;
         }
       }
 
       if (Boolean(req.query?.keyword1) === true){
         if (query === undefined) {
-          query = new Where(`keyword1`).eq(req.query.keyword1);
+          query = { 'keyword1': req.query.keyword1 };
         }
         else {
-          query = query.and(`keyword1`).eq(req.query.keyword1);
+          query['keyword1'] = req.query.keyword1;
         }
       }
 
       if (Boolean(req.query?.keyword2) === true){
         if (query === undefined) {
-          query = new Where(`keyword2`).eq(req.query.keyword2);
+          query = { 'keyword2': req.query.keyword2 };
         }
         else {
-          query = query.and(`keyword2`).eq(req.query.keyword2);
+          query['keyword2'] = req.query.keyword2;
         }
       }
 
       if (Boolean(req.query?.keyword3) === true){
         if (query === undefined) {
-          query = new Where(`keyword3`).eq(req.query.keyword3);
+          query = { 'keyword3': req.query.keyword3 };
         }
         else {
-          query = query.and(`keyword3`).eq(req.query.keyword3);
+          query['keyword3'] = req.query.keyword3;
         }
       }
 
+      let sort = {};
       if (Boolean(req.query?.latestFirst) === true && req.query.latestFirst == 'true'){
         if (query !== undefined) {
-          query = query.orderByDesc('_mod');
+          sort = {'createdOn': -1};
         }
       }
 
-      const threads = await getThreads(query, req.query?.page, req.query?.pageSize);
+      const threads = await getThreads(query, sort, req.query?.page, req.query?.pageSize);
 
       if (Boolean(req.query?.countOnly) === true && req.query.countOnly == 'true'){
         return res.status(200).json({
@@ -148,7 +148,7 @@ const handler = async(req, res) => {
             let url = Boolean(req.body?.url) === true ? decodeURIComponent(req.body.url) : "https://theconvo.space/";
 
             let oldThreadData = await getThread(threadId);
-            if (oldThreadData.length > 0){
+            if (oldThreadData === null){
               return res.status(400).json({
                 success: false,
                 'error':'Thread already exists.'
@@ -217,7 +217,7 @@ const handler = async(req, res) => {
             // Check if the thread exists
             let threadData = await getThread(req.body?.threadId);
 
-            if (threadData.length === 0) {
+            if (threadData === null) {
               return res.status(400).json({
                 success: false,
                 'error':'Thread does not exist.'
@@ -268,7 +268,7 @@ const handler = async(req, res) => {
             // Check if the thread exists
             let threadData = await getThread(req.body?.threadId);
 
-            if (threadData.length === 0) {
+            if (threadData === null) {
               return res.status(400).json({
                 success: false,
                 'error':'Thread does not exist.'
@@ -318,7 +318,7 @@ const handler = async(req, res) => {
             // Check if the thread exists
             let threadData = await getThread(req.body?.threadId);
 
-            if (threadData.length === 0) {
+            if (threadData === null) {
               return res.status(400).json({
                 success: false,
                 'error':'Thread does not exist.'
@@ -369,7 +369,7 @@ const handler = async(req, res) => {
             // Check if the thread exists
             let threadData = await getThread(req.body?.threadId);
 
-            if (threadData.length === 0) {
+            if (threadData === null) {
               return res.status(400).json({
                 success: false,
                 'error':'Thread does not exist.'
@@ -420,7 +420,7 @@ const handler = async(req, res) => {
             // Check if the thread exists
             let threadData = await getThread(req.body?.threadId);
 
-            if (threadData.length === 0) {
+            if (threadData === null) {
               return res.status(400).json({
                 success: false,
                 'error':'Thread does not exist.'
@@ -461,7 +461,7 @@ const handler = async(req, res) => {
             // Check if the thread exists
             let threadData = await getThread(req.body?.threadId);
 
-            if (threadData.length === 0) {
+            if (threadData === null) {
               return res.status(400).json({
                 success: false,
                 'error':'Thread does not exist.'
@@ -499,7 +499,7 @@ const handler = async(req, res) => {
             // Check if the thread exists
             let threadData = await getThread(req.body?.threadId);
 
-            if (threadData.length === 0) {
+            if (threadData === null) {
               return res.status(400).json({
                 success: false,
                 'error':'Thread does not exist.'
@@ -507,17 +507,17 @@ const handler = async(req, res) => {
             }
 
             // Check if the signerAddress is a moderators.
-            if (threadData[0].moderators.includes(req.body.signerAddress) === false) {
+            if (threadData.moderators.includes(req.body.signerAddress) === false) {
               return res.status(400).json({
                 success: false,
                 'error':'signerAddress not a Moderator of the Thread.'
               });
             }
 
-            threadData[0].isReadPublic = !threadData[0].isReadPublic;
+            threadData.isReadPublic = !threadData.isReadPublic;
 
             // save the updated value of isReadPublic
-            await updateThread(threadData[0]);
+            await updateThread(threadData);
 
             return res.status(200).json({
               success: true
@@ -537,7 +537,7 @@ const handler = async(req, res) => {
             // Check if the thread exists
             let threadData = await getThread(req.body?.threadId);
 
-            if (threadData.length === 0) {
+            if (threadData === null) {
               return res.status(400).json({
                 success: false,
                 'error':'Thread does not exist.'
@@ -545,17 +545,17 @@ const handler = async(req, res) => {
             }
 
             // Check if the signerAddress is a moderators.
-            if (threadData[0].moderators.includes(req.body.signerAddress) === false) {
+            if (threadData.moderators.includes(req.body.signerAddress) === false) {
               return res.status(400).json({
                 success: false,
                 'error':'signerAddress not a Moderator of the Thread.'
               });
             }
 
-            threadData[0].isWritePublic = !threadData[0].isWritePublic;
+            threadData.isWritePublic = !threadData.isWritePublic;
 
             // save the updated value of isWritePublic
-            await updateThread(threadData[0]);
+            await updateThread(threadData);
 
             return res.status(200).json({
               success: true
@@ -596,7 +596,7 @@ const handler = async(req, res) => {
           // Check if the thread exists
           let threadData = await getThread(req.body?.threadId);
 
-          if (threadData.length === 0) {
+          if (threadData === null) {
             return res.status(400).json({
               success: false,
               'error':'Thread does not exist.'
@@ -604,7 +604,7 @@ const handler = async(req, res) => {
           }
 
           // Check if the signerAddress is a moderators.
-          const adminList = [...new Set([...threadData[0].moderators, threadData[0].creator])];
+          const adminList = [...new Set([...threadData.moderators, threadData.creator])];
           if (!adminList.includes(req.body.signerAddress)) {
             return res.status(400).json({
               success: false,
@@ -613,7 +613,7 @@ const handler = async(req, res) => {
           }
 
           // delete Thread And Comments
-          await deleteThreadAndComments(threadData[0]._id);
+          await deleteThreadAndComments(threadData._id);
 
           return res.status(200).json({
             success: true
