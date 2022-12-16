@@ -88,7 +88,7 @@
     "@next/eslint-plugin-next": "^12.3.1",
     "bfj": "^7.0.2",
     "eslint": "^8.26.0",
-    "eslint-config-next": "^12.3.1",
+    "eslint-config-next": "^13.0.7",
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.6.0",
     "next-sitemap": "^3.1.30",
