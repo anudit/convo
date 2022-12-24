@@ -55,7 +55,7 @@ async function computeScoreData(address){
 
     let computeConfig = {
         polygonMainnetRpc: "https://polygon-rpc.com",
-        etherumMainnetRpc: "https://eth.public-rpc.com",
+        etherumMainnetRpc: "https://eth.llamarpc.com/rpc/01GN04VPE4RTRF8NH87ZP86K24",
         avalancheMainnetRpc: "https://avalanche.public-rpc.com",
         maticPriceInUsd: GLOBAL_MATIC_PRICE,
         etherumPriceInUsd: GLOBAL_ETH_PRICE,
@@ -233,9 +233,9 @@ function cleanNulls(obj){
 
 async function cacheTrustScoresManual(addresses, mongoClient){
 
-    const price_data = await fetcher('https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH,MATIC&key=ckey_cc10ca7b3fc24085a653ccc9b36', "GET", {});
-    GLOBAL_ETH_PRICE = parseFloat(price_data['data']['items'][0]['quote_rate']);
-    GLOBAL_MATIC_PRICE = parseFloat(price_data['data']['items'][1]['quote_rate']);
+    const price_data = await fetcher('https://api.coingecko.com/api/v3/simple/price?ids=ethereum%2Cmatic-network&vs_currencies=usd', "GET", {});
+    GLOBAL_ETH_PRICE = parseFloat(price_data['ethereum']['usd']);
+    GLOBAL_MATIC_PRICE = parseFloat(price_data['matic-network']['usd']);
     console.log(`GLOBAL_MATIC_PRICE:${GLOBAL_MATIC_PRICE}$`,`GLOBAL_ETH_PRICE:${GLOBAL_ETH_PRICE}$`);
 
     let times = [];
