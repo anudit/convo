@@ -65,7 +65,7 @@ const CommentsSection = (props) => {
     const [activeId, setActiveId] = useState('');
 
     const { data: comments, error, mutate } = useSWR(
-        signerAddress == "" ? null: [`/api/comments?author=${signerAddress}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET"],
+        signerAddress == "" ? null: `/api/comments?author=${signerAddress}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`,
         fetcher
     );
 

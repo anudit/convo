@@ -52,7 +52,7 @@ const Threads = (props) => {
             paramSet = true;
             queryUrl.searchParams.append("url", router.query.url);
         }
-        return paramSet === true ? [queryUrl['href'], "GET"] : null;
+        return paramSet === true ? queryUrl['href'] : null;
     }
 
     const { data: initComments, mutate  } = useSWR(

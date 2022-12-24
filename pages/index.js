@@ -350,8 +350,8 @@ const Home = ({tweetData}) => {
                         <Image
                           src="/images/usingconvo/coinvise.webp"
                           alt=""
-                          width="640px"
-                          height="360px"
+                          width={640}
+                          height={360}
                           className="br-10"
                         />
 
@@ -397,8 +397,8 @@ const Home = ({tweetData}) => {
                         <Image
                           src="/images/usingconvo/huddlnposter.webp"
                           alt=""
-                          width="700px"
-                          height="360px"
+                          width={700}
+                          height={360}
                           className="br-10"
                         />
 
@@ -476,7 +476,7 @@ const Home = ({tweetData}) => {
                       <CoinviseIcon boxSize={32}/>
                     </Tab>
                     <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4}>
-                      <Image src="/images/usingconvo/huddln.webp" width="30px" height="30px" alt="Huddln" p={2} aria-label="Huddln"/>
+                      <Image src="/images/usingconvo/huddln.webp" width={30} height={30} alt="Huddln" p={2} aria-label="Huddln"/>
                       <Text fontSize="1xl" p={2} color="#fff">Huddln</Text>
                     </Tab>
                     <Tab w="100%" h="100px" display="flex" flexDirection="row" borderRadius={4} aria-label="Decentraland">

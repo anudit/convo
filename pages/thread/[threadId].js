@@ -69,12 +69,12 @@ const Threads = (props) => {
     const router = useRouter()
 
     const { data: comments, mutate  } = useSWR(
-        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET"],
+        `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/comments?threadId=${router.query.threadId}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`,
         fetcher,
         {fallbackData: props.initialComments}
     );
     const { data: thread } = useSWR(
-        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?threadId=${router.query.threadId}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET"],
+        `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?threadId=${router.query.threadId}&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`,
         fetcher,
         {fallbackData: props.thread}
     );
