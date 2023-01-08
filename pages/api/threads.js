@@ -27,89 +27,47 @@ const handler = async(req, res) => {
         });
       }
 
-      let query = undefined;
+      let query = {};
 
       if (Boolean(req.query?.threadId) === true){
         query = {'_id': req.query.threadId};
       }
 
       if (Boolean(req.query?.creator) === true){
-        if (query === undefined) {
-          query = {'creator': req.query.creator}
-        }
-        else {
-          query['creator'] = req.query.creator;
-        }
+        query['creator'] = req.query.creator;
       }
 
       if (Boolean(req.query?.url) === true){
-        if (query === undefined) {
-          query = {'url': decodeURIComponent(req.query.url)};
-        }
-        else {
-          query['url'] = decodeURIComponent(req.query.url);
-        }
+        query['url'] = decodeURIComponent(req.query.url);
       }
 
       if (Boolean(req.query?.title) === true){
-        if (query === undefined) {
-          query = { 'title': req.query.title };
-        }
-        else {
-          query['title'] = req.query.title;
-        }
+        query['title'] = req.query.title;
       }
 
       if (Boolean(req.query?.isReadPublic) === true){
-        if (query === undefined) {
-          query = { 'isReadPublic': req.query.isReadPublic === 'true'? true: false };
-        }
-        else {
-          query['isReadPublic'] = req.query.isReadPublic === 'true'? true: false;
-        }
+        query['isReadPublic'] = req.query.isReadPublic === 'true'? true: false;
       }
 
       if (Boolean(req.query?.isWritePublic) === true){
-        if (query === undefined) {
-          query = { 'isWritePublic': req.query.isWritePublic === 'true'? true: false };
-        }
-        else {
-          query['isWritePublic'] = req.query.isWritePublic === 'true'? true: false;
-        }
+        query['isWritePublic'] = req.query.isWritePublic === 'true'? true: false;
       }
 
       if (Boolean(req.query?.keyword1) === true){
-        if (query === undefined) {
-          query = { 'keyword1': req.query.keyword1 };
-        }
-        else {
-          query['keyword1'] = req.query.keyword1;
-        }
+        query['keyword1'] = req.query.keyword1;
       }
 
       if (Boolean(req.query?.keyword2) === true){
-        if (query === undefined) {
-          query = { 'keyword2': req.query.keyword2 };
-        }
-        else {
-          query['keyword2'] = req.query.keyword2;
-        }
+        query['keyword2'] = req.query.keyword2;
       }
 
       if (Boolean(req.query?.keyword3) === true){
-        if (query === undefined) {
-          query = { 'keyword3': req.query.keyword3 };
-        }
-        else {
-          query['keyword3'] = req.query.keyword3;
-        }
+        query['keyword3'] = req.query.keyword3;
       }
 
       let sort = {};
       if (Boolean(req.query?.latestFirst) === true && req.query.latestFirst == 'true'){
-        if (query !== undefined) {
-          sort = {'createdOn': -1};
-        }
+        sort = {'createdOn': -1};
       }
 
       const threads = await getThreads(query, sort, req.query?.page, req.query?.pageSize);
@@ -148,7 +106,7 @@ const handler = async(req, res) => {
             let url = Boolean(req.body?.url) === true ? decodeURIComponent(req.body.url) : "https://theconvo.space/";
 
             let oldThreadData = await getThread(threadId);
-            if (oldThreadData === null){
+            if (oldThreadData !== null){
               return res.status(400).json({
                 success: false,
                 'error':'Thread already exists.'

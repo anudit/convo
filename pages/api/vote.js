@@ -1,5 +1,5 @@
 import validateAuth from "@/lib/validateAuth";
-import  { toggleUpvote, toggleDownvote } from "@/lib/thread-db";
+import { toggleUpvote, toggleDownvote } from "@/lib/thread-db";
 import withApikey from "@/middlewares/withApikey";
 import withCors from "@/middlewares/withCors";
 

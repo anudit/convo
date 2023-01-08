@@ -6,7 +6,6 @@ import { CheckIcon, CopyIcon, DeleteIcon } from '@chakra-ui/icons';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 import Linkify from 'react-linkify';
-import { Where } from "@textile/hub";
 import PropTypes from 'prop-types';
 
 import PageShell from '@/components/PageShell';
@@ -19,10 +18,9 @@ import CustomAvatar from '@/components/CustomAvatar';
 
 export async function getServerSideProps(context) {
     const threadId = context.params.threadId;
-    const query = new Where('tid').eq(threadId);
 
     let promiseArray = [
-        getComments(query),
+        getComments({'tid': threadId}),
         getThread(threadId)
     ];
 
