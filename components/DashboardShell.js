@@ -228,7 +228,7 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                     alignItems="space-between"
                     background={colorMode === "light" ? "#ececec30" : "#15151930"}
                 >
-                    <Flex direction="column" alignItems={{base:"left", md:"center"}} >
+                    <Flex direction="column" >
                         <Link href="/dashboard" passHref={true}>
                             <Flex height="75px" w="100%"  fontWeight={200} cursor="pointer" direction="column" align="center" justifyContent="center" alignItems="center" _hover={{backgroundColor:colorMode === "light" ? "#eee" : "#212121"}}>
                                 <Text fontSize  ="2xl">
@@ -390,14 +390,13 @@ DashboardShell.propTypes = {
 export default DashboardShell;
 
 
-const SidebarItem = ({name, tag, icon, isActive, href, isExternal}) => {
+const SidebarItem = ({name, tag, icon, isActive, href, isExternal=false}) => {
     const { colorMode } = useColorMode();
     return (
-        <Link href={href} passHref={true} isExternal={isExternal}>
+        <Link href={href} target={isExternal? '_blank': '_self'}>
             <Flex
                 m={1}
                 h={{base: "50px", md:"50px"}}
-                w="90%"
                 fontWeight={400}
                 cursor="pointer"
                 direction="row"
@@ -411,6 +410,8 @@ const SidebarItem = ({name, tag, icon, isActive, href, isExternal}) => {
                 transitionProperty="background-color,border-color,color,fill,stroke"
                 backgroundColor={isActive === true ? (colorMode === "light" ? "#eee" : "hsla(0,0%,100%,0.04)") : ""}
                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "hsla(0,0%,100%,0.04)"}}
+                w="90%"
+                mr={4}
             >
                 {icon}
                 <Text display={{base:"none", md:"block"}} fontSize="sm" fontWeight={isActive === true ? 900 : 100} opacity="80%">

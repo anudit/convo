@@ -449,7 +449,7 @@ const BrightIdCard = () => {
   const { hasCopied, onCopy } = useClipboard(`brightid://link-verification/http:%2f%2fnode.brightid.org/Convo/${signerAddress}`)
 
   const { data } = useSWR(
-    signerAddress != "" ? [`https://app.brightid.org/node/v5/verifications/Convo/${signerAddress}`, "GET"] : null,
+    signerAddress != "" ? `https://app.brightid.org/node/v5/verifications/Convo/${signerAddress}` : null,
     fetcher
   );
 

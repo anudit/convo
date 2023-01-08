@@ -201,7 +201,7 @@ export const ThreadView = ({link, threads, exploreAll}) => {
                 <Flex maxH="70vh" overflowY="overlay" overflowX="hidden" direction="column">
                     <Stack spacing={1}>
                         {
-                            threads && threads.filter((thread) => {
+                            threads && threads?.filter && threads.filter((thread) => {
                                 return thread.title.toLowerCase().search(searchQuery.toLowerCase()) >= 0 || thread.creator.toLowerCase().search(searchQuery.toLowerCase()) >= 0 || thread.url.toLowerCase().search(searchQuery.toLowerCase()) >= 0
                             }).map((thread) => (
                                 <ThreadCard threadData={thread} key={thread._id}/>

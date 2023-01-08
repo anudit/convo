@@ -12,7 +12,7 @@ export const maticMumbaiReadOnlyProvider = new providers.JsonRpcProvider({
 
 export const ethereumReadOnlyProvider = new providers.JsonRpcProvider({
     allowGzip: "true",
-    url: "https://eth.public-rpc.com",
+    url: "https://eth.llamarpc.com/rpc/01GN04VPE4RTRF8NH87ZP86K24",
 });
 
 // let tp = new providers.AlchemyProvider("mainnet","aCCNMibQ1zmvthnsyWUWFkm_UAvGtZdv");

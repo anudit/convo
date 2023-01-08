@@ -15,8 +15,8 @@ export async function getStaticProps() {
         props: {
             initialThreads: threads.map(e=>{
                 // eslint-disable-next-line no-unused-vars
-                let {_mod, ...ret} = e;
-                return ret;
+                let {_mod, ...data} = e;
+                return data;
             })
         },
         revalidate: 1
@@ -27,7 +27,7 @@ export async function getStaticProps() {
 const Threads = (props) => {
 
     const { data: initialThreads, error } = useSWR(
-        [`${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?allPublic=true&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`, "GET"],
+        `${process.env.NEXT_PUBLIC_API_SITE_URL}/api/threads?allPublic=true&apikey=CSCpPwHnkB3niBJiUjy92YGP6xVkVZbWfK8xriDO`,
         fetcher,
         { fallbackData: props.initialThreads }
     );
