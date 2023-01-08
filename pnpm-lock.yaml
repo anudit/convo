@@ -71,8 +71,6 @@ specifiers:
   web3modal: ^1.9.10
   webpack: ^5.75.0
   zokrates-js: 1.0.43
-
-dependencies:
   '@babel/core': 7.20.12
   '@babel/runtime': 7.20.7
   '@biconomy/mexa': 3.0.5
@@ -1085,7 +1083,6 @@ packages:
       '@babel/helper-explode-assignable-expression': 7.18.6
       '@babel/types': 7.20.7
     dev: false
-
   /@babel/helper-compilation-targets/7.20.7_@babel+core@7.20.12:
     resolution: {integrity: sha512-4tGORmfQcrc+bvrjb5y3dG9Mx1IOZjsHqQVUz7XCNHO+iTmqxWnVg3KRygjGmpRLJGdQSKuvFinbIb0CnZwHAQ==}
     engines: {node: '>=6.9.0'}
@@ -1098,7 +1095,6 @@ packages:
       browserslist: 4.21.4
       lru-cache: 5.1.1
       semver: 6.3.0
-
   /@babel/helper-create-class-features-plugin/7.20.12_@babel+core@7.20.12:
     resolution: {integrity: sha512-9OunRkbT0JQcednL0UFvbfXpAsUXiGjUk0a7sN8fUXX7Mue79cUSMjHGDRRi/Vz9vYlpIhLV5fMD5dKoMhhsNQ==}
     engines: {node: '>=6.9.0'}
@@ -1117,7 +1113,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: false
-
   /@babel/helper-create-regexp-features-plugin/7.20.5_@babel+core@7.20.12:
     resolution: {integrity: sha512-m68B1lkg3XDGX5yCvGO0kPx3v9WIYLnzjKfPcQiwntEQa5ZeRkPmo2X/ISJc8qxWGfwUr+kvZAeEzAwLec2r2w==}
     engines: {node: '>=6.9.0'}
@@ -1128,7 +1123,6 @@ packages:
       '@babel/helper-annotate-as-pure': 7.18.6
       regexpu-core: 5.2.2
     dev: false
-
   /@babel/helper-define-polyfill-provider/0.3.3_@babel+core@7.20.12:
     resolution: {integrity: sha512-z5aQKU4IzbqCC1XH0nAqfsFLMVSo22SBKUc0BxGrLkolTdPTructy0ToNnlO2zA4j9Q/7pjMZf0DSY+DSTYzww==}
     peerDependencies:
@@ -1208,7 +1202,6 @@ packages:
     resolution: {integrity: sha512-8RvlJG2mj4huQ4pZ+rU9lqKi9ZKiRmuvGuM2HlWmkmgOhbs6zEAw6IEiJ5cQqGbDzGZOhwuOQNtZMi/ENLjZoQ==}
     engines: {node: '>=6.9.0'}
     dev: false
-
   /@babel/helper-remap-async-to-generator/7.18.9_@babel+core@7.20.12:
     resolution: {integrity: sha512-dI7q50YKd8BAv3VEfgg7PS7yD3Rtbi2J1XMXaalXO0W0164hYLnh8zpjRS0mte9MfVp/tltvr/cfdXPvJr1opA==}
     engines: {node: '>=6.9.0'}
@@ -3478,7 +3471,7 @@ packages:
       framesync: 6.1.2
       lodash.mergewith: 4.6.2
     dev: false
-
+    
   /@chakra-ui/visually-hidden/2.0.14_7wjnschhdqxnmmgtwx36wzhvlm:
     resolution: {integrity: sha512-/evqTuCeN3laukL1BPZO8HTzgs+dzq0v6gu/MJFgiSAKGLfInn0/IStKGK2vIluuCtJIgaHVdKcJzr+7sJhd0Q==}
     peerDependencies:
@@ -4312,7 +4305,7 @@ packages:
     dependencies:
       '@motionone/types': 10.15.1
       '@motionone/utils': 10.15.1
-      tslib: 2.4.1
+      tslib: 2.4.0
     dev: false
 
   /@motionone/types/10.15.1:
@@ -5629,7 +5622,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
+    
   /@typescript-eslint/scope-manager/5.48.0:
     resolution: {integrity: sha512-0AA4LviDtVtZqlyUQnZMVHydDATpD9SAX/RC5qh6cBd3xmyWvmXYF+WT1oOmxkeMnWDlUVTwdODeucUnjz3gow==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -6425,7 +6418,7 @@ packages:
       esutils: 2.0.3
       js-tokens: 3.0.2
     dev: false
-
+    
   /babel-loader/8.3.0_la66t7xldg4uecmyawueag5wkm:
     resolution: {integrity: sha512-H8SvsMF+m9t15HNLMipppzkC+Y2Yq+v3SonZyU70RBL/h1gxPkH08Ot8pEE9Z4Kd+czyWJClmFS8qzIP9OZ04Q==}
     engines: {node: '>= 8.9'}
