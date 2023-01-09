@@ -13,7 +13,11 @@ export async function getStaticProps() {
     const threads = await getAllThreads();
     return {
         props: {
-            initialThreads: threads
+            initialThreads: threads.map(e=>{
+                // eslint-disable-next-line no-unused-vars
+                let {_mod, ...data} = e;
+                return data;
+            })
         },
         revalidate: 1
     }

@@ -56,10 +56,9 @@ export const truncateAddress = (address, len=4) => {
     }
 };
 
+export const randomId = (length = 24) => {
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-export const randomId = (length = 20) => {
     let result = "";
     const charactersLength = characters.length;
     for ( let i = 0; i < length; i++ ) {

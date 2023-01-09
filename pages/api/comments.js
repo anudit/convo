@@ -1,6 +1,5 @@
 import validateAuth from "@/lib/validateAuth";
 import { createComment, deleteAllUserComments, deleteComment, getComment, getComments, updateComment } from "@/lib/thread-db";
-import { Where } from "@textile/hub";
 import withApikey from "@/middlewares/withApikey";
 import { addressToChainName } from "@/utils/stringUtils";
 import withCors from "@/middlewares/withCors";
@@ -35,64 +34,38 @@ const handler = async(req, res) => {
         });
       }
 
-      let query = undefined;
+      let query = {};
 
       if (Boolean(req.query?.threadId) === true){
-        query = new Where('tid').eq(req.query.threadId);
+        query['tid'] = req.query.threadId;
       }
 
       if (Boolean(req.query?.url) === true){
-        if (query === undefined) {
-          query = new Where('url').eq(decodeURIComponent(req.query.url));
-        }
-        else {
-          query = query.and('url').eq(decodeURIComponent(req.query.url));
-        }
+        query['url'] = decodeURIComponent(req.query.url);
       }
 
       if (Boolean(req.query?.author) === true){
-        if (query === undefined) {
-          query = new Where('author').eq(req.query.author);
-        }
-        else {
-          query = query.and('author').eq(req.query.author);
-        }
+        query['author'] = getAddress(req.query.author);
       }
 
       if (Boolean(req.query?.tag1) === true){
-        if (query === undefined) {
-          query = new Where('tag1').eq(req.query.tag1);
-        }
-        else {
-          query = query.and('tag1').eq(req.query.tag1);
-        }
+        query['tag1'] = getAddress(req.query.tag1);
       }
 
       if (Boolean(req.query?.tag2) === true){
-        if (query === undefined) {
-          query = new Where('tag2').eq(req.query.tag2);
-        }
-        else {
-          query = query.and('tag2').eq(req.query.tag2);
-        }
+        query['tag2'] = getAddress(req.query.tag2);
       }
 
       if (Boolean(req.query?.replyTo) === true){
-        if (query === undefined) {
-          query = new Where('replyTo').eq(req.query.replyTo);
-        }
-        else {
-          query = query.and('replyTo').eq(req.query.replyTo);
-        }
+        query['replyTo'] = getAddress(req.query.replyTo);
       }
 
+      let sort = {};
       if (Boolean(req.query?.latestFirst) === true && req.query.latestFirst == 'true'){
-        if (query !== undefined) {
-          query = query.orderByDesc('_mod');
-        }
+        sort['createdOn'] = -1;
       }
 
-      const comments = await getComments(query, req.query?.page, req.query?.pageSize);
+      const comments = await getComments(query, sort, req.query?.page, req.query?.pageSize);
 
 
       if (Boolean(req.query?.countOnly) === true && req.query.countOnly == 'true'){
@@ -161,6 +134,7 @@ const handler = async(req, res) => {
 
           return res.status(200).json({
             _id: newId,
+            success: true,
             ...commentData
           });
 
