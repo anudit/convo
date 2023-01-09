@@ -29,7 +29,7 @@
     "@chakra-ui/react": "^2.4.4",
     "@chakra-ui/system": "^2.3.1",
     "@dicebear/avatars": "^4.10.7",
-    "@dicebear/micah": "^4.10.7",
+    "@dicebear/micah": "^5.0.2",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@gnosis.pm/safe-apps-sdk": "^7.8.0",
