@@ -11,7 +11,7 @@ export const getAvatar = (seed, config = {}) => {
         // ... and other options
     });
 
-    return svg;
+    return `data:image/svg+xml,${encodeURIComponent(svg.toString())}`;
 };
 
 export default getAvatar;
