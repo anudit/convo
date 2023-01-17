@@ -1,10 +1,10 @@
 
-import { createAvatar } from "@dicebear/avatars";
-import * as style from "@dicebear/micah";
+import { createAvatar } from "@dicebear/core";
+import { micah } from '@dicebear/collection';
 
 export const getAvatar = (seed, config = {}) => {
 
-    let svg = createAvatar(style, {
+    let svg = createAvatar(micah, {
         seed,
         mouth: ['laughing', 'smile'],
         ...config

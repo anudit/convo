@@ -20,6 +20,7 @@ import brightid from '../../public/images/brightid.webp';
 import asyncart from '../../public/images/asyncart.webp';
 import boardroom from '../../public/images/boardroom.webp';
 import coinvise from '../../public/images/coinvise.webp';
+import credprotocol from '../../public/images/credprotocol.webp';
 import deepdao from '../../public/images/deepdao.webp';
 import ens from '../../public/images/ens.webp';
 import etherscan from '../../public/images/etherscan.webp';
@@ -332,6 +333,9 @@ const IdentitySection = () => {
                   </Item>
                   <Item searchString={searchString} tags={['governance','dao', 'coordinape']}>
                     <CoordinapeCard trustScoreData={trustScoreData} />
+                  </Item>
+                  <Item searchString={searchString} tags={['credprotocol', 'credit report', 'defi']}>
+                    <CredCard trustScoreData={trustScoreData} />
                   </Item>
                   <Item searchString={searchString} tags={['connect','cyberconnect', 'social']}>
                     <CyberconnectCard trustScoreData={trustScoreData} />
@@ -1374,7 +1378,16 @@ const ArcxCard = ({trustScoreData}) => {
 };
 ArcxCard.propTypes = propTypes
 
-
+const CredCard = ({trustScoreData}) => {
+  return (
+    <IdentityCard image_url={credprotocol}>
+      {
+        trustScoreData === null ? "Loading" : Boolean(trustScoreData?.credprotocol) === false ? (<><chakra.p size="xs" as="a" target="_blank" href="https://app.credprotocol.com/">Get your Credit Report</chakra.p></>) : (<><Text mr={1}>Credit Report</Text><VerifiedIcon color="blue.400"/></>)
+      }
+    </IdentityCard>
+  );
+};
+CredCard.propTypes = propTypes
 
 const Item = ({children, searchString = "", tags = []}) => {
   return (
