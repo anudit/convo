@@ -1,9 +1,10 @@
-import React, { useClipboard, MenuDivider, MenuItem, MenuList, Menu, MenuButton } from "@chakra-ui/react";
+import React, { useContext }  from 'react';
+import { useDisclosure, useClipboard, MenuDivider, MenuItem, MenuList, Menu, MenuButton } from "@chakra-ui/react";
 import { ChevronDownIcon, CopyIcon } from "@chakra-ui/icons";
-import { useContext } from "react";
 import { Web3Context } from "@/contexts/Web3Context";
 import { CosmosIcon, DisconnectIcon, ExternalIcon, FlowIcon, MetaMaskIcon, NearIcon, OkxIcon, SolanaIcon, WalletConnectIcon } from "@/public/icons";
 import { truncateAddress } from "@/utils/stringUtils";
+import Offset from './Offset';
 
 import dynamic from "next/dynamic";
 const QrCode = dynamic(
@@ -14,7 +15,8 @@ const QrCode = dynamic(
 const SignedInMenu = () => {
 
     const { prettyName, connectedWallet, signerAddress, disconnectWallet } = useContext(Web3Context);
-    const { hasCopied, onCopy } = useClipboard(signerAddress)
+    const { hasCopied, onCopy } = useClipboard(signerAddress);
+    const { isOpen:isOpenClimate, onOpen:onOpenClimate, onClose:onCloseClimate } = useDisclosure();
 
     return (
         <Menu>
@@ -78,6 +80,7 @@ const SignedInMenu = () => {
                 <MenuItem icon={<CopyIcon />} onClick={onCopy} >
                     {hasCopied === true? "Copied": "Copy Address"}
                 </MenuItem>
+                <MenuItem icon={<span>🌳</span>} onClick={onOpenClimate}><Offset onClose={onCloseClimate} isOpen={isOpenClimate}/></MenuItem>
                 <MenuItem icon={<DisconnectIcon />} onClick={disconnectWallet} >
                     Disconnect
                 </MenuItem>

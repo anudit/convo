@@ -715,3 +715,35 @@ export const MoonOutlineIcon = createIcon({
     )
 });
 
+export const SeedchainIcon = createIcon({
+    displayName: 'SeedchainIcon',
+    viewBox: '44 28 197 272',
+    path: (
+        <g>
+            <defs>
+                <linearGradient id="a" x1="127.7" x2="266.4" y1="119.1" y2="141.6" gradientTransform="translate(44 28) scale(.78036)" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#28C14A"/>
+                <stop offset="1" stopColor="#0D9574"/>
+                </linearGradient>
+            </defs>
+            <path fill="url(#a)" fillRule="evenodd" d="M94 173c1 10 14 15 20 8L239 47c6-7-1-19-12-19H76c-6 0-10 5-9 11l27 134Zm97-19c-1-10-14-15-20-8L46 280c-6 7 1 19 12 19h151c6 0 10-5 9-11l-27-134Z" clipRule="evenodd"/>
+        </g>
+    )
+})
+
+export const ToucanIcon = createIcon({
+    displayName: 'ToucanIcon',
+    viewBox: '0 0 40 40',
+    path: (
+        <g>
+            <path fill="#fff" d="M39 17H28c7 4 11 12 12 21l-2 2v-3c-1-10-6-17-14-20a18 18 0 0 0-4-1v-1h18a14 14 0 0 0 0-1C37 7 32 2 25 2h-7a16 16 0 0 0-6 31l1-6 1 5v2a16 16 0 0 0 9 0l-1-2c-2-3-3-6-3-10a20 20 0 0 0 5 11 18 18 0 0 0 14 5v2a9 9 0 0 1-1 0 20 20 0 0 1-8-2c-2 0-4-1-5-3h-1a18 18 0 0 1-9 0h-1v-1l-2 1a18 18 0 0 1 7-35h7a15 15 0 0 1 15 15l-1 2Zm-20 5Z"/>
+            <path fill="#FFA34D" d="M17 15h21c0-7-6-13-13-13h-6l-2 13Z"/>
+            <path fill="#FF5F93" d="M17 10h10c8 0 10 4 10 4H17v-4Z"/>
+            <path fill="#fff" d="M5 14C5 9 10 3 15 3h2l1 8h-1c-1 6-3 14-9 12-2-1-3-6-3-9Z"/>
+            <path fill="#2D0B3D" d="M13 9a2 2 0 0 0 2-2 1 1 0 1 1-1-1h-1a2 2 0 1 0 0 3Z"/>
+            <path fill="#2D0B3D" d="m17 15 2-13h-1a16 16 0 0 0-6 31l1-6 1 7a16 16 0 0 0 9 0c-5-5-5-13-3-19h-3ZM15 3c1 0 3 2 2 3l-1 12c-1 3-5 7-7 4-2-2-3-4-2-10s5-8 8-9Z"/>
+            <path fill="#2D0B3D" d="M18 14h19A12 12 0 0 0 25 3h-6l-1 11Zm-2 1 2-13h7a14 14 0 0 1 13 13H16Z"/>
+            <path fill="#2D0B3D" d="M37 15c-1 0-7 0-6-1 0-2 2-4 4-5s3 6 2 6Zm1 23s-19 2-19-22c11 0 18 11 19 22Z"/>
+        </g>
+    )
+})
