@@ -45,7 +45,7 @@
     "@theconvospace/sdk": "^0.6.11",
     "@walletconnect/web3-provider": "^1.8.0",
     "ably": "^1.2.34",
-    "axios": "^0.27.2",
+    "axios": "^1.2.5",
     "bs58": "^5.0.0",
     "bson-ext": "^4.0.3",
     "critters": "^0.0.16",
