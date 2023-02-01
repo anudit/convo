@@ -58,7 +58,7 @@
     "jsonwebtoken": "^8.5.1",
     "kerberos": "^2.0.1",
     "key-did-provider-ed25519": "^2.0.1",
-    "mongodb": "^4.13.0",
+    "mongodb": "^5.0.0",
     "mongodb-client-encryption": "^2.3.0",
     "near-api-js": "^1.1.0",
     "next": "^13.1.5",
