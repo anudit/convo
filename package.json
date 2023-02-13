@@ -50,7 +50,7 @@
     "bson-ext": "^4.0.3",
     "critters": "^0.0.16",
     "dotenv": "^16.0.3",
-    "ethers": "^5.7.2",
+    "ethers": "^6.0.3",
     "framer-motion": "^8.5.2",
     "got": "^12.5.3",
     "ioredis": "^5.2.6",
