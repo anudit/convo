@@ -51,7 +51,7 @@
     "critters": "^0.0.16",
     "dotenv": "^16.0.3",
     "ethers": "^5.7.2",
-    "framer-motion": "^8.5.2",
+    "framer-motion": "^9.0.3",
     "got": "^12.5.3",
     "ioredis": "^5.2.6",
     "js-cookie": "^3.0.1",
