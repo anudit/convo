@@ -55,7 +55,7 @@
     "got": "^12.5.3",
     "ioredis": "^5.3.1",
     "js-cookie": "^3.0.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "kerberos": "^2.0.1",
     "key-did-provider-ed25519": "^2.0.1",
     "mongodb": "^4.14.0",
