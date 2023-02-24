@@ -76,7 +76,7 @@
     "styled-components": "^5.3.6",
     "swr": "^2.0.3",
     "telegraf": "^4.11.2",
-    "three": "^0.149.0",
+    "three": "^0.150.0",
     "tweetnacl": "^1.0.3",
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
