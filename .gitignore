@@ -57,3 +57,4 @@ scripts
 *.pem
 fly.toml
 .swc
+.gitsigners

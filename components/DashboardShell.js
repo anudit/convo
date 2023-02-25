@@ -5,7 +5,7 @@ import { Wrap, WrapItem, useDisclosure, useColorMode, IconButton, Text, Flex, He
 import PropTypes from 'prop-types';
 
 import { Web3Context } from '@/contexts/Web3Context';
-import { MoonOutlineIcon, SunActiveIcon, ThreeDotMenuFlatIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, OmnidIcon, VartaIcon, OkxIcon } from '@/public/icons';
+import { MoonOutlineIcon, SunActiveIcon, ThreeDotMenuFlatIcon, TheConvoSpaceIcon, MetaMaskIcon, WalletConnectIcon, ExternalIcon, DocsIcon, NearIcon, MessagesIcon, DataIcon2, DeveloperIcon, BridgeIcon, FlowIcon, SolanaIcon, HomeIcon, CosmosIcon, OmnidIcon, OkxIcon } from '@/public/icons';
 import { CloseIcon, InfoIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { isBlockchainAddress } from '@/utils/stringUtils';
 import SignedInMenu from './SignedInMenu';
@@ -278,13 +278,6 @@ const DashboardShell = ({title, active, children, searchbox}) => {
                             href="https://bridge.theconvo.space/"
                             isExternal={true}
                         />
-                        <SidebarItem
-                            name="Varta"
-                            icon={<VartaIcon mr={4}/>}
-                            isActive={active === "varta"}
-                            tag={<Tag size="sm" ml={2}>soon</Tag>}
-                            href="#"
-                        />
                     </Flex>
                     <Flex direction="column" justifyContent="space-around" alignItems="center">
                         <Divider w="90%"/>
@@ -412,6 +405,7 @@ const SidebarItem = ({name, tag, icon, isActive, href, isExternal=false}) => {
                 _hover={{backgroundColor:colorMode === "light" ? "#eee" : "hsla(0,0%,100%,0.04)"}}
                 w="90%"
                 mr={4}
+                ml="13px"
             >
                 {icon}
                 <Text display={{base:"none", md:"block"}} fontSize="sm" fontWeight={isActive === true ? 900 : 100} opacity="80%">
