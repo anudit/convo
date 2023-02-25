@@ -6,7 +6,6 @@ const Headers = (...args) => import('node-fetch').then(({Headers}) => new Header
 const { getAddress, isAddress } = require('ethers/lib/utils');
 const { ethers } = require("ethers");
 const { MongoClient } = require('mongodb');
-const { Client, PrivateKey, ThreadID } = require('@textile/hub');
 const fs = require('fs');
 const path = require('path');
 
@@ -272,38 +271,21 @@ async function cacheTrustScoresManual(addresses, mongoClient){
 
 }
 
-const getAddresses = async (threadClient, mongoClient) =>{
+const getAddresses = async (mongoClient) =>{
 
     let db = mongoClient.db('convo');
     let coll = db.collection('cachedTrustScores');
 
     const snapshot_trustscores = await coll.distinct("_id", {});
-    console.log('cursor.length', snapshot_trustscores.length);
+    console.log('cursor.length', snapshot_trustscores.length, snapshot_trustscores[0]);
 
-    const threadId = ThreadID.fromString(TEXTILE_THREADID);
-    let snapshot_comments = await threadClient.find(threadId, 'comments', {});
-    snapshot_comments = snapshot_comments.map((e)=>{
-        return e.author;
-    })
-    snapshot_comments = snapshot_comments.filter((e)=>{
-        return isAddress(e)===true;
-    })
+    let coll2 = db.collection('comments');
+    const snapshot_comments = await coll2.distinct("author", {});
+    console.log('cursor.length', snapshot_comments.length, snapshot_comments[0]);
 
     let arr = snapshot_trustscores.concat(snapshot_comments);
     return Array.from(new Set(arr));
 
-}
-
-const getClient = async () =>{
-
-    const client = await Client.withKeyInfo({
-        key: TEXTILE_HUB_KEY_DEV,
-        debug: true
-    })
-
-    const identity = PrivateKey.fromString(TEXTILE_PK);
-    await client.getToken(identity);
-    return client;
 }
 
 function getArraySample(arr, sample_size, return_indexes = false) {
@@ -321,10 +303,9 @@ function getArraySample(arr, sample_size, return_indexes = false) {
 }
 
 async function runPipline(){
-    const threadClient = await getClient();
     const mongoClient = await MongoClient.connect(MONGODB_URI);
 
-    let addressTable = await getAddresses(threadClient, mongoClient);
+    let addressTable = await getAddresses(mongoClient);
     addressTable = getArraySample(addressTable, 5200);
     await cacheTrustScoresManual(addressTable, mongoClient);
     await mongoClient.close();
