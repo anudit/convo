@@ -70,7 +70,7 @@ async function computeScoreData(address){
     let resp = await convoInstance.omnid.computeTrustScore(
         address,
         computeConfig,
-        ['coordinape', 'upshot']
+        ['coordinape', 'upshot', 'scanblocks', 'deepdao']
     );
 
     for (const [key, value] of Object.entries(resp)) {
@@ -306,7 +306,7 @@ async function runPipline(){
     const mongoClient = await MongoClient.connect(MONGODB_URI);
 
     let addressTable = await getAddresses(mongoClient);
-    addressTable = getArraySample(addressTable, 5200);
+    addressTable = getArraySample(addressTable, 3500);
     await cacheTrustScoresManual(addressTable, mongoClient);
     await mongoClient.close();
 }

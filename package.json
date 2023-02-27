@@ -75,7 +75,7 @@
     "styled-components": "^5.3.6",
     "swr": "^2.0.4",
     "telegraf": "^4.11.2",
-    "three": "^0.150.0",
+    "three": "^0.150.1",
     "tweetnacl": "^1.0.3",
     "twitter-v2": "^1.1.0",
     "url-metadata": "^2.5.0",
@@ -86,11 +86,11 @@
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.2.1",
     "bfj": "^7.0.2",
-    "eslint": "^8.34.0",
+    "eslint": "^8.35.0",
     "eslint-config-next": "^13.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "next-sitemap": "^3.1.52",
+    "next-sitemap": "^3.1.54",
     "terraform": "^1.22.1",
     "tf-next": "^0.13.2"
   },
