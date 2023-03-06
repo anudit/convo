@@ -90,7 +90,7 @@
     "eslint-config-next": "^13.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "next-sitemap": "^3.1.54",
+    "next-sitemap": "^4.0.2",
     "terraform": "^1.22.1",
     "tf-next": "^0.13.2"
   },
