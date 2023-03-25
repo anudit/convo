@@ -148,7 +148,7 @@ const Threads = (props) => {
                     signerAddress,
                     comment,
                     'threadId': router.query.threadId,
-                    'url': 'https://theconvo.space/',
+                    'url': new URL(router.query.url).href || 'https://theconvo.space/',
                 });
 
                 if (Object.keys(res).includes('_id') === true) {
