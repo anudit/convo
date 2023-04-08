@@ -95,7 +95,8 @@
     "tf-next": "^0.13.2"
   },
   "engines": {
-    "node": ">=16.6.0"
+    "node": ">=18.14.0",
+    "pnpm": ">=8"
   },
   "nextBundleAnalysis": {
     "budget": null,
