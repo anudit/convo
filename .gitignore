@@ -58,3 +58,4 @@ scripts
 fly.toml
 .swc
 .gitsigners
+/pages/stats.js
