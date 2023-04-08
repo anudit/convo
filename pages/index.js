@@ -11,8 +11,8 @@ import Footer from "@/components/Footer";
 import Card from '@/components/Card';
 import NavBar from '@/components/NavbarV2';
 import { MakeOwnCodeBlock } from "@/components/CodeBlock";
-// import Scene from "@/components/Models/Scene"
-// import Scene2 from "@/components/Models/Scene2"
+import Scene from "@/components/Models/Scene"
+import Scene2 from "@/components/Models/Scene2"
 import Twitter from "twitter-v2"
 import TweetCard from "@/components/TweetCard";
 
@@ -203,7 +203,7 @@ const Home = ({tweetData}) => {
 
           </Flex>
 
-          {/* <Flex
+          <Flex
             align="center"
             display={{base:"none",md:"flex"}}
             justify={{ base: "center", md: "space-around", xl: "space-evenly" }}
@@ -215,7 +215,7 @@ const Home = ({tweetData}) => {
             w={{ base: "44%"}}
             >
               <Scene />
-          </Flex> */}
+          </Flex>
 
         </Flex>
 
@@ -285,7 +285,7 @@ const Home = ({tweetData}) => {
           justifyContent="center"
         >
 
-          {/* <Flex
+          <Flex
             direction="column"
             align="left"
             mt={8}
@@ -295,7 +295,7 @@ const Home = ({tweetData}) => {
             display={{base:"none",md:"flex"}}
           >
             <Scene2/>
-          </Flex> */}
+          </Flex>
 
           <Flex
               direction="column"

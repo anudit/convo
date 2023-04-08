@@ -9,6 +9,7 @@ module.exports = (phase) => {
     experimental: {
       esmExternals: false
     },
+    transpilePackages: ['three-stdlib'],
     images: {
       domains: ['api.qrserver.com', 'qrserver.com'],
     },

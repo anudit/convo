@@ -2,8 +2,7 @@
 import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import {  OrbitControls } from "@react-three/drei";
-import dynamic from 'next/dynamic';
-const Model = dynamic(() => import('./Model2'));
+import Model from './Model2';
 
 export default function Scene() {
   return (
