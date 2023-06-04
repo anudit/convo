@@ -233,8 +233,8 @@ const handler = async(req, res) => {
               });
             }
 
-            // Check if the signerAddress is a moderator.
-            if (threadData.moderators.includes(req.body.signerAddress) === false) {
+            // Check if the signerAddress is a moderator or the creator
+            if (threadData.moderators.includes(req.body.signerAddress) === false && threadData.creator != req.body.signerAddress) {
               return res.status(400).json({
                 success: false,
                 'error':'signerAddress not a Moderator or Admin of the Thread.'
@@ -566,15 +566,15 @@ const handler = async(req, res) => {
           if (!adminList.includes(req.body.signerAddress)) {
             return res.status(400).json({
               success: false,
-              'error':'signerAddress not a Moderator of the Thread.'
+              'error':'signerAddress not a Moderator or Creator of the Thread.'
             });
           }
 
           // delete Thread And Comments
-          await deleteThreadAndComments(threadData._id);
+          let respStatus = await deleteThreadAndComments(threadData._id);
 
           return res.status(200).json({
-            success: true
+            success: respStatus
           });
 
         } else {
