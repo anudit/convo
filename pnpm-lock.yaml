@@ -179,8 +179,8 @@ dependencies:
     specifier: ^5.85.0
     version: 5.85.0
   zokrates-js:
-    specifier: 1.1.8
-    version: 1.1.8
+    specifier: 1.0.43
+    version: 1.0.43
 
 devDependencies:
   '@next/eslint-plugin-next':
@@ -12150,10 +12150,6 @@ packages:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
     engines: {node: '>=6'}
 
-  /pako@2.1.0:
-    resolution: {integrity: sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==}
-    dev: false
-
   /paramap-it@0.1.1:
     resolution: {integrity: sha512-3uZmCAN3xCw7Am/4ikGzjjR59aNMJVXGSU7CjG2Z6DfOAdhnLdCOd0S0m1sTkN4ov9QhlE3/jkzyu953hq0uwQ==}
     dependencies:
@@ -14971,10 +14967,8 @@ packages:
       readable-stream: 3.6.2
     dev: true
 
-  /zokrates-js@1.1.8:
-    resolution: {integrity: sha512-8Gbu2QvEmetdZUthZn5J31+lq1eAFpz7t7ykIJcaM2KGNKs9fZ0WMJTj29Z/cqeu+xHWfZBoLzQlA9Lf3zbLcg==}
-    dependencies:
-      pako: 2.1.0
+  /zokrates-js@1.0.43:
+    resolution: {integrity: sha512-34R5gZNEdpXevt3iV9h0nOr2Tf187BfLW54oNc0/xdDFBq6FxzqXsEw0YP5UJkm87zGGe9XNTyMv7mukb3BSGw==}
     dev: false
 
   /zstddec@0.0.2:

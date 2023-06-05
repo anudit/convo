@@ -81,7 +81,7 @@
     "url-metadata": "^3.0.1",
     "web3modal": "^1.9.12",
     "webpack": "^5.85.0",
-    "zokrates-js": "1.1.8"
+    "zokrates-js": "1.0.43"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.4.4",
