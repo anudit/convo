@@ -95,7 +95,7 @@
     "tf-next": "^0.13.2"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "nextBundleAnalysis": {
     "budget": null,
