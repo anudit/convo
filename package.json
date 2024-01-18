@@ -8,12 +8,12 @@
     "node_modules"
   ],
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "next dev --port 5004",
     "build": "next build",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start --port $PORT",
     "export": "next export",
-    "tunnel": "lt --port 3000 --subdomain convo",
+    "tunnel": "lt --port 5004 --subdomain convo",
     "sync": "node sync.js",
     "lint": "next lint",
     "cron:cacheV2": "node ./cron/cacheV2.js",

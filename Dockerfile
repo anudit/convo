@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:18
+FROM node:20
 
 # Set the working directory to /app
 WORKDIR /app
@@ -54,9 +54,9 @@ RUN pnpm install
 # Build the Next.js app
 RUN pnpm run build
 
-# Expose port 3000 to the outside world
-ENV PORT 3000
-EXPOSE 3000
+# Expose port 5004 to the outside world
+ENV PORT 5004
+EXPOSE 5004
 
 # Start the app server
 CMD [ "pnpm", "start" ]

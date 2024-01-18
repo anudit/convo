@@ -6,4 +6,4 @@ The Decentralized Conversation Layer of Internet.
 ### Using Docker
 - Install Docker on your machine.
 - Build your container: `docker build -t nextjs-docker .`.
-- Run your container: `docker run -p 3000:3000 nextjs-docker`.
+- Run your container: `docker run -p 5004:5004 nextjs-docker`.
