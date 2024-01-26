@@ -11,7 +11,20 @@ module.exports = (phase) => {
     },
     transpilePackages: ['three-stdlib'],
     images: {
-      domains: ['api.qrserver.com', 'qrserver.com'],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'api.qrserver.com',
+          port: '',
+          pathname: '*',
+        },
+        {
+          protocol: 'https',
+          hostname: 'qrserver.com',
+          port: '',
+          pathname: '*',
+        }
+      ]
     },
   }
 
