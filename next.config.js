@@ -11,6 +11,7 @@ module.exports = (phase) => {
     },
     transpilePackages: ['three-stdlib'],
     images: {
+      unoptimized: true,
       remotePatterns: [
         {
           protocol: 'https',
